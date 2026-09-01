@@ -1,0 +1,201 @@
+{
+  "summary": {
+    "total_scenarios": 10,
+    "total_raw_facts": 55,
+    "benchmarked_strategies": 6,
+    "aggregated_metrics": {
+      "P1_NaiveSummary": {
+        "name": "P1: 단순 요약 (Naive Summary)",
+        "total_preserved": 42,
+        "total_facts": 55,
+        "avg_preservation_rate": "77.23",
+        "exploitability_count": 2,
+        "exploitability_rate": "20.00",
+        "total_tokens": 11979,
+        "avg_tokens_per_scenario": 1198
+      },
+      "P2_StructuredKV": {
+        "name": "P2: 구조화 3단 템플릿 (Structured Key-Value)",
+        "total_preserved": 45,
+        "total_facts": 55,
+        "avg_preservation_rate": "82.57",
+        "exploitability_count": 5,
+        "exploitability_rate": "50.00",
+        "total_tokens": 11539,
+        "avg_tokens_per_scenario": 1154
+      },
+      "P3_PureJSON": {
+        "name": "P3: 순수 JSON 봉투 (Pure JSON Envelope)",
+        "total_preserved": 48,
+        "total_facts": 55,
+        "avg_preservation_rate": "87.24",
+        "exploitability_count": 6,
+        "exploitability_rate": "60.00",
+        "total_tokens": 11515,
+        "avg_tokens_per_scenario": 1152
+      },
+      "P4_TwoStageCoT": {
+        "name": "P4: 2단계 추출-복사 (Two-Stage Literal Copy)",
+        "total_preserved": 43,
+        "total_facts": 55,
+        "avg_preservation_rate": "77.23",
+        "exploitability_count": 4,
+        "exploitability_rate": "40.00",
+        "total_tokens": 10543,
+        "avg_tokens_per_scenario": 1054
+      },
+      "P5_NoiseStripper": {
+        "name": "P5: 잡음 제거 필터 (Noise-Stripper / Fact-Only)",
+        "total_preserved": 48,
+        "total_facts": 55,
+        "avg_preservation_rate": "87.24",
+        "exploitability_count": 5,
+        "exploitability_rate": "50.00",
+        "total_tokens": 10783,
+        "avg_tokens_per_scenario": 1078
+      },
+      "P6_ArtifactPointer": {
+        "name": "P6: 파일 아티팩트 포인터 (Artifact Pointer Protocol)",
+        "total_preserved": 55,
+        "total_facts": 55,
+        "avg_preservation_rate": "100.00",
+        "exploitability_count": 10,
+        "exploitability_rate": "100.00",
+        "total_tokens": 2592,
+        "avg_tokens_per_scenario": 259
+      }
+    }
+  },
+  "scenarios_breakdown": [
+    {
+      "id": "scenario_01_pwn_offsets",
+      "name": "Binary Exploitation - Offsets & Leaks",
+      "facts_count": 7,
+      "preservation_by_strategy": {
+        "P1": "85.7% (6/7)",
+        "P2": "85.7% (6/7)",
+        "P3": "85.7% (6/7)",
+        "P4": "85.7% (6/7)",
+        "P5": "85.7% (6/7)",
+        "P6": "100.0% (7/7)"
+      }
+    },
+    {
+      "id": "scenario_02_web_sqli",
+      "name": "Web Application - SQL Injection & Credentials",
+      "facts_count": 6,
+      "preservation_by_strategy": {
+        "P1": "83.3% (5/6)",
+        "P2": "100.0% (6/6)",
+        "P3": "100.0% (6/6)",
+        "P4": "83.3% (5/6)",
+        "P5": "100.0% (6/6)",
+        "P6": "100.0% (6/6)"
+      }
+    },
+    {
+      "id": "scenario_03_ad_adcs",
+      "name": "Active Directory - ADCS ESC1 Certificate Forgery",
+      "facts_count": 6,
+      "preservation_by_strategy": {
+        "P1": "100.0% (6/6)",
+        "P2": "83.3% (5/6)",
+        "P3": "100.0% (6/6)",
+        "P4": "100.0% (6/6)",
+        "P5": "100.0% (6/6)",
+        "P6": "100.0% (6/6)"
+      }
+    },
+    {
+      "id": "scenario_04_web_jwt",
+      "name": "Web Application - JWT Key Confusion",
+      "facts_count": 5,
+      "preservation_by_strategy": {
+        "P1": "60.0% (3/5)",
+        "P2": "80.0% (4/5)",
+        "P3": "80.0% (4/5)",
+        "P4": "40.0% (2/5)",
+        "P5": "80.0% (4/5)",
+        "P6": "100.0% (5/5)"
+      }
+    },
+    {
+      "id": "scenario_05_proto_pollution",
+      "name": "Client/Server Prototype Pollution RCE",
+      "facts_count": 5,
+      "preservation_by_strategy": {
+        "P1": "80.0% (4/5)",
+        "P2": "100.0% (5/5)",
+        "P3": "100.0% (5/5)",
+        "P4": "20.0% (1/5)",
+        "P5": "100.0% (5/5)",
+        "P6": "100.0% (5/5)"
+      }
+    },
+    {
+      "id": "scenario_06_linux_privesc",
+      "name": "Linux Privilege Escalation - SUID & Capabilities",
+      "facts_count": 5,
+      "preservation_by_strategy": {
+        "P1": "60.0% (3/5)",
+        "P2": "100.0% (5/5)",
+        "P3": "100.0% (5/5)",
+        "P4": "80.0% (4/5)",
+        "P5": "80.0% (4/5)",
+        "P6": "100.0% (5/5)"
+      }
+    },
+    {
+      "id": "scenario_07_lattice_crypto",
+      "name": "Cryptography - ECDSA Nonce Bias LLL",
+      "facts_count": 5,
+      "preservation_by_strategy": {
+        "P1": "40.0% (2/5)",
+        "P2": "80.0% (4/5)",
+        "P3": "80.0% (4/5)",
+        "P4": "80.0% (4/5)",
+        "P5": "80.0% (4/5)",
+        "P6": "100.0% (5/5)"
+      }
+    },
+    {
+      "id": "scenario_08_http_smuggling",
+      "name": "HTTP Request Smuggling - H2.CL",
+      "facts_count": 6,
+      "preservation_by_strategy": {
+        "P1": "83.3% (5/6)",
+        "P2": "16.7% (1/6)",
+        "P3": "66.7% (4/6)",
+        "P4": "83.3% (5/6)",
+        "P5": "66.7% (4/6)",
+        "P6": "100.0% (6/6)"
+      }
+    },
+    {
+      "id": "scenario_09_k8s_escape",
+      "name": "Kubernetes Pod Escape & Token Abuse",
+      "facts_count": 5,
+      "preservation_by_strategy": {
+        "P1": "80.0% (4/5)",
+        "P2": "100.0% (5/5)",
+        "P3": "60.0% (3/5)",
+        "P4": "100.0% (5/5)",
+        "P5": "100.0% (5/5)",
+        "P6": "100.0% (5/5)"
+      }
+    },
+    {
+      "id": "scenario_10_ctf_flag",
+      "name": "CTF Target Output & Flag Verification",
+      "facts_count": 5,
+      "preservation_by_strategy": {
+        "P1": "80.0% (4/5)",
+        "P2": "80.0% (4/5)",
+        "P3": "100.0% (5/5)",
+        "P4": "100.0% (5/5)",
+        "P5": "80.0% (4/5)",
+        "P6": "100.0% (5/5)"
+      }
+    }
+  ]
+}

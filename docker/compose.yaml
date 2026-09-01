@@ -1,0 +1,23 @@
+services:
+  minimal-agent:
+    image: agnusdei1207/minimal-agent:0.110.0
+    stdin_open: true
+    tty: true
+    # Raw sockets for SYN scans, masscan, and packet capture (ADR-0003 §3.7).
+    cap_add:
+      - NET_RAW
+      - NET_ADMIN
+    # Fixed local provider config lives in the gitignored repo-root .env.
+    env_file:
+      - ../.env
+    volumes:
+      - ../workspace:/workspace
+      - ../runs:/state
+    command:
+      - run
+      - --goal
+      - ${MINIMAL_AGENT_GOAL:-Help complete the requested task}
+      - --workspace
+      - /workspace
+      - --run
+      - /state/current

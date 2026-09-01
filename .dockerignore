@@ -1,0 +1,10 @@
+.git
+.github
+.minimal-agent
+node_modules
+runs
+target
+test
+tests
+*.log
+.env

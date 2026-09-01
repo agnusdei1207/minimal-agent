@@ -1,0 +1,59 @@
+{
+  "name": "minimal-agent",
+  "version": "0.110.0",
+  "description": "A small autonomous team-agent runtime powered by Rust",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/agnusdei1207/minimal-agent.git"
+  },
+  "homepage": "https://github.com/agnusdei1207/minimal-agent#readme",
+  "bugs": "https://github.com/agnusdei1207/minimal-agent/issues",
+  "type": "module",
+  "bin": {
+    "minimal-agent": "bin/minimal-agent.js"
+  },
+  "files": [
+    "bin/",
+    "scripts/bounded-download.mjs",
+    "scripts/install.mjs",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "postinstall": "node scripts/install.mjs",
+    "test": "node --test test/npm-launcher.test.mjs",
+    "check": "npm run check:docker",
+    "check:docker": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/check.ps1",
+    "docker:base": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/dimage.ps1 -Target base",
+    "docker:build": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/dimage.ps1 -Target all -Tag minimal-agent:check",
+    "xbow": "node benchmarks/xbow104/task.mjs",
+    "xbow:run": "node benchmarks/xbow104/runner.mjs --all --concurrency 1",
+    "xbow:setup": "node benchmarks/xbow104/runner.mjs --setup",
+    "xbow:doctor": "node benchmarks/xbow104/doctor.mjs",
+    "xbow:summary": "node benchmarks/xbow104/summary.mjs",
+    "xbow:kpi": "node benchmarks/xbow104/kpi.mjs",
+    "xbow:results": "node benchmarks/xbow104/build-results-index.mjs"
+  },
+  "engines": {
+    "node": ">=24 <25"
+  },
+  "os": [
+    "darwin",
+    "linux",
+    "win32"
+  ],
+  "cpu": [
+    "arm64",
+    "x64"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [
+    "agent",
+    "multi-agent",
+    "rust",
+    "tui"
+  ]
+}
