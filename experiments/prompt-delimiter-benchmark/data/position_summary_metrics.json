@@ -1,0 +1,23 @@
+{
+  "head": {
+    "xml": 100.0,
+    "markdown": 100.0,
+    "square_bracket": 100.0,
+    "plain_colon": 100.0,
+    "json": 100.0
+  },
+  "middle": {
+    "xml": 0.0,
+    "markdown": 100.0,
+    "square_bracket": 100.0,
+    "plain_colon": 100.0,
+    "json": 50.0
+  },
+  "tail": {
+    "xml": 66.67,
+    "markdown": 100.0,
+    "square_bracket": 66.67,
+    "plain_colon": 100.0,
+    "json": 66.67
+  }
+}

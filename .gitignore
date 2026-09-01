@@ -1,0 +1,13 @@
+/target/
+/.build/
+/runs/
+/vendor/
+/*.tgz
+.env
+*.log
+.cargo-home/
+
+# XBOW-104 benchmark
+benchmarks/xbow-validation-benchmarks/
+benchmarks/xbow104/artifacts/runs/
+benchmarks/xbow104/.env
