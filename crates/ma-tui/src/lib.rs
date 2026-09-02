@@ -1014,9 +1014,13 @@ pub async fn run_tui(
                 }
                 state.set_team(runtime.coordinator().live_team()?);
             }
-            _ = animation.tick() => {
+            // Cosmetic only: advance the spinner while an agent has a live turn.
+            // Gated on `active_turns` so that when idle the branch is disabled and
+            // the loop blocks on real events instead of waking every 80ms. The team
+            // roster is refreshed from `TeamChanged` events (see `events.recv()`),
+            // not polled here — polling it per frame was the redundant repaint.
+            _ = animation.tick(), if !state.active_turns.is_empty() => {
                 state.advance_spinner();
-                state.set_team(runtime.coordinator().live_team()?);
             }
         }
     }

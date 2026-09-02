@@ -298,7 +298,7 @@ fn status_line(state: &TuiState) -> Line<'static> {
     };
     let tokens = if state.input_tokens + state.output_tokens > 0 {
         format!(
-            " · tok in {} out {}",
+            " · tok {}/{}",
             fmt_tokens(state.input_tokens),
             fmt_tokens(state.output_tokens),
         )
