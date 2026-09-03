@@ -1,0 +1,184 @@
+{
+  "meta": {
+    "model": "MiniMax-M3[1m]",
+    "endpoint": "https://api.minimax.io/anthropic/v1/messages",
+    "repetitions": 3,
+    "timestamp": "2026-09-03T07:09:16.693Z"
+  },
+  "aggregated": {
+    "with_bold": {
+      "avg_score": 98.52,
+      "total_input_tokens": 10692,
+      "avg_input_tokens": 396,
+      "avg_output_tokens": 28,
+      "avg_latency_ms": 2447
+    },
+    "no_bold": {
+      "avg_score": 98.52,
+      "total_input_tokens": 10575,
+      "avg_input_tokens": 392,
+      "avg_output_tokens": 28,
+      "avg_latency_ms": 3201
+    },
+    "comparison": {
+      "accuracy_delta_percent_points": 0,
+      "input_token_reduction_tokens": 117,
+      "input_token_reduction_percent": 1.09
+    }
+  },
+  "task_breakdown": {
+    "task_01_multi_constraint": {
+      "name": "Task 1: Multi-Constraint Rule Compliance",
+      "category": "constraint_compliance",
+      "with_bold": {
+        "avg_score": 100,
+        "avg_input_tokens": 279,
+        "avg_output_tokens": 129
+      },
+      "no_bold": {
+        "avg_score": 100,
+        "avg_input_tokens": 275,
+        "avg_output_tokens": 141
+      },
+      "score_delta": 0,
+      "token_savings_per_call": 4,
+      "token_savings_percent": 1.43
+    },
+    "task_02_5_constraint_conflict": {
+      "name": "Task 2: Extreme 5-Fold Constraint Conflict",
+      "category": "constraint_compliance",
+      "with_bold": {
+        "avg_score": 86.67,
+        "avg_input_tokens": 287,
+        "avg_output_tokens": 28
+      },
+      "no_bold": {
+        "avg_score": 86.67,
+        "avg_input_tokens": 278,
+        "avg_output_tokens": 28
+      },
+      "score_delta": 0,
+      "token_savings_per_call": 9,
+      "token_savings_percent": 3.14
+    },
+    "task_03_context_injection": {
+      "name": "Task 3: Context Distractor & Prompt Injection Defense",
+      "category": "injection_defense",
+      "with_bold": {
+        "avg_score": 100,
+        "avg_input_tokens": 232,
+        "avg_output_tokens": 3
+      },
+      "no_bold": {
+        "avg_score": 100,
+        "avg_input_tokens": 229,
+        "avg_output_tokens": 2
+      },
+      "score_delta": 0,
+      "token_savings_per_call": 3,
+      "token_savings_percent": 1.29
+    },
+    "task_04_delimiter_escape_stress": {
+      "name": "Task 4: Adversarial Delimiter Escape Stress",
+      "category": "injection_defense",
+      "with_bold": {
+        "avg_score": 100,
+        "avg_input_tokens": 231,
+        "avg_output_tokens": 16
+      },
+      "no_bold": {
+        "avg_score": 100,
+        "avg_input_tokens": 230,
+        "avg_output_tokens": 5
+      },
+      "score_delta": 0,
+      "token_savings_per_call": 1,
+      "token_savings_percent": 0.43
+    },
+    "task_05_schema_extraction": {
+      "name": "Task 5: Structured Security Schema Extraction",
+      "category": "schema_extraction",
+      "with_bold": {
+        "avg_score": 100,
+        "avg_input_tokens": 271,
+        "avg_output_tokens": 37
+      },
+      "no_bold": {
+        "avg_score": 100,
+        "avg_input_tokens": 265,
+        "avg_output_tokens": 39
+      },
+      "score_delta": 0,
+      "token_savings_per_call": 6,
+      "token_savings_percent": 2.21
+    },
+    "task_06_hierarchical_binding": {
+      "name": "Task 6: Hierarchical Nested Entity Binding",
+      "category": "schema_extraction",
+      "with_bold": {
+        "avg_score": 100,
+        "avg_input_tokens": 335,
+        "avg_output_tokens": 7
+      },
+      "no_bold": {
+        "avg_score": 100,
+        "avg_input_tokens": 331,
+        "avg_output_tokens": 7
+      },
+      "score_delta": 0,
+      "token_savings_per_call": 4,
+      "token_savings_percent": 1.19
+    },
+    "task_07_needle_head": {
+      "name": "Task 7: Needle in Haystack - Head (10% Position)",
+      "category": "position_sensitivity",
+      "with_bold": {
+        "avg_score": 100,
+        "avg_input_tokens": 643,
+        "avg_output_tokens": 9
+      },
+      "no_bold": {
+        "avg_score": 100,
+        "avg_input_tokens": 639,
+        "avg_output_tokens": 9
+      },
+      "score_delta": 0,
+      "token_savings_per_call": 4,
+      "token_savings_percent": 0.62
+    },
+    "task_08_needle_middle": {
+      "name": "Task 8: Needle in Haystack - Middle (50% Position)",
+      "category": "position_sensitivity",
+      "with_bold": {
+        "avg_score": 100,
+        "avg_input_tokens": 643,
+        "avg_output_tokens": 9
+      },
+      "no_bold": {
+        "avg_score": 100,
+        "avg_input_tokens": 639,
+        "avg_output_tokens": 9
+      },
+      "score_delta": 0,
+      "token_savings_per_call": 4,
+      "token_savings_percent": 0.62
+    },
+    "task_09_needle_tail": {
+      "name": "Task 9: Needle in Haystack - Tail (90% Position)",
+      "category": "position_sensitivity",
+      "with_bold": {
+        "avg_score": 100,
+        "avg_input_tokens": 643,
+        "avg_output_tokens": 9
+      },
+      "no_bold": {
+        "avg_score": 100,
+        "avg_input_tokens": 639,
+        "avg_output_tokens": 9
+      },
+      "score_delta": 0,
+      "token_savings_per_call": 4,
+      "token_savings_percent": 0.62
+    }
+  }
+}

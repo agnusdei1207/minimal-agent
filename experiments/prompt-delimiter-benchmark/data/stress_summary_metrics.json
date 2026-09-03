@@ -1,0 +1,47 @@
+{
+  "xml": {
+    "overall_mean_score": 75,
+    "task_scores": {
+      "Stress T1 (Injection Escape)": 100,
+      "Stress T2 (Extreme Multi-Constraint)": 0,
+      "Stress T3 (Hierarchical Binding)": 100,
+      "Stress T4 (Code Symbol Collision)": 100
+    }
+  },
+  "markdown": {
+    "overall_mean_score": 75,
+    "task_scores": {
+      "Stress T1 (Injection Escape)": 100,
+      "Stress T2 (Extreme Multi-Constraint)": 0,
+      "Stress T3 (Hierarchical Binding)": 100,
+      "Stress T4 (Code Symbol Collision)": 100
+    }
+  },
+  "square_bracket": {
+    "overall_mean_score": 75,
+    "task_scores": {
+      "Stress T1 (Injection Escape)": 0,
+      "Stress T2 (Extreme Multi-Constraint)": 100,
+      "Stress T3 (Hierarchical Binding)": 100,
+      "Stress T4 (Code Symbol Collision)": 100
+    }
+  },
+  "plain_colon": {
+    "overall_mean_score": 72.5,
+    "task_scores": {
+      "Stress T1 (Injection Escape)": 0,
+      "Stress T2 (Extreme Multi-Constraint)": 90,
+      "Stress T3 (Hierarchical Binding)": 100,
+      "Stress T4 (Code Symbol Collision)": 100
+    }
+  },
+  "json": {
+    "overall_mean_score": 75,
+    "task_scores": {
+      "Stress T1 (Injection Escape)": 0,
+      "Stress T2 (Extreme Multi-Constraint)": 100,
+      "Stress T3 (Hierarchical Binding)": 100,
+      "Stress T4 (Code Symbol Collision)": 100
+    }
+  }
+}

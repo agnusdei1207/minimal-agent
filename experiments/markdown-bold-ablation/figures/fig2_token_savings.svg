@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="800" height="450">
+  <rect width="100%" height="100%" fill="#ffffff" />
+  <text x="60" y="32" font-size="16" font-weight="700" font-family="system-ui, sans-serif" fill="#0f172a">Figure 2: Input Token Consumption &amp; Overhead Savings by Task</text>
+  <text x="60" y="50" font-size="12" font-family="system-ui, sans-serif" fill="#64748b">Overhead from asterisks (**...**) highlighted with per-call token reduction</text>
+  
+  <!-- Legend -->
+  <rect x="530" y="24" width="14" height="14" fill="#64748b" rx="2" />
+  <text x="550" y="36" font-size="12" font-family="system-ui, sans-serif" fill="#1e293b">With Bold Tokens</text>
+  <rect x="660" y="24" width="14" height="14" fill="#0ea5e9" rx="2" />
+  <text x="680" y="36" font-size="12" font-family="system-ui, sans-serif" fill="#1e293b">Plain Tokens</text>
+
+  <!-- Grid & Axes -->
+  <line x1="60" y1="350" x2="760" y2="350" stroke="#e2e8f0" stroke-width="1" stroke-dasharray="none" />
+<text x="50" y="354" text-anchor="end" font-size="11" font-family="system-ui, sans-serif" fill="#64748b">0</text>
+<line x1="60" y1="310.78166204611534" x2="760" y2="310.78166204611534" stroke="#e2e8f0" stroke-width="1" stroke-dasharray="4,4" />
+<text x="50" y="314.78166204611534" text-anchor="end" font-size="11" font-family="system-ui, sans-serif" fill="#64748b">100</text>
+<line x1="60" y1="271.5633240922307" x2="760" y2="271.5633240922307" stroke="#e2e8f0" stroke-width="1" stroke-dasharray="4,4" />
+<text x="50" y="275.5633240922307" text-anchor="end" font-size="11" font-family="system-ui, sans-serif" fill="#64748b">200</text>
+<line x1="60" y1="232.34498613834606" x2="760" y2="232.34498613834606" stroke="#e2e8f0" stroke-width="1" stroke-dasharray="4,4" />
+<text x="50" y="236.34498613834606" text-anchor="end" font-size="11" font-family="system-ui, sans-serif" fill="#64748b">300</text>
+<line x1="60" y1="193.12664818446143" x2="760" y2="193.12664818446143" stroke="#e2e8f0" stroke-width="1" stroke-dasharray="4,4" />
+<text x="50" y="197.12664818446143" text-anchor="end" font-size="11" font-family="system-ui, sans-serif" fill="#64748b">400</text>
+<line x1="60" y1="153.90831023057677" x2="760" y2="153.90831023057677" stroke="#e2e8f0" stroke-width="1" stroke-dasharray="4,4" />
+<text x="50" y="157.90831023057677" text-anchor="end" font-size="11" font-family="system-ui, sans-serif" fill="#64748b">500</text>
+<line x1="60" y1="114.68997227669212" x2="760" y2="114.68997227669212" stroke="#e2e8f0" stroke-width="1" stroke-dasharray="4,4" />
+<text x="50" y="118.68997227669212" text-anchor="end" font-size="11" font-family="system-ui, sans-serif" fill="#64748b">600</text>
+<line x1="60" y1="75.47163432280746" x2="760" y2="75.47163432280746" stroke="#e2e8f0" stroke-width="1" stroke-dasharray="4,4" />
+<text x="50" y="79.47163432280746" text-anchor="end" font-size="11" font-family="system-ui, sans-serif" fill="#64748b">700</text>
+
+  <rect x="69.33333333333333" y="240.58083710866185" width="27.222222222222218" height="109.41916289133816" fill="#64748b" rx="2" />
+<rect x="100.55555555555554" y="242.1495706268172" width="27.222222222222218" height="107.85042937318279" fill="#0ea5e9" rx="2" />
+<text x="114.16666666666666" y="236.1495706268172" text-anchor="middle" font-size="10" font-weight="700" font-family="system-ui, sans-serif" fill="#0369a1">-4</text>
+<rect x="147.11111111111111" y="237.44337007235106" width="27.222222222222218" height="112.55662992764894" fill="#64748b" rx="2" />
+<rect x="178.33333333333334" y="240.9730204882007" width="27.222222222222218" height="109.02697951179931" fill="#0ea5e9" rx="2" />
+<text x="191.94444444444446" y="234.9730204882007" text-anchor="middle" font-size="10" font-weight="700" font-family="system-ui, sans-serif" fill="#0369a1">-9</text>
+<rect x="224.88888888888889" y="259.0134559469876" width="27.222222222222218" height="90.9865440530124" fill="#64748b" rx="2" />
+<rect x="256.1111111111111" y="260.1900060856042" width="27.222222222222218" height="89.80999391439585" fill="#0ea5e9" rx="2" />
+<text x="269.7222222222222" y="254.19000608560418" text-anchor="middle" font-size="10" font-weight="700" font-family="system-ui, sans-serif" fill="#0369a1">-3</text>
+<rect x="302.66666666666663" y="259.40563932652645" width="27.222222222222218" height="90.59436067347355" fill="#64748b" rx="2" />
+<rect x="333.88888888888886" y="259.7978227060653" width="27.222222222222218" height="90.2021772939347" fill="#0ea5e9" rx="2" />
+<text x="347.49999999999994" y="253.7978227060653" text-anchor="middle" font-size="10" font-weight="700" font-family="system-ui, sans-serif" fill="#0369a1">-1</text>
+<rect x="380.4444444444444" y="243.7183041449726" width="27.222222222222218" height="106.28169585502741" fill="#64748b" rx="2" />
+<rect x="411.66666666666663" y="246.07140442220566" width="27.222222222222218" height="103.92859557779433" fill="#0ea5e9" rx="2" />
+<text x="425.2777777777777" y="240.07140442220566" text-anchor="middle" font-size="10" font-weight="700" font-family="system-ui, sans-serif" fill="#0369a1">-6</text>
+<rect x="458.2222222222222" y="218.61856785448643" width="27.222222222222218" height="131.38143214551357" fill="#64748b" rx="2" />
+<rect x="489.4444444444444" y="220.18730137264183" width="27.222222222222218" height="129.81269862735817" fill="#0ea5e9" rx="2" />
+<text x="503.0555555555555" y="214.18730137264183" text-anchor="middle" font-size="10" font-weight="700" font-family="system-ui, sans-serif" fill="#0369a1">-4</text>
+<rect x="536" y="97.82608695652172" width="27.222222222222218" height="252.17391304347828" fill="#64748b" rx="2" />
+<rect x="567.2222222222222" y="99.39482047467709" width="27.222222222222218" height="250.6051795253229" fill="#0ea5e9" rx="2" />
+<text x="580.8333333333333" y="93.39482047467709" text-anchor="middle" font-size="10" font-weight="700" font-family="system-ui, sans-serif" fill="#0369a1">-4</text>
+<rect x="613.7777777777777" y="97.82608695652172" width="27.222222222222218" height="252.17391304347828" fill="#64748b" rx="2" />
+<rect x="644.9999999999999" y="99.39482047467709" width="27.222222222222218" height="250.6051795253229" fill="#0ea5e9" rx="2" />
+<text x="658.611111111111" y="93.39482047467709" text-anchor="middle" font-size="10" font-weight="700" font-family="system-ui, sans-serif" fill="#0369a1">-4</text>
+<rect x="691.5555555555555" y="97.82608695652172" width="27.222222222222218" height="252.17391304347828" fill="#64748b" rx="2" />
+<rect x="722.7777777777777" y="99.39482047467709" width="27.222222222222218" height="250.6051795253229" fill="#0ea5e9" rx="2" />
+<text x="736.3888888888888" y="93.39482047467709" text-anchor="middle" font-size="10" font-weight="700" font-family="system-ui, sans-serif" fill="#0369a1">-4</text>
+
+  <text x="98.88888888888889" y="370" text-anchor="middle" font-size="11" font-weight="500" font-family="system-ui, sans-serif" fill="#334155">T01 mul</text>
+<text x="176.66666666666666" y="370" text-anchor="middle" font-size="11" font-weight="500" font-family="system-ui, sans-serif" fill="#334155">T02 5_c</text>
+<text x="254.44444444444443" y="370" text-anchor="middle" font-size="11" font-weight="500" font-family="system-ui, sans-serif" fill="#334155">T03 con</text>
+<text x="332.2222222222222" y="370" text-anchor="middle" font-size="11" font-weight="500" font-family="system-ui, sans-serif" fill="#334155">T04 del</text>
+<text x="410" y="370" text-anchor="middle" font-size="11" font-weight="500" font-family="system-ui, sans-serif" fill="#334155">T05 sch</text>
+<text x="487.7777777777777" y="370" text-anchor="middle" font-size="11" font-weight="500" font-family="system-ui, sans-serif" fill="#334155">T06 hie</text>
+<text x="565.5555555555555" y="370" text-anchor="middle" font-size="11" font-weight="500" font-family="system-ui, sans-serif" fill="#334155">T07 nee</text>
+<text x="643.3333333333333" y="370" text-anchor="middle" font-size="11" font-weight="500" font-family="system-ui, sans-serif" fill="#334155">T08 nee</text>
+<text x="721.1111111111111" y="370" text-anchor="middle" font-size="11" font-weight="500" font-family="system-ui, sans-serif" fill="#334155">T09 nee</text>
+
+</svg>

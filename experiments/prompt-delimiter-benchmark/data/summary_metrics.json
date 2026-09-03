@@ -1,0 +1,47 @@
+{
+  "xml": {
+    "overall_mean_score": 100,
+    "task_scores": {
+      "Task 1 (Multi-Constraint)": 100,
+      "Task 2 (Context Isolation)": 100,
+      "Task 3 (Schema Extraction)": 100,
+      "Task 4 (Boundary Isolation)": 100
+    }
+  },
+  "markdown": {
+    "overall_mean_score": 100,
+    "task_scores": {
+      "Task 1 (Multi-Constraint)": 100,
+      "Task 2 (Context Isolation)": 100,
+      "Task 3 (Schema Extraction)": 100,
+      "Task 4 (Boundary Isolation)": 100
+    }
+  },
+  "square_bracket": {
+    "overall_mean_score": 100,
+    "task_scores": {
+      "Task 1 (Multi-Constraint)": 100,
+      "Task 2 (Context Isolation)": 100,
+      "Task 3 (Schema Extraction)": 100,
+      "Task 4 (Boundary Isolation)": 100
+    }
+  },
+  "plain_colon": {
+    "overall_mean_score": 100,
+    "task_scores": {
+      "Task 1 (Multi-Constraint)": 100,
+      "Task 2 (Context Isolation)": 100,
+      "Task 3 (Schema Extraction)": 100,
+      "Task 4 (Boundary Isolation)": 100
+    }
+  },
+  "json": {
+    "overall_mean_score": 100,
+    "task_scores": {
+      "Task 1 (Multi-Constraint)": 100,
+      "Task 2 (Context Isolation)": 100,
+      "Task 3 (Schema Extraction)": 100,
+      "Task 4 (Boundary Isolation)": 100
+    }
+  }
+}

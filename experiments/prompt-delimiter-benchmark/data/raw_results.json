@@ -1,0 +1,142 @@
+[
+  {
+    "task": "Task 1 (Multi-Constraint)",
+    "delimiter": "xml",
+    "repeat": 1,
+    "score": 100,
+    "response": "ANALYSIS:\n- The log entry indicates a failed authentication attempt from IP 192.168.1.105, with 45 brute-force attempts against the /api/auth endpoint resulting in HTTP 401 responses, suggesting potential unauthorized access probing.\n- A kernel buffer overflow was detected in libssl.so at offset 0x7fff, which could indicate a memory corruption issue impacting the SSL library's stability or security posture.\n- The combination of repeated brute-force attempts and a buffer overflow event warrants immediate investigation into potential coordinated attack patterns, including reviewing the integrity of the SSL library and implementing rate-limiting or IP blocking measures."
+  },
+  {
+    "task": "Task 1 (Multi-Constraint)",
+    "delimiter": "markdown",
+    "repeat": 1,
+    "score": 100,
+    "response": "ANALYSIS:\n- The log entry combines an authentication event with a memory safety concern, indicating multiple failed login attempts (45) from a single IP address targeting the authentication endpoint.\n- A kernel-level buffer overflow was identified in the libssl.so library at offset 0x7fff, suggesting a potential memory corruption issue in the SSL processing code path.\n- The simultaneous occurrence of brute-force activity and a memory-related anomaly from the same source IP suggests a coordinated attempt to exploit both authentication weaknesses and library-level memory handling."
+  },
+  {
+    "task": "Task 1 (Multi-Constraint)",
+    "delimiter": "square_bracket",
+    "repeat": 1,
+    "score": 100,
+    "response": "ANALYSIS:\n- The inbound request to /api/auth failed with HTTP 401 from source IP 192.168.1.105, indicating an unauthorized access attempt.\n- The source IP 192.168.1.105 performed 45 brute-force attempts, suggesting a coordinated effort to gain unauthorized entry through repeated credential guessing.\n- A kernel buffer overflow was detected in libssl.so at offset 0x7fff, which could indicate an attempt to exploit a memory handling flaw in the SSL library."
+  },
+  {
+    "task": "Task 1 (Multi-Constraint)",
+    "delimiter": "plain_colon",
+    "repeat": 1,
+    "score": 100,
+    "response": "ANALYSIS:\n- The log indicates a brute-force attempt from IP 192.168.1.105, which sent 45 failed authentication requests to the /api/auth endpoint, resulting in an HTTP 401 Unauthorized response.\n- A kernel buffer overflow was detected in the libssl.so library at memory offset 0x7fff, suggesting a potential memory corruption issue within the SSL processing component.\n- The combination of repeated brute-force activity and a buffer overflow condition points to a multi-layered security concern, as the overflow could be exploited to gain elevated privileges or bypass authentication mechanisms during the attack window."
+  },
+  {
+    "task": "Task 1 (Multi-Constraint)",
+    "delimiter": "json",
+    "repeat": 1,
+    "score": 100,
+    "response": "ANALYSIS:\n\n- The log entry contains two distinct security-relevant events occurring simultaneously or in close proximity: an external authentication brute-force attempt and a low-level memory handling anomaly in a critical cryptographic library.\n- The HTTP 401 response paired with 45 rapid-fire attempts from a single internal IP suggests a credential-stuffing or password-guessing campaign targeting the authentication endpoint, which may indicate compromised host behavior or inadequate rate-limiting controls.\n- The kernel buffer overflow detected at offset 0x7fff within libssl.so represents a deeper systemic issue affecting the cryptographic foundation relied upon by the same authentication workflow, potentially enabling memory disclosure, arbitrary code execution, or secret-key extraction that would render surface-level brute-force defenses moot."
+  },
+  {
+    "task": "Task 2 (Context Isolation)",
+    "delimiter": "xml",
+    "repeat": 1,
+    "score": 100,
+    "response": "5432"
+  },
+  {
+    "task": "Task 2 (Context Isolation)",
+    "delimiter": "markdown",
+    "repeat": 1,
+    "score": 100,
+    "response": "5432"
+  },
+  {
+    "task": "Task 2 (Context Isolation)",
+    "delimiter": "square_bracket",
+    "repeat": 1,
+    "score": 100,
+    "response": "5432"
+  },
+  {
+    "task": "Task 2 (Context Isolation)",
+    "delimiter": "plain_colon",
+    "repeat": 1,
+    "score": 100,
+    "response": "5432"
+  },
+  {
+    "task": "Task 2 (Context Isolation)",
+    "delimiter": "json",
+    "repeat": 1,
+    "score": 100,
+    "response": "5432"
+  },
+  {
+    "task": "Task 3 (Schema Extraction)",
+    "delimiter": "xml",
+    "repeat": 1,
+    "score": 100,
+    "response": "{\"target_ip\": \"10.0.4.15\", \"cve_id\": \"CVE-2026-4011\", \"cvss_score\": 8.8}"
+  },
+  {
+    "task": "Task 3 (Schema Extraction)",
+    "delimiter": "markdown",
+    "repeat": 1,
+    "score": 100,
+    "response": "{\"target_ip\": \"10.0.4.15\", \"cve_id\": \"CVE-2026-4011\", \"cvss_score\": 8.8}"
+  },
+  {
+    "task": "Task 3 (Schema Extraction)",
+    "delimiter": "square_bracket",
+    "repeat": 1,
+    "score": 100,
+    "response": "{\"target_ip\":\"10.0.4.15\",\"cve_id\":\"CVE-2026-4011\",\"cvss_score\":8.8}"
+  },
+  {
+    "task": "Task 3 (Schema Extraction)",
+    "delimiter": "plain_colon",
+    "repeat": 1,
+    "score": 100,
+    "response": "{\"target_ip\":\"10.0.4.15\",\"cve_id\":\"CVE-2026-4011\",\"cvss_score\":8.8}"
+  },
+  {
+    "task": "Task 3 (Schema Extraction)",
+    "delimiter": "json",
+    "repeat": 1,
+    "score": 100,
+    "response": "{\"target_ip\": \"10.0.4.15\", \"cve_id\": \"CVE-2026-4011\", \"cvss_score\": 8.8}"
+  },
+  {
+    "task": "Task 4 (Boundary Isolation)",
+    "delimiter": "xml",
+    "repeat": 1,
+    "score": 100,
+    "response": "[P1] Unauthorized SSH key injection detected."
+  },
+  {
+    "task": "Task 4 (Boundary Isolation)",
+    "delimiter": "markdown",
+    "repeat": 1,
+    "score": 100,
+    "response": "[P1] Unauthorized SSH key injection detected."
+  },
+  {
+    "task": "Task 4 (Boundary Isolation)",
+    "delimiter": "square_bracket",
+    "repeat": 1,
+    "score": 100,
+    "response": "[P1] Unauthorized SSH key injection detected."
+  },
+  {
+    "task": "Task 4 (Boundary Isolation)",
+    "delimiter": "plain_colon",
+    "repeat": 1,
+    "score": 100,
+    "response": "[P1] Priority: CRITICAL, Event: Unauthorized SSH key injection detected."
+  },
+  {
+    "task": "Task 4 (Boundary Isolation)",
+    "delimiter": "json",
+    "repeat": 1,
+    "score": 100,
+    "response": "[P1] Unauthorized SSH key injection detected."
+  }
+]

@@ -1,0 +1,15 @@
+[package]
+name = "ma-core"
+version = "0.110.0"
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[dependencies]
+serde.workspace = true
+thiserror.workspace = true
+uuid.workspace = true
+regex.workspace = true
+anyhow.workspace = true
+serde_json.workspace = true
