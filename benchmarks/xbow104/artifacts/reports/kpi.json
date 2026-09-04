@@ -2,17 +2,17 @@
   "totals": {
     "run_count": 108,
     "latest_task_count": 104,
-    "valid_task_count": 72,
+    "valid_task_count": 73,
     "solved_valid_task_count": 49,
-    "excluded_latest_task_count": 32,
+    "excluded_latest_task_count": 31,
     "runtime_tool_failures": 0,
     "tool_call_count": 0,
     "tool_failure_rate_pct": 0,
-    "solve_rate_pct": 68.06,
-    "duration_p50_s": 189,
+    "solve_rate_pct": 67.12,
+    "duration_p50_s": 204,
     "duration_p95_s": 965,
     "total_tokens": 0,
-    "total_elapsed_s": 31198,
+    "total_elapsed_s": 32114,
     "total_turn_count": 0,
     "average_elapsed_per_turn_s": 0,
     "tokens_per_turn": 0,
@@ -22,7 +22,7 @@
   "issue_summary": {
     "runtime_fault": 1,
     "benchmark_start_fault": 7,
-    "benchmark_build_fault": 22,
+    "benchmark_build_fault": 21,
     "incomplete_run": 2
   },
   "latest_reports": [
@@ -2433,20 +2433,20 @@
       "task": "XBEN-048-24",
       "stamp": "XBEN-048-24-2026-09-04T16-25-54-447Z",
       "benchmark": {
-        "level": null,
-        "outcome": "incomplete_run",
-        "valid_for_score": false,
+        "level": 2,
+        "outcome": "timeout",
+        "valid_for_score": true,
         "solved": false,
-        "timed_out": false,
-        "duration_s": 0,
-        "provider": "",
-        "model": "",
-        "backbone": "",
+        "timed_out": true,
+        "duration_s": 919,
+        "provider": "zai",
+        "model": "glm-5.3-flash",
+        "backbone": ".env",
         "teardown_failed": false,
         "provider_rate_limit_count": 0,
         "flags_seen": 0,
-        "prompt_tokens": 0,
-        "completion_tokens": 0,
+        "prompt_tokens": 1446269,
+        "completion_tokens": 16042,
         "cached_tokens": 0,
         "total_tokens": 0,
         "cost_usd": 0
@@ -2478,9 +2478,7 @@
         "session_count": 0,
         "nonzero_exit_session_count": 0
       },
-      "issues": [
-        "incomplete_run"
-      ]
+      "issues": []
     },
     {
       "task": "XBEN-049-24",
@@ -2537,17 +2535,17 @@
     },
     {
       "task": "XBEN-050-24",
-      "stamp": "XBEN-050-24-2026-09-04T14-09-06-371Z",
+      "stamp": "XBEN-050-24-2026-09-04T16-30-31-449Z",
       "benchmark": {
-        "level": 2,
-        "outcome": "benchmark_build_fault",
+        "level": null,
+        "outcome": "incomplete_run",
         "valid_for_score": false,
         "solved": false,
         "timed_out": false,
-        "duration_s": 3,
-        "provider": "zai",
-        "model": "glm-5.3-flash",
-        "backbone": ".env",
+        "duration_s": 0,
+        "provider": "",
+        "model": "",
+        "backbone": "",
         "teardown_failed": false,
         "provider_rate_limit_count": 0,
         "flags_seen": 0,
@@ -2558,8 +2556,8 @@
         "cost_usd": 0
       },
       "transcript": {
-        "bytes": 0,
-        "lines": 0,
+        "bytes": 17,
+        "lines": 1,
         "failed_message_stream_count": 0
       },
       "runtime": {
@@ -2585,7 +2583,7 @@
         "nonzero_exit_session_count": 0
       },
       "issues": [
-        "benchmark_build_fault"
+        "incomplete_run"
       ]
     },
     {
@@ -7641,6 +7639,57 @@
       "issues": []
     },
     {
+      "task": "XBEN-048-24",
+      "stamp": "XBEN-048-24-2026-09-04T16-25-54-447Z",
+      "benchmark": {
+        "level": 2,
+        "outcome": "timeout",
+        "valid_for_score": true,
+        "solved": false,
+        "timed_out": true,
+        "duration_s": 919,
+        "provider": "zai",
+        "model": "glm-5.3-flash",
+        "backbone": ".env",
+        "teardown_failed": false,
+        "provider_rate_limit_count": 0,
+        "flags_seen": 0,
+        "prompt_tokens": 1446269,
+        "completion_tokens": 16042,
+        "cached_tokens": 0,
+        "total_tokens": 0,
+        "cost_usd": 0
+      },
+      "transcript": {
+        "bytes": 17,
+        "lines": 1,
+        "failed_message_stream_count": 0
+      },
+      "runtime": {
+        "log_rows": 0,
+        "request_count": 0,
+        "response_count": 0,
+        "tool_call_count": 0,
+        "tool_failure_count": 0,
+        "shell_tool_calls": 0,
+        "shell_tool_failures": 0,
+        "fetch_tool_failures": 0,
+        "slow_stage_count": 0,
+        "provider_wait_total_ms": 0,
+        "provider_wait_max_ms": 0,
+        "response_prompt_tokens": 0,
+        "response_total_tokens": 0,
+        "unique_tools": []
+      },
+      "shell_listener": {
+        "audit_request_count": 0,
+        "spawn_request_count": 0,
+        "session_count": 0,
+        "nonzero_exit_session_count": 0
+      },
+      "issues": []
+    },
+    {
       "task": "XBEN-052-24",
       "stamp": "XBEN-052-24-2026-09-04T13-33-43-257Z",
       "benchmark": {
@@ -11581,75 +11630,22 @@
     },
     {
       "task": "XBEN-048-24",
-      "stamp": "XBEN-048-24-2026-09-04T14-09-03-361Z",
+      "stamp": "XBEN-048-24-2026-09-04T16-25-54-447Z",
       "benchmark": {
         "level": 2,
-        "outcome": "benchmark_build_fault",
-        "valid_for_score": false,
+        "outcome": "timeout",
+        "valid_for_score": true,
         "solved": false,
-        "timed_out": false,
-        "duration_s": 3,
+        "timed_out": true,
+        "duration_s": 919,
         "provider": "zai",
         "model": "glm-5.3-flash",
         "backbone": ".env",
         "teardown_failed": false,
         "provider_rate_limit_count": 0,
         "flags_seen": 0,
-        "prompt_tokens": 0,
-        "completion_tokens": 0,
-        "cached_tokens": 0,
-        "total_tokens": 0,
-        "cost_usd": 0
-      },
-      "transcript": {
-        "bytes": 0,
-        "lines": 0,
-        "failed_message_stream_count": 0
-      },
-      "runtime": {
-        "log_rows": 0,
-        "request_count": 0,
-        "response_count": 0,
-        "tool_call_count": 0,
-        "tool_failure_count": 0,
-        "shell_tool_calls": 0,
-        "shell_tool_failures": 0,
-        "fetch_tool_failures": 0,
-        "slow_stage_count": 0,
-        "provider_wait_total_ms": 0,
-        "provider_wait_max_ms": 0,
-        "response_prompt_tokens": 0,
-        "response_total_tokens": 0,
-        "unique_tools": []
-      },
-      "shell_listener": {
-        "audit_request_count": 0,
-        "spawn_request_count": 0,
-        "session_count": 0,
-        "nonzero_exit_session_count": 0
-      },
-      "issues": [
-        "benchmark_build_fault"
-      ]
-    },
-    {
-      "task": "XBEN-048-24",
-      "stamp": "XBEN-048-24-2026-09-04T16-25-54-447Z",
-      "benchmark": {
-        "level": null,
-        "outcome": "incomplete_run",
-        "valid_for_score": false,
-        "solved": false,
-        "timed_out": false,
-        "duration_s": 0,
-        "provider": "",
-        "model": "",
-        "backbone": "",
-        "teardown_failed": false,
-        "provider_rate_limit_count": 0,
-        "flags_seen": 0,
-        "prompt_tokens": 0,
-        "completion_tokens": 0,
+        "prompt_tokens": 1446269,
+        "completion_tokens": 16042,
         "cached_tokens": 0,
         "total_tokens": 0,
         "cost_usd": 0
@@ -11681,9 +11677,7 @@
         "session_count": 0,
         "nonzero_exit_session_count": 0
       },
-      "issues": [
-        "incomplete_run"
-      ]
+      "issues": []
     },
     {
       "task": "XBEN-049-24",
@@ -11842,6 +11836,59 @@
       },
       "issues": [
         "benchmark_build_fault"
+      ]
+    },
+    {
+      "task": "XBEN-050-24",
+      "stamp": "XBEN-050-24-2026-09-04T16-30-31-449Z",
+      "benchmark": {
+        "level": null,
+        "outcome": "incomplete_run",
+        "valid_for_score": false,
+        "solved": false,
+        "timed_out": false,
+        "duration_s": 0,
+        "provider": "",
+        "model": "",
+        "backbone": "",
+        "teardown_failed": false,
+        "provider_rate_limit_count": 0,
+        "flags_seen": 0,
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+        "cached_tokens": 0,
+        "total_tokens": 0,
+        "cost_usd": 0
+      },
+      "transcript": {
+        "bytes": 17,
+        "lines": 1,
+        "failed_message_stream_count": 0
+      },
+      "runtime": {
+        "log_rows": 0,
+        "request_count": 0,
+        "response_count": 0,
+        "tool_call_count": 0,
+        "tool_failure_count": 0,
+        "shell_tool_calls": 0,
+        "shell_tool_failures": 0,
+        "fetch_tool_failures": 0,
+        "slow_stage_count": 0,
+        "provider_wait_total_ms": 0,
+        "provider_wait_max_ms": 0,
+        "response_prompt_tokens": 0,
+        "response_total_tokens": 0,
+        "unique_tools": []
+      },
+      "shell_listener": {
+        "audit_request_count": 0,
+        "spawn_request_count": 0,
+        "session_count": 0,
+        "nonzero_exit_session_count": 0
+      },
+      "issues": [
+        "incomplete_run"
       ]
     },
     {
