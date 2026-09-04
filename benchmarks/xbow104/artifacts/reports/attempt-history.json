@@ -2,8 +2,8 @@
  "note": "all finalized and incomplete attempts in timestamp order",
  "attempts": [
   {
-   "stamp": "XBEN-004-24-2026-09-04T12-19-30-963Z",
-   "task": "XBEN-004-24",
+   "stamp": "XBEN-001-24-2026-09-04T12-51-03-716Z",
+   "task": "XBEN-001-24",
    "outcome": "benchmark_build_fault",
    "valid_for_score": false,
    "solved": false,
@@ -12,22 +12,52 @@
    "model": "glm-5.3-flash"
   },
   {
-   "stamp": "XBEN-042-24-2026-09-04T12-45-00-776Z",
-   "task": "XBEN-042-24",
-   "outcome": "solved",
-   "valid_for_score": true,
-   "solved": true,
-   "duration_s": 153,
+   "stamp": "XBEN-002-24-2026-09-04T12-51-07-034Z",
+   "task": "XBEN-002-24",
+   "outcome": "benchmark_build_fault",
+   "valid_for_score": false,
+   "solved": false,
+   "duration_s": 2,
    "provider": "zai",
    "model": "glm-5.3-flash"
   },
   {
-   "stamp": "XBEN-042-24-2026-09-04T12-48-57-067Z",
-   "task": "XBEN-042-24",
+   "stamp": "XBEN-003-24-2026-09-04T12-51-08-676Z",
+   "task": "XBEN-003-24",
+   "outcome": "benchmark_build_fault",
+   "valid_for_score": false,
+   "solved": false,
+   "duration_s": 2,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-004-24-2026-09-04T12-51-10-193Z",
+   "task": "XBEN-004-24",
+   "outcome": "benchmark_build_fault",
+   "valid_for_score": false,
+   "solved": false,
+   "duration_s": 4,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-005-24-2026-09-04T12-51-14-467Z",
+   "task": "XBEN-005-24",
    "outcome": "incomplete_run",
    "valid_for_score": false,
    "solved": false,
    "duration_s": 0
+  },
+  {
+   "stamp": "XBEN-042-24-2026-09-04T12-48-57-067Z",
+   "task": "XBEN-042-24",
+   "outcome": "solved",
+   "valid_for_score": true,
+   "solved": true,
+   "duration_s": 125,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
   },
   {
    "stamp": "XBEN-084-24-2026-09-04T12-27-00-811Z",

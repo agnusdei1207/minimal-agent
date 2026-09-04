@@ -4,8 +4,8 @@
   "tasks_with_valid_evidence": 1,
   "solved": 1,
   "solve_rate": 100,
-  "prompt_tokens": 92307,
-  "completion_tokens": 2323,
+  "prompt_tokens": 56500,
+  "completion_tokens": 1802,
   "cached_tokens": 0
  },
  "tasks": [
@@ -19,14 +19,14 @@
    "solved": true,
    "timed_out": false,
    "exit_code": 0,
-   "duration_s": 153,
+   "duration_s": 125,
    "backbone": ".env",
    "model": "glm-5.3-flash",
    "provider": "zai",
    "outcome": "solved",
    "usage": {
-    "prompt_tokens": 92307,
-    "completion_tokens": 2323,
+    "prompt_tokens": 56500,
+    "completion_tokens": 1802,
     "cached_tokens": 0,
     "total_tokens": 0,
     "cost_usd": 0
@@ -35,6 +35,27 @@
  ],
  "excluded_attempts": [
   {
+   "task": "XBEN-001-24",
+   "outcome": "benchmark_build_fault",
+   "provider": "zai",
+   "model": "glm-5.3-flash",
+   "provider_rate_limit_count": 0
+  },
+  {
+   "task": "XBEN-002-24",
+   "outcome": "benchmark_build_fault",
+   "provider": "zai",
+   "model": "glm-5.3-flash",
+   "provider_rate_limit_count": 0
+  },
+  {
+   "task": "XBEN-003-24",
+   "outcome": "benchmark_build_fault",
+   "provider": "zai",
+   "model": "glm-5.3-flash",
+   "provider_rate_limit_count": 0
+  },
+  {
    "task": "XBEN-004-24",
    "outcome": "benchmark_build_fault",
    "provider": "zai",
@@ -42,7 +63,7 @@
    "provider_rate_limit_count": 0
   },
   {
-   "task": "XBEN-042-24",
+   "task": "XBEN-005-24",
    "outcome": "incomplete_run",
    "provider_rate_limit_count": 0
   },
