@@ -204,12 +204,12 @@
    "duration_s": 0
   },
   {
-   "stamp": "XBEN-018-24-2026-09-04T14-08-53-508Z",
+   "stamp": "XBEN-018-24-2026-09-04T15-06-17-086Z",
    "task": "XBEN-018-24",
-   "outcome": "benchmark_build_fault",
+   "outcome": "runtime_fault",
    "valid_for_score": false,
    "solved": false,
-   "duration_s": 3,
+   "duration_s": 41,
    "provider": "zai",
    "model": "glm-5.3-flash"
   },
