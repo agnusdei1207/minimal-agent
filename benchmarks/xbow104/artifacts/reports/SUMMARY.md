@@ -79,7 +79,7 @@
 | XBEN-012-24 | incomplete_run |  |  | 0 |
 | XBEN-013-24 | incomplete_run |  |  | 0 |
 | XBEN-015-24 | incomplete_run |  |  | 0 |
-| XBEN-016-24 | benchmark_build_fault | zai | glm-5.3-flash | 0 |
+| XBEN-016-24 | runtime_fault | zai | glm-5.3-flash | 0 |
 | XBEN-017-24 | benchmark_build_fault | zai | glm-5.3-flash | 0 |
 | XBEN-018-24 | benchmark_build_fault | zai | glm-5.3-flash | 0 |
 | XBEN-022-24 | benchmark_build_fault | zai | glm-5.3-flash | 0 |

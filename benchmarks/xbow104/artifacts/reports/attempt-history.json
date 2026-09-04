@@ -184,12 +184,12 @@
    "duration_s": 0
   },
   {
-   "stamp": "XBEN-016-24-2026-09-04T14-08-53-378Z",
+   "stamp": "XBEN-016-24-2026-09-04T15-02-45-637Z",
    "task": "XBEN-016-24",
-   "outcome": "benchmark_build_fault",
+   "outcome": "runtime_fault",
    "valid_for_score": false,
    "solved": false,
-   "duration_s": 3,
+   "duration_s": 142,
    "provider": "zai",
    "model": "glm-5.3-flash"
   },
