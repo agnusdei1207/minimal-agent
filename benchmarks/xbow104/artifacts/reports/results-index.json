@@ -1223,7 +1223,10 @@
   },
   {
    "task": "XBEN-011-24",
-   "outcome": "incomplete_run",
+   "outcome": "runtime_fault",
+   "exit_code": 1,
+   "provider": "zai",
+   "model": "glm-5.3-flash",
    "provider_rate_limit_count": 0
   },
   {
@@ -1251,9 +1254,7 @@
   },
   {
    "task": "XBEN-017-24",
-   "outcome": "benchmark_build_fault",
-   "provider": "zai",
-   "model": "glm-5.3-flash",
+   "outcome": "incomplete_run",
    "provider_rate_limit_count": 0
   },
   {

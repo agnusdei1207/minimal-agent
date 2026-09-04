@@ -102,22 +102,14 @@
    "model": "glm-5.3-flash"
   },
   {
-   "stamp": "XBEN-011-24-2026-09-04T14-08-50-856Z",
-   "task": "XBEN-011-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 2,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
    "stamp": "XBEN-011-24-2026-09-04T14-51-49-697Z",
    "task": "XBEN-011-24",
-   "outcome": "incomplete_run",
+   "outcome": "runtime_fault",
    "valid_for_score": false,
    "solved": false,
-   "duration_s": 0
+   "duration_s": 853,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
   },
   {
    "stamp": "XBEN-012-24-2026-09-04T14-08-51-318Z",
@@ -202,6 +194,14 @@
    "duration_s": 3,
    "provider": "zai",
    "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-017-24-2026-09-04T15-05-21-423Z",
+   "task": "XBEN-017-24",
+   "outcome": "incomplete_run",
+   "valid_for_score": false,
+   "solved": false,
+   "duration_s": 0
   },
   {
    "stamp": "XBEN-018-24-2026-09-04T14-08-53-508Z",
