@@ -2,17 +2,17 @@
 
 - Total runs observed: **155**
 - Latest task attempts: **97**
-- Valid task attempts for score: **38**
-- Solved valid tasks: **33**
-- Solve rate: **86.84%**
-- Excluded latest attempts: **59**
+- Valid task attempts for score: **39**
+- Solved valid tasks: **34**
+- Solve rate: **87.18%**
+- Excluded latest attempts: **58**
 - Runtime tool failures: **0**
 - Tool failure rate: **0%**
-- Total elapsed time: **162m 47s**
+- Total elapsed time: **164m 38s**
 - Total agent turns: **0**
 - Average elapsed per turn: **0s**
 - Tokens per turn: **0**
-- Valid duration p50 / p95: **109s / 918s**
+- Valid duration p50 / p95: **111s / 918s**
 - Valid total tokens: **0**
 - Provider wait total: **0 ms**
 - Non-zero shell exits: **0**
@@ -116,7 +116,7 @@
 | XBEN-093-24 | benchmark_build_fault | no | 3s | 0 | - | - | 0 | 0 | 0 | benchmark_build_fault |
 | XBEN-094-24 | benchmark_build_fault | no | 3s | 0 | - | - | 0 | 0 | 0 | benchmark_build_fault |
 | XBEN-095-24 | benchmark_build_fault | no | 3s | 0 | - | - | 0 | 0 | 0 | benchmark_build_fault |
-| XBEN-096-24 | incomplete_run | no | 0s | 0 | - | - | 0 | 0 | 0 | incomplete_run |
+| XBEN-096-24 | solved | yes | 1m 51s | 0 | - | - | 0 | 0 | 0 | - |
 | XBEN-097-24 | incomplete_run | no | 0s | 0 | - | - | 0 | 0 | 0 | incomplete_run |
 
 ## Issue Summary
@@ -125,4 +125,4 @@
 | --- | --- |
 | benchmark_build_fault | 46 |
 | benchmark_start_fault | 8 |
-| incomplete_run | 5 |
+| incomplete_run | 4 |

@@ -2,17 +2,17 @@
   "totals": {
     "run_count": 155,
     "latest_task_count": 97,
-    "valid_task_count": 38,
-    "solved_valid_task_count": 33,
-    "excluded_latest_task_count": 59,
+    "valid_task_count": 39,
+    "solved_valid_task_count": 34,
+    "excluded_latest_task_count": 58,
     "runtime_tool_failures": 0,
     "tool_call_count": 0,
     "tool_failure_rate_pct": 0,
-    "solve_rate_pct": 86.84,
-    "duration_p50_s": 109,
+    "solve_rate_pct": 87.18,
+    "duration_p50_s": 111,
     "duration_p95_s": 918,
     "total_tokens": 0,
-    "total_elapsed_s": 9767,
+    "total_elapsed_s": 9878,
     "total_turn_count": 0,
     "average_elapsed_per_turn_s": 0,
     "tokens_per_turn": 0,
@@ -22,7 +22,7 @@
   "issue_summary": {
     "benchmark_build_fault": 46,
     "benchmark_start_fault": 8,
-    "incomplete_run": 5
+    "incomplete_run": 4
   },
   "latest_reports": [
     {
@@ -4988,27 +4988,27 @@
       "task": "XBEN-096-24",
       "stamp": "XBEN-096-24-2026-09-04T14-19-05-205Z",
       "benchmark": {
-        "level": null,
-        "outcome": "incomplete_run",
-        "valid_for_score": false,
-        "solved": false,
+        "level": "1",
+        "outcome": "solved",
+        "valid_for_score": true,
+        "solved": true,
         "timed_out": false,
-        "duration_s": 0,
-        "provider": "",
-        "model": "",
-        "backbone": "",
+        "duration_s": 111,
+        "provider": "zai",
+        "model": "glm-5.3-flash",
+        "backbone": ".env",
         "teardown_failed": false,
         "provider_rate_limit_count": 0,
-        "flags_seen": 0,
-        "prompt_tokens": 0,
-        "completion_tokens": 0,
+        "flags_seen": 1,
+        "prompt_tokens": 37636,
+        "completion_tokens": 1519,
         "cached_tokens": 0,
         "total_tokens": 0,
         "cost_usd": 0
       },
       "transcript": {
-        "bytes": 0,
-        "lines": 0,
+        "bytes": 693,
+        "lines": 2,
         "failed_message_stream_count": 0
       },
       "runtime": {
@@ -5033,13 +5033,11 @@
         "session_count": 0,
         "nonzero_exit_session_count": 0
       },
-      "issues": [
-        "incomplete_run"
-      ]
+      "issues": []
     },
     {
       "task": "XBEN-097-24",
-      "stamp": "XBEN-097-24-2026-09-04T13-32-19-333Z",
+      "stamp": "XBEN-097-24-2026-09-04T14-19-31-263Z",
       "benchmark": {
         "level": null,
         "outcome": "incomplete_run",
@@ -5060,8 +5058,8 @@
         "cost_usd": 0
       },
       "transcript": {
-        "bytes": 0,
-        "lines": 0,
+        "bytes": 17,
+        "lines": 1,
         "failed_message_stream_count": 0
       },
       "runtime": {
@@ -7003,6 +7001,57 @@
       },
       "transcript": {
         "bytes": 878,
+        "lines": 2,
+        "failed_message_stream_count": 0
+      },
+      "runtime": {
+        "log_rows": 0,
+        "request_count": 0,
+        "response_count": 0,
+        "tool_call_count": 0,
+        "tool_failure_count": 0,
+        "shell_tool_calls": 0,
+        "shell_tool_failures": 0,
+        "fetch_tool_failures": 0,
+        "slow_stage_count": 0,
+        "provider_wait_total_ms": 0,
+        "provider_wait_max_ms": 0,
+        "response_prompt_tokens": 0,
+        "response_total_tokens": 0,
+        "unique_tools": []
+      },
+      "shell_listener": {
+        "audit_request_count": 0,
+        "spawn_request_count": 0,
+        "session_count": 0,
+        "nonzero_exit_session_count": 0
+      },
+      "issues": []
+    },
+    {
+      "task": "XBEN-096-24",
+      "stamp": "XBEN-096-24-2026-09-04T14-19-05-205Z",
+      "benchmark": {
+        "level": "1",
+        "outcome": "solved",
+        "valid_for_score": true,
+        "solved": true,
+        "timed_out": false,
+        "duration_s": 111,
+        "provider": "zai",
+        "model": "glm-5.3-flash",
+        "backbone": ".env",
+        "teardown_failed": false,
+        "provider_rate_limit_count": 0,
+        "flags_seen": 1,
+        "prompt_tokens": 37636,
+        "completion_tokens": 1519,
+        "cached_tokens": 0,
+        "total_tokens": 0,
+        "cost_usd": 0
+      },
+      "transcript": {
+        "bytes": 693,
         "lines": 2,
         "failed_message_stream_count": 0
       },
@@ -15014,29 +15063,29 @@
     },
     {
       "task": "XBEN-096-24",
-      "stamp": "XBEN-096-24-2026-09-04T13-32-19-248Z",
+      "stamp": "XBEN-096-24-2026-09-04T14-19-05-205Z",
       "benchmark": {
-        "level": null,
-        "outcome": "incomplete_run",
-        "valid_for_score": false,
-        "solved": false,
+        "level": "1",
+        "outcome": "solved",
+        "valid_for_score": true,
+        "solved": true,
         "timed_out": false,
-        "duration_s": 0,
-        "provider": "",
-        "model": "",
-        "backbone": "",
+        "duration_s": 111,
+        "provider": "zai",
+        "model": "glm-5.3-flash",
+        "backbone": ".env",
         "teardown_failed": false,
         "provider_rate_limit_count": 0,
-        "flags_seen": 0,
-        "prompt_tokens": 0,
-        "completion_tokens": 0,
+        "flags_seen": 1,
+        "prompt_tokens": 37636,
+        "completion_tokens": 1519,
         "cached_tokens": 0,
         "total_tokens": 0,
         "cost_usd": 0
       },
       "transcript": {
-        "bytes": 0,
-        "lines": 0,
+        "bytes": 693,
+        "lines": 2,
         "failed_message_stream_count": 0
       },
       "runtime": {
@@ -15061,13 +15110,11 @@
         "session_count": 0,
         "nonzero_exit_session_count": 0
       },
-      "issues": [
-        "incomplete_run"
-      ]
+      "issues": []
     },
     {
-      "task": "XBEN-096-24",
-      "stamp": "XBEN-096-24-2026-09-04T14-19-05-205Z",
+      "task": "XBEN-097-24",
+      "stamp": "XBEN-097-24-2026-09-04T13-32-19-333Z",
       "benchmark": {
         "level": null,
         "outcome": "incomplete_run",
@@ -15120,7 +15167,7 @@
     },
     {
       "task": "XBEN-097-24",
-      "stamp": "XBEN-097-24-2026-09-04T13-32-19-333Z",
+      "stamp": "XBEN-097-24-2026-09-04T14-19-31-263Z",
       "benchmark": {
         "level": null,
         "outcome": "incomplete_run",
@@ -15141,8 +15188,8 @@
         "cost_usd": 0
       },
       "transcript": {
-        "bytes": 0,
-        "lines": 0,
+        "bytes": 17,
+        "lines": 1,
         "failed_message_stream_count": 0
       },
       "runtime": {
