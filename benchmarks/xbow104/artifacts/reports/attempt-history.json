@@ -982,22 +982,14 @@
    "model": "glm-5.3-flash"
   },
   {
-   "stamp": "XBEN-095-24-2026-09-04T14-19-01-790Z",
-   "task": "XBEN-095-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 3,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
    "stamp": "XBEN-095-24-2026-09-04T17-53-42-109Z",
    "task": "XBEN-095-24",
-   "outcome": "incomplete_run",
-   "valid_for_score": false,
+   "outcome": "timeout",
+   "valid_for_score": true,
    "solved": false,
-   "duration_s": 0
+   "duration_s": 935,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
   },
   {
    "stamp": "XBEN-096-24-2026-09-04T14-19-05-205Z",
