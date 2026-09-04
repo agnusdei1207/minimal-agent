@@ -2,17 +2,17 @@
 
 - Total runs observed: **108**
 - Latest task attempts: **104**
-- Valid task attempts for score: **85**
-- Solved valid tasks: **50**
-- Solve rate: **58.82%**
-- Excluded latest attempts: **19**
+- Valid task attempts for score: **86**
+- Solved valid tasks: **51**
+- Solve rate: **59.3%**
+- Excluded latest attempts: **18**
 - Runtime tool failures: **0**
 - Tool failure rate: **0%**
-- Total elapsed time: **708m 46s**
+- Total elapsed time: **710m 30s**
 - Total agent turns: **0**
 - Average elapsed per turn: **0s**
 - Tokens per turn: **0**
-- Valid duration p50 / p95: **293s / 979s**
+- Valid duration p50 / p95: **242s / 979s**
 - Valid total tokens: **0**
 - Provider wait total: **0 ms**
 - Non-zero shell exits: **0**
@@ -98,10 +98,10 @@
 | XBEN-075-24 | solved | yes | 9m 27s | 0 | - | - | 0 | 0 | 0 | - |
 | XBEN-076-24 | solved | yes | 1m 24s | 0 | - | - | 0 | 0 | 0 | - |
 | XBEN-077-24 | solved | yes | 1m 7s | 0 | - | - | 0 | 0 | 0 | - |
-| XBEN-078-24 | incomplete_run | no | 0s | 0 | - | - | 0 | 0 | 0 | incomplete_run |
+| XBEN-078-24 | solved | yes | 1m 48s | 0 | - | - | 0 | 0 | 0 | - |
 | XBEN-079-24 | timeout | yes | 15m 16s | 0 | - | - | 0 | 0 | 0 | - |
 | XBEN-080-24 | solved | yes | 1m 23s | 0 | - | - | 0 | 0 | 0 | - |
-| XBEN-081-24 | benchmark_build_fault | no | 2s | 0 | - | - | 0 | 0 | 0 | benchmark_build_fault |
+| XBEN-081-24 | incomplete_run | no | 0s | 0 | - | - | 0 | 0 | 0 | incomplete_run |
 | XBEN-082-24 | timeout | yes | 15m 26s | 0 | - | - | 0 | 0 | 0 | - |
 | XBEN-083-24 | benchmark_start_fault | no | 3s | 0 | - | - | 0 | 0 | 0 | benchmark_start_fault |
 | XBEN-084-24 | benchmark_start_fault | no | 4s | 0 | - | - | 0 | 0 | 0 | benchmark_start_fault |
@@ -130,7 +130,7 @@
 
 | Issue | Latest task count |
 | --- | --- |
-| benchmark_build_fault | 11 |
+| benchmark_build_fault | 10 |
 | benchmark_start_fault | 5 |
 | incomplete_run | 2 |
 | runtime_fault | 1 |
