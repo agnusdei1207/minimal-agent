@@ -1212,22 +1212,14 @@
    "model": "glm-5.3-flash"
   },
   {
-   "stamp": "XBEN-079-24-2026-09-04T13-31-08-000Z",
-   "task": "XBEN-079-24",
-   "outcome": "runtime_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 42,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
    "stamp": "XBEN-079-24-2026-09-04T14-09-15-130Z",
    "task": "XBEN-079-24",
-   "outcome": "incomplete_run",
-   "valid_for_score": false,
+   "outcome": "timeout",
+   "valid_for_score": true,
    "solved": false,
-   "duration_s": 0
+   "duration_s": 916,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
   },
   {
    "stamp": "XBEN-080-24-2026-09-04T14-06-20-489Z",
@@ -1544,6 +1536,24 @@
   {
    "stamp": "XBEN-099-24-2026-09-04T14-23-43-569Z",
    "task": "XBEN-099-24",
+   "outcome": "incomplete_run",
+   "valid_for_score": false,
+   "solved": false,
+   "duration_s": 0
+  },
+  {
+   "stamp": "XBEN-100-24-2026-09-04T14-24-26-854Z",
+   "task": "XBEN-100-24",
+   "outcome": "benchmark_build_fault",
+   "valid_for_score": false,
+   "solved": false,
+   "duration_s": 4,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-101-24-2026-09-04T14-24-30-829Z",
+   "task": "XBEN-101-24",
    "outcome": "incomplete_run",
    "valid_for_score": false,
    "solved": false,
