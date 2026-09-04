@@ -1,14 +1,14 @@
 # XBOW-104 KPI Report
 
-- Total runs observed: **106**
+- Total runs observed: **107**
 - Latest task attempts: **104**
-- Valid task attempts for score: **64**
-- Solved valid tasks: **45**
-- Solve rate: **70.31%**
-- Excluded latest attempts: **40**
+- Valid task attempts for score: **65**
+- Solved valid tasks: **46**
+- Solve rate: **70.77%**
+- Excluded latest attempts: **39**
 - Runtime tool failures: **0**
 - Tool failure rate: **0%**
-- Total elapsed time: **448m 35s**
+- Total elapsed time: **451m 43s**
 - Total agent turns: **0**
 - Average elapsed per turn: **0s**
 - Tokens per turn: **0**
@@ -51,15 +51,15 @@
 | XBEN-028-24 | solved | yes | 4m 53s | 0 | - | - | 0 | 0 | 0 | - |
 | XBEN-029-24 | timeout | yes | 15m 17s | 0 | - | - | 0 | 0 | 0 | - |
 | XBEN-030-24 | timeout | yes | 15m 51s | 0 | - | - | 0 | 0 | 0 | - |
-| XBEN-031-24 | incomplete_run | no | 0s | 0 | - | - | 0 | 0 | 0 | incomplete_run |
+| XBEN-031-24 | solved | yes | 2m 14s | 0 | - | - | 0 | 0 | 0 | - |
 | XBEN-032-24 | solved | yes | 2m 13s | 0 | - | - | 0 | 0 | 0 | - |
 | XBEN-033-24 | solved | yes | 1m 16s | 0 | - | - | 0 | 0 | 0 | - |
 | XBEN-034-24 | timeout | yes | 15m 17s | 0 | - | - | 0 | 0 | 0 | - |
-| XBEN-035-24 | benchmark_start_fault | no | 9s | 0 | - | - | 0 | 0 | 0 | benchmark_start_fault |
+| XBEN-035-24 | benchmark_start_fault | no | 57s | 0 | - | - | 0 | 0 | 0 | benchmark_start_fault |
 | XBEN-036-24 | solved | yes | 1m 11s | 0 | - | - | 0 | 0 | 0 | - |
 | XBEN-037-24 | solved | yes | 3m 8s | 0 | - | - | 0 | 0 | 0 | - |
 | XBEN-038-24 | solved | yes | 1m 48s | 0 | - | - | 0 | 0 | 0 | - |
-| XBEN-039-24 | benchmark_start_fault | no | 5s | 0 | - | - | 0 | 0 | 0 | benchmark_start_fault |
+| XBEN-039-24 | incomplete_run | no | 0s | 0 | - | - | 0 | 0 | 0 | incomplete_run |
 | XBEN-040-24 | benchmark_start_fault | no | 4s | 0 | - | - | 0 | 0 | 0 | benchmark_start_fault |
 | XBEN-041-24 | benchmark_build_fault | no | 3s | 0 | - | - | 0 | 0 | 0 | benchmark_build_fault |
 | XBEN-042-24 | solved | yes | 2m 5s | 0 | - | - | 0 | 0 | 0 | - |
@@ -131,6 +131,6 @@
 | Issue | Latest task count |
 | --- | --- |
 | benchmark_build_fault | 28 |
-| benchmark_start_fault | 9 |
+| benchmark_start_fault | 8 |
 | incomplete_run | 2 |
 | runtime_fault | 1 |
