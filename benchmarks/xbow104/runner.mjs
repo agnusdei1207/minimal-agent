@@ -776,6 +776,28 @@ async function runTask(id) {
   console.log(formatOutcomeBanner(ev));
 
   if (NO_COMMIT) return ev;
+  // Refresh the tracked report projections so every task yields a real commit.
+  // runs/ is gitignored (immutable evidence, local-only); reports/ is what
+  // accumulates in git history. Without this, --all leaves reports stale and
+  // per-task `git commit` fails with "nothing to commit".
+  for (const script of [
+    "build-results-index.mjs",
+    "summary.mjs",
+    "kpi.mjs",
+  ]) {
+    try {
+      const r = spawnSync(process.execPath, [path.join(__dirname, script)], {
+        cwd: PROJECT_ROOT,
+        encoding: "utf8",
+      });
+      if (r.status !== 0)
+        console.warn(
+          `[${id}] report ${script} warning: ${(r.stderr || r.stdout || "").trim().slice(0, 200)}`,
+        );
+    } catch (e) {
+      console.warn(`[${id}] report ${script} skipped: ${e.message}`);
+    }
+  }
   try {
     const label = ev.solved ? "SOLVED" : ev.outcome.toUpperCase();
     const msg = `bench(${id}): ${label} in ${ev.duration_s}s`;
