@@ -1595,6 +1595,7 @@ fn tool_call_summary(name: &str, arguments: &serde_json::Value) -> Option<String
     const MAX_SUMMARY_CHARS: usize = 160;
     let raw = match name {
         "bash" => arguments.get("command")?.as_str()?.to_owned(),
+        "tmux" => arguments.get("args")?.as_str()?.to_owned(),
         "workspace" => {
             let op = arguments.get("op").and_then(serde_json::Value::as_str)?;
             let path = arguments.get("path").and_then(serde_json::Value::as_str)?;
@@ -1744,9 +1745,9 @@ async fn compact_if_needed(
                 .iter()
                 .map(|range| (range.start, range.end))
                 .collect();
-            session
-                .records
-                .retain(|record| keep.contains(&(record.context.range.start, record.context.range.end)));
+            session.records.retain(|record| {
+                keep.contains(&(record.context.range.start, record.context.range.end))
+            });
             inner.journal.append_sync(JournalEvent::Fault {
                 agent_id: Some(agent_id.clone()),
                 code: "context_curation_fallback".to_owned(),
@@ -1754,7 +1755,8 @@ async fn compact_if_needed(
             })?;
             let _ = inner.events.send(RuntimeEvent::Fault {
                 agent_id: agent_id.clone(),
-                message: "context curation: mechanical fallback (history kept in journal)".to_owned(),
+                message: "context curation: mechanical fallback (history kept in journal)"
+                    .to_owned(),
             });
             return Ok(true);
         }
@@ -1920,9 +1922,13 @@ fn build_system(
         // A non-main node behaves as an internal node while it has children,
         // otherwise as a leaf (ADR-0004 §3.2).
         sections.push(
-            if has_children { NODE_INTERNAL } else { NODE_LEAF }
-                .trim_end()
-                .to_owned(),
+            if has_children {
+                NODE_INTERNAL
+            } else {
+                NODE_LEAF
+            }
+            .trim_end()
+            .to_owned(),
         );
     }
     // Every node maintains its own battlefield note via the `brief` tool

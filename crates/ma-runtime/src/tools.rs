@@ -86,7 +86,8 @@ impl ToolContext {
         std::fs::create_dir_all(workspace.as_ref())?;
         let budget = ContextBudget::new(128_000, 128_000, 8_000)
             .map_err(|error| ToolError::InvalidArguments(error.to_string()))?;
-        let briefs = AgentBriefStore::new(workspace.as_ref().join(".briefs"), journal.clone(), budget);
+        let briefs =
+            AgentBriefStore::new(workspace.as_ref().join(".briefs"), journal.clone(), budget);
         Self::with_briefs(agent_id, workspace, coordinator, journal, briefs)
     }
 }
@@ -114,6 +115,21 @@ impl BuiltinTools {
                 "bash",
                 "Run one bash command in the workspace (bash -lc; the box is Linux with the full offensive toolset).",
                 json!({"type":"object","properties":{"command":{"type":"string"}},"required":["command"]}),
+            ),
+            definition(
+                "tmux",
+                "Drive OS-native tmux for interactive or long-lived work a one-shot `bash` \
+command cannot hold — a real PTY (sudo/ssh/gdb prompts), a background listener \
+(`nc -lvnp`), or a REPL you feed input to across turns. Your `args` string is run \
+verbatim as `tmux <args>` through the same shell as `bash` (so pipes and redirects \
+work); tmux owns the PTY and session state, keeping the turn loop unblocked. \
+Core patterns: \
+1) `new-session -d -s <name> \"<command>\"` — start a detached background PTY session; \
+2) `send-keys -t <name> \"<input>\" Enter` — inject stdin/keystrokes with no live terminal; \
+3) `capture-pane -p -t <name> | tail -n 50` — observe the current screen as clean text; \
+4) `kill-session -t <name>` — reclaim the session when done. \
+Sessions persist across calls: name them, capture to read output, and kill them when finished.",
+                json!({"type":"object","properties":{"args":{"type":"string"}},"required":["args"]}),
             ),
             definition(
                 "workspace",
@@ -176,6 +192,7 @@ note each call, so send the full current picture, not a fragment.",
         enforce_argument_limit(&arguments)?;
         let mut output = match name {
             "bash" => self.bash(arguments, context).await,
+            "tmux" => self.tmux(arguments, context).await,
             "workspace" => self.workspace(arguments, context).await,
             "team" => self.team(arguments, context).await,
             "journal" => self.journal(arguments, context),
@@ -193,13 +210,35 @@ note each call, so send the full current picture, not a fragment.",
         Ok(output)
     }
 
-    async fn bash(
+    async fn bash(&self, arguments: Value, context: &ToolContext) -> Result<ToolOutput, ToolError> {
+        let input: BashInput = serde_json::from_value(arguments)?;
+        self.run_shell(input.command, context).await
+    }
+
+    /// Drive OS-native tmux with the same one-shot shell mechanism as `bash`.
+    /// The agent's string is executed verbatim as `tmux <args>`, so tmux itself
+    /// owns the PTY, session state, and lifecycle — the Rust core stays a thin
+    /// passthrough and never re-implements a terminal emulator or IPC (ADR-0003).
+    async fn tmux(&self, arguments: Value, context: &ToolContext) -> Result<ToolOutput, ToolError> {
+        let input: TmuxInput = serde_json::from_value(arguments)?;
+        if input.args.trim().is_empty() {
+            return Err(ToolError::InvalidArguments(
+                "tmux args cannot be empty".to_owned(),
+            ));
+        }
+        self.run_shell(format!("tmux {}", input.args), context)
+            .await
+    }
+
+    /// Shared one-shot shell execution: spawn, bounded stdout/stderr capture,
+    /// timeout, and cancellation. Reused by `bash` and `tmux` so both obey the
+    /// exact same execution invariants.
+    async fn run_shell(
         &self,
-        arguments: Value,
+        command: String,
         context: &ToolContext,
     ) -> Result<ToolOutput, ToolError> {
-        let input: BashInput = serde_json::from_value(arguments)?;
-        if input.command.trim().is_empty() {
+        if command.trim().is_empty() {
             return Err(ToolError::InvalidArguments(
                 "shell command cannot be empty".to_owned(),
             ));
@@ -207,7 +246,7 @@ note each call, so send the full current picture, not a fragment.",
         if context.cancellation.is_cancelled() {
             return Err(ToolError::Cancelled);
         }
-        let mut command = platform_shell(&input.command);
+        let mut command = platform_shell(&command);
         command
             .current_dir(&context.workspace)
             .stdin(Stdio::null())
@@ -747,6 +786,11 @@ fn snapshot_json(snapshot: &ma_coordinator::AgentSnapshot) -> Value {
 #[derive(Deserialize)]
 struct BashInput {
     command: String,
+}
+
+#[derive(Deserialize)]
+struct TmuxInput {
+    args: String,
 }
 
 #[derive(Deserialize)]

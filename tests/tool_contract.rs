@@ -116,6 +116,59 @@ async fn shell_runs_in_the_workspace_with_timeout_and_cancellation() {
 }
 
 #[tokio::test]
+async fn tmux_tool_is_registered_as_a_thin_args_passthrough_with_the_core_patterns() {
+    let (_dir, _journal, _coordinator, tools) = setup();
+    let definition = tools
+        .definitions()
+        .into_iter()
+        .find(|definition| definition.name == "tmux")
+        .expect("tmux tool is registered");
+    // Minimal, general schema: a single `args` string executed as `tmux <args>`.
+    let parameters = definition.parameters.to_string();
+    assert!(parameters.contains("args"));
+    assert!(!parameters.contains("command"));
+    // The description carries the four load-bearing patterns, bash-tool quality.
+    let description = definition.description;
+    assert!(description.contains("new-session"));
+    assert!(description.contains("send-keys"));
+    assert!(description.contains("capture-pane"));
+    assert!(description.contains("kill-session"));
+}
+
+#[tokio::test]
+async fn tmux_rejects_empty_args_before_spawning_and_honors_cancellation() {
+    let (dir, journal, coordinator, tools) = setup();
+    let context = ToolContext::new(
+        AgentId::main(),
+        dir.path().join("workspace"),
+        coordinator,
+        journal,
+    )
+    .unwrap();
+    // Empty args are rejected before any process is spawned, so this holds even
+    // where the tmux binary is absent (e.g. the build image).
+    assert!(matches!(
+        tools
+            .execute("tmux", serde_json::json!({ "args": "   " }), &context)
+            .await,
+        Err(ToolError::InvalidArguments(_))
+    ));
+
+    // tmux reuses the shared shell mechanism, so cancellation is observed before spawn.
+    context.cancellation.cancel();
+    assert!(matches!(
+        tools
+            .execute(
+                "tmux",
+                serde_json::json!({ "args": "kill-server" }),
+                &context,
+            )
+            .await,
+        Err(ToolError::Cancelled)
+    ));
+}
+
+#[tokio::test]
 async fn team_wait_obeys_recall_and_cannot_hold_a_worker_until_its_requested_timeout() {
     let (dir, journal, coordinator, tools) = setup();
     let worker = coordinator
@@ -443,5 +496,8 @@ injection: sqli on /search -> dead end (WAF 403)\nnext: escalate IDOR to admin";
     // The agent-authored note is exactly what gets injected as CURRENT BRIEF and
     // shown in /status, decoupled from coverage-proven compaction.
     assert_eq!(briefs.read_effective(&AgentId::main()).unwrap(), note);
-    assert_eq!(briefs.read_note(&AgentId::main()).unwrap().as_deref(), Some(note));
+    assert_eq!(
+        briefs.read_note(&AgentId::main()).unwrap().as_deref(),
+        Some(note)
+    );
 }
