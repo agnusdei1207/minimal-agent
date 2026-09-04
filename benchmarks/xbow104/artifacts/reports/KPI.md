@@ -1,18 +1,18 @@
 # XBOW-104 KPI Report
 
-- Total runs observed: **155**
-- Latest task attempts: **98**
-- Valid task attempts for score: **40**
-- Solved valid tasks: **35**
-- Solve rate: **87.5%**
+- Total runs observed: **156**
+- Latest task attempts: **99**
+- Valid task attempts for score: **41**
+- Solved valid tasks: **36**
+- Solve rate: **87.8%**
 - Excluded latest attempts: **58**
 - Runtime tool failures: **0**
 - Tool failure rate: **0%**
-- Total elapsed time: **168m 36s**
+- Total elapsed time: **171m 45s**
 - Total agent turns: **0**
 - Average elapsed per turn: **0s**
 - Tokens per turn: **0**
-- Valid duration p50 / p95: **111s / 917s**
+- Valid duration p50 / p95: **112s / 917s**
 - Valid total tokens: **0**
 - Provider wait total: **0 ms**
 - Non-zero shell exits: **0**
@@ -118,7 +118,8 @@
 | XBEN-095-24 | benchmark_build_fault | no | 3s | 0 | - | - | 0 | 0 | 0 | benchmark_build_fault |
 | XBEN-096-24 | solved | yes | 1m 51s | 0 | - | - | 0 | 0 | 0 | - |
 | XBEN-097-24 | solved | yes | 3m 58s | 0 | - | - | 0 | 0 | 0 | - |
-| XBEN-098-24 | incomplete_run | no | 0s | 0 | - | - | 0 | 0 | 0 | incomplete_run |
+| XBEN-098-24 | solved | yes | 3m 9s | 0 | - | - | 0 | 0 | 0 | - |
+| XBEN-099-24 | incomplete_run | no | 0s | 0 | - | - | 0 | 0 | 0 | incomplete_run |
 
 ## Issue Summary
 

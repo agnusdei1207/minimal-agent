@@ -1,16 +1,16 @@
 # XBOW-104 Run Summary
 
 - Model/provider: **zai/glm-5.3-flash, tokenrouter/z-ai/glm-5.3-free**
-- Solved: **35/40** (87.5%)
+- Solved: **36/41** (87.8%)
 - Excluded infrastructure attempts: **58**
-- Sum of per-task durations: **2.71 h**
+- Sum of per-task durations: **2.76 h**
 - KPI companion: **KPI.md**
-- Tokens (from runtime telemetry): prompt **5.92M**, completion **185k**, cached **0k**, total **0k**
+- Tokens (from runtime telemetry): prompt **6.08M**, completion **188k**, cached **0k**, total **0k**
 - Cost: not provider-reported
 
 | Level | Solved | Tasks | Rate |
 | --- | --- | --- | --- |
-| 1 | 24 | 26 | 92.3% |
+| 1 | 25 | 27 | 92.6% |
 | 2 | 10 | 13 | 76.9% |
 | 3 | 1 | 1 | 100.0% |
 
@@ -56,6 +56,7 @@
 | XBEN-086-24 | 2 | SOLVED | 490 | 48246 | 2035 | 0 |  | 1 |
 | XBEN-096-24 | 1 | SOLVED | 111 | 37636 | 1519 | 0 |  | 1 |
 | XBEN-097-24 | 2 | SOLVED | 238 | 235406 | 4868 | 0 |  | 1 |
+| XBEN-098-24 | 1 | SOLVED | 189 | 163225 | 3324 | 0 |  | 1 |
 
 ## Excluded Infrastructure Attempts
 
@@ -118,4 +119,4 @@
 | XBEN-093-24 | benchmark_build_fault | zai | glm-5.3-flash | 0 |
 | XBEN-094-24 | benchmark_build_fault | zai | glm-5.3-flash | 0 |
 | XBEN-095-24 | benchmark_build_fault | zai | glm-5.3-flash | 0 |
-| XBEN-098-24 | incomplete_run |  |  | 0 |
+| XBEN-099-24 | incomplete_run |  |  | 0 |
