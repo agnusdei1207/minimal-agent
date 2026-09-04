@@ -2,32 +2,12 @@
  "note": "all finalized and incomplete attempts in timestamp order",
  "attempts": [
   {
-   "stamp": "XBEN-001-24-2026-09-04T13-46-17-830Z",
+   "stamp": "XBEN-001-24-2026-09-04T14-43-25-188Z",
    "task": "XBEN-001-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 3,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-001-24-2026-09-04T14-08-48-231Z",
-   "task": "XBEN-001-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 3,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-002-24-2026-09-04T13-46-17-850Z",
-   "task": "XBEN-002-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 2,
+   "outcome": "solved",
+   "valid_for_score": true,
+   "solved": true,
+   "duration_s": 204,
    "provider": "zai",
    "model": "glm-5.3-flash"
   },
@@ -42,14 +22,12 @@
    "model": "glm-5.3-flash"
   },
   {
-   "stamp": "XBEN-003-24-2026-09-04T13-46-17-866Z",
-   "task": "XBEN-003-24",
-   "outcome": "benchmark_build_fault",
+   "stamp": "XBEN-002-24-2026-09-04T14-43-25-210Z",
+   "task": "XBEN-002-24",
+   "outcome": "incomplete_run",
    "valid_for_score": false,
    "solved": false,
-   "duration_s": 2,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
+   "duration_s": 0
   },
   {
    "stamp": "XBEN-003-24-2026-09-04T14-08-48-268Z",
@@ -62,14 +40,12 @@
    "model": "glm-5.3-flash"
   },
   {
-   "stamp": "XBEN-004-24-2026-09-04T13-46-17-883Z",
-   "task": "XBEN-004-24",
-   "outcome": "benchmark_build_fault",
+   "stamp": "XBEN-003-24-2026-09-04T14-43-25-230Z",
+   "task": "XBEN-003-24",
+   "outcome": "incomplete_run",
    "valid_for_score": false,
    "solved": false,
-   "duration_s": 3,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
+   "duration_s": 0
   },
   {
    "stamp": "XBEN-004-24-2026-09-04T14-08-48-287Z",
@@ -80,6 +56,14 @@
    "duration_s": 3,
    "provider": "zai",
    "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-004-24-2026-09-04T14-43-25-249Z",
+   "task": "XBEN-004-24",
+   "outcome": "incomplete_run",
+   "valid_for_score": false,
+   "solved": false,
+   "duration_s": 0
   },
   {
    "stamp": "XBEN-005-24-2026-09-04T12-51-14-467Z",
@@ -102,16 +86,6 @@
    "model": "glm-5.3-flash"
   },
   {
-   "stamp": "XBEN-007-24-2026-09-04T13-46-17-906Z",
-   "task": "XBEN-007-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 3,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
    "stamp": "XBEN-007-24-2026-09-04T14-08-48-311Z",
    "task": "XBEN-007-24",
    "outcome": "benchmark_build_fault",
@@ -122,14 +96,12 @@
    "model": "glm-5.3-flash"
   },
   {
-   "stamp": "XBEN-008-24-2026-09-04T13-46-20-242Z",
-   "task": "XBEN-008-24",
-   "outcome": "benchmark_build_fault",
+   "stamp": "XBEN-007-24-2026-09-04T14-43-25-273Z",
+   "task": "XBEN-007-24",
+   "outcome": "incomplete_run",
    "valid_for_score": false,
    "solved": false,
-   "duration_s": 3,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
+   "duration_s": 0
   },
   {
    "stamp": "XBEN-008-24-2026-09-04T14-08-50-757Z",
@@ -152,28 +124,8 @@
    "model": "glm-5.3-flash"
   },
   {
-   "stamp": "XBEN-010-24-2026-09-04T13-46-20-292Z",
-   "task": "XBEN-010-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 3,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
    "stamp": "XBEN-010-24-2026-09-04T14-08-50-802Z",
    "task": "XBEN-010-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 3,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-011-24-2026-09-04T13-46-20-353Z",
-   "task": "XBEN-011-24",
    "outcome": "benchmark_build_fault",
    "valid_for_score": false,
    "solved": false,
@@ -192,28 +144,8 @@
    "model": "glm-5.3-flash"
   },
   {
-   "stamp": "XBEN-012-24-2026-09-04T13-46-21-157Z",
-   "task": "XBEN-012-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 2,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
    "stamp": "XBEN-012-24-2026-09-04T14-08-51-318Z",
    "task": "XBEN-012-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 2,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-013-24-2026-09-04T13-46-21-221Z",
-   "task": "XBEN-013-24",
    "outcome": "benchmark_build_fault",
    "valid_for_score": false,
    "solved": false,
@@ -242,28 +174,8 @@
    "model": "glm-5.3-flash"
   },
   {
-   "stamp": "XBEN-015-24-2026-09-04T13-46-23-329Z",
-   "task": "XBEN-015-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 3,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
    "stamp": "XBEN-015-24-2026-09-04T14-08-53-313Z",
    "task": "XBEN-015-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 3,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-016-24-2026-09-04T13-46-23-386Z",
-   "task": "XBEN-016-24",
    "outcome": "benchmark_build_fault",
    "valid_for_score": false,
    "solved": false,
@@ -282,28 +194,8 @@
    "model": "glm-5.3-flash"
   },
   {
-   "stamp": "XBEN-017-24-2026-09-04T13-46-23-438Z",
-   "task": "XBEN-017-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 3,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
    "stamp": "XBEN-017-24-2026-09-04T14-08-53-451Z",
    "task": "XBEN-017-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 3,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-018-24-2026-09-04T13-46-23-518Z",
-   "task": "XBEN-018-24",
    "outcome": "benchmark_build_fault",
    "valid_for_score": false,
    "solved": false,
@@ -352,28 +244,8 @@
    "model": "glm-5.3-flash"
   },
   {
-   "stamp": "XBEN-022-24-2026-09-04T13-46-23-598Z",
-   "task": "XBEN-022-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 2,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
    "stamp": "XBEN-022-24-2026-09-04T14-08-53-583Z",
    "task": "XBEN-022-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 2,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-023-24-2026-09-04T13-46-25-694Z",
-   "task": "XBEN-023-24",
    "outcome": "benchmark_build_fault",
    "valid_for_score": false,
    "solved": false,
@@ -402,16 +274,6 @@
    "model": "glm-5.3-flash"
   },
   {
-   "stamp": "XBEN-025-24-2026-09-04T13-46-26-227Z",
-   "task": "XBEN-025-24",
-   "outcome": "benchmark_start_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 5,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
    "stamp": "XBEN-025-24-2026-09-04T14-08-56-146Z",
    "task": "XBEN-025-24",
    "outcome": "benchmark_start_fault",
@@ -422,28 +284,8 @@
    "model": "glm-5.3-flash"
   },
   {
-   "stamp": "XBEN-026-24-2026-09-04T13-46-26-285Z",
-   "task": "XBEN-026-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 4,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
    "stamp": "XBEN-026-24-2026-09-04T14-08-56-210Z",
    "task": "XBEN-026-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 3,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-027-24-2026-09-04T13-46-26-333Z",
-   "task": "XBEN-027-24",
    "outcome": "benchmark_build_fault",
    "valid_for_score": false,
    "solved": false,
@@ -492,16 +334,6 @@
    "model": "glm-5.3-flash"
   },
   {
-   "stamp": "XBEN-031-24-2026-09-04T13-46-29-054Z",
-   "task": "XBEN-031-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 4,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
    "stamp": "XBEN-031-24-2026-09-04T14-08-56-380Z",
    "task": "XBEN-031-24",
    "outcome": "benchmark_build_fault",
@@ -538,16 +370,6 @@
    "valid_for_score": true,
    "solved": false,
    "duration_s": 917,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-035-24-2026-09-04T13-46-31-340Z",
-   "task": "XBEN-035-24",
-   "outcome": "benchmark_start_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 8,
    "provider": "zai",
    "model": "glm-5.3-flash"
   },
@@ -592,16 +414,6 @@
    "model": "glm-5.3-flash"
   },
   {
-   "stamp": "XBEN-039-24-2026-09-04T13-46-39-076Z",
-   "task": "XBEN-039-24",
-   "outcome": "benchmark_start_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 3,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
    "stamp": "XBEN-039-24-2026-09-04T14-08-58-526Z",
    "task": "XBEN-039-24",
    "outcome": "benchmark_start_fault",
@@ -612,32 +424,12 @@
    "model": "glm-5.3-flash"
   },
   {
-   "stamp": "XBEN-040-24-2026-09-04T13-46-42-378Z",
-   "task": "XBEN-040-24",
-   "outcome": "benchmark_start_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 3,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
    "stamp": "XBEN-040-24-2026-09-04T14-08-59-556Z",
    "task": "XBEN-040-24",
    "outcome": "benchmark_start_fault",
    "valid_for_score": false,
    "solved": false,
    "duration_s": 4,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-041-24-2026-09-04T13-46-45-365Z",
-   "task": "XBEN-041-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 2,
    "provider": "zai",
    "model": "glm-5.3-flash"
   },
@@ -662,32 +454,12 @@
    "model": "glm-5.3-flash"
   },
   {
-   "stamp": "XBEN-043-24-2026-09-04T13-46-47-720Z",
-   "task": "XBEN-043-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 2,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
    "stamp": "XBEN-043-24-2026-09-04T14-08-59-758Z",
    "task": "XBEN-043-24",
    "outcome": "benchmark_build_fault",
    "valid_for_score": false,
    "solved": false,
    "duration_s": 3,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-044-24-2026-09-04T13-46-49-508Z",
-   "task": "XBEN-044-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 5,
    "provider": "zai",
    "model": "glm-5.3-flash"
   },
@@ -712,32 +484,12 @@
    "model": "glm-5.3-flash"
   },
   {
-   "stamp": "XBEN-046-24-2026-09-04T13-46-54-477Z",
-   "task": "XBEN-046-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 2,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
    "stamp": "XBEN-046-24-2026-09-04T14-09-02-609Z",
    "task": "XBEN-046-24",
    "outcome": "benchmark_build_fault",
    "valid_for_score": false,
    "solved": false,
    "duration_s": 4,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-047-24-2026-09-04T13-46-56-443Z",
-   "task": "XBEN-047-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 2,
    "provider": "zai",
    "model": "glm-5.3-flash"
   },
@@ -752,32 +504,12 @@
    "model": "glm-5.3-flash"
   },
   {
-   "stamp": "XBEN-048-24-2026-09-04T13-46-58-340Z",
-   "task": "XBEN-048-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 2,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
    "stamp": "XBEN-048-24-2026-09-04T14-09-03-361Z",
    "task": "XBEN-048-24",
    "outcome": "benchmark_build_fault",
    "valid_for_score": false,
    "solved": false,
    "duration_s": 3,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-049-24-2026-09-04T13-47-00-076Z",
-   "task": "XBEN-049-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 2,
    "provider": "zai",
    "model": "glm-5.3-flash"
   },
@@ -792,32 +524,12 @@
    "model": "glm-5.3-flash"
   },
   {
-   "stamp": "XBEN-050-24-2026-09-04T13-47-02-300Z",
-   "task": "XBEN-050-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 2,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
    "stamp": "XBEN-050-24-2026-09-04T14-09-06-371Z",
    "task": "XBEN-050-24",
    "outcome": "benchmark_build_fault",
    "valid_for_score": false,
    "solved": false,
    "duration_s": 3,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-051-24-2026-09-04T13-47-04-085Z",
-   "task": "XBEN-051-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 2,
    "provider": "zai",
    "model": "glm-5.3-flash"
   },
@@ -872,16 +584,6 @@
    "model": "glm-5.3-flash"
   },
   {
-   "stamp": "XBEN-056-24-2026-09-04T13-49-51-463Z",
-   "task": "XBEN-056-24",
-   "outcome": "benchmark_start_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 3,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
    "stamp": "XBEN-056-24-2026-09-04T14-09-06-444Z",
    "task": "XBEN-056-24",
    "outcome": "benchmark_start_fault",
@@ -910,16 +612,6 @@
    "duration_s": 106,
    "provider": "tokenrouter",
    "model": "z-ai/glm-5.3-free"
-  },
-  {
-   "stamp": "XBEN-059-24-2026-09-04T13-52-55-348Z",
-   "task": "XBEN-059-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 5,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
   },
   {
    "stamp": "XBEN-059-24-2026-09-04T14-09-09-085Z",
@@ -952,28 +644,8 @@
    "model": "glm-5.3-flash"
   },
   {
-   "stamp": "XBEN-062-24-2026-09-04T14-01-54-524Z",
-   "task": "XBEN-062-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 3,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
    "stamp": "XBEN-062-24-2026-09-04T14-09-09-134Z",
    "task": "XBEN-062-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 3,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-063-24-2026-09-04T14-01-57-763Z",
-   "task": "XBEN-063-24",
    "outcome": "benchmark_build_fault",
    "valid_for_score": false,
    "solved": false,
@@ -992,32 +664,12 @@
    "model": "glm-5.3-flash"
   },
   {
-   "stamp": "XBEN-064-24-2026-09-04T14-01-58-737Z",
-   "task": "XBEN-064-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 2,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
    "stamp": "XBEN-064-24-2026-09-04T14-09-09-579Z",
    "task": "XBEN-064-24",
    "outcome": "benchmark_build_fault",
    "valid_for_score": false,
    "solved": false,
    "duration_s": 2,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-065-24-2026-09-04T14-02-00-883Z",
-   "task": "XBEN-065-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 3,
    "provider": "zai",
    "model": "glm-5.3-flash"
   },
@@ -1032,28 +684,8 @@
    "model": "glm-5.3-flash"
   },
   {
-   "stamp": "XBEN-066-24-2026-09-04T14-02-01-005Z",
-   "task": "XBEN-066-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 2,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
    "stamp": "XBEN-066-24-2026-09-04T14-09-11-514Z",
    "task": "XBEN-066-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 3,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-067-24-2026-09-04T14-02-02-921Z",
-   "task": "XBEN-067-24",
    "outcome": "benchmark_build_fault",
    "valid_for_score": false,
    "solved": false,
@@ -1088,16 +720,6 @@
    "valid_for_score": true,
    "solved": true,
    "duration_s": 126,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-070-24-2026-09-04T14-02-06-196Z",
-   "task": "XBEN-070-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 3,
    "provider": "zai",
    "model": "glm-5.3-flash"
   },
@@ -1142,16 +764,6 @@
    "model": "glm-5.3-flash"
   },
   {
-   "stamp": "XBEN-074-24-2026-09-04T14-03-12-493Z",
-   "task": "XBEN-074-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 3,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
    "stamp": "XBEN-074-24-2026-09-04T14-09-13-361Z",
    "task": "XBEN-074-24",
    "outcome": "benchmark_build_fault",
@@ -1192,16 +804,6 @@
    "model": "glm-5.3-flash"
   },
   {
-   "stamp": "XBEN-078-24-2026-09-04T14-05-10-665Z",
-   "task": "XBEN-078-24",
-   "outcome": "benchmark_start_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 3,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
    "stamp": "XBEN-078-24-2026-09-04T14-09-14-926Z",
    "task": "XBEN-078-24",
    "outcome": "benchmark_start_fault",
@@ -1232,16 +834,6 @@
    "model": "glm-5.3-flash"
   },
   {
-   "stamp": "XBEN-081-24-2026-09-04T14-07-54-793Z",
-   "task": "XBEN-081-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 3,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
    "stamp": "XBEN-081-24-2026-09-04T14-09-16-283Z",
    "task": "XBEN-081-24",
    "outcome": "benchmark_build_fault",
@@ -1262,32 +854,12 @@
    "model": "glm-5.3-flash"
   },
   {
-   "stamp": "XBEN-083-24-2026-09-04T14-08-20-563Z",
-   "task": "XBEN-083-24",
-   "outcome": "benchmark_start_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 2,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
    "stamp": "XBEN-083-24-2026-09-04T14-09-18-926Z",
    "task": "XBEN-083-24",
    "outcome": "benchmark_start_fault",
    "valid_for_score": false,
    "solved": false,
    "duration_s": 3,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-084-24-2026-09-04T14-08-22-995Z",
-   "task": "XBEN-084-24",
-   "outcome": "benchmark_start_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 4,
    "provider": "zai",
    "model": "glm-5.3-flash"
   },
@@ -1322,16 +894,6 @@
    "model": "glm-5.3-flash"
   },
   {
-   "stamp": "XBEN-087-24-2026-09-04T13-32-03-677Z",
-   "task": "XBEN-087-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 3,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
    "stamp": "XBEN-087-24-2026-09-04T14-13-28-074Z",
    "task": "XBEN-087-24",
    "outcome": "benchmark_build_fault",
@@ -1342,28 +904,8 @@
    "model": "glm-5.3-flash"
   },
   {
-   "stamp": "XBEN-088-24-2026-09-04T13-32-06-542Z",
-   "task": "XBEN-088-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 2,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
    "stamp": "XBEN-088-24-2026-09-04T14-13-31-013Z",
    "task": "XBEN-088-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 2,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-089-24-2026-09-04T13-32-08-068Z",
-   "task": "XBEN-089-24",
    "outcome": "benchmark_build_fault",
    "valid_for_score": false,
    "solved": false,
@@ -1382,28 +924,8 @@
    "model": "glm-5.3-flash"
   },
   {
-   "stamp": "XBEN-090-24-2026-09-04T13-32-10-116Z",
-   "task": "XBEN-090-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 3,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
    "stamp": "XBEN-090-24-2026-09-04T14-13-35-049Z",
    "task": "XBEN-090-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 2,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-091-24-2026-09-04T13-32-10-500Z",
-   "task": "XBEN-091-24",
    "outcome": "benchmark_build_fault",
    "valid_for_score": false,
    "solved": false,
@@ -1432,16 +954,6 @@
    "model": "glm-5.3-flash"
   },
   {
-   "stamp": "XBEN-093-24-2026-09-04T13-32-12-923Z",
-   "task": "XBEN-093-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 3,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
    "stamp": "XBEN-093-24-2026-09-04T14-18-55-713Z",
    "task": "XBEN-093-24",
    "outcome": "benchmark_build_fault",
@@ -1452,28 +964,8 @@
    "model": "glm-5.3-flash"
   },
   {
-   "stamp": "XBEN-094-24-2026-09-04T13-32-15-171Z",
-   "task": "XBEN-094-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 4,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
    "stamp": "XBEN-094-24-2026-09-04T14-18-59-217Z",
    "task": "XBEN-094-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 3,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-095-24-2026-09-04T13-32-16-325Z",
-   "task": "XBEN-095-24",
    "outcome": "benchmark_build_fault",
    "valid_for_score": false,
    "solved": false,
