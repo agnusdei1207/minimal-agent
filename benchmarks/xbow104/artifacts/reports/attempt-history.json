@@ -928,12 +928,12 @@
    "duration_s": 0
   },
   {
-   "stamp": "XBEN-089-24-2026-09-04T14-13-33-316Z",
+   "stamp": "XBEN-089-24-2026-09-04T17-43-37-977Z",
    "task": "XBEN-089-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 2,
+   "outcome": "solved",
+   "valid_for_score": true,
+   "solved": true,
+   "duration_s": 359,
    "provider": "zai",
    "model": "glm-5.3-flash"
   },
