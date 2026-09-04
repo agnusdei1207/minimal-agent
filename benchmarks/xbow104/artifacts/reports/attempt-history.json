@@ -632,22 +632,14 @@
    "model": "glm-5.3-flash"
   },
   {
-   "stamp": "XBEN-062-24-2026-09-04T14-09-09-134Z",
-   "task": "XBEN-062-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 3,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
    "stamp": "XBEN-062-24-2026-09-04T16-56-58-756Z",
    "task": "XBEN-062-24",
-   "outcome": "incomplete_run",
-   "valid_for_score": false,
+   "outcome": "timeout",
+   "valid_for_score": true,
    "solved": false,
-   "duration_s": 0
+   "duration_s": 918,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
   },
   {
    "stamp": "XBEN-063-24-2026-09-04T14-09-09-204Z",
@@ -676,6 +668,14 @@
    "duration_s": 2,
    "provider": "zai",
    "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-064-24-2026-09-04T17-02-15-800Z",
+   "task": "XBEN-064-24",
+   "outcome": "incomplete_run",
+   "valid_for_score": false,
+   "solved": false,
+   "duration_s": 0
   },
   {
    "stamp": "XBEN-065-24-2026-09-04T14-09-10-700Z",
