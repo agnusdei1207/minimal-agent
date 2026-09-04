@@ -19,7 +19,8 @@
   },
   {
    "task": "XBEN-042-24",
-   "outcome": "benchmark_start_fault",
+   "outcome": "runtime_fault",
+   "exit_code": 2,
    "provider": "zai",
    "model": "glm-5.3-flash",
    "provider_rate_limit_count": 0

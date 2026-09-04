@@ -12,12 +12,12 @@
    "model": "glm-5.3-flash"
   },
   {
-   "stamp": "XBEN-042-24-2026-09-04T12-19-35-075Z",
+   "stamp": "XBEN-042-24-2026-09-04T12-39-15-170Z",
    "task": "XBEN-042-24",
-   "outcome": "benchmark_start_fault",
+   "outcome": "runtime_fault",
    "valid_for_score": false,
    "solved": false,
-   "duration_s": 28,
+   "duration_s": 15,
    "provider": "zai",
    "model": "glm-5.3-flash"
   },

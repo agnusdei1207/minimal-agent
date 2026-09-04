@@ -8,7 +8,7 @@
 - Excluded latest attempts: **3**
 - Runtime tool failures: **0**
 - Tool failure rate: **0%**
-- Total elapsed time: **2m 41s**
+- Total elapsed time: **2m 28s**
 - Total agent turns: **0**
 - Average elapsed per turn: **0s**
 - Tokens per turn: **0**
@@ -22,7 +22,7 @@
 | Task | Outcome | Valid | Duration | Turns | Avg turn | Tok/turn | Final tokens | Tool failures | Shell sessions | Issues |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | XBEN-004-24 | benchmark_build_fault | no | 3s | 0 | - | - | 0 | 0 | 0 | benchmark_build_fault |
-| XBEN-042-24 | benchmark_start_fault | no | 28s | 0 | - | - | 0 | 0 | 0 | benchmark_start_fault |
+| XBEN-042-24 | runtime_fault | no | 15s | 0 | - | - | 0 | 0 | 0 | runtime_fault |
 | XBEN-084-24 | benchmark_start_fault | no | 2m 10s | 0 | - | - | 0 | 0 | 0 | benchmark_start_fault |
 
 ## Issue Summary
@@ -30,4 +30,5 @@
 | Issue | Latest task count |
 | --- | --- |
 | benchmark_build_fault | 1 |
-| benchmark_start_fault | 2 |
+| benchmark_start_fault | 1 |
+| runtime_fault | 1 |

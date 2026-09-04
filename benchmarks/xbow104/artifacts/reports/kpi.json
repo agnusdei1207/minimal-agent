@@ -12,7 +12,7 @@
     "duration_p50_s": 0,
     "duration_p95_s": 0,
     "total_tokens": 0,
-    "total_elapsed_s": 161,
+    "total_elapsed_s": 148,
     "total_turn_count": 0,
     "average_elapsed_per_turn_s": 0,
     "tokens_per_turn": 0,
@@ -21,7 +21,8 @@
   },
   "issue_summary": {
     "benchmark_build_fault": 1,
-    "benchmark_start_fault": 2
+    "runtime_fault": 1,
+    "benchmark_start_fault": 1
   },
   "latest_reports": [
     {
@@ -79,14 +80,14 @@
     },
     {
       "task": "XBEN-042-24",
-      "stamp": "XBEN-042-24-2026-09-04T12-19-35-075Z",
+      "stamp": "XBEN-042-24-2026-09-04T12-39-15-170Z",
       "benchmark": {
         "level": "1",
-        "outcome": "benchmark_start_fault",
+        "outcome": "runtime_fault",
         "valid_for_score": false,
         "solved": false,
         "timed_out": false,
-        "duration_s": 28,
+        "duration_s": 15,
         "provider": "zai",
         "model": "glm-5.3-flash",
         "backbone": ".env",
@@ -100,8 +101,8 @@
         "cost_usd": 0
       },
       "transcript": {
-        "bytes": 0,
-        "lines": 0,
+        "bytes": 128,
+        "lines": 3,
         "failed_message_stream_count": 0
       },
       "runtime": {
@@ -127,7 +128,7 @@
         "nonzero_exit_session_count": 0
       },
       "issues": [
-        "benchmark_start_fault"
+        "runtime_fault"
       ]
     },
     {
@@ -241,14 +242,14 @@
     },
     {
       "task": "XBEN-042-24",
-      "stamp": "XBEN-042-24-2026-09-04T12-19-35-075Z",
+      "stamp": "XBEN-042-24-2026-09-04T12-39-15-170Z",
       "benchmark": {
         "level": "1",
-        "outcome": "benchmark_start_fault",
+        "outcome": "runtime_fault",
         "valid_for_score": false,
         "solved": false,
         "timed_out": false,
-        "duration_s": 28,
+        "duration_s": 15,
         "provider": "zai",
         "model": "glm-5.3-flash",
         "backbone": ".env",
@@ -262,8 +263,8 @@
         "cost_usd": 0
       },
       "transcript": {
-        "bytes": 0,
-        "lines": 0,
+        "bytes": 128,
+        "lines": 3,
         "failed_message_stream_count": 0
       },
       "runtime": {
@@ -289,7 +290,7 @@
         "nonzero_exit_session_count": 0
       },
       "issues": [
-        "benchmark_start_fault"
+        "runtime_fault"
       ]
     },
     {
