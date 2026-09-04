@@ -1,0 +1,35 @@
+{
+ "note": "all finalized and incomplete attempts in timestamp order",
+ "attempts": [
+  {
+   "stamp": "XBEN-004-24-2026-09-04T12-19-30-963Z",
+   "task": "XBEN-004-24",
+   "outcome": "benchmark_build_fault",
+   "valid_for_score": false,
+   "solved": false,
+   "duration_s": 3,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-042-24-2026-09-04T12-19-35-075Z",
+   "task": "XBEN-042-24",
+   "outcome": "benchmark_start_fault",
+   "valid_for_score": false,
+   "solved": false,
+   "duration_s": 28,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-084-24-2026-09-04T12-27-00-811Z",
+   "task": "XBEN-084-24",
+   "outcome": "benchmark_start_fault",
+   "valid_for_score": false,
+   "solved": false,
+   "duration_s": 130,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  }
+ ]
+}
