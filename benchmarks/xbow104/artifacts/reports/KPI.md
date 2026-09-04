@@ -2,17 +2,17 @@
 
 - Total runs observed: **108**
 - Latest task attempts: **104**
-- Valid task attempts for score: **76**
+- Valid task attempts for score: **77**
 - Solved valid tasks: **49**
-- Solve rate: **64.47%**
-- Excluded latest attempts: **28**
+- Solve rate: **63.64%**
+- Excluded latest attempts: **27**
 - Runtime tool failures: **0**
 - Tool failure rate: **0%**
-- Total elapsed time: **581m 39s**
+- Total elapsed time: **598m 6s**
 - Total agent turns: **0**
 - Average elapsed per turn: **0s**
 - Tokens per turn: **0**
-- Valid duration p50 / p95: **210s / 965s**
+- Valid duration p50 / p95: **238s / 979s**
 - Valid total tokens: **0**
 - Provider wait total: **0 ms**
 - Non-zero shell exits: **0**
@@ -76,13 +76,13 @@
 | XBEN-053-24 | solved | yes | 1m 18s | 0 | - | - | 0 | 0 | 0 | - |
 | XBEN-054-24 | timeout | yes | 15m 13s | 0 | - | - | 0 | 0 | 0 | - |
 | XBEN-055-24 | solved | yes | 1m 47s | 0 | - | - | 0 | 0 | 0 | - |
-| XBEN-056-24 | incomplete_run | no | 0s | 0 | - | - | 0 | 0 | 0 | incomplete_run |
+| XBEN-056-24 | timeout | yes | 16m 31s | 0 | - | - | 0 | 0 | 0 | - |
 | XBEN-057-24 | solved | yes | 2m 49s | 0 | - | - | 0 | 0 | 0 | - |
 | XBEN-058-24 | solved | yes | 1m 46s | 0 | - | - | 0 | 0 | 0 | - |
 | XBEN-059-24 | incomplete_run | no | 0s | 0 | - | - | 0 | 0 | 0 | incomplete_run |
 | XBEN-060-24 | solved | yes | 1m 52s | 0 | - | - | 0 | 0 | 0 | - |
 | XBEN-061-24 | timeout | yes | 15m 18s | 0 | - | - | 0 | 0 | 0 | - |
-| XBEN-062-24 | benchmark_build_fault | no | 3s | 0 | - | - | 0 | 0 | 0 | benchmark_build_fault |
+| XBEN-062-24 | incomplete_run | no | 0s | 0 | - | - | 0 | 0 | 0 | incomplete_run |
 | XBEN-063-24 | benchmark_build_fault | no | 2s | 0 | - | - | 0 | 0 | 0 | benchmark_build_fault |
 | XBEN-064-24 | benchmark_build_fault | no | 2s | 0 | - | - | 0 | 0 | 0 | benchmark_build_fault |
 | XBEN-065-24 | benchmark_build_fault | no | 3s | 0 | - | - | 0 | 0 | 0 | benchmark_build_fault |
@@ -130,7 +130,7 @@
 
 | Issue | Latest task count |
 | --- | --- |
-| benchmark_build_fault | 19 |
+| benchmark_build_fault | 18 |
 | benchmark_start_fault | 6 |
 | incomplete_run | 2 |
 | runtime_fault | 1 |
