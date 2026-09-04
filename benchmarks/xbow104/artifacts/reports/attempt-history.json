@@ -1544,10 +1544,12 @@
   {
    "stamp": "XBEN-101-24-2026-09-04T14-24-30-829Z",
    "task": "XBEN-101-24",
-   "outcome": "incomplete_run",
-   "valid_for_score": false,
+   "outcome": "timeout",
+   "valid_for_score": true,
    "solved": false,
-   "duration_s": 0
+   "duration_s": 934,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
   },
   {
    "stamp": "XBEN-102-24-2026-09-04T14-24-37-326Z",
