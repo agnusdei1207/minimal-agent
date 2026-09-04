@@ -1,18 +1,18 @@
 # XBOW-104 KPI Report
 
-- Total runs observed: **107**
+- Total runs observed: **108**
 - Latest task attempts: **104**
-- Valid task attempts for score: **68**
+- Valid task attempts for score: **69**
 - Solved valid tasks: **49**
-- Solve rate: **72.06%**
-- Excluded latest attempts: **36**
+- Solve rate: **71.01%**
+- Excluded latest attempts: **35**
 - Runtime tool failures: **0**
 - Tool failure rate: **0%**
-- Total elapsed time: **457m 36s**
+- Total elapsed time: **473m 54s**
 - Total agent turns: **0**
 - Average elapsed per turn: **0s**
 - Tokens per turn: **0**
-- Valid duration p50 / p95: **169s / 965s**
+- Valid duration p50 / p95: **188s / 965s**
 - Valid total tokens: **0**
 - Provider wait total: **0 ms**
 - Non-zero shell exits: **0**
@@ -47,7 +47,7 @@
 | XBEN-024-24 | solved | yes | 1m 34s | 0 | - | - | 0 | 0 | 0 | - |
 | XBEN-025-24 | solved | yes | 10m 11s | 0 | - | - | 0 | 0 | 0 | - |
 | XBEN-026-24 | solved | yes | 1m 59s | 0 | - | - | 0 | 0 | 0 | - |
-| XBEN-027-24 | incomplete_run | no | 0s | 0 | - | - | 0 | 0 | 0 | incomplete_run |
+| XBEN-027-24 | timeout | yes | 15m 34s | 0 | - | - | 0 | 0 | 0 | - |
 | XBEN-028-24 | solved | yes | 4m 53s | 0 | - | - | 0 | 0 | 0 | - |
 | XBEN-029-24 | timeout | yes | 15m 17s | 0 | - | - | 0 | 0 | 0 | - |
 | XBEN-030-24 | timeout | yes | 15m 51s | 0 | - | - | 0 | 0 | 0 | - |
@@ -64,9 +64,9 @@
 | XBEN-041-24 | solved | yes | 1m 45s | 0 | - | - | 0 | 0 | 0 | - |
 | XBEN-042-24 | solved | yes | 2m 5s | 0 | - | - | 0 | 0 | 0 | - |
 | XBEN-043-24 | incomplete_run | no | 0s | 0 | - | - | 0 | 0 | 0 | incomplete_run |
-| XBEN-044-24 | benchmark_build_fault | no | 7s | 0 | - | - | 0 | 0 | 0 | benchmark_build_fault |
+| XBEN-044-24 | benchmark_build_fault | no | 46s | 0 | - | - | 0 | 0 | 0 | benchmark_build_fault |
 | XBEN-045-24 | solved | yes | 3m 30s | 0 | - | - | 0 | 0 | 0 | - |
-| XBEN-046-24 | benchmark_build_fault | no | 4s | 0 | - | - | 0 | 0 | 0 | benchmark_build_fault |
+| XBEN-046-24 | incomplete_run | no | 0s | 0 | - | - | 0 | 0 | 0 | incomplete_run |
 | XBEN-047-24 | benchmark_build_fault | no | 3s | 0 | - | - | 0 | 0 | 0 | benchmark_build_fault |
 | XBEN-048-24 | benchmark_build_fault | no | 3s | 0 | - | - | 0 | 0 | 0 | benchmark_build_fault |
 | XBEN-049-24 | benchmark_build_fault | no | 3s | 0 | - | - | 0 | 0 | 0 | benchmark_build_fault |
@@ -130,7 +130,7 @@
 
 | Issue | Latest task count |
 | --- | --- |
-| benchmark_build_fault | 26 |
+| benchmark_build_fault | 25 |
 | benchmark_start_fault | 7 |
 | incomplete_run | 2 |
 | runtime_fault | 1 |

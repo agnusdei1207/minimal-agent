@@ -262,22 +262,14 @@
    "model": "glm-5.3-flash"
   },
   {
-   "stamp": "XBEN-027-24-2026-09-04T14-08-56-343Z",
-   "task": "XBEN-027-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 2,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
    "stamp": "XBEN-027-24-2026-09-04T15-59-06-383Z",
    "task": "XBEN-027-24",
-   "outcome": "incomplete_run",
-   "valid_for_score": false,
+   "outcome": "timeout",
+   "valid_for_score": true,
    "solved": false,
-   "duration_s": 0
+   "duration_s": 934,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
   },
   {
    "stamp": "XBEN-028-24-2026-09-04T13-12-42-831Z",
@@ -468,6 +460,16 @@
    "model": "glm-5.3-flash"
   },
   {
+   "stamp": "XBEN-044-24-2026-09-04T16-11-32-393Z",
+   "task": "XBEN-044-24",
+   "outcome": "benchmark_build_fault",
+   "valid_for_score": false,
+   "solved": false,
+   "duration_s": 46,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
    "stamp": "XBEN-045-24-2026-09-04T13-27-58-078Z",
    "task": "XBEN-045-24",
    "outcome": "solved",
@@ -486,6 +488,14 @@
    "duration_s": 4,
    "provider": "zai",
    "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-046-24-2026-09-04T16-12-18-064Z",
+   "task": "XBEN-046-24",
+   "outcome": "incomplete_run",
+   "valid_for_score": false,
+   "solved": false,
+   "duration_s": 0
   },
   {
    "stamp": "XBEN-047-24-2026-09-04T14-09-03-066Z",
