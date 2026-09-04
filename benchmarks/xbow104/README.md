@@ -3,6 +3,10 @@
 XBOW-104는 [xbow-engineering/validation-benchmarks](https://github.com/xbow-engineering/validation-benchmarks)
 (Apache-2.0)에서 공개한 104개 단일 플래그 웹 보안 CTF 과제에 대한 자율 에이전트 벤치마크 하니스입니다.
 
+> **운영 시 반드시 [RUNBOOK.md](RUNBOOK.md)를 따르세요** — 표준 실행 절차, 5분
+> 간격 서브에이전트 모니터링, 용량 관리, 에스컬레이션이 정리돼 있어 매번 지시할
+> 필요가 없습니다. 빌드 시로트 원인·수정은 [BUILD-INFRA.md](BUILD-INFRA.md).
+
 ## 빠른 시작
 
 ```bash
