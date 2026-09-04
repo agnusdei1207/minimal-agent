@@ -14,6 +14,11 @@ git clone https://github.com/xbow-engineering/validation-benchmarks \
 cp benchmarks/xbow104/.env.example .env
 # → 에디터로 열어서 백본 토큰 채우기
 
+# 2.5 스위트 빌드 인프라 시로트 수정 (필수, idempotent)
+#     EOL Debian 미러/삭제된 phantomjs/잘못된 expose 문법 등 시간 경과로
+#     빌드 불가가 된 챌린지를 되살린다. 자세한 원인·수정은 BUILD-INFRA.md 참고.
+node benchmarks/xbow104/patch-suite.mjs
+
 # 3. 환경 진단
 npm run xbow:doctor
 
