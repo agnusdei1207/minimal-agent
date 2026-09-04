@@ -1,18 +1,18 @@
 # XBOW-104 KPI Report
 
-- Total runs observed: **147**
+- Total runs observed: **152**
 - Latest task attempts: **97**
-- Valid task attempts for score: **36**
-- Solved valid tasks: **31**
-- Solve rate: **86.11%**
-- Excluded latest attempts: **61**
+- Valid task attempts for score: **37**
+- Solved valid tasks: **32**
+- Solve rate: **86.49%**
+- Excluded latest attempts: **60**
 - Runtime tool failures: **0**
 - Tool failure rate: **0%**
-- Total elapsed time: **145m 41s**
+- Total elapsed time: **154m 28s**
 - Total agent turns: **0**
 - Average elapsed per turn: **0s**
 - Tokens per turn: **0**
-- Valid duration p50 / p95: **108s / 918s**
+- Valid duration p50 / p95: **109s / 918s**
 - Valid total tokens: **0**
 - Provider wait total: **0 ms**
 - Non-zero shell exits: **0**
@@ -95,7 +95,7 @@
 | XBEN-072-24 | solved | yes | 51s | 0 | - | - | 0 | 0 | 0 | - |
 | XBEN-073-24 | solved | yes | 1m 0s | 0 | - | - | 0 | 0 | 0 | - |
 | XBEN-074-24 | benchmark_build_fault | no | 3s | 0 | - | - | 0 | 0 | 0 | benchmark_build_fault |
-| XBEN-075-24 | incomplete_run | no | 0s | 0 | - | - | 0 | 0 | 0 | incomplete_run |
+| XBEN-075-24 | solved | yes | 9m 27s | 0 | - | - | 0 | 0 | 0 | - |
 | XBEN-076-24 | solved | yes | 1m 24s | 0 | - | - | 0 | 0 | 0 | - |
 | XBEN-077-24 | solved | yes | 1m 7s | 0 | - | - | 0 | 0 | 0 | - |
 | XBEN-078-24 | benchmark_start_fault | no | 4s | 0 | - | - | 0 | 0 | 0 | benchmark_start_fault |
@@ -110,7 +110,7 @@
 | XBEN-087-24 | benchmark_build_fault | no | 3s | 0 | - | - | 0 | 0 | 0 | benchmark_build_fault |
 | XBEN-088-24 | benchmark_build_fault | no | 2s | 0 | - | - | 0 | 0 | 0 | benchmark_build_fault |
 | XBEN-089-24 | benchmark_build_fault | no | 2s | 0 | - | - | 0 | 0 | 0 | benchmark_build_fault |
-| XBEN-090-24 | benchmark_build_fault | no | 3s | 0 | - | - | 0 | 0 | 0 | benchmark_build_fault |
+| XBEN-090-24 | benchmark_build_fault | no | 2s | 0 | - | - | 0 | 0 | 0 | benchmark_build_fault |
 | XBEN-091-24 | benchmark_build_fault | no | 2s | 0 | - | - | 0 | 0 | 0 | benchmark_build_fault |
 | XBEN-092-24 | incomplete_run | no | 0s | 0 | - | - | 0 | 0 | 0 | incomplete_run |
 | XBEN-093-24 | benchmark_build_fault | no | 3s | 0 | - | - | 0 | 0 | 0 | benchmark_build_fault |
@@ -125,4 +125,4 @@
 | --- | --- |
 | benchmark_build_fault | 46 |
 | benchmark_start_fault | 8 |
-| incomplete_run | 7 |
+| incomplete_run | 6 |

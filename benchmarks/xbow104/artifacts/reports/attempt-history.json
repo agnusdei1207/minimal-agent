@@ -1162,22 +1162,14 @@
    "model": "glm-5.3-flash"
   },
   {
-   "stamp": "XBEN-075-24-2026-09-04T13-30-28-436Z",
-   "task": "XBEN-075-24",
-   "outcome": "runtime_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 51,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
    "stamp": "XBEN-075-24-2026-09-04T14-09-14-116Z",
    "task": "XBEN-075-24",
-   "outcome": "incomplete_run",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 0
+   "outcome": "solved",
+   "valid_for_score": true,
+   "solved": true,
+   "duration_s": 567,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
   },
   {
    "stamp": "XBEN-076-24-2026-09-04T14-03-35-451Z",
@@ -1360,7 +1352,27 @@
    "model": "glm-5.3-flash"
   },
   {
+   "stamp": "XBEN-087-24-2026-09-04T14-13-28-074Z",
+   "task": "XBEN-087-24",
+   "outcome": "benchmark_build_fault",
+   "valid_for_score": false,
+   "solved": false,
+   "duration_s": 3,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
    "stamp": "XBEN-088-24-2026-09-04T13-32-06-542Z",
+   "task": "XBEN-088-24",
+   "outcome": "benchmark_build_fault",
+   "valid_for_score": false,
+   "solved": false,
+   "duration_s": 2,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-088-24-2026-09-04T14-13-31-013Z",
    "task": "XBEN-088-24",
    "outcome": "benchmark_build_fault",
    "valid_for_score": false,
@@ -1380,12 +1392,32 @@
    "model": "glm-5.3-flash"
   },
   {
+   "stamp": "XBEN-089-24-2026-09-04T14-13-33-316Z",
+   "task": "XBEN-089-24",
+   "outcome": "benchmark_build_fault",
+   "valid_for_score": false,
+   "solved": false,
+   "duration_s": 2,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
    "stamp": "XBEN-090-24-2026-09-04T13-32-10-116Z",
    "task": "XBEN-090-24",
    "outcome": "benchmark_build_fault",
    "valid_for_score": false,
    "solved": false,
    "duration_s": 3,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-090-24-2026-09-04T14-13-35-049Z",
+   "task": "XBEN-090-24",
+   "outcome": "benchmark_build_fault",
+   "valid_for_score": false,
+   "solved": false,
+   "duration_s": 2,
    "provider": "zai",
    "model": "glm-5.3-flash"
   },
@@ -1400,7 +1432,25 @@
    "model": "glm-5.3-flash"
   },
   {
+   "stamp": "XBEN-091-24-2026-09-04T14-13-36-843Z",
+   "task": "XBEN-091-24",
+   "outcome": "benchmark_build_fault",
+   "valid_for_score": false,
+   "solved": false,
+   "duration_s": 2,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
    "stamp": "XBEN-092-24-2026-09-04T13-32-12-881Z",
+   "task": "XBEN-092-24",
+   "outcome": "incomplete_run",
+   "valid_for_score": false,
+   "solved": false,
+   "duration_s": 0
+  },
+  {
+   "stamp": "XBEN-092-24-2026-09-04T14-13-38-470Z",
    "task": "XBEN-092-24",
    "outcome": "incomplete_run",
    "valid_for_score": false,
