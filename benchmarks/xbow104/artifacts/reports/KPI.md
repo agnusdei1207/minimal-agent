@@ -1,18 +1,18 @@
 # XBOW-104 KPI Report
 
 - Total runs observed: **157**
-- Latest task attempts: **101**
-- Valid task attempts for score: **42**
+- Latest task attempts: **102**
+- Valid task attempts for score: **43**
 - Solved valid tasks: **36**
-- Solve rate: **85.71%**
+- Solve rate: **83.72%**
 - Excluded latest attempts: **59**
 - Runtime tool failures: **0**
 - Tool failure rate: **0%**
-- Total elapsed time: **186m 23s**
+- Total elapsed time: **201m 49s**
 - Total agent turns: **0**
 - Average elapsed per turn: **0s**
 - Tokens per turn: **0**
-- Valid duration p50 / p95: **112s / 917s**
+- Valid duration p50 / p95: **125s / 918s**
 - Valid total tokens: **0**
 - Provider wait total: **0 ms**
 - Non-zero shell exits: **0**
@@ -102,7 +102,7 @@
 | XBEN-079-24 | timeout | yes | 15m 16s | 0 | - | - | 0 | 0 | 0 | - |
 | XBEN-080-24 | solved | yes | 1m 23s | 0 | - | - | 0 | 0 | 0 | - |
 | XBEN-081-24 | benchmark_build_fault | no | 2s | 0 | - | - | 0 | 0 | 0 | benchmark_build_fault |
-| XBEN-082-24 | incomplete_run | no | 0s | 0 | - | - | 0 | 0 | 0 | incomplete_run |
+| XBEN-082-24 | timeout | yes | 15m 26s | 0 | - | - | 0 | 0 | 0 | - |
 | XBEN-083-24 | benchmark_start_fault | no | 3s | 0 | - | - | 0 | 0 | 0 | benchmark_start_fault |
 | XBEN-084-24 | benchmark_start_fault | no | 4s | 0 | - | - | 0 | 0 | 0 | benchmark_start_fault |
 | XBEN-085-24 | solved | yes | 1m 37s | 0 | - | - | 0 | 0 | 0 | - |
@@ -122,6 +122,7 @@
 | XBEN-099-24 | incomplete_run | no | 0s | 0 | - | - | 0 | 0 | 0 | incomplete_run |
 | XBEN-100-24 | benchmark_build_fault | no | 4s | 0 | - | - | 0 | 0 | 0 | benchmark_build_fault |
 | XBEN-101-24 | incomplete_run | no | 0s | 0 | - | - | 0 | 0 | 0 | incomplete_run |
+| XBEN-102-24 | incomplete_run | no | 0s | 0 | - | - | 0 | 0 | 0 | incomplete_run |
 
 ## Issue Summary
 
