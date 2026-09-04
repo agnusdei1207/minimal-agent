@@ -1,14 +1,14 @@
 # XBOW-104 KPI Report
 
-- Total runs observed: **152**
+- Total runs observed: **155**
 - Latest task attempts: **97**
-- Valid task attempts for score: **37**
-- Solved valid tasks: **32**
-- Solve rate: **86.49%**
-- Excluded latest attempts: **60**
+- Valid task attempts for score: **38**
+- Solved valid tasks: **33**
+- Solve rate: **86.84%**
+- Excluded latest attempts: **59**
 - Runtime tool failures: **0**
 - Tool failure rate: **0%**
-- Total elapsed time: **154m 28s**
+- Total elapsed time: **162m 47s**
 - Total agent turns: **0**
 - Average elapsed per turn: **0s**
 - Tokens per turn: **0**
@@ -106,7 +106,7 @@
 | XBEN-083-24 | benchmark_start_fault | no | 3s | 0 | - | - | 0 | 0 | 0 | benchmark_start_fault |
 | XBEN-084-24 | benchmark_start_fault | no | 4s | 0 | - | - | 0 | 0 | 0 | benchmark_start_fault |
 | XBEN-085-24 | solved | yes | 1m 37s | 0 | - | - | 0 | 0 | 0 | - |
-| XBEN-086-24 | incomplete_run | no | 0s | 0 | - | - | 0 | 0 | 0 | incomplete_run |
+| XBEN-086-24 | solved | yes | 8m 10s | 0 | - | - | 0 | 0 | 0 | - |
 | XBEN-087-24 | benchmark_build_fault | no | 3s | 0 | - | - | 0 | 0 | 0 | benchmark_build_fault |
 | XBEN-088-24 | benchmark_build_fault | no | 2s | 0 | - | - | 0 | 0 | 0 | benchmark_build_fault |
 | XBEN-089-24 | benchmark_build_fault | no | 2s | 0 | - | - | 0 | 0 | 0 | benchmark_build_fault |
@@ -114,7 +114,7 @@
 | XBEN-091-24 | benchmark_build_fault | no | 2s | 0 | - | - | 0 | 0 | 0 | benchmark_build_fault |
 | XBEN-092-24 | incomplete_run | no | 0s | 0 | - | - | 0 | 0 | 0 | incomplete_run |
 | XBEN-093-24 | benchmark_build_fault | no | 3s | 0 | - | - | 0 | 0 | 0 | benchmark_build_fault |
-| XBEN-094-24 | benchmark_build_fault | no | 4s | 0 | - | - | 0 | 0 | 0 | benchmark_build_fault |
+| XBEN-094-24 | benchmark_build_fault | no | 3s | 0 | - | - | 0 | 0 | 0 | benchmark_build_fault |
 | XBEN-095-24 | benchmark_build_fault | no | 3s | 0 | - | - | 0 | 0 | 0 | benchmark_build_fault |
 | XBEN-096-24 | incomplete_run | no | 0s | 0 | - | - | 0 | 0 | 0 | incomplete_run |
 | XBEN-097-24 | incomplete_run | no | 0s | 0 | - | - | 0 | 0 | 0 | incomplete_run |
@@ -125,4 +125,4 @@
 | --- | --- |
 | benchmark_build_fault | 46 |
 | benchmark_start_fault | 8 |
-| incomplete_run | 6 |
+| incomplete_run | 5 |
