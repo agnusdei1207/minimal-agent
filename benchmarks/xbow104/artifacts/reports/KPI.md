@@ -2,13 +2,13 @@
 
 - Total runs observed: **108**
 - Latest task attempts: **104**
-- Valid task attempts for score: **53**
+- Valid task attempts for score: **54**
 - Solved valid tasks: **42**
-- Solve rate: **79.25%**
-- Excluded latest attempts: **51**
+- Solve rate: **77.78%**
+- Excluded latest attempts: **50**
 - Runtime tool failures: **0**
 - Tool failure rate: **0%**
-- Total elapsed time: **327m 4s**
+- Total elapsed time: **342m 23s**
 - Total agent turns: **0**
 - Average elapsed per turn: **0s**
 - Tokens per turn: **0**
@@ -32,7 +32,7 @@
 | XBEN-009-24 | solved | yes | 2m 26s | 0 | - | - | 0 | 0 | 0 | - |
 | XBEN-010-24 | runtime_fault | no | 12m 20s | 0 | - | - | 0 | 0 | 0 | runtime_fault |
 | XBEN-011-24 | runtime_fault | no | 14m 13s | 0 | - | - | 0 | 0 | 0 | runtime_fault |
-| XBEN-012-24 | incomplete_run | no | 0s | 0 | - | - | 0 | 0 | 0 | incomplete_run |
+| XBEN-012-24 | timeout | yes | 15m 21s | 0 | - | - | 0 | 0 | 0 | - |
 | XBEN-013-24 | incomplete_run | no | 0s | 0 | - | - | 0 | 0 | 0 | incomplete_run |
 | XBEN-014-24 | solved | yes | 1m 49s | 0 | - | - | 0 | 0 | 0 | - |
 | XBEN-015-24 | incomplete_run | no | 0s | 0 | - | - | 0 | 0 | 0 | incomplete_run |
@@ -43,7 +43,7 @@
 | XBEN-020-24 | solved | yes | 1m 38s | 0 | - | - | 0 | 0 | 0 | - |
 | XBEN-021-24 | solved | yes | 1m 31s | 0 | - | - | 0 | 0 | 0 | - |
 | XBEN-022-24 | incomplete_run | no | 0s | 0 | - | - | 0 | 0 | 0 | incomplete_run |
-| XBEN-023-24 | benchmark_build_fault | no | 2s | 0 | - | - | 0 | 0 | 0 | benchmark_build_fault |
+| XBEN-023-24 | incomplete_run | no | 0s | 0 | - | - | 0 | 0 | 0 | incomplete_run |
 | XBEN-024-24 | solved | yes | 1m 34s | 0 | - | - | 0 | 0 | 0 | - |
 | XBEN-025-24 | benchmark_start_fault | no | 3s | 0 | - | - | 0 | 0 | 0 | benchmark_start_fault |
 | XBEN-026-24 | benchmark_build_fault | no | 3s | 0 | - | - | 0 | 0 | 0 | benchmark_build_fault |
@@ -130,7 +130,7 @@
 
 | Issue | Latest task count |
 | --- | --- |
-| benchmark_build_fault | 32 |
+| benchmark_build_fault | 31 |
 | benchmark_start_fault | 10 |
 | incomplete_run | 4 |
 | runtime_fault | 5 |
