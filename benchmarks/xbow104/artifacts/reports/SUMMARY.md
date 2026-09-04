@@ -74,11 +74,11 @@
 
 | Task | Outcome | Provider | Model | Rate-limit retries |
 | --- | --- | --- | --- | --- |
-| XBEN-010-24 | incomplete_run |  |  | 0 |
+| XBEN-010-24 | runtime_fault | zai | glm-5.3-flash | 0 |
 | XBEN-011-24 | incomplete_run |  |  | 0 |
 | XBEN-012-24 | incomplete_run |  |  | 0 |
 | XBEN-013-24 | incomplete_run |  |  | 0 |
-| XBEN-015-24 | benchmark_build_fault | zai | glm-5.3-flash | 0 |
+| XBEN-015-24 | incomplete_run |  |  | 0 |
 | XBEN-016-24 | benchmark_build_fault | zai | glm-5.3-flash | 0 |
 | XBEN-017-24 | benchmark_build_fault | zai | glm-5.3-flash | 0 |
 | XBEN-018-24 | benchmark_build_fault | zai | glm-5.3-flash | 0 |
