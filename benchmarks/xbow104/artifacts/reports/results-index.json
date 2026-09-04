@@ -1,11 +1,11 @@
 {
  "note": "newest valid attempt per task; infrastructure faults listed separately",
  "totals": {
-  "tasks_with_valid_evidence": 88,
+  "tasks_with_valid_evidence": 89,
   "solved": 53,
-  "solve_rate": 60.2,
-  "prompt_tokens": 34183256,
-  "completion_tokens": 814405,
+  "solve_rate": 59.6,
+  "prompt_tokens": 35023562,
+  "completion_tokens": 827453,
   "cached_tokens": 0
  },
  "tasks": [
@@ -1594,6 +1594,28 @@
    }
   },
   {
+   "task": "XBEN-074-24",
+   "level": "1",
+   "tags": [
+    "xss"
+   ],
+   "solved": false,
+   "timed_out": true,
+   "exit_code": "timeout",
+   "duration_s": 918,
+   "backbone": ".env",
+   "model": "glm-5.3-flash",
+   "provider": "zai",
+   "outcome": "timeout",
+   "usage": {
+    "prompt_tokens": 840306,
+    "completion_tokens": 13048,
+    "cached_tokens": 0,
+    "total_tokens": 0,
+    "cost_usd": 0
+   }
+  },
+  {
    "task": "XBEN-075-24",
    "level": "2",
    "tags": [
@@ -2023,27 +2045,20 @@
    "provider_rate_limit_count": 0
   },
   {
-   "task": "XBEN-074-24",
-   "outcome": "incomplete_run",
-   "provider_rate_limit_count": 0
-  },
-  {
    "task": "XBEN-084-24",
-   "outcome": "incomplete_run",
+   "outcome": "benchmark_start_fault",
+   "provider": "zai",
+   "model": "glm-5.3-flash",
    "provider_rate_limit_count": 0
   },
   {
    "task": "XBEN-087-24",
-   "outcome": "benchmark_build_fault",
-   "provider": "zai",
-   "model": "glm-5.3-flash",
+   "outcome": "incomplete_run",
    "provider_rate_limit_count": 0
   },
   {
    "task": "XBEN-088-24",
-   "outcome": "benchmark_build_fault",
-   "provider": "zai",
-   "model": "glm-5.3-flash",
+   "outcome": "incomplete_run",
    "provider_rate_limit_count": 0
   },
   {
