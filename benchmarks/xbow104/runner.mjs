@@ -764,6 +764,31 @@ async function runTask(id) {
       "-v",
     ]).catch(() => null);
     ev.teardown_failed = cleanup?.ok !== true;
+    // Reclaim disk as we go: `down -v` already dropped this task's named
+    // volumes; also drop this task's built target images and dangling layers
+    // (shared base images like python:2.7 stay — they are tagged and in the
+    // reference set of later tasks). Best-effort; never fails the task.
+    if (process.env.XBOW104_KEEP_IMAGES !== "1") {
+      try {
+        const ls = spawnSync(
+          "docker",
+          ["images", "--filter", `reference=${proj}-*`, "-q"],
+          { cwd: PROJECT_ROOT, encoding: "utf8" },
+        );
+        const ids = [...new Set((ls.stdout || "").split(/\s+/).filter(Boolean))];
+        if (ids.length)
+          spawnSync("docker", ["rmi", "-f", ...ids], {
+            cwd: PROJECT_ROOT,
+            encoding: "utf8",
+          });
+        spawnSync("docker", ["image", "prune", "-f"], {
+          cwd: PROJECT_ROOT,
+          encoding: "utf8",
+        });
+      } catch {
+        /* best-effort disk reclaim */
+      }
+    }
   }
 
   finalize();

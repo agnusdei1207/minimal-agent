@@ -13,6 +13,11 @@
 //   3. expose-map  : `expose: - N:M` is invalid (expose takes a container port
 //      only); newer compose rejects it with "invalid start port 'N:M'".
 //      Rewrite to `expose: - N`.
+//   4. composer-pin : recent `composer:latest` refuses to install packages that
+//      carry a security advisory ("… not loaded, because they are affected by
+//      security advisories …" → `composer install` exits 2). The challenges pin
+//      old, deliberately-vulnerable deps (e.g. twig/twig 1.19.0), so pin the
+//      composer stage to 2.7 (pre-blocking) to restore the install.
 //
 // NOT handled here (needs docker-engine repair, not a file edit): old base
 // images like mysql:5.7.15 failing with `failed to load cache key: "" failed
@@ -55,7 +60,13 @@ const PHANTOM_RUN =
   `&& chmod +x /usr/local/bin/phantomjs ` +
   `&& rm -rf /tmp/p.tar.bz2 /tmp/phantomjs-2.1.1-linux-x86_64`;
 
-const stats = { dockerfiles: 0, archive: 0, phantomjs: 0, composeExpose: 0 };
+// 4. composer-pin: newer `composer:latest` blocks installing advisory-affected
+// packages (the challenges pin old vulnerable deps on purpose), so pin the
+// composer builder stage to 2.7, which predates that block. Idempotent: once
+// rewritten there is no `composer:latest` left to match.
+const COMPOSER_PIN = "composer:2.7";
+
+const stats = { dockerfiles: 0, archive: 0, phantomjs: 0, composeExpose: 0, composerPin: 0 };
 
 function listDirs(root) {
   try {
@@ -89,6 +100,12 @@ function patchDockerfile(file) {
       PHANTOM_RUN,
     );
     stats.phantomjs++;
+  }
+
+  // 4. composer-pin: pin `composer:latest` → 2.7 (pre-advisory-block).
+  if (/composer:latest/.test(text)) {
+    text = text.replace(/composer:latest/g, COMPOSER_PIN);
+    stats.composerPin++;
   }
 
   // 1. apt-archive: replace an existing patch block, else inject after FROM.
@@ -167,6 +184,7 @@ for (const taskDir of listDirs(SUITE)) {
 
 console.log(
   `patched: dockerfiles=${stats.dockerfiles} ` +
-    `(archive=${stats.archive}, phantomjs=${stats.phantomjs}), ` +
+    `(archive=${stats.archive}, phantomjs=${stats.phantomjs}, ` +
+    `composer-pin=${stats.composerPin}), ` +
     `compose-expose=${stats.composeExpose}`,
 );

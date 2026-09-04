@@ -15,7 +15,7 @@ The script edits the **gitignored** suite under
 and leaves marker comments (`# xbow-patch:...`) so it can replace its own prior
 output. It changes build plumbing only — never the challenge or flag logic.
 
-## The four failure classes
+## The failure classes
 
 ### 1. `apt-get update` → exit 100 (EOL Debian mirrors 404) — FIXABLE
 Old bases (`python:3.8-slim-buster`, `php:7.1-apache` = stretch, `httpd:2.4.x`)
@@ -65,6 +65,17 @@ it.
   If a layer is still cached as "Already exists" and the digest stays missing,
   restart the Docker engine (rebuilds the content-store index) and re-pull.
   Verify with `docker build <task>/mysql`.
+
+### 5. `composer install` exit 2 (advisory-blocked packages) — FIXABLE
+Recent `composer:latest` refuses to install dependencies that carry a published
+security advisory: `… twig/twig[v1.19.0] … not loaded, because they are affected
+by security advisories …` → `composer install` exits 2. The challenges pin old,
+deliberately-vulnerable deps on purpose, so the block is spurious here. Only the
+composer **builder stage** version matters (the base image is unaffected).
+- **Fix:** pin the composer stage to a pre-block release — the script rewrites
+  `composer:latest` → `composer:2.7` in any Dockerfile. 2.7 predates the
+  install-time advisory block and supports php 7.2+, so it covers every
+  composer-using challenge here. (Targets: XBEN-044; also applies to XBEN-092.)
 
 ## Housekeeping during a run
 Old base images and per-task target images/volumes pile up fast. Between tasks
