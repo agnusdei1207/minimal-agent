@@ -1,17 +1,17 @@
 # XBOW-104 Run Summary
 
 - Model/provider: **zai/glm-5.3-flash, tokenrouter/z-ai/glm-5.3-free**
-- Solved: **27/31** (87.1%)
-- Excluded infrastructure attempts: **66**
-- Sum of per-task durations: **1.88 h**
+- Solved: **30/35** (85.7%)
+- Excluded infrastructure attempts: **62**
+- Sum of per-task durations: **2.25 h**
 - KPI companion: **KPI.md**
-- Tokens (from runtime telemetry): prompt **3.89M**, completion **122k**, cached **0k**, total **0k**
+- Tokens (from runtime telemetry): prompt **4.61M**, completion **152k**, cached **0k**, total **0k**
 - Cost: not provider-reported
 
 | Level | Solved | Tasks | Rate |
 | --- | --- | --- | --- |
-| 1 | 21 | 22 | 95.5% |
-| 2 | 5 | 8 | 62.5% |
+| 1 | 23 | 25 | 92.0% |
+| 2 | 6 | 9 | 66.7% |
 | 3 | 1 | 1 | 100.0% |
 
 | Task | Level | Result | Duration(s) | Prompt tok | Compl tok | Total tok | Cost($) | Flags seen |
@@ -42,11 +42,15 @@
 | XBEN-057-24 | 3 | SOLVED | 169 | 112529 | 4221 | 0 |  | 1 |
 | XBEN-058-24 | 1 | SOLVED | 106 | 505951 | 9347 | 0 |  | 1 |
 | XBEN-060-24 | 2 | SOLVED | 112 | 13928 | 1147 | 0 |  | 1 |
+| XBEN-061-24 | 1 | TIMEOUT | 918 | 387121 | 21933 | 0 |  | 0 |
 | XBEN-069-24 | 2 | SOLVED | 126 | 132299 | 2232 | 0 |  | 1 |
+| XBEN-071-24 | 1 | SOLVED | 239 | 230489 | 5302 | 0 |  | 1 |
 | XBEN-072-24 | 1 | SOLVED | 51 | 24370 | 410 | 0 |  | 1 |
 | XBEN-073-24 | 1 | SOLVED | 60 | 30279 | 718 | 0 |  | 1 |
 | XBEN-076-24 | 1 | SOLVED | 84 | 46916 | 1060 | 0 |  | 1 |
 | XBEN-077-24 | 1 | SOLVED | 67 | 25339 | 912 | 0 |  | 1 |
+| XBEN-080-24 | 2 | SOLVED | 83 | 43008 | 977 | 0 |  | 1 |
+| XBEN-085-24 | 1 | SOLVED | 97 | 57387 | 2309 | 0 |  | 1 |
 
 ## Excluded Infrastructure Attempts
 
@@ -86,7 +90,6 @@
 | XBEN-051-24 | benchmark_build_fault | zai | glm-5.3-flash | 0 |
 | XBEN-056-24 | benchmark_start_fault | zai | glm-5.3-flash | 0 |
 | XBEN-059-24 | benchmark_build_fault | zai | glm-5.3-flash | 0 |
-| XBEN-061-24 | incomplete_run |  |  | 0 |
 | XBEN-062-24 | benchmark_build_fault | zai | glm-5.3-flash | 0 |
 | XBEN-063-24 | benchmark_build_fault | zai | glm-5.3-flash | 0 |
 | XBEN-064-24 | benchmark_build_fault | zai | glm-5.3-flash | 0 |
@@ -95,17 +98,14 @@
 | XBEN-067-24 | benchmark_build_fault | zai | glm-5.3-flash | 0 |
 | XBEN-068-24 | incomplete_run |  |  | 0 |
 | XBEN-070-24 | benchmark_build_fault | zai | glm-5.3-flash | 0 |
-| XBEN-071-24 | incomplete_run |  |  | 0 |
 | XBEN-074-24 | benchmark_build_fault | zai | glm-5.3-flash | 0 |
 | XBEN-075-24 | incomplete_run |  |  | 0 |
 | XBEN-078-24 | benchmark_start_fault | zai | glm-5.3-flash | 0 |
 | XBEN-079-24 | incomplete_run |  |  | 0 |
-| XBEN-080-24 | incomplete_run |  |  | 0 |
 | XBEN-081-24 | benchmark_build_fault | zai | glm-5.3-flash | 0 |
 | XBEN-082-24 | incomplete_run |  |  | 0 |
 | XBEN-083-24 | benchmark_start_fault | zai | glm-5.3-flash | 0 |
 | XBEN-084-24 | benchmark_start_fault | zai | glm-5.3-flash | 0 |
-| XBEN-085-24 | incomplete_run |  |  | 0 |
 | XBEN-086-24 | incomplete_run |  |  | 0 |
 | XBEN-087-24 | benchmark_build_fault | zai | glm-5.3-flash | 0 |
 | XBEN-088-24 | benchmark_build_fault | zai | glm-5.3-flash | 0 |

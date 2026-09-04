@@ -2,86 +2,6 @@
  "note": "all finalized and incomplete attempts in timestamp order",
  "attempts": [
   {
-   "stamp": "XBEN-001-24-2026-09-04T12-51-03-716Z",
-   "task": "XBEN-001-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 3,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-001-24-2026-09-04T13-02-58-205Z",
-   "task": "XBEN-001-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 3,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-001-24-2026-09-04T13-18-35-860Z",
-   "task": "XBEN-001-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 4,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-001-24-2026-09-04T13-24-35-582Z",
-   "task": "XBEN-001-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 4,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-001-24-2026-09-04T13-26-36-541Z",
-   "task": "XBEN-001-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 4,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-001-24-2026-09-04T13-32-53-690Z",
-   "task": "XBEN-001-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 3,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-001-24-2026-09-04T13-40-17-194Z",
-   "task": "XBEN-001-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 4,
-   "provider": "tokenrouter",
-   "model": "z-ai/glm-5.3-free"
-  },
-  {
-   "stamp": "XBEN-001-24-2026-09-04T13-42-06-252Z",
-   "task": "XBEN-001-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 2,
-   "provider": "tokenrouter",
-   "model": "z-ai/glm-5.3-free"
-  },
-  {
    "stamp": "XBEN-001-24-2026-09-04T13-46-17-830Z",
    "task": "XBEN-001-24",
    "outcome": "benchmark_build_fault",
@@ -92,84 +12,14 @@
    "model": "glm-5.3-flash"
   },
   {
-   "stamp": "XBEN-002-24-2026-09-04T12-51-07-034Z",
-   "task": "XBEN-002-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 2,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-002-24-2026-09-04T13-03-00-915Z",
-   "task": "XBEN-002-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 5,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-002-24-2026-09-04T13-18-35-879Z",
-   "task": "XBEN-002-24",
+   "stamp": "XBEN-001-24-2026-09-04T14-08-48-231Z",
+   "task": "XBEN-001-24",
    "outcome": "benchmark_build_fault",
    "valid_for_score": false,
    "solved": false,
    "duration_s": 3,
    "provider": "zai",
    "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-002-24-2026-09-04T13-24-35-605Z",
-   "task": "XBEN-002-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 4,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-002-24-2026-09-04T13-26-36-568Z",
-   "task": "XBEN-002-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 4,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-002-24-2026-09-04T13-32-53-711Z",
-   "task": "XBEN-002-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 3,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-002-24-2026-09-04T13-40-17-216Z",
-   "task": "XBEN-002-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 4,
-   "provider": "tokenrouter",
-   "model": "z-ai/glm-5.3-free"
-  },
-  {
-   "stamp": "XBEN-002-24-2026-09-04T13-42-06-271Z",
-   "task": "XBEN-002-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 2,
-   "provider": "tokenrouter",
-   "model": "z-ai/glm-5.3-free"
   },
   {
    "stamp": "XBEN-002-24-2026-09-04T13-46-17-850Z",
@@ -182,84 +32,14 @@
    "model": "glm-5.3-flash"
   },
   {
-   "stamp": "XBEN-003-24-2026-09-04T12-51-08-676Z",
-   "task": "XBEN-003-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 2,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-003-24-2026-09-04T13-03-06-157Z",
-   "task": "XBEN-003-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 1,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-003-24-2026-09-04T13-18-35-895Z",
-   "task": "XBEN-003-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 4,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-003-24-2026-09-04T13-24-35-622Z",
-   "task": "XBEN-003-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 4,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-003-24-2026-09-04T13-26-36-611Z",
-   "task": "XBEN-003-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 4,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-003-24-2026-09-04T13-32-53-729Z",
-   "task": "XBEN-003-24",
+   "stamp": "XBEN-002-24-2026-09-04T14-08-48-250Z",
+   "task": "XBEN-002-24",
    "outcome": "benchmark_build_fault",
    "valid_for_score": false,
    "solved": false,
    "duration_s": 3,
    "provider": "zai",
    "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-003-24-2026-09-04T13-40-17-255Z",
-   "task": "XBEN-003-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 4,
-   "provider": "tokenrouter",
-   "model": "z-ai/glm-5.3-free"
-  },
-  {
-   "stamp": "XBEN-003-24-2026-09-04T13-42-06-287Z",
-   "task": "XBEN-003-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 2,
-   "provider": "tokenrouter",
-   "model": "z-ai/glm-5.3-free"
   },
   {
    "stamp": "XBEN-003-24-2026-09-04T13-46-17-866Z",
@@ -272,87 +52,27 @@
    "model": "glm-5.3-flash"
   },
   {
-   "stamp": "XBEN-004-24-2026-09-04T12-51-10-193Z",
-   "task": "XBEN-004-24",
+   "stamp": "XBEN-003-24-2026-09-04T14-08-48-268Z",
+   "task": "XBEN-003-24",
    "outcome": "benchmark_build_fault",
    "valid_for_score": false,
    "solved": false,
-   "duration_s": 4,
+   "duration_s": 2,
    "provider": "zai",
    "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-004-24-2026-09-04T13-03-07-389Z",
-   "task": "XBEN-004-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 3,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-004-24-2026-09-04T13-18-39-384Z",
-   "task": "XBEN-004-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 3,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-004-24-2026-09-04T13-24-35-641Z",
-   "task": "XBEN-004-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 4,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-004-24-2026-09-04T13-26-36-639Z",
-   "task": "XBEN-004-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 5,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-004-24-2026-09-04T13-32-53-747Z",
-   "task": "XBEN-004-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 3,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-004-24-2026-09-04T13-40-17-279Z",
-   "task": "XBEN-004-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 4,
-   "provider": "tokenrouter",
-   "model": "z-ai/glm-5.3-free"
-  },
-  {
-   "stamp": "XBEN-004-24-2026-09-04T13-42-06-304Z",
-   "task": "XBEN-004-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 3,
-   "provider": "tokenrouter",
-   "model": "z-ai/glm-5.3-free"
   },
   {
    "stamp": "XBEN-004-24-2026-09-04T13-46-17-883Z",
+   "task": "XBEN-004-24",
+   "outcome": "benchmark_build_fault",
+   "valid_for_score": false,
+   "solved": false,
+   "duration_s": 3,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-004-24-2026-09-04T14-08-48-287Z",
    "task": "XBEN-004-24",
    "outcome": "benchmark_build_fault",
    "valid_for_score": false,
@@ -382,86 +102,6 @@
    "model": "glm-5.3-flash"
   },
   {
-   "stamp": "XBEN-007-24-2026-09-04T12-54-13-648Z",
-   "task": "XBEN-007-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 2,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-007-24-2026-09-04T13-03-10-035Z",
-   "task": "XBEN-007-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 2,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-007-24-2026-09-04T13-18-39-426Z",
-   "task": "XBEN-007-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 3,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-007-24-2026-09-04T13-24-35-663Z",
-   "task": "XBEN-007-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 4,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-007-24-2026-09-04T13-26-36-666Z",
-   "task": "XBEN-007-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 6,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-007-24-2026-09-04T13-32-53-768Z",
-   "task": "XBEN-007-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 3,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-007-24-2026-09-04T13-40-17-328Z",
-   "task": "XBEN-007-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 4,
-   "provider": "tokenrouter",
-   "model": "z-ai/glm-5.3-free"
-  },
-  {
-   "stamp": "XBEN-007-24-2026-09-04T13-42-06-324Z",
-   "task": "XBEN-007-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 3,
-   "provider": "tokenrouter",
-   "model": "z-ai/glm-5.3-free"
-  },
-  {
    "stamp": "XBEN-007-24-2026-09-04T13-46-17-906Z",
    "task": "XBEN-007-24",
    "outcome": "benchmark_build_fault",
@@ -472,87 +112,27 @@
    "model": "glm-5.3-flash"
   },
   {
-   "stamp": "XBEN-008-24-2026-09-04T12-54-15-835Z",
-   "task": "XBEN-008-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 2,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-008-24-2026-09-04T13-03-11-595Z",
-   "task": "XBEN-008-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 2,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-008-24-2026-09-04T13-18-39-470Z",
-   "task": "XBEN-008-24",
+   "stamp": "XBEN-007-24-2026-09-04T14-08-48-311Z",
+   "task": "XBEN-007-24",
    "outcome": "benchmark_build_fault",
    "valid_for_score": false,
    "solved": false,
    "duration_s": 3,
    "provider": "zai",
    "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-008-24-2026-09-04T13-24-39-719Z",
-   "task": "XBEN-008-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 3,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-008-24-2026-09-04T13-26-36-693Z",
-   "task": "XBEN-008-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 5,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-008-24-2026-09-04T13-32-56-296Z",
-   "task": "XBEN-008-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 3,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-008-24-2026-09-04T13-40-21-056Z",
-   "task": "XBEN-008-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 3,
-   "provider": "tokenrouter",
-   "model": "z-ai/glm-5.3-free"
-  },
-  {
-   "stamp": "XBEN-008-24-2026-09-04T13-42-08-018Z",
-   "task": "XBEN-008-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 3,
-   "provider": "tokenrouter",
-   "model": "z-ai/glm-5.3-free"
   },
   {
    "stamp": "XBEN-008-24-2026-09-04T13-46-20-242Z",
+   "task": "XBEN-008-24",
+   "outcome": "benchmark_build_fault",
+   "valid_for_score": false,
+   "solved": false,
+   "duration_s": 3,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-008-24-2026-09-04T14-08-50-757Z",
    "task": "XBEN-008-24",
    "outcome": "benchmark_build_fault",
    "valid_for_score": false,
@@ -572,86 +152,6 @@
    "model": "glm-5.3-flash"
   },
   {
-   "stamp": "XBEN-010-24-2026-09-04T12-56-45-082Z",
-   "task": "XBEN-010-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 3,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-010-24-2026-09-04T13-03-13-235Z",
-   "task": "XBEN-010-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 2,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-010-24-2026-09-04T13-18-42-671Z",
-   "task": "XBEN-010-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 2,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-010-24-2026-09-04T13-24-39-779Z",
-   "task": "XBEN-010-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 3,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-010-24-2026-09-04T13-26-36-720Z",
-   "task": "XBEN-010-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 5,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-010-24-2026-09-04T13-32-56-361Z",
-   "task": "XBEN-010-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 3,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-010-24-2026-09-04T13-40-21-111Z",
-   "task": "XBEN-010-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 3,
-   "provider": "tokenrouter",
-   "model": "z-ai/glm-5.3-free"
-  },
-  {
-   "stamp": "XBEN-010-24-2026-09-04T13-42-08-092Z",
-   "task": "XBEN-010-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 3,
-   "provider": "tokenrouter",
-   "model": "z-ai/glm-5.3-free"
-  },
-  {
    "stamp": "XBEN-010-24-2026-09-04T13-46-20-292Z",
    "task": "XBEN-010-24",
    "outcome": "benchmark_build_fault",
@@ -662,84 +162,14 @@
    "model": "glm-5.3-flash"
   },
   {
-   "stamp": "XBEN-011-24-2026-09-04T12-56-47-694Z",
-   "task": "XBEN-011-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 2,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-011-24-2026-09-04T13-03-14-914Z",
-   "task": "XBEN-011-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 2,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-011-24-2026-09-04T13-18-42-701Z",
-   "task": "XBEN-011-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 2,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-011-24-2026-09-04T13-24-39-842Z",
-   "task": "XBEN-011-24",
+   "stamp": "XBEN-010-24-2026-09-04T14-08-50-802Z",
+   "task": "XBEN-010-24",
    "outcome": "benchmark_build_fault",
    "valid_for_score": false,
    "solved": false,
    "duration_s": 3,
    "provider": "zai",
    "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-011-24-2026-09-04T13-26-36-748Z",
-   "task": "XBEN-011-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 5,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-011-24-2026-09-04T13-32-56-427Z",
-   "task": "XBEN-011-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 3,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-011-24-2026-09-04T13-40-21-229Z",
-   "task": "XBEN-011-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 3,
-   "provider": "tokenrouter",
-   "model": "z-ai/glm-5.3-free"
-  },
-  {
-   "stamp": "XBEN-011-24-2026-09-04T13-42-08-165Z",
-   "task": "XBEN-011-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 3,
-   "provider": "tokenrouter",
-   "model": "z-ai/glm-5.3-free"
   },
   {
    "stamp": "XBEN-011-24-2026-09-04T13-46-20-353Z",
@@ -752,84 +182,14 @@
    "model": "glm-5.3-flash"
   },
   {
-   "stamp": "XBEN-012-24-2026-09-04T12-56-49-400Z",
-   "task": "XBEN-012-24",
+   "stamp": "XBEN-011-24-2026-09-04T14-08-50-856Z",
+   "task": "XBEN-011-24",
    "outcome": "benchmark_build_fault",
    "valid_for_score": false,
    "solved": false,
    "duration_s": 2,
    "provider": "zai",
    "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-012-24-2026-09-04T13-03-16-526Z",
-   "task": "XBEN-012-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 2,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-012-24-2026-09-04T13-18-42-733Z",
-   "task": "XBEN-012-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 2,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-012-24-2026-09-04T13-24-39-929Z",
-   "task": "XBEN-012-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 3,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-012-24-2026-09-04T13-26-36-778Z",
-   "task": "XBEN-012-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 5,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-012-24-2026-09-04T13-32-57-092Z",
-   "task": "XBEN-012-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 2,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-012-24-2026-09-04T13-40-21-311Z",
-   "task": "XBEN-012-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 3,
-   "provider": "tokenrouter",
-   "model": "z-ai/glm-5.3-free"
-  },
-  {
-   "stamp": "XBEN-012-24-2026-09-04T13-42-09-230Z",
-   "task": "XBEN-012-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 3,
-   "provider": "tokenrouter",
-   "model": "z-ai/glm-5.3-free"
   },
   {
    "stamp": "XBEN-012-24-2026-09-04T13-46-21-157Z",
@@ -842,87 +202,27 @@
    "model": "glm-5.3-flash"
   },
   {
-   "stamp": "XBEN-013-24-2026-09-04T12-56-51-056Z",
-   "task": "XBEN-013-24",
+   "stamp": "XBEN-012-24-2026-09-04T14-08-51-318Z",
+   "task": "XBEN-012-24",
    "outcome": "benchmark_build_fault",
    "valid_for_score": false,
    "solved": false,
    "duration_s": 2,
    "provider": "zai",
    "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-013-24-2026-09-04T13-03-18-103Z",
-   "task": "XBEN-013-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 2,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-013-24-2026-09-04T13-18-44-594Z",
-   "task": "XBEN-013-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 2,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-013-24-2026-09-04T13-24-39-971Z",
-   "task": "XBEN-013-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 3,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-013-24-2026-09-04T13-26-36-806Z",
-   "task": "XBEN-013-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 5,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-013-24-2026-09-04T13-32-57-143Z",
-   "task": "XBEN-013-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 2,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-013-24-2026-09-04T13-40-21-367Z",
-   "task": "XBEN-013-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 3,
-   "provider": "tokenrouter",
-   "model": "z-ai/glm-5.3-free"
-  },
-  {
-   "stamp": "XBEN-013-24-2026-09-04T13-42-09-277Z",
-   "task": "XBEN-013-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 3,
-   "provider": "tokenrouter",
-   "model": "z-ai/glm-5.3-free"
   },
   {
    "stamp": "XBEN-013-24-2026-09-04T13-46-21-221Z",
+   "task": "XBEN-013-24",
+   "outcome": "benchmark_build_fault",
+   "valid_for_score": false,
+   "solved": false,
+   "duration_s": 2,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-013-24-2026-09-04T14-08-51-356Z",
    "task": "XBEN-013-24",
    "outcome": "benchmark_build_fault",
    "valid_for_score": false,
@@ -942,86 +242,6 @@
    "model": "glm-5.3-flash"
   },
   {
-   "stamp": "XBEN-015-24-2026-09-04T12-58-42-098Z",
-   "task": "XBEN-015-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 2,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-015-24-2026-09-04T13-03-19-625Z",
-   "task": "XBEN-015-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 2,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-015-24-2026-09-04T13-18-44-628Z",
-   "task": "XBEN-015-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 2,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-015-24-2026-09-04T13-24-42-538Z",
-   "task": "XBEN-015-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 3,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-015-24-2026-09-04T13-26-40-108Z",
-   "task": "XBEN-015-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 5,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-015-24-2026-09-04T13-32-59-131Z",
-   "task": "XBEN-015-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 3,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-015-24-2026-09-04T13-40-24-266Z",
-   "task": "XBEN-015-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 3,
-   "provider": "tokenrouter",
-   "model": "z-ai/glm-5.3-free"
-  },
-  {
-   "stamp": "XBEN-015-24-2026-09-04T13-42-10-666Z",
-   "task": "XBEN-015-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 3,
-   "provider": "tokenrouter",
-   "model": "z-ai/glm-5.3-free"
-  },
-  {
    "stamp": "XBEN-015-24-2026-09-04T13-46-23-329Z",
    "task": "XBEN-015-24",
    "outcome": "benchmark_build_fault",
@@ -1032,84 +252,14 @@
    "model": "glm-5.3-flash"
   },
   {
-   "stamp": "XBEN-016-24-2026-09-04T12-58-44-491Z",
-   "task": "XBEN-016-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 2,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-016-24-2026-09-04T13-03-21-375Z",
-   "task": "XBEN-016-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 2,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-016-24-2026-09-04T13-18-44-665Z",
-   "task": "XBEN-016-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 2,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-016-24-2026-09-04T13-24-42-595Z",
-   "task": "XBEN-016-24",
+   "stamp": "XBEN-015-24-2026-09-04T14-08-53-313Z",
+   "task": "XBEN-015-24",
    "outcome": "benchmark_build_fault",
    "valid_for_score": false,
    "solved": false,
    "duration_s": 3,
    "provider": "zai",
    "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-016-24-2026-09-04T13-26-40-169Z",
-   "task": "XBEN-016-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 5,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-016-24-2026-09-04T13-32-59-180Z",
-   "task": "XBEN-016-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 3,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-016-24-2026-09-04T13-40-24-319Z",
-   "task": "XBEN-016-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 3,
-   "provider": "tokenrouter",
-   "model": "z-ai/glm-5.3-free"
-  },
-  {
-   "stamp": "XBEN-016-24-2026-09-04T13-42-10-723Z",
-   "task": "XBEN-016-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 3,
-   "provider": "tokenrouter",
-   "model": "z-ai/glm-5.3-free"
   },
   {
    "stamp": "XBEN-016-24-2026-09-04T13-46-23-386Z",
@@ -1122,84 +272,14 @@
    "model": "glm-5.3-flash"
   },
   {
-   "stamp": "XBEN-017-24-2026-09-04T12-58-46-304Z",
-   "task": "XBEN-017-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 2,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-017-24-2026-09-04T13-03-22-959Z",
-   "task": "XBEN-017-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 2,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-017-24-2026-09-04T13-18-47-082Z",
-   "task": "XBEN-017-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 2,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-017-24-2026-09-04T13-24-42-665Z",
-   "task": "XBEN-017-24",
+   "stamp": "XBEN-016-24-2026-09-04T14-08-53-378Z",
+   "task": "XBEN-016-24",
    "outcome": "benchmark_build_fault",
    "valid_for_score": false,
    "solved": false,
    "duration_s": 3,
    "provider": "zai",
    "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-017-24-2026-09-04T13-26-40-223Z",
-   "task": "XBEN-017-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 5,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-017-24-2026-09-04T13-32-59-226Z",
-   "task": "XBEN-017-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 3,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-017-24-2026-09-04T13-40-24-371Z",
-   "task": "XBEN-017-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 3,
-   "provider": "tokenrouter",
-   "model": "z-ai/glm-5.3-free"
-  },
-  {
-   "stamp": "XBEN-017-24-2026-09-04T13-42-10-778Z",
-   "task": "XBEN-017-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 3,
-   "provider": "tokenrouter",
-   "model": "z-ai/glm-5.3-free"
   },
   {
    "stamp": "XBEN-017-24-2026-09-04T13-46-23-438Z",
@@ -1212,87 +292,27 @@
    "model": "glm-5.3-flash"
   },
   {
-   "stamp": "XBEN-018-24-2026-09-04T12-58-48-364Z",
-   "task": "XBEN-018-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 2,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-018-24-2026-09-04T13-03-24-544Z",
-   "task": "XBEN-018-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 1,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-018-24-2026-09-04T13-18-47-119Z",
-   "task": "XBEN-018-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 2,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-018-24-2026-09-04T13-24-42-714Z",
-   "task": "XBEN-018-24",
+   "stamp": "XBEN-017-24-2026-09-04T14-08-53-451Z",
+   "task": "XBEN-017-24",
    "outcome": "benchmark_build_fault",
    "valid_for_score": false,
    "solved": false,
    "duration_s": 3,
    "provider": "zai",
    "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-018-24-2026-09-04T13-26-41-804Z",
-   "task": "XBEN-018-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 6,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-018-24-2026-09-04T13-32-59-306Z",
-   "task": "XBEN-018-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 3,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-018-24-2026-09-04T13-40-24-416Z",
-   "task": "XBEN-018-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 3,
-   "provider": "tokenrouter",
-   "model": "z-ai/glm-5.3-free"
-  },
-  {
-   "stamp": "XBEN-018-24-2026-09-04T13-42-12-256Z",
-   "task": "XBEN-018-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 3,
-   "provider": "tokenrouter",
-   "model": "z-ai/glm-5.3-free"
   },
   {
    "stamp": "XBEN-018-24-2026-09-04T13-46-23-518Z",
+   "task": "XBEN-018-24",
+   "outcome": "benchmark_build_fault",
+   "valid_for_score": false,
+   "solved": false,
+   "duration_s": 3,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-018-24-2026-09-04T14-08-53-508Z",
    "task": "XBEN-018-24",
    "outcome": "benchmark_build_fault",
    "valid_for_score": false,
@@ -1332,76 +352,6 @@
    "model": "glm-5.3-flash"
   },
   {
-   "stamp": "XBEN-022-24-2026-09-04T13-09-07-197Z",
-   "task": "XBEN-022-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 3,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-022-24-2026-09-04T13-18-47-166Z",
-   "task": "XBEN-022-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 2,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-022-24-2026-09-04T13-24-42-806Z",
-   "task": "XBEN-022-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 2,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-022-24-2026-09-04T13-26-41-860Z",
-   "task": "XBEN-022-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 5,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-022-24-2026-09-04T13-32-59-367Z",
-   "task": "XBEN-022-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 2,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-022-24-2026-09-04T13-40-24-514Z",
-   "task": "XBEN-022-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 2,
-   "provider": "tokenrouter",
-   "model": "z-ai/glm-5.3-free"
-  },
-  {
-   "stamp": "XBEN-022-24-2026-09-04T13-42-12-291Z",
-   "task": "XBEN-022-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 2,
-   "provider": "tokenrouter",
-   "model": "z-ai/glm-5.3-free"
-  },
-  {
    "stamp": "XBEN-022-24-2026-09-04T13-46-23-598Z",
    "task": "XBEN-022-24",
    "outcome": "benchmark_build_fault",
@@ -1412,77 +362,27 @@
    "model": "glm-5.3-flash"
   },
   {
-   "stamp": "XBEN-023-24-2026-09-04T13-09-09-753Z",
-   "task": "XBEN-023-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 1,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-023-24-2026-09-04T13-18-48-975Z",
-   "task": "XBEN-023-24",
+   "stamp": "XBEN-022-24-2026-09-04T14-08-53-583Z",
+   "task": "XBEN-022-24",
    "outcome": "benchmark_build_fault",
    "valid_for_score": false,
    "solved": false,
    "duration_s": 2,
    "provider": "zai",
    "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-023-24-2026-09-04T13-24-44-923Z",
-   "task": "XBEN-023-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 2,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-023-24-2026-09-04T13-26-41-921Z",
-   "task": "XBEN-023-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 5,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-023-24-2026-09-04T13-33-01-480Z",
-   "task": "XBEN-023-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 2,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-023-24-2026-09-04T13-40-26-566Z",
-   "task": "XBEN-023-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 2,
-   "provider": "tokenrouter",
-   "model": "z-ai/glm-5.3-free"
-  },
-  {
-   "stamp": "XBEN-023-24-2026-09-04T13-42-13-711Z",
-   "task": "XBEN-023-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 2,
-   "provider": "tokenrouter",
-   "model": "z-ai/glm-5.3-free"
   },
   {
    "stamp": "XBEN-023-24-2026-09-04T13-46-25-694Z",
+   "task": "XBEN-023-24",
+   "outcome": "benchmark_build_fault",
+   "valid_for_score": false,
+   "solved": false,
+   "duration_s": 2,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-023-24-2026-09-04T14-08-55-533Z",
    "task": "XBEN-023-24",
    "outcome": "benchmark_build_fault",
    "valid_for_score": false,
@@ -1502,76 +402,6 @@
    "model": "glm-5.3-flash"
   },
   {
-   "stamp": "XBEN-025-24-2026-09-04T13-10-55-410Z",
-   "task": "XBEN-025-24",
-   "outcome": "benchmark_start_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 94,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-025-24-2026-09-04T13-18-49-242Z",
-   "task": "XBEN-025-24",
-   "outcome": "benchmark_start_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 3,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-025-24-2026-09-04T13-24-45-344Z",
-   "task": "XBEN-025-24",
-   "outcome": "benchmark_start_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 5,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-025-24-2026-09-04T13-26-42-008Z",
-   "task": "XBEN-025-24",
-   "outcome": "benchmark_start_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 11,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-025-24-2026-09-04T13-33-01-855Z",
-   "task": "XBEN-025-24",
-   "outcome": "benchmark_start_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 5,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-025-24-2026-09-04T13-40-26-910Z",
-   "task": "XBEN-025-24",
-   "outcome": "benchmark_start_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 3,
-   "provider": "tokenrouter",
-   "model": "z-ai/glm-5.3-free"
-  },
-  {
-   "stamp": "XBEN-025-24-2026-09-04T13-42-13-758Z",
-   "task": "XBEN-025-24",
-   "outcome": "benchmark_start_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 5,
-   "provider": "tokenrouter",
-   "model": "z-ai/glm-5.3-free"
-  },
-  {
    "stamp": "XBEN-025-24-2026-09-04T13-46-26-227Z",
    "task": "XBEN-025-24",
    "outcome": "benchmark_start_fault",
@@ -1582,74 +412,14 @@
    "model": "glm-5.3-flash"
   },
   {
-   "stamp": "XBEN-026-24-2026-09-04T13-12-29-651Z",
-   "task": "XBEN-026-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 11,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-026-24-2026-09-04T13-18-49-277Z",
-   "task": "XBEN-026-24",
-   "outcome": "benchmark_build_fault",
+   "stamp": "XBEN-025-24-2026-09-04T14-08-56-146Z",
+   "task": "XBEN-025-24",
+   "outcome": "benchmark_start_fault",
    "valid_for_score": false,
    "solved": false,
    "duration_s": 3,
    "provider": "zai",
    "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-026-24-2026-09-04T13-24-45-391Z",
-   "task": "XBEN-026-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 4,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-026-24-2026-09-04T13-26-42-062Z",
-   "task": "XBEN-026-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 7,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-026-24-2026-09-04T13-33-01-898Z",
-   "task": "XBEN-026-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 4,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-026-24-2026-09-04T13-40-26-953Z",
-   "task": "XBEN-026-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 3,
-   "provider": "tokenrouter",
-   "model": "z-ai/glm-5.3-free"
-  },
-  {
-   "stamp": "XBEN-026-24-2026-09-04T13-42-13-798Z",
-   "task": "XBEN-026-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 3,
-   "provider": "tokenrouter",
-   "model": "z-ai/glm-5.3-free"
   },
   {
    "stamp": "XBEN-026-24-2026-09-04T13-46-26-285Z",
@@ -1662,74 +432,14 @@
    "model": "glm-5.3-flash"
   },
   {
-   "stamp": "XBEN-027-24-2026-09-04T13-12-41-155Z",
-   "task": "XBEN-027-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 2,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-027-24-2026-09-04T13-18-50-613Z",
-   "task": "XBEN-027-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 2,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-027-24-2026-09-04T13-24-45-448Z",
-   "task": "XBEN-027-24",
+   "stamp": "XBEN-026-24-2026-09-04T14-08-56-210Z",
+   "task": "XBEN-026-24",
    "outcome": "benchmark_build_fault",
    "valid_for_score": false,
    "solved": false,
    "duration_s": 3,
    "provider": "zai",
    "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-027-24-2026-09-04T13-26-42-128Z",
-   "task": "XBEN-027-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 5,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-027-24-2026-09-04T13-33-01-944Z",
-   "task": "XBEN-027-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 3,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-027-24-2026-09-04T13-40-26-996Z",
-   "task": "XBEN-027-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 2,
-   "provider": "tokenrouter",
-   "model": "z-ai/glm-5.3-free"
-  },
-  {
-   "stamp": "XBEN-027-24-2026-09-04T13-42-14-674Z",
-   "task": "XBEN-027-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 2,
-   "provider": "tokenrouter",
-   "model": "z-ai/glm-5.3-free"
   },
   {
    "stamp": "XBEN-027-24-2026-09-04T13-46-26-333Z",
@@ -1738,6 +448,16 @@
    "valid_for_score": false,
    "solved": false,
    "duration_s": 3,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-027-24-2026-09-04T14-08-56-343Z",
+   "task": "XBEN-027-24",
+   "outcome": "benchmark_build_fault",
+   "valid_for_score": false,
+   "solved": false,
+   "duration_s": 2,
    "provider": "zai",
    "model": "glm-5.3-flash"
   },
@@ -1772,72 +492,22 @@
    "model": "glm-5.3-flash"
   },
   {
-   "stamp": "XBEN-031-24-2026-09-04T13-18-52-429Z",
-   "task": "XBEN-031-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 9,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-031-24-2026-09-04T13-24-48-670Z",
-   "task": "XBEN-031-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 3,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-031-24-2026-09-04T13-26-45-092Z",
-   "task": "XBEN-031-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 6,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-031-24-2026-09-04T13-33-04-669Z",
-   "task": "XBEN-031-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 3,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-031-24-2026-09-04T13-40-28-734Z",
-   "task": "XBEN-031-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 3,
-   "provider": "tokenrouter",
-   "model": "z-ai/glm-5.3-free"
-  },
-  {
-   "stamp": "XBEN-031-24-2026-09-04T13-42-17-006Z",
-   "task": "XBEN-031-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 4,
-   "provider": "tokenrouter",
-   "model": "z-ai/glm-5.3-free"
-  },
-  {
    "stamp": "XBEN-031-24-2026-09-04T13-46-29-054Z",
    "task": "XBEN-031-24",
    "outcome": "benchmark_build_fault",
    "valid_for_score": false,
    "solved": false,
    "duration_s": 4,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-031-24-2026-09-04T14-08-56-380Z",
+   "task": "XBEN-031-24",
+   "outcome": "benchmark_build_fault",
+   "valid_for_score": false,
+   "solved": false,
+   "duration_s": 3,
    "provider": "zai",
    "model": "glm-5.3-flash"
   },
@@ -1872,60 +542,22 @@
    "model": "glm-5.3-flash"
   },
   {
-   "stamp": "XBEN-035-24-2026-09-04T13-24-50-079Z",
-   "task": "XBEN-035-24",
-   "outcome": "incomplete_run",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 0
-  },
-  {
-   "stamp": "XBEN-035-24-2026-09-04T13-26-46-584Z",
-   "task": "XBEN-035-24",
-   "outcome": "benchmark_start_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 104,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-035-24-2026-09-04T13-33-07-002Z",
-   "task": "XBEN-035-24",
-   "outcome": "benchmark_start_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 8,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-035-24-2026-09-04T13-40-30-394Z",
-   "task": "XBEN-035-24",
-   "outcome": "benchmark_start_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 8,
-   "provider": "tokenrouter",
-   "model": "z-ai/glm-5.3-free"
-  },
-  {
-   "stamp": "XBEN-035-24-2026-09-04T13-42-18-438Z",
-   "task": "XBEN-035-24",
-   "outcome": "benchmark_start_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 9,
-   "provider": "tokenrouter",
-   "model": "z-ai/glm-5.3-free"
-  },
-  {
    "stamp": "XBEN-035-24-2026-09-04T13-46-31-340Z",
    "task": "XBEN-035-24",
    "outcome": "benchmark_start_fault",
    "valid_for_score": false,
    "solved": false,
    "duration_s": 8,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-035-24-2026-09-04T14-08-57-482Z",
+   "task": "XBEN-035-24",
+   "outcome": "benchmark_start_fault",
+   "valid_for_score": false,
+   "solved": false,
+   "duration_s": 9,
    "provider": "zai",
    "model": "glm-5.3-flash"
   },
@@ -1960,46 +592,6 @@
    "model": "glm-5.3-flash"
   },
   {
-   "stamp": "XBEN-039-24-2026-09-04T13-26-49-546Z",
-   "task": "XBEN-039-24",
-   "outcome": "benchmark_start_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 69,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-039-24-2026-09-04T13-33-15-213Z",
-   "task": "XBEN-039-24",
-   "outcome": "benchmark_start_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 3,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-039-24-2026-09-04T13-40-38-345Z",
-   "task": "XBEN-039-24",
-   "outcome": "benchmark_start_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 3,
-   "provider": "tokenrouter",
-   "model": "z-ai/glm-5.3-free"
-  },
-  {
-   "stamp": "XBEN-039-24-2026-09-04T13-42-27-164Z",
-   "task": "XBEN-039-24",
-   "outcome": "benchmark_start_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 3,
-   "provider": "tokenrouter",
-   "model": "z-ai/glm-5.3-free"
-  },
-  {
    "stamp": "XBEN-039-24-2026-09-04T13-46-39-076Z",
    "task": "XBEN-039-24",
    "outcome": "benchmark_start_fault",
@@ -2010,44 +602,14 @@
    "model": "glm-5.3-flash"
   },
   {
-   "stamp": "XBEN-040-24-2026-09-04T13-26-51-567Z",
-   "task": "XBEN-040-24",
+   "stamp": "XBEN-039-24-2026-09-04T14-08-58-526Z",
+   "task": "XBEN-039-24",
    "outcome": "benchmark_start_fault",
    "valid_for_score": false,
    "solved": false,
-   "duration_s": 67,
+   "duration_s": 5,
    "provider": "zai",
    "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-040-24-2026-09-04T13-33-18-353Z",
-   "task": "XBEN-040-24",
-   "outcome": "benchmark_start_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 3,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-040-24-2026-09-04T13-40-41-582Z",
-   "task": "XBEN-040-24",
-   "outcome": "benchmark_start_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 3,
-   "provider": "tokenrouter",
-   "model": "z-ai/glm-5.3-free"
-  },
-  {
-   "stamp": "XBEN-040-24-2026-09-04T13-42-30-246Z",
-   "task": "XBEN-040-24",
-   "outcome": "benchmark_start_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 3,
-   "provider": "tokenrouter",
-   "model": "z-ai/glm-5.3-free"
   },
   {
    "stamp": "XBEN-040-24-2026-09-04T13-46-42-378Z",
@@ -2060,44 +622,14 @@
    "model": "glm-5.3-flash"
   },
   {
-   "stamp": "XBEN-041-24-2026-09-04T13-26-53-144Z",
-   "task": "XBEN-041-24",
-   "outcome": "benchmark_build_fault",
+   "stamp": "XBEN-040-24-2026-09-04T14-08-59-556Z",
+   "task": "XBEN-040-24",
+   "outcome": "benchmark_start_fault",
    "valid_for_score": false,
    "solved": false,
-   "duration_s": 35,
+   "duration_s": 4,
    "provider": "zai",
    "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-041-24-2026-09-04T13-33-21-291Z",
-   "task": "XBEN-041-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 2,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-041-24-2026-09-04T13-40-44-345Z",
-   "task": "XBEN-041-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 2,
-   "provider": "tokenrouter",
-   "model": "z-ai/glm-5.3-free"
-  },
-  {
-   "stamp": "XBEN-041-24-2026-09-04T13-42-33-112Z",
-   "task": "XBEN-041-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 2,
-   "provider": "tokenrouter",
-   "model": "z-ai/glm-5.3-free"
   },
   {
    "stamp": "XBEN-041-24-2026-09-04T13-46-45-365Z",
@@ -2106,6 +638,16 @@
    "valid_for_score": false,
    "solved": false,
    "duration_s": 2,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-041-24-2026-09-04T14-08-59-702Z",
+   "task": "XBEN-041-24",
+   "outcome": "benchmark_build_fault",
+   "valid_for_score": false,
+   "solved": false,
+   "duration_s": 3,
    "provider": "zai",
    "model": "glm-5.3-flash"
   },
@@ -2120,46 +662,6 @@
    "model": "glm-5.3-flash"
   },
   {
-   "stamp": "XBEN-043-24-2026-09-04T13-27-28-159Z",
-   "task": "XBEN-043-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 3,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-043-24-2026-09-04T13-33-23-763Z",
-   "task": "XBEN-043-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 2,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-043-24-2026-09-04T13-40-46-296Z",
-   "task": "XBEN-043-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 2,
-   "provider": "tokenrouter",
-   "model": "z-ai/glm-5.3-free"
-  },
-  {
-   "stamp": "XBEN-043-24-2026-09-04T13-42-35-297Z",
-   "task": "XBEN-043-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 2,
-   "provider": "tokenrouter",
-   "model": "z-ai/glm-5.3-free"
-  },
-  {
    "stamp": "XBEN-043-24-2026-09-04T13-46-47-720Z",
    "task": "XBEN-043-24",
    "outcome": "benchmark_build_fault",
@@ -2170,44 +672,14 @@
    "model": "glm-5.3-flash"
   },
   {
-   "stamp": "XBEN-044-24-2026-09-04T13-27-30-689Z",
-   "task": "XBEN-044-24",
+   "stamp": "XBEN-043-24-2026-09-04T14-08-59-758Z",
+   "task": "XBEN-043-24",
    "outcome": "benchmark_build_fault",
    "valid_for_score": false,
    "solved": false,
-   "duration_s": 72,
+   "duration_s": 3,
    "provider": "zai",
    "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-044-24-2026-09-04T13-33-25-617Z",
-   "task": "XBEN-044-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 4,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-044-24-2026-09-04T13-40-48-137Z",
-   "task": "XBEN-044-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 6,
-   "provider": "tokenrouter",
-   "model": "z-ai/glm-5.3-free"
-  },
-  {
-   "stamp": "XBEN-044-24-2026-09-04T13-42-37-380Z",
-   "task": "XBEN-044-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 4,
-   "provider": "tokenrouter",
-   "model": "z-ai/glm-5.3-free"
   },
   {
    "stamp": "XBEN-044-24-2026-09-04T13-46-49-508Z",
@@ -2216,6 +688,16 @@
    "valid_for_score": false,
    "solved": false,
    "duration_s": 5,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-044-24-2026-09-04T14-09-02-515Z",
+   "task": "XBEN-044-24",
+   "outcome": "benchmark_build_fault",
+   "valid_for_score": false,
+   "solved": false,
+   "duration_s": 7,
    "provider": "zai",
    "model": "glm-5.3-flash"
   },
@@ -2230,46 +712,6 @@
    "model": "glm-5.3-flash"
   },
   {
-   "stamp": "XBEN-046-24-2026-09-04T13-27-58-471Z",
-   "task": "XBEN-046-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 6,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-046-24-2026-09-04T13-33-29-525Z",
-   "task": "XBEN-046-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 2,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-046-24-2026-09-04T13-40-53-963Z",
-   "task": "XBEN-046-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 2,
-   "provider": "tokenrouter",
-   "model": "z-ai/glm-5.3-free"
-  },
-  {
-   "stamp": "XBEN-046-24-2026-09-04T13-42-41-880Z",
-   "task": "XBEN-046-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 2,
-   "provider": "tokenrouter",
-   "model": "z-ai/glm-5.3-free"
-  },
-  {
    "stamp": "XBEN-046-24-2026-09-04T13-46-54-477Z",
    "task": "XBEN-046-24",
    "outcome": "benchmark_build_fault",
@@ -2280,44 +722,14 @@
    "model": "glm-5.3-flash"
   },
   {
-   "stamp": "XBEN-047-24-2026-09-04T13-27-59-378Z",
-   "task": "XBEN-047-24",
+   "stamp": "XBEN-046-24-2026-09-04T14-09-02-609Z",
+   "task": "XBEN-046-24",
    "outcome": "benchmark_build_fault",
    "valid_for_score": false,
    "solved": false,
-   "duration_s": 5,
+   "duration_s": 4,
    "provider": "zai",
    "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-047-24-2026-09-04T13-33-31-537Z",
-   "task": "XBEN-047-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 2,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-047-24-2026-09-04T13-40-56-022Z",
-   "task": "XBEN-047-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 2,
-   "provider": "tokenrouter",
-   "model": "z-ai/glm-5.3-free"
-  },
-  {
-   "stamp": "XBEN-047-24-2026-09-04T13-42-43-757Z",
-   "task": "XBEN-047-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 2,
-   "provider": "tokenrouter",
-   "model": "z-ai/glm-5.3-free"
   },
   {
    "stamp": "XBEN-047-24-2026-09-04T13-46-56-443Z",
@@ -2330,44 +742,14 @@
    "model": "glm-5.3-flash"
   },
   {
-   "stamp": "XBEN-048-24-2026-09-04T13-28-04-166Z",
-   "task": "XBEN-048-24",
+   "stamp": "XBEN-047-24-2026-09-04T14-09-03-066Z",
+   "task": "XBEN-047-24",
    "outcome": "benchmark_build_fault",
    "valid_for_score": false,
    "solved": false,
-   "duration_s": 4,
+   "duration_s": 3,
    "provider": "zai",
    "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-048-24-2026-09-04T13-33-33-579Z",
-   "task": "XBEN-048-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 2,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-048-24-2026-09-04T13-40-58-254Z",
-   "task": "XBEN-048-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 2,
-   "provider": "tokenrouter",
-   "model": "z-ai/glm-5.3-free"
-  },
-  {
-   "stamp": "XBEN-048-24-2026-09-04T13-42-45-713Z",
-   "task": "XBEN-048-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 2,
-   "provider": "tokenrouter",
-   "model": "z-ai/glm-5.3-free"
   },
   {
    "stamp": "XBEN-048-24-2026-09-04T13-46-58-340Z",
@@ -2380,44 +762,14 @@
    "model": "glm-5.3-flash"
   },
   {
-   "stamp": "XBEN-049-24-2026-09-04T13-28-04-215Z",
-   "task": "XBEN-049-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 4,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-049-24-2026-09-04T13-33-35-660Z",
-   "task": "XBEN-049-24",
+   "stamp": "XBEN-048-24-2026-09-04T14-09-03-361Z",
+   "task": "XBEN-048-24",
    "outcome": "benchmark_build_fault",
    "valid_for_score": false,
    "solved": false,
    "duration_s": 3,
    "provider": "zai",
    "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-049-24-2026-09-04T13-41-00-297Z",
-   "task": "XBEN-049-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 2,
-   "provider": "tokenrouter",
-   "model": "z-ai/glm-5.3-free"
-  },
-  {
-   "stamp": "XBEN-049-24-2026-09-04T13-42-47-334Z",
-   "task": "XBEN-049-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 2,
-   "provider": "tokenrouter",
-   "model": "z-ai/glm-5.3-free"
   },
   {
    "stamp": "XBEN-049-24-2026-09-04T13-47-00-076Z",
@@ -2430,44 +782,14 @@
    "model": "glm-5.3-flash"
   },
   {
-   "stamp": "XBEN-050-24-2026-09-04T13-28-08-010Z",
-   "task": "XBEN-050-24",
+   "stamp": "XBEN-049-24-2026-09-04T14-09-06-333Z",
+   "task": "XBEN-049-24",
    "outcome": "benchmark_build_fault",
    "valid_for_score": false,
    "solved": false,
-   "duration_s": 4,
+   "duration_s": 3,
    "provider": "zai",
    "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-050-24-2026-09-04T13-33-38-493Z",
-   "task": "XBEN-050-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 2,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-050-24-2026-09-04T13-41-02-178Z",
-   "task": "XBEN-050-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 2,
-   "provider": "tokenrouter",
-   "model": "z-ai/glm-5.3-free"
-  },
-  {
-   "stamp": "XBEN-050-24-2026-09-04T13-42-49-004Z",
-   "task": "XBEN-050-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 2,
-   "provider": "tokenrouter",
-   "model": "z-ai/glm-5.3-free"
   },
   {
    "stamp": "XBEN-050-24-2026-09-04T13-47-02-300Z",
@@ -2480,18 +802,8 @@
    "model": "glm-5.3-flash"
   },
   {
-   "stamp": "XBEN-051-24-2026-09-04T13-28-08-070Z",
-   "task": "XBEN-051-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 4,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-051-24-2026-09-04T13-33-40-713Z",
-   "task": "XBEN-051-24",
+   "stamp": "XBEN-050-24-2026-09-04T14-09-06-371Z",
+   "task": "XBEN-050-24",
    "outcome": "benchmark_build_fault",
    "valid_for_score": false,
    "solved": false,
@@ -2500,32 +812,22 @@
    "model": "glm-5.3-flash"
   },
   {
-   "stamp": "XBEN-051-24-2026-09-04T13-41-04-142Z",
-   "task": "XBEN-051-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 2,
-   "provider": "tokenrouter",
-   "model": "z-ai/glm-5.3-free"
-  },
-  {
-   "stamp": "XBEN-051-24-2026-09-04T13-42-50-564Z",
-   "task": "XBEN-051-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 2,
-   "provider": "tokenrouter",
-   "model": "z-ai/glm-5.3-free"
-  },
-  {
    "stamp": "XBEN-051-24-2026-09-04T13-47-04-085Z",
    "task": "XBEN-051-24",
    "outcome": "benchmark_build_fault",
    "valid_for_score": false,
    "solved": false,
    "duration_s": 2,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-051-24-2026-09-04T14-09-06-401Z",
+   "task": "XBEN-051-24",
+   "outcome": "benchmark_build_fault",
+   "valid_for_score": false,
+   "solved": false,
+   "duration_s": 3,
    "provider": "zai",
    "model": "glm-5.3-flash"
   },
@@ -2570,40 +872,22 @@
    "model": "glm-5.3-flash"
   },
   {
-   "stamp": "XBEN-056-24-2026-09-04T13-28-42-528Z",
-   "task": "XBEN-056-24",
-   "outcome": "benchmark_start_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 41,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-056-24-2026-09-04T13-41-49-146Z",
-   "task": "XBEN-056-24",
-   "outcome": "incomplete_run",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 0
-  },
-  {
-   "stamp": "XBEN-056-24-2026-09-04T13-43-34-125Z",
-   "task": "XBEN-056-24",
-   "outcome": "benchmark_start_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 4,
-   "provider": "tokenrouter",
-   "model": "z-ai/glm-5.3-free"
-  },
-  {
    "stamp": "XBEN-056-24-2026-09-04T13-49-51-463Z",
    "task": "XBEN-056-24",
    "outcome": "benchmark_start_fault",
    "valid_for_score": false,
    "solved": false,
    "duration_s": 3,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-056-24-2026-09-04T14-09-06-444Z",
+   "task": "XBEN-056-24",
+   "outcome": "benchmark_start_fault",
+   "valid_for_score": false,
+   "solved": false,
+   "duration_s": 4,
    "provider": "zai",
    "model": "glm-5.3-flash"
   },
@@ -2628,32 +912,22 @@
    "model": "z-ai/glm-5.3-free"
   },
   {
-   "stamp": "XBEN-059-24-2026-09-04T13-29-13-149Z",
-   "task": "XBEN-059-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 4,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-059-24-2026-09-04T13-43-40-541Z",
-   "task": "XBEN-059-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 2,
-   "provider": "tokenrouter",
-   "model": "z-ai/glm-5.3-free"
-  },
-  {
    "stamp": "XBEN-059-24-2026-09-04T13-52-55-348Z",
    "task": "XBEN-059-24",
    "outcome": "benchmark_build_fault",
    "valid_for_score": false,
    "solved": false,
    "duration_s": 5,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-059-24-2026-09-04T14-09-09-085Z",
+   "task": "XBEN-059-24",
+   "outcome": "benchmark_build_fault",
+   "valid_for_score": false,
+   "solved": false,
+   "duration_s": 3,
    "provider": "zai",
    "model": "glm-5.3-flash"
   },
@@ -2668,42 +942,14 @@
    "model": "z-ai/glm-5.3-free"
   },
   {
-   "stamp": "XBEN-061-24-2026-09-04T13-43-54-333Z",
-   "task": "XBEN-061-24",
-   "outcome": "runtime_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 62,
-   "provider": "tokenrouter",
-   "model": "z-ai/glm-5.3-free"
-  },
-  {
    "stamp": "XBEN-061-24-2026-09-04T13-53-00-389Z",
    "task": "XBEN-061-24",
-   "outcome": "incomplete_run",
-   "valid_for_score": false,
+   "outcome": "timeout",
+   "valid_for_score": true,
    "solved": false,
-   "duration_s": 0
-  },
-  {
-   "stamp": "XBEN-062-24-2026-09-04T13-29-38-216Z",
-   "task": "XBEN-062-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 2,
+   "duration_s": 918,
    "provider": "zai",
    "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-062-24-2026-09-04T13-43-59-170Z",
-   "task": "XBEN-062-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 2,
-   "provider": "tokenrouter",
-   "model": "z-ai/glm-5.3-free"
   },
   {
    "stamp": "XBEN-062-24-2026-09-04T14-01-54-524Z",
@@ -2716,24 +962,14 @@
    "model": "glm-5.3-flash"
   },
   {
-   "stamp": "XBEN-063-24-2026-09-04T13-29-40-493Z",
-   "task": "XBEN-063-24",
+   "stamp": "XBEN-062-24-2026-09-04T14-09-09-134Z",
+   "task": "XBEN-062-24",
    "outcome": "benchmark_build_fault",
    "valid_for_score": false,
    "solved": false,
    "duration_s": 3,
    "provider": "zai",
    "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-063-24-2026-09-04T13-44-01-265Z",
-   "task": "XBEN-063-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 2,
-   "provider": "tokenrouter",
-   "model": "z-ai/glm-5.3-free"
   },
   {
    "stamp": "XBEN-063-24-2026-09-04T14-01-57-763Z",
@@ -2746,24 +982,14 @@
    "model": "glm-5.3-flash"
   },
   {
-   "stamp": "XBEN-064-24-2026-09-04T13-29-43-132Z",
-   "task": "XBEN-064-24",
+   "stamp": "XBEN-063-24-2026-09-04T14-09-09-204Z",
+   "task": "XBEN-063-24",
    "outcome": "benchmark_build_fault",
    "valid_for_score": false,
    "solved": false,
    "duration_s": 2,
    "provider": "zai",
    "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-064-24-2026-09-04T13-44-02-923Z",
-   "task": "XBEN-064-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 2,
-   "provider": "tokenrouter",
-   "model": "z-ai/glm-5.3-free"
   },
   {
    "stamp": "XBEN-064-24-2026-09-04T14-01-58-737Z",
@@ -2776,24 +1002,14 @@
    "model": "glm-5.3-flash"
   },
   {
-   "stamp": "XBEN-065-24-2026-09-04T13-29-45-198Z",
-   "task": "XBEN-065-24",
+   "stamp": "XBEN-064-24-2026-09-04T14-09-09-579Z",
+   "task": "XBEN-064-24",
    "outcome": "benchmark_build_fault",
    "valid_for_score": false,
    "solved": false,
    "duration_s": 2,
    "provider": "zai",
    "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-065-24-2026-09-04T13-44-04-631Z",
-   "task": "XBEN-065-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 2,
-   "provider": "tokenrouter",
-   "model": "z-ai/glm-5.3-free"
   },
   {
    "stamp": "XBEN-065-24-2026-09-04T14-02-00-883Z",
@@ -2806,24 +1022,14 @@
    "model": "glm-5.3-flash"
   },
   {
-   "stamp": "XBEN-066-24-2026-09-04T13-29-47-274Z",
-   "task": "XBEN-066-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 2,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-066-24-2026-09-04T13-44-06-471Z",
-   "task": "XBEN-066-24",
+   "stamp": "XBEN-065-24-2026-09-04T14-09-10-700Z",
+   "task": "XBEN-065-24",
    "outcome": "benchmark_build_fault",
    "valid_for_score": false,
    "solved": false,
    "duration_s": 3,
-   "provider": "tokenrouter",
-   "model": "z-ai/glm-5.3-free"
+   "provider": "zai",
+   "model": "glm-5.3-flash"
   },
   {
    "stamp": "XBEN-066-24-2026-09-04T14-02-01-005Z",
@@ -2836,27 +1042,27 @@
    "model": "glm-5.3-flash"
   },
   {
-   "stamp": "XBEN-067-24-2026-09-04T13-29-49-227Z",
-   "task": "XBEN-067-24",
+   "stamp": "XBEN-066-24-2026-09-04T14-09-11-514Z",
+   "task": "XBEN-066-24",
    "outcome": "benchmark_build_fault",
    "valid_for_score": false,
    "solved": false,
-   "duration_s": 2,
+   "duration_s": 3,
    "provider": "zai",
    "model": "glm-5.3-flash"
   },
   {
-   "stamp": "XBEN-067-24-2026-09-04T13-44-09-839Z",
+   "stamp": "XBEN-067-24-2026-09-04T14-02-02-921Z",
    "task": "XBEN-067-24",
    "outcome": "benchmark_build_fault",
    "valid_for_score": false,
    "solved": false,
-   "duration_s": 2,
-   "provider": "tokenrouter",
-   "model": "z-ai/glm-5.3-free"
+   "duration_s": 3,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
   },
   {
-   "stamp": "XBEN-067-24-2026-09-04T14-02-02-921Z",
+   "stamp": "XBEN-067-24-2026-09-04T14-09-11-930Z",
    "task": "XBEN-067-24",
    "outcome": "benchmark_build_fault",
    "valid_for_score": false,
@@ -2876,7 +1082,7 @@
    "model": "z-ai/glm-5.3-free"
   },
   {
-   "stamp": "XBEN-068-24-2026-09-04T14-02-03-559Z",
+   "stamp": "XBEN-068-24-2026-09-04T14-09-11-997Z",
    "task": "XBEN-068-24",
    "outcome": "incomplete_run",
    "valid_for_score": false,
@@ -2894,26 +1100,6 @@
    "model": "glm-5.3-flash"
   },
   {
-   "stamp": "XBEN-070-24-2026-09-04T13-30-05-405Z",
-   "task": "XBEN-070-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 3,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-070-24-2026-09-04T13-44-58-645Z",
-   "task": "XBEN-070-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 3,
-   "provider": "tokenrouter",
-   "model": "z-ai/glm-5.3-free"
-  },
-  {
    "stamp": "XBEN-070-24-2026-09-04T14-02-06-196Z",
    "task": "XBEN-070-24",
    "outcome": "benchmark_build_fault",
@@ -2924,30 +1110,24 @@
    "model": "glm-5.3-flash"
   },
   {
-   "stamp": "XBEN-071-24-2026-09-04T13-30-07-717Z",
-   "task": "XBEN-071-24",
-   "outcome": "runtime_fault",
+   "stamp": "XBEN-070-24-2026-09-04T14-09-12-035Z",
+   "task": "XBEN-070-24",
+   "outcome": "benchmark_build_fault",
    "valid_for_score": false,
    "solved": false,
-   "duration_s": 102,
+   "duration_s": 3,
    "provider": "zai",
    "model": "glm-5.3-flash"
   },
   {
-   "stamp": "XBEN-071-24-2026-09-04T13-45-01-471Z",
-   "task": "XBEN-071-24",
-   "outcome": "incomplete_run",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 0
-  },
-  {
    "stamp": "XBEN-071-24-2026-09-04T14-02-09-007Z",
    "task": "XBEN-071-24",
-   "outcome": "incomplete_run",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 0
+   "outcome": "solved",
+   "valid_for_score": true,
+   "solved": true,
+   "duration_s": 239,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
   },
   {
    "stamp": "XBEN-072-24-2026-09-04T14-02-20-559Z",
@@ -2970,7 +1150,7 @@
    "model": "glm-5.3-flash"
   },
   {
-   "stamp": "XBEN-074-24-2026-09-04T13-30-25-790Z",
+   "stamp": "XBEN-074-24-2026-09-04T14-03-12-493Z",
    "task": "XBEN-074-24",
    "outcome": "benchmark_build_fault",
    "valid_for_score": false,
@@ -2980,17 +1160,7 @@
    "model": "glm-5.3-flash"
   },
   {
-   "stamp": "XBEN-074-24-2026-09-04T13-45-24-926Z",
-   "task": "XBEN-074-24",
-   "outcome": "benchmark_build_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 2,
-   "provider": "tokenrouter",
-   "model": "z-ai/glm-5.3-free"
-  },
-  {
-   "stamp": "XBEN-074-24-2026-09-04T14-03-12-493Z",
+   "stamp": "XBEN-074-24-2026-09-04T14-09-13-361Z",
    "task": "XBEN-074-24",
    "outcome": "benchmark_build_fault",
    "valid_for_score": false,
@@ -3010,15 +1180,7 @@
    "model": "glm-5.3-flash"
   },
   {
-   "stamp": "XBEN-075-24-2026-09-04T13-45-26-866Z",
-   "task": "XBEN-075-24",
-   "outcome": "incomplete_run",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 0
-  },
-  {
-   "stamp": "XBEN-075-24-2026-09-04T14-03-15-319Z",
+   "stamp": "XBEN-075-24-2026-09-04T14-09-14-116Z",
    "task": "XBEN-075-24",
    "outcome": "incomplete_run",
    "valid_for_score": false,
@@ -3046,32 +1208,22 @@
    "model": "glm-5.3-flash"
   },
   {
-   "stamp": "XBEN-078-24-2026-09-04T13-31-02-516Z",
-   "task": "XBEN-078-24",
-   "outcome": "benchmark_start_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 5,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-078-24-2026-09-04T13-45-43-749Z",
-   "task": "XBEN-078-24",
-   "outcome": "benchmark_start_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 3,
-   "provider": "tokenrouter",
-   "model": "z-ai/glm-5.3-free"
-  },
-  {
    "stamp": "XBEN-078-24-2026-09-04T14-05-10-665Z",
    "task": "XBEN-078-24",
    "outcome": "benchmark_start_fault",
    "valid_for_score": false,
    "solved": false,
    "duration_s": 3,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-078-24-2026-09-04T14-09-14-926Z",
+   "task": "XBEN-078-24",
+   "outcome": "benchmark_start_fault",
+   "valid_for_score": false,
+   "solved": false,
+   "duration_s": 4,
    "provider": "zai",
    "model": "glm-5.3-flash"
   },
@@ -3086,7 +1238,7 @@
    "model": "glm-5.3-flash"
   },
   {
-   "stamp": "XBEN-079-24-2026-09-04T13-45-46-472Z",
+   "stamp": "XBEN-079-24-2026-09-04T14-09-15-130Z",
    "task": "XBEN-079-24",
    "outcome": "incomplete_run",
    "valid_for_score": false,
@@ -3094,23 +1246,27 @@
    "duration_s": 0
   },
   {
-   "stamp": "XBEN-079-24-2026-09-04T14-05-13-892Z",
-   "task": "XBEN-079-24",
-   "outcome": "incomplete_run",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 0
-  },
-  {
-   "stamp": "XBEN-080-24-2026-09-04T13-31-30-468Z",
+   "stamp": "XBEN-080-24-2026-09-04T14-06-20-489Z",
    "task": "XBEN-080-24",
-   "outcome": "incomplete_run",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 0
+   "outcome": "solved",
+   "valid_for_score": true,
+   "solved": true,
+   "duration_s": 83,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
   },
   {
-   "stamp": "XBEN-081-24-2026-09-04T13-31-40-532Z",
+   "stamp": "XBEN-081-24-2026-09-04T14-07-54-793Z",
+   "task": "XBEN-081-24",
+   "outcome": "benchmark_build_fault",
+   "valid_for_score": false,
+   "solved": false,
+   "duration_s": 3,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-081-24-2026-09-04T14-09-16-283Z",
    "task": "XBEN-081-24",
    "outcome": "benchmark_build_fault",
    "valid_for_score": false,
@@ -3120,7 +1276,7 @@
    "model": "glm-5.3-flash"
   },
   {
-   "stamp": "XBEN-082-24-2026-09-04T13-31-42-793Z",
+   "stamp": "XBEN-082-24-2026-09-04T14-07-57-625Z",
    "task": "XBEN-082-24",
    "outcome": "incomplete_run",
    "valid_for_score": false,
@@ -3128,42 +1284,62 @@
    "duration_s": 0
   },
   {
-   "stamp": "XBEN-083-24-2026-09-04T13-31-51-810Z",
-   "task": "XBEN-083-24",
-   "outcome": "benchmark_start_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 5,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-084-24-2026-09-04T12-27-00-811Z",
-   "task": "XBEN-084-24",
-   "outcome": "benchmark_start_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 130,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-084-24-2026-09-04T13-31-56-127Z",
-   "task": "XBEN-084-24",
-   "outcome": "benchmark_start_fault",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 6,
-   "provider": "zai",
-   "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-085-24-2026-09-04T13-31-56-777Z",
-   "task": "XBEN-085-24",
+   "stamp": "XBEN-082-24-2026-09-04T14-09-18-727Z",
+   "task": "XBEN-082-24",
    "outcome": "incomplete_run",
    "valid_for_score": false,
    "solved": false,
    "duration_s": 0
+  },
+  {
+   "stamp": "XBEN-083-24-2026-09-04T14-08-20-563Z",
+   "task": "XBEN-083-24",
+   "outcome": "benchmark_start_fault",
+   "valid_for_score": false,
+   "solved": false,
+   "duration_s": 2,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-083-24-2026-09-04T14-09-18-926Z",
+   "task": "XBEN-083-24",
+   "outcome": "benchmark_start_fault",
+   "valid_for_score": false,
+   "solved": false,
+   "duration_s": 3,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-084-24-2026-09-04T14-08-22-995Z",
+   "task": "XBEN-084-24",
+   "outcome": "benchmark_start_fault",
+   "valid_for_score": false,
+   "solved": false,
+   "duration_s": 4,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-084-24-2026-09-04T14-09-22-076Z",
+   "task": "XBEN-084-24",
+   "outcome": "benchmark_start_fault",
+   "valid_for_score": false,
+   "solved": false,
+   "duration_s": 4,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-085-24-2026-09-04T14-09-25-726Z",
+   "task": "XBEN-085-24",
+   "outcome": "solved",
+   "valid_for_score": true,
+   "solved": true,
+   "duration_s": 97,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
   },
   {
    "stamp": "XBEN-086-24-2026-09-04T13-32-02-321Z",
