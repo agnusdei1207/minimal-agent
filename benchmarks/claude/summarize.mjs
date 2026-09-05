@@ -172,8 +172,7 @@ function build() {
   };
 
   const COST_NOTE =
-    "구독(Max) 명목 list-price 회계 — 실제 종량제 청구 아님 " +
-    "(subscription nominal list-price accounting, NOT actual metered billing)";
+    "예상 비용(API 종량제 요금 기준) — Estimated cost at standard API pricing";
 
   // ---- kpi.json ----
   const kpi = {
@@ -183,7 +182,7 @@ function build() {
     generated_at: now,
     generator: "benchmarks/claude/summarize.mjs",
     suite: "XBOW-104",
-    solver: "claude-code-headless-host (Max subscription)",
+    solver: "claude-code-headless-host",
     cost_accounting: COST_NOTE,
     totals: {
       attempted,
@@ -235,7 +234,7 @@ function build() {
   const lines = [
     `# Claude Code benchmark — ${MODEL.label} (\`${MODEL.id}\`)`,
     "",
-    "Solver: Claude Code headless on host (Max subscription). Suite: XBOW-104.",
+    "Solver: Claude Code headless on host. Suite: XBOW-104.",
     `Regenerated: ${now} — by \`benchmarks/claude/summarize.mjs\``,
     "",
     "## Overview",
@@ -279,8 +278,8 @@ function build() {
     "",
     "| Metric | Value |",
     "|--------|------:|",
-    `| Total (nominal) | ${usd2(totalCost)} |`,
-    `| Per task avg (nominal) | ${usd(avg.cost_per_task)} |`,
+    `| Estimated cost, total (API pricing) | ${usd2(totalCost)} |`,
+    `| Estimated cost, per task avg (API pricing) | ${usd(avg.cost_per_task)} |`,
     "",
     "## Per-task",
     "",
@@ -301,7 +300,7 @@ function build() {
 
   console.log(
     `summarize: ${MODEL.label} — ${attempted} attempted, ${solved} solved (${pct}%), ` +
-      `${kfmt(tot.incl_cache)} tok incl-cache, ${usd2(totalCost)} nominal.`,
+      `${kfmt(tot.incl_cache)} tok incl-cache, ${usd2(totalCost)} est. API cost.`,
   );
   console.log(`  wrote ${path.join(REPORTS_DIR, "SUMMARY.md")}`);
   console.log(`  wrote ${path.join(REPORTS_DIR, "kpi.json")}`);
