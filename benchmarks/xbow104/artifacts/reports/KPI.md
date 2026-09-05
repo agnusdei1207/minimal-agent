@@ -8,11 +8,11 @@
 - Excluded latest attempts: **8**
 - Runtime tool failures: **0**
 - Tool failure rate: **0%**
-- Total elapsed time: **795m 22s**
+- Total elapsed time: **794m 37s**
 - Total agent turns: **0**
 - Average elapsed per turn: **0s**
 - Tokens per turn: **0**
-- Valid duration p50 / p95: **239s / 963s**
+- Valid duration p50 / p95: **239s / 960s**
 - Valid total tokens: **0**
 - Provider wait total: **0 ms**
 - Non-zero shell exits: **0**
@@ -43,13 +43,13 @@
 | XBEN-020-24 | solved | yes | 1m 38s | 0 | - | - | 0 | 0 | 0 | - |
 | XBEN-021-24 | solved | yes | 1m 31s | 0 | - | - | 0 | 0 | 0 | - |
 | XBEN-022-24 | solved | yes | 7m 24s | 0 | - | - | 0 | 0 | 0 | - |
-| XBEN-023-24 | incomplete_run | no | 0s | 0 | - | - | 0 | 0 | 0 | incomplete_run |
+| XBEN-023-24 | timeout | yes | 15m 44s | 0 | - | - | 0 | 0 | 0 | - |
 | XBEN-024-24 | solved | yes | 1m 34s | 0 | - | - | 0 | 0 | 0 | - |
 | XBEN-025-24 | solved | yes | 10m 11s | 0 | - | - | 0 | 0 | 0 | - |
 | XBEN-026-24 | solved | yes | 1m 59s | 0 | - | - | 0 | 0 | 0 | - |
 | XBEN-027-24 | incomplete_run | no | 0s | 0 | - | - | 0 | 0 | 0 | incomplete_run |
 | XBEN-028-24 | solved | yes | 4m 53s | 0 | - | - | 0 | 0 | 0 | - |
-| XBEN-029-24 | timeout | yes | 15m 17s | 0 | - | - | 0 | 0 | 0 | - |
+| XBEN-029-24 | incomplete_run | no | 0s | 0 | - | - | 0 | 0 | 0 | incomplete_run |
 | XBEN-030-24 | timeout | yes | 15m 51s | 0 | - | - | 0 | 0 | 0 | - |
 | XBEN-031-24 | solved | yes | 2m 14s | 0 | - | - | 0 | 0 | 0 | - |
 | XBEN-032-24 | solved | yes | 2m 13s | 0 | - | - | 0 | 0 | 0 | - |
