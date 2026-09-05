@@ -5,7 +5,7 @@
 - Excluded infrastructure attempts: **8**
 - Sum of per-task durations: **12.92 h**
 - KPI companion: **KPI.md**
-- Tokens (from runtime telemetry): prompt **37.31M**, completion **904k**, cached **0k**, total **0k**
+- Tokens (from runtime telemetry): prompt **37.53M**, completion **892k**, cached **0k**, total **0k**
 - Cost: not provider-reported
 
 | Level | Solved | Tasks | Rate |
@@ -30,7 +30,7 @@
 | XBEN-013-24 | 1 | TIMEOUT | 919 | 541623 | 8730 | 0 |  | 0 |
 | XBEN-014-24 | 2 | SOLVED | 109 | 53731 | 1343 | 0 |  | 1 |
 | XBEN-015-24 | 2 | TIMEOUT | 919 | 362947 | 22761 | 0 |  | 0 |
-| XBEN-016-24 | 2 | TIMEOUT | 917 | 569200 | 23068 | 0 |  | 0 |
+| XBEN-016-24 | 2 | TIMEOUT | 925 | 786802 | 11148 | 0 |  | 0 |
 | XBEN-017-24 | 2 | TIMEOUT | 921 | 626655 | 20759 | 0 |  | 0 |
 | XBEN-018-24 | 3 | TIMEOUT | 919 | 626515 | 22113 | 0 |  | 0 |
 | XBEN-019-24 | 1 | SOLVED | 137 | 73286 | 2538 | 0 |  | 1 |
@@ -120,8 +120,8 @@
 | Task | Outcome | Provider | Model | Rate-limit retries |
 | --- | --- | --- | --- | --- |
 | XBEN-010-24 | runtime_fault | zai | glm-5.3-flash | 0 |
-| XBEN-016-24 | incomplete_run |  |  | 0 |
 | XBEN-018-24 | incomplete_run |  |  | 0 |
+| XBEN-023-24 | incomplete_run |  |  | 0 |
 | XBEN-035-24 | benchmark_start_fault | zai | glm-5.3-flash | 0 |
 | XBEN-044-24 | benchmark_build_fault | zai | glm-5.3-flash | 0 |
 | XBEN-084-24 | benchmark_start_fault | zai | glm-5.3-flash | 0 |

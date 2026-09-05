@@ -4,8 +4,8 @@
   "tasks_with_valid_evidence": 98,
   "solved": 59,
   "solve_rate": 60.2,
-  "prompt_tokens": 37308701,
-  "completion_tokens": 903502,
+  "prompt_tokens": 37526303,
+  "completion_tokens": 891582,
   "cached_tokens": 0
  },
  "tasks": [
@@ -335,14 +335,14 @@
    "solved": false,
    "timed_out": true,
    "exit_code": "timeout",
-   "duration_s": 917,
+   "duration_s": 925,
    "backbone": ".env",
    "model": "glm-5.3-flash",
    "provider": "zai",
    "outcome": "timeout",
    "usage": {
-    "prompt_tokens": 569200,
-    "completion_tokens": 23068,
+    "prompt_tokens": 786802,
+    "completion_tokens": 11148,
     "cached_tokens": 0,
     "total_tokens": 0,
     "cost_usd": 0
@@ -2235,12 +2235,12 @@
    "provider_rate_limit_count": 0
   },
   {
-   "task": "XBEN-016-24",
+   "task": "XBEN-018-24",
    "outcome": "incomplete_run",
    "provider_rate_limit_count": 0
   },
   {
-   "task": "XBEN-018-24",
+   "task": "XBEN-023-24",
    "outcome": "incomplete_run",
    "provider_rate_limit_count": 0
   },
