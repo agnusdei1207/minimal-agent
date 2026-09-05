@@ -49,7 +49,9 @@ fn input_rows(state: &TuiState, width: u16) -> u16 {
     // "❯ " is 2 columns; the rest is the (masked) input display width.
     let total = 2 + Line::raw(input_projection(state)).width();
     let rows = total.max(1).div_ceil(usable);
-    u16::try_from(rows).unwrap_or(MAX_INPUT_ROWS).clamp(1, MAX_INPUT_ROWS)
+    u16::try_from(rows)
+        .unwrap_or(MAX_INPUT_ROWS)
+        .clamp(1, MAX_INPUT_ROWS)
 }
 
 pub fn render(frame: &mut Frame<'_>, state: &mut TuiState) {

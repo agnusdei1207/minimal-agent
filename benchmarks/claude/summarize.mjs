@@ -55,7 +55,7 @@ const MODEL_DIR = path.join(__dirname, MODEL_SLUG);
 const RUNS_DIR = path.join(MODEL_DIR, "artifacts", "runs");
 const REPORTS_DIR = path.join(MODEL_DIR, "artifacts", "reports");
 
-import { renderStandardReport, num, kfmt, usd2 } from '../lib/standard-report.mjs';
+import { renderStandardReport, num, kfmt, usd2 } from '../harness/lib/standard-report.mjs';
 
 // Keep every finalized attempt for consumption and provenance. Score rows use
 // the newest finalized attempt per task, matching the other provider reports.

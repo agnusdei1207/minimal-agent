@@ -2,9 +2,9 @@ import assert from "node:assert/strict";
 import fs from "node:fs";
 import vm from "node:vm";
 import test from "node:test";
-import * as control from "../benchmarks/xbow104/control.mjs";
+import * as control from "../benchmarks/harness/control.mjs";
 
-for (const runner of ["xbow104/runner.mjs", "claude/run.mjs", "minimax/run.mjs"]) {
+for (const runner of ["harness/runner.mjs", "claude/run.mjs"]) {
   test(`${runner} rejects bare numeric options before launching work`, () => {
     const source = fs.readFileSync(new URL(`../benchmarks/${runner}`, import.meta.url), "utf8");
     const parser = source.match(/const arg = [^]*?^};/m)[0];
@@ -33,7 +33,7 @@ function mainFor(runner, overrides = {}) {
   });
 }
 
-for (const runner of ["claude", "minimax"]) {
+for (const runner of ["claude"]) {
   test(`${runner} rejects a failed or unlaunchable suite patch before creating runs`, async () => {
     for (const patch of [{ status: 1, stderr: "fixture suite failure" }, { status: null, error: new Error("fixture spawn failure") }]) {
       await assert.rejects(mainFor(runner, { spawnSync: () => patch })(), /suite patch failed/);

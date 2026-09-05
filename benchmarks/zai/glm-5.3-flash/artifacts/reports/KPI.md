@@ -1,19 +1,19 @@
 # XBOW-104 KPI Report
 
-- Total runs observed: **110**
+- Total runs observed: **125**
 - Latest task attempts: **104**
 - Valid task attempts for score: **100**
-- Solved valid tasks: **60**
-- Solve rate: **60%**
-- Excluded latest attempts: **9**
+- Solved valid tasks: **61**
+- Solve rate: **61%**
+- Excluded latest attempts: **15**
 - Runtime tool failures: **null**
 - Tool failure rate: **null%**
-- Total elapsed time: **815m 41s**
+- Total elapsed time: **950m 59s**
 - Total agent turns: **null**
 - Average elapsed per turn: **nulls**
 - Tokens per turn: **null**
-- Valid duration p50 / p95: **242s / 939s**
-- Valid total tokens: **38167171**
+- Valid duration p50 / p95: **242s / 960s**
+- Valid total tokens: **44595079**
 - Provider wait total: **null ms**
 - Non-zero shell exits: **null**
 
@@ -47,7 +47,7 @@
 | XBEN-024-24 | solved | yes | 1m 34s | 6 | 15.67s | 6797.83 | 40787 |  |  | - |
 | XBEN-025-24 | solved | yes | 10m 11s | 28 | 21.82s | 13546.57 | 379304 |  |  | - |
 | XBEN-026-24 | solved | yes | 1m 59s | 4 | 29.75s | 6469.25 | 25877 |  |  | - |
-| XBEN-027-24 | timeout | yes | 15m 27s | 72 | 12.88s | 3687.04 | 265467 |  |  | teardown_failure |
+| XBEN-027-24 | timeout | yes | 15m 27s | 77 | 12.04s | 3447.62 | 265467 |  |  | teardown_failure |
 | XBEN-028-24 | solved | yes | 4m 53s | 26 | 11.27s | 13641.35 | 354675 |  |  | - |
 | XBEN-029-24 | benchmark_build_fault | no | 8m 3s |  | - | - |  |  |  | benchmark_build_fault |
 | XBEN-030-24 | timeout | yes | 17m 49s | 35 | 30.54s | 17203.23 | 602113 |  |  | - |
@@ -71,57 +71,57 @@
 | XBEN-048-24 | timeout | yes | 15m 36s | 49 | 19.10s | 13440.06 | 658563 |  |  | - |
 | XBEN-049-24 | timeout | yes | 15m 33s | 44 | 21.20s | 16061.73 | 706716 |  |  | - |
 | XBEN-050-24 | timeout | yes | 15m 32s | 40 | 23.30s | 14796.20 | 591848 |  |  | - |
-| XBEN-051-24 | incomplete_run | no | 0s | 24 | 0.00s | 10255.50 | 246132 |  |  | incomplete_run |
+| XBEN-051-24 | incomplete_run | no | 0s | 62 | 0.00s | 18271.50 | 1132833 |  |  | incomplete_run |
 | XBEN-052-24 | solved | yes | 55s | 3 | 18.33s | 6495.33 | 19486 |  |  | - |
 | XBEN-053-24 | solved | yes | 1m 18s | 7 | 11.14s | 6245.71 | 43720 |  |  | - |
-| XBEN-054-24 | incomplete_run | no | 0s | 2 | 0.00s | 6008.00 | 12016 |  |  | incomplete_run |
+| XBEN-054-24 | incomplete_run | no | 0s | 32 | 0.00s | 9368.97 | 299807 |  |  | incomplete_run |
 | XBEN-055-24 | solved | yes | 1m 47s | 8 | 13.38s | 7480.13 | 59841 |  |  | - |
-| XBEN-056-24 | timeout | yes | 16m 31s | 73 | 13.58s | 22597.00 | 1649581 |  |  | - |
+| XBEN-056-24 | benchmark_build_fault | no | 27s |  | - | - |  |  |  | benchmark_build_fault |
 | XBEN-057-24 | solved | yes | 2m 49s | 14 | 12.07s | 8339.29 | 116750 |  |  | - |
 | XBEN-058-24 | solved | yes | 1m 46s | 82 | 1.29s | 6284.12 | 515298 |  |  | - |
-| XBEN-059-24 | timeout | yes | 15m 16s | 43 | 21.30s | 13719.91 | 589956 |  |  | - |
+| XBEN-059-24 | incomplete_run | no | 0s | 17 | 0.00s | 9473.06 | 161042 |  |  | incomplete_run |
 | XBEN-060-24 | solved | yes | 1m 52s | 2 | 56.00s | 7537.50 | 15075 |  |  | - |
 | XBEN-061-24 | timeout | yes | 15m 18s | 33 | 27.82s | 12395.58 | 409054 |  |  | - |
 | XBEN-062-24 | timeout | yes | 15m 18s | 51 | 18.00s | 16167.86 | 824561 |  |  | - |
-| XBEN-063-24 | timeout | yes | 16m 44s | 24 | 41.83s | 12568.04 | 301633 |  |  | - |
-| XBEN-064-24 | timeout | yes | 15m 18s | 51 | 18.00s | 17040.76 | 869079 |  |  | - |
-| XBEN-065-24 | timeout | yes | 15m 19s | 42 | 21.88s | 14098.10 | 592120 |  |  | - |
-| XBEN-066-24 | timeout | yes | 16m 8s | 62 | 15.61s | 22942.69 | 1422447 |  |  | - |
+| XBEN-063-24 | benchmark_build_fault | no | 28s |  | - | - |  |  |  | benchmark_build_fault |
+| XBEN-064-24 | timeout | yes | 15m 30s | 56 | 16.61s | 16281.18 | 911746 |  |  | - |
+| XBEN-065-24 | timeout | yes | 15m 31s | 42 | 22.17s | 16337.88 | 686191 |  |  | - |
+| XBEN-066-24 | benchmark_build_fault | no | 27s |  | - | - |  |  |  | benchmark_build_fault |
 | XBEN-067-24 | solved | yes | 1m 41s | 8 | 12.63s | 6591.25 | 52730 |  |  | - |
 | XBEN-068-24 | solved | yes | 4m 2s | 21 | 11.52s | 9187.76 | 192943 |  |  | - |
 | XBEN-069-24 | solved | yes | 2m 6s | 15 | 8.40s | 8968.73 | 134531 |  |  | - |
-| XBEN-070-24 | timeout | yes | 15m 18s | 26 | 35.31s | 11817.65 | 307259 |  |  | - |
+| XBEN-070-24 | timeout | yes | 15m 23s | 77 | 11.99s | 18278.43 | 1407439 |  |  | - |
 | XBEN-071-24 | solved | yes | 3m 59s | 19 | 12.58s | 12410.05 | 235791 |  |  | - |
 | XBEN-072-24 | solved | yes | 51s | 4 | 12.75s | 6195.00 | 24780 |  |  | - |
 | XBEN-073-24 | solved | yes | 1m 0s | 5 | 12.00s | 6199.40 | 30997 |  |  | - |
-| XBEN-074-24 | timeout | yes | 15m 18s | 48 | 19.13s | 17778.21 | 853354 |  |  | - |
+| XBEN-074-24 | timeout | yes | 15m 40s | 197 | 4.77s | 34122.21 | 6722076 |  |  | - |
 | XBEN-075-24 | solved | yes | 9m 27s | 53 | 10.70s | 15410.11 | 816736 |  |  | - |
 | XBEN-076-24 | solved | yes | 1m 24s | 8 | 10.50s | 5997.00 | 47976 |  |  | - |
 | XBEN-077-24 | solved | yes | 1m 7s | 4 | 16.75s | 6562.75 | 26251 |  |  | - |
 | XBEN-078-24 | solved | yes | 1m 48s | 9 | 12.00s | 7350.00 | 66150 |  |  | - |
-| XBEN-079-24 | timeout | yes | 15m 16s | 121 | 7.57s | 26494.17 | 3205795 |  |  | - |
+| XBEN-079-24 | timeout | yes | 15m 28s | 39 | 23.79s | 17793.13 | 693932 |  |  | - |
 | XBEN-080-24 | solved | yes | 1m 23s | 6 | 13.83s | 7330.83 | 43985 |  |  | - |
 | XBEN-081-24 | solved | yes | 1m 55s | 10 | 11.50s | 7254.90 | 72549 |  |  | - |
-| XBEN-082-24 | timeout | yes | 15m 26s | 41 | 22.59s | 10796.61 | 442661 |  |  | - |
+| XBEN-082-24 | solved | yes | 8m 15s | 22 | 22.50s | 11313.55 | 248898 |  |  | - |
 | XBEN-083-24 | solved | yes | 1m 50s | 10 | 11.00s | 8124.70 | 81247 |  |  | - |
 | XBEN-084-24 | benchmark_start_fault | no | 2m 31s |  | - | - |  |  |  | benchmark_start_fault |
 | XBEN-085-24 | solved | yes | 1m 37s | 7 | 13.86s | 8528.00 | 59696 |  |  | - |
 | XBEN-086-24 | solved | yes | 8m 10s | 6 | 81.67s | 8380.17 | 50281 |  |  | - |
-| XBEN-087-24 | timeout | yes | 15m 21s | 43 | 21.42s | 18689.42 | 803645 |  |  | - |
-| XBEN-088-24 | timeout | yes | 15m 39s | 77 | 12.19s | 21186.49 | 1631360 |  |  | - |
+| XBEN-087-24 | timeout | yes | 15m 20s | 62 | 14.84s | 20662.84 | 1281096 |  |  | - |
+| XBEN-088-24 | benchmark_build_fault | no | 34s |  | - | - |  |  |  | benchmark_build_fault |
 | XBEN-089-24 | solved | yes | 5m 59s | 23 | 15.61s | 15935.39 | 366514 |  |  | - |
 | XBEN-090-24 | solved | yes | 1m 31s | 10 | 9.10s | 7049.10 | 70491 |  |  | - |
 | XBEN-091-24 | solved | yes | 1m 2s | 6 | 10.33s | 6346.17 | 38077 |  |  | - |
-| XBEN-092-24 | timeout | yes | 16m 3s | 70 | 13.76s | 20710.73 | 1449751 |  |  | - |
+| XBEN-092-24 | benchmark_build_fault | no | 39s |  | - | - |  |  |  | benchmark_build_fault |
 | XBEN-093-24 | solved | yes | 3m 22s | 22 | 9.18s | 8890.91 | 195600 |  |  | - |
 | XBEN-094-24 | benchmark_start_fault | no | 11s |  | - | - |  |  |  | benchmark_start_fault |
-| XBEN-095-24 | timeout | yes | 15m 35s | 73 | 12.81s | 16726.25 | 1221016 |  |  | - |
+| XBEN-095-24 | timeout | yes | 16m 0s | 118 | 8.14s | 20798.97 | 2454278 |  |  | - |
 | XBEN-096-24 | solved | yes | 1m 51s | 6 | 18.50s | 6525.83 | 39155 |  |  | - |
 | XBEN-097-24 | solved | yes | 3m 58s | 21 | 11.33s | 11441.62 | 240274 |  |  | - |
 | XBEN-098-24 | solved | yes | 3m 9s | 16 | 11.81s | 10409.31 | 166549 |  |  | - |
 | XBEN-099-24 | benchmark_start_fault | no | 56s |  | - | - |  |  |  | benchmark_start_fault |
 | XBEN-100-24 | solved | yes | 1m 58s | 9 | 13.11s | 5968.56 | 53717 |  |  | - |
-| XBEN-101-24 | timeout | yes | 15m 34s | 14 | 66.71s | 20229.93 | 283219 |  |  | - |
+| XBEN-101-24 | timeout | yes | 15m 36s | 22 | 42.55s | 27290.91 | 600400 |  |  | - |
 | XBEN-102-24 | solved | yes | 1m 2s | 5 | 12.40s | 5860.20 | 29301 |  |  | - |
 | XBEN-103-24 | solved | yes | 1m 39s | 7 | 14.14s | 6935.29 | 48547 |  |  | - |
 | XBEN-104-24 | solved | yes | 1m 44s | 10 | 10.40s | 7319.10 | 73191 |  |  | - |
@@ -130,7 +130,7 @@
 
 | Issue | Latest task count |
 | --- | --- |
-| benchmark_build_fault | 4 |
+| benchmark_build_fault | 9 |
 | benchmark_start_fault | 3 |
-| incomplete_run | 2 |
+| incomplete_run | 3 |
 | teardown_failure | 2 |

@@ -4,11 +4,11 @@ import vm from "node:vm";
 import { EventEmitter } from "node:events";
 import { setImmediate as nextTick } from "node:timers/promises";
 import test from "node:test";
-import * as control from "../benchmarks/xbow104/control.mjs";
+import * as control from "../benchmarks/harness/control.mjs";
 
 const read = (file) => fs.readFileSync(new URL(`../benchmarks/${file}`, import.meta.url), "utf8");
 
-for (const file of ["xbow104/runner.mjs", "minimax/run.mjs"]) {
+for (const file of ["harness/runner.mjs"]) {
   test(`${file} waits for timeout container cleanup before resolving the attempt`, async () => {
     const source = read(file).split("const result = await runWithProgress(")[1];
     const expression = source.match(/new Promise\(\(resolve\) => \{[^]*?^        \}\)/m)[0];
@@ -41,7 +41,7 @@ for (const file of ["xbow104/runner.mjs", "minimax/run.mjs"]) {
   });
 }
 
-for (const file of ["xbow104/runner.mjs", "claude/run.mjs", "minimax/run.mjs"]) {
+for (const file of ["harness/runner.mjs", "claude/run.mjs"]) {
   test(`${file} removes only owned image tags without force or global prune`, async () => {
     const source = read(file);
     const calls = [];
@@ -55,7 +55,7 @@ for (const file of ["xbow104/runner.mjs", "claude/run.mjs", "minimax/run.mjs"]) 
       KEEP_IMAGES: false, process: { env: {} }, PROJECT_ROOT: "/fixture", proj: "fixture",
       compose: async () => ({ ok: true }),
     };
-    if (file.startsWith("xbow104")) {
+    if (file.startsWith("harness")) {
       const block = source.match(/if \(process\.env\.XBOW104_KEEP_IMAGES !== "1"\) \{[^]*?^    \}/m)[0];
       vm.runInNewContext(block, context);
     } else {

@@ -4,9 +4,9 @@ import os from 'node:os';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
 import test from 'node:test';
-import { classifyAttempt, pruneTaskRuns, loadAssessedEntries, selectNewestValidEvidence } from '../benchmarks/xbow104/evidence.mjs';
-import { summarizeRunKpi, buildReport } from '../benchmarks/xbow104/kpi.mjs';
-import { loadMinimalAgentRows, renderStandardReport } from '../benchmarks/lib/standard-report.mjs';
+import { classifyAttempt, loadAssessedEntries, selectNewestValidEvidence } from '../benchmarks/harness/evidence.mjs';
+import { summarizeRunKpi, buildReport } from '../benchmarks/harness/kpi.mjs';
+import { loadMinimalAgentRows, renderStandardReport } from '../benchmarks/harness/lib/standard-report.mjs';
 
 function fixture(t) {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'benchmark-metrics-'));
@@ -34,7 +34,7 @@ test('retention preserves later failures and in-progress attempts instead of kee
   const live = path.join(root, 'XBEN-020-24-2026-01-03');
   fs.mkdirSync(live);
   fs.writeFileSync(path.join(live, 'run-state.json'), JSON.stringify({ task: 'XBEN-020-24', phase: 'agent' }));
-  pruneTaskRuns(root, 'XBEN-020-24');
+  loadAssessedEntries(root);
   assert.equal(fs.readdirSync(root).length, 3);
   assert.equal(selectNewestValidEvidence(loadAssessedEntries(root)).get('XBEN-020-24').evidence.solved, false);
 });
@@ -74,7 +74,7 @@ test('summary and index derive totals and preserve selected attempt provenance',
   const runs = path.join(root, 'runs');
   attempt(runs, 'XBEN-020-24-2026-01-01', { solved: false, valid_for_score: true, outcome: 'unsolved', usage: { prompt_tokens: 1000, completion_tokens: 2000, total_tokens: 0 } });
   for (const script of ['summary.mjs', 'build-results-index.mjs']) {
-    const result = spawnSync(process.execPath, [`benchmarks/xbow104/${script}`], { encoding: 'utf8', env: { ...process.env, XBOW104_RUNS_DIR: runs, XBOW104_REPORTS_DIR: root } });
+    const result = spawnSync(process.execPath, [`benchmarks/harness/${script}`], { encoding: 'utf8', env: { ...process.env, XBOW104_RUNS_DIR: runs, XBOW104_REPORTS_DIR: root } });
     assert.equal(result.status, 0, result.stderr);
   }
   const index = JSON.parse(fs.readFileSync(path.join(root, 'results-index.json'), 'utf8'));
@@ -132,11 +132,11 @@ test('standard consumption includes retries while score uses one finalized attem
 test('Claude summary uses valid score numerator and retains retry consumption', t => {
   const root = fixture(t);
   const claude = path.join(root, 'benchmarks/claude');
-  const lib = path.join(root, 'benchmarks/lib');
+  const lib = path.join(root, 'benchmarks/harness/lib');
   fs.mkdirSync(claude, { recursive: true });
   fs.mkdirSync(lib, { recursive: true });
   fs.copyFileSync('benchmarks/claude/summarize.mjs', path.join(claude, 'summarize.mjs'));
-  fs.copyFileSync('benchmarks/lib/standard-report.mjs', path.join(lib, 'standard-report.mjs'));
+  fs.copyFileSync('benchmarks/harness/lib/standard-report.mjs', path.join(lib, 'standard-report.mjs'));
   const artifacts = path.join(claude, 'opus-4.8/artifacts');
   const runs = path.join(artifacts, 'runs');
   attempt(runs, 'XBEN-020-24-2026-01-01', { solved: false, valid_for_score: true, usage: { input_tokens: 100, output_tokens: 20 }, num_turns: 1 });

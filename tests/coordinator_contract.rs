@@ -50,8 +50,12 @@ fn terminating_or_recalling_an_internal_node_cascades_to_its_whole_subtree() {
     let (_dir, _journal, coordinator) = coordinator();
     let main = AgentId::main();
     // main → child (depth 1) → grandchild (depth 2)
-    let child = coordinator.create_worker(&main, "lead", "delegate").unwrap();
-    let grandchild = coordinator.create_worker(&child, "leaf", "execute").unwrap();
+    let child = coordinator
+        .create_worker(&main, "lead", "delegate")
+        .unwrap();
+    let grandchild = coordinator
+        .create_worker(&child, "leaf", "execute")
+        .unwrap();
     assert_eq!(coordinator.active_team_size(), 3);
 
     // Terminating the internal child tears down the whole subtree so no grandchild
@@ -59,7 +63,10 @@ fn terminating_or_recalling_an_internal_node_cascades_to_its_whole_subtree() {
     coordinator
         .mark_terminal(&main, &child, AgentState::Stopped, "branch abandoned")
         .unwrap();
-    assert_eq!(coordinator.inspect(&child).unwrap().state, AgentState::Stopped);
+    assert_eq!(
+        coordinator.inspect(&child).unwrap().state,
+        AgentState::Stopped
+    );
     assert_eq!(
         coordinator.inspect(&grandchild).unwrap().state,
         AgentState::Stopped
@@ -78,8 +85,12 @@ fn terminating_or_recalling_an_internal_node_cascades_to_its_whole_subtree() {
 fn recalling_an_internal_node_cascades_recall_to_its_subtree() {
     let (_dir, _journal, coordinator) = coordinator();
     let main = AgentId::main();
-    let child = coordinator.create_worker(&main, "lead", "delegate").unwrap();
-    let grandchild = coordinator.create_worker(&child, "leaf", "execute").unwrap();
+    let child = coordinator
+        .create_worker(&main, "lead", "delegate")
+        .unwrap();
+    let grandchild = coordinator
+        .create_worker(&child, "leaf", "execute")
+        .unwrap();
     let grandchild_cancel = coordinator.cancellation_token(&grandchild).unwrap();
 
     coordinator.recall(&main, &child, "pivot").unwrap();

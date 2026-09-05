@@ -5,11 +5,11 @@ import path from "node:path";
 import vm from "node:vm";
 import test from "node:test";
 import { EventEmitter } from "node:events";
-import * as control from "../benchmarks/xbow104/control.mjs";
-import * as interrupt from "../benchmarks/xbow104/interrupt.mjs";
+import * as control from "../benchmarks/harness/control.mjs";
+import * as interrupt from "../benchmarks/harness/interrupt.mjs";
 
 function loadFunction(file, name, context) {
-  const source = fs.readFileSync(new URL(`../benchmarks/xbow104/${file}`, import.meta.url), "utf8");
+  const source = fs.readFileSync(new URL(`../benchmarks/harness/${file}`, import.meta.url), "utf8");
   const match = source.match(new RegExp(`(?:export )?((?:async )?function ${name}\\([^]*?^\\})`, "m"));
   assert.ok(match, `${name} exists`);
   return vm.runInNewContext(`(${match[1]})`, context);
@@ -72,11 +72,11 @@ test("an old watchdog cannot tear down a newer attempt of the same task", (t) =>
 });
 
 test("doctor distinguishes connected networks from empty cleanup candidates", () => {
-  const source = fs.readFileSync(new URL("../benchmarks/xbow104/doctor.mjs", import.meta.url), "utf8")
+  const source = fs.readFileSync(new URL("../benchmarks/harness/doctor.mjs", import.meta.url), "utf8")
     .replace(/^import[^;]+;\s*/gm, "");
   const logs = [];
   const context = {
-    ...control, path, fileURLToPath: () => "/fixture/benchmarks/xbow104/doctor.mjs",
+    ...control, path, fileURLToPath: () => "/fixture/benchmarks/harness/doctor.mjs",
     fs: { existsSync: () => false },
     process: { argv: [], env: {}, exitCode: 0 },
     console: { log: (line) => logs.push(line) },
@@ -133,7 +133,7 @@ test("runner setup builds through the owned image pipeline and preserves no-cach
   const calls = [];
   const setup = loadFunction("runner.mjs", "setup", {
     process: { platform: "win32", env: { XBOW104_NO_CACHE: "1" } },
-    path, PROJECT_ROOT: "/fixture", __dirname: "/fixture/benchmarks/xbow104",
+    path, PROJECT_ROOT: "/fixture", __dirname: "/fixture/benchmarks/harness",
     AGENT_IMAGE: "xbow-agent-runner:fixture", console: { log() {} },
     spawn: (command, args) => {
       calls.push({ command, args: Array.from(args) });

@@ -169,7 +169,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts/dimage.ps1
 ```
 
 The architecture decisions and executable requirements live in
-[`docs/adr/`](docs/adr/): ADR-0001 (minimal team-agent core) and ADR-0002
+[`docs/adr/`](docs/adr): ADR-0001 (minimal team-agent core) and ADR-0002
 (authorized engagement, steering, and transcript orchestration).
 
 ## License

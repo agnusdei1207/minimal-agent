@@ -377,8 +377,16 @@ async fn two_invalid_attempts_fall_back_mechanically_without_a_permanent_latch()
             // Keeps ONLY the protected live tail (3,3) — never an eligible entry
             // (1,2). Keeping an eligible entry could split a tool-call/result atomic
             // group and orphan a tool result (provider "tool id not found").
-            assert!(kept_ranges.iter().any(|range| range.start == 3 && range.end == 3));
-            assert!(!kept_ranges.iter().any(|range| range.start == 1 && range.end == 2));
+            assert!(
+                kept_ranges
+                    .iter()
+                    .any(|range| range.start == 3 && range.end == 3)
+            );
+            assert!(
+                !kept_ranges
+                    .iter()
+                    .any(|range| range.start == 1 && range.end == 2)
+            );
         }
         other => panic!("expected a mechanical trim, got {other:?}"),
     }

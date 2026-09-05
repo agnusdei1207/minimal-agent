@@ -14,7 +14,7 @@
 
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { loadMinimalAgentRows, renderStandardReport, kfmt, usd2 } from "../lib/standard-report.mjs";
+import { loadMinimalAgentRows, renderStandardReport, kfmt, usd2 } from "../harness/lib/standard-report.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 

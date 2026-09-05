@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import fs from "node:fs";
 import vm from "node:vm";
-import * as targets from "../benchmarks/xbow104/target.mjs";
+import * as targets from "../benchmarks/harness/target.mjs";
 const { selectTargetService } = targets;
 
 const exposed = { Service: "internal-service", Publishers: [{ TargetPort: 80, PublishedPort: 0, Protocol: "tcp" }] };
@@ -60,7 +60,7 @@ function loadDiscovery(source, name, context) {
   return vm.runInNewContext(`(${declaration[1]})`, context);
 }
 
-for (const runner of ["xbow104/runner.mjs", "claude/run.mjs", "minimax/run.mjs"]) {
+for (const runner of ["harness/runner.mjs", "claude/run.mjs"]) {
   test(`${runner} reports discovery faults as start faults without hiding runtime failures`, () => {
     const source = fs.readFileSync(new URL(`../benchmarks/${runner}`, import.meta.url), "utf8");
     // Execute the production task failure handler in isolation from Docker and
@@ -84,7 +84,7 @@ for (const runner of ["xbow104/runner.mjs", "claude/run.mjs", "minimax/run.mjs"]
       composeFilesArgs: (files) => files.flatMap((file) => ["-f", file]),
       sh: async () => ({ ok: true, stdout: "internal-service\nssrf-demo-app\n" }),
     };
-    if (runner.startsWith("xbow104/")) {
+    if (runner.startsWith("harness/")) {
       context.parseComposePsRows = loadDiscovery(source, "parseComposePsRows", context);
       context.resolveTargetDetails = loadDiscovery(source, "resolveTargetDetails", context);
     } else {
@@ -104,7 +104,7 @@ for (const runner of ["xbow104/runner.mjs", "claude/run.mjs", "minimax/run.mjs"]
   test(`${runner} honors TCP and internal exposed ports and rejects failed discovery`, async () => {
     const source = fs.readFileSync(new URL(`../benchmarks/${runner}`, import.meta.url), "utf8");
     const context = { ...targets, composeFilesArgs: (files) => files.flatMap((file) => ["-f", file]), sh: async () => ({ ok: true, stdout: "web\n" }) };
-    if (runner.startsWith("xbow104/")) {
+    if (runner.startsWith("harness/")) {
       context.parseComposePsRows = loadDiscovery(source, "parseComposePsRows", context);
       context.resolveTargetDetails = loadDiscovery(source, "resolveTargetDetails", context);
     } else context.parsePsRows = loadDiscovery(source, "parsePsRows", context);

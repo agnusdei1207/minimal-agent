@@ -22,7 +22,7 @@ target "app" {
 
 target "runner" {
   context    = "."
-  dockerfile = "benchmarks/xbow104/Dockerfile.runner"
+  dockerfile = "benchmarks/harness/Dockerfile.runner"
   contexts = {
     "minimal-agent:check" = "target:app"
   }

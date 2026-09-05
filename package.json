@@ -27,13 +27,13 @@
     "check:docker": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/check.ps1",
     "docker:base": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/dimage.ps1 -Target base",
     "docker:build": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/dimage.ps1 -Target all -Tag minimal-agent:check",
-    "xbow": "node benchmarks/xbow104/task.mjs",
-    "xbow:run": "node benchmarks/xbow104/runner.mjs --all --concurrency 1",
-    "xbow:setup": "node benchmarks/xbow104/runner.mjs --setup",
-    "xbow:doctor": "node benchmarks/xbow104/doctor.mjs",
-    "xbow:summary": "node benchmarks/xbow104/summary.mjs",
-    "xbow:kpi": "node benchmarks/xbow104/kpi.mjs",
-    "xbow:results": "node benchmarks/xbow104/build-results-index.mjs"
+    "xbow": "node benchmarks/harness/task.mjs",
+    "xbow:run": "node benchmarks/harness/runner.mjs --all --concurrency 1",
+    "xbow:setup": "node benchmarks/harness/runner.mjs --setup",
+    "xbow:doctor": "node benchmarks/harness/doctor.mjs",
+    "xbow:summary": "node benchmarks/harness/summary.mjs",
+    "xbow:kpi": "node benchmarks/harness/kpi.mjs",
+    "xbow:results": "node benchmarks/harness/build-results-index.mjs"
   },
   "engines": {
     "node": ">=24 <25"
@@ -55,5 +55,8 @@
     "multi-agent",
     "rust",
     "tui"
-  ]
+  ],
+  "dependencies": {
+    "opencode-ai": "^1.18.27"
+  }
 }

@@ -1,6 +1,6 @@
 # ADR-0004: Bounded Three-Depth Hierarchical Orchestration and Exact-Value Propagation
 
-- Status: Implemented (후속 코어 수정 및 검증 상태는 docs/benchmark/project-audit-2026-09-05.md 참조)
+- Status: Implemented (후속 코어 수정 및 검증 상태는 benchmarks/harness/docs/STATUS.md 참조)
 - Created: 2026-09-01 +09:00
 - Version target: 0.111.0 (ADR-0002/0003과 함께 릴리스). Docker 게이트가 초록이고 사용자가
   요청하기 전까지 crate 버전은 0.110.0으로 유지한다(ADR-0002 버전 홀드 규율).

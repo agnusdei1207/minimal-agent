@@ -26,7 +26,11 @@ fn caps_the_team_at_main_plus_nine_active_workers() {
     assert_eq!(limits.validate_total(11), Err(DomainError::TeamFull));
     // A leaf (grandchild, depth 2) cannot spawn; depths below the max can.
     assert!(limits.validate_spawn(AgentDepth::MAIN).is_ok());
-    assert!(limits.validate_spawn(AgentDepth::try_from(1).unwrap()).is_ok());
+    assert!(
+        limits
+            .validate_spawn(AgentDepth::try_from(1).unwrap())
+            .is_ok()
+    );
     assert_eq!(
         limits.validate_spawn(AgentDepth::try_from(2).unwrap()),
         Err(DomainError::MaxDepthReached)

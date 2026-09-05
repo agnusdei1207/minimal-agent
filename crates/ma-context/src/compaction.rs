@@ -121,7 +121,9 @@ pub enum CompactionOutcome {
     /// drop the rest from context. The brief is unchanged and the run journal still
     /// holds every dropped entry (ADR-0001 §9 ledger). Prevents a fail-closed
     /// compaction from stalling the agent forever.
-    MechanicallyTrimmed { kept_ranges: Vec<SequenceRange> },
+    MechanicallyTrimmed {
+        kept_ranges: Vec<SequenceRange>,
+    },
 }
 
 pub struct SemanticCompactor {

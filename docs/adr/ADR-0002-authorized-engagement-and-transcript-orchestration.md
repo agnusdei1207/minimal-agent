@@ -320,7 +320,7 @@ docker 드라이버로 이미지 스토어에 직접 빌드**한다(export/impor
 xbow104 하네스로 벤치마크를 돌리기 위한 **최소 통합**. 원칙: 코어를 벤치마크용으로 크게
 키우지 않는다 — 분석이 끝나면 제거한다.
 
-- **호출·플래그·판정: rs 변경 0.** 하네스(`benchmarks/xbow104/runner.mjs`)가 존재하지 않는
+- **호출·플래그·판정: rs 변경 0.** 하네스(`benchmarks/harness/runner.mjs`)가 존재하지 않는
   `--prompt` 대신 **네이티브 CLI**로 부른다: `run --headless --auto --workspace /workspace
   --run /tmp/ma-run --engagement-kind ctf --flag-format 'FLAG\{[0-9a-f]{64}\}' --target <url>
   --objective <prompt>`. `run_headless`가 `{goal,flag,flag_required,summary}` JSON을 stdout에

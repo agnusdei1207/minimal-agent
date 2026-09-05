@@ -18,7 +18,7 @@ the owned runtime base and app image before launching the interactive capped TUI
 Local provider credentials for that run live only in the gitignored repo-root
 `.env` (never committed); `check.ps1` and compose read it via `--env-file`/`env_file`.
 
-XBOW-104 벤치마크를 수행할 때는 `benchmarks/xbow104/RUNBOOK.md`의 표준 절차를
-따른다: 실행 전 `node benchmarks/xbow104/patch-suite.mjs`(빌드 시로트 수정,
+XBOW-104 벤치마크를 수행할 때는 `benchmarks/harness/README.md`의 표준 절차를
+따른다: 실행 전 `node benchmarks/harness/patch-suite.mjs`(빌드 시로트 수정,
 원인은 `BUILD-INFRA.md`), 동시성 5 이하, 러너가 태스크별로 커밋 누적·이미지 정리,
 상시 런은 5분 간격 모니터링 서브에이전트로 위임하고 이슈만 보고한다.

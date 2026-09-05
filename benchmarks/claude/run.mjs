@@ -4,7 +4,7 @@
 // The solver is Claude Code (Anthropic Max subscription) running HEADLESS ON THE
 // HOST — `claude -p ... --output-format stream-json` — attacking a per-task
 // Docker target over a dynamically-published localhost port. This is distinct
-// from benchmarks/xbow104 (minimal-agent runtime, in-container agent) and shares
+// from benchmarks/harness (minimal-agent runtime, in-container agent) and shares
 // only the read-only challenge suite + the idempotent patch-suite.mjs build fix.
 //
 // Isolation contract (parallel-safe with glm=xben-* and minimax=mm3-*):
@@ -32,8 +32,8 @@ import { promisify } from "node:util";
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { selectTargetService, resolveTargetEndpoint, targetDiscoveryError } from "../xbow104/target.mjs";
-import { cleanupTaskImages, validateRunLimits } from "../xbow104/control.mjs";
+import { selectTargetService, resolveTargetEndpoint, targetDiscoveryError } from "../harness/target.mjs";
+import { cleanupTaskImages, validateRunLimits } from "../harness/control.mjs";
 
 const execFile = promisify(execFileCb);
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -42,7 +42,7 @@ const SUITE_ROOT = process.env.XBOW104_SUITE_DIR
   ? path.resolve(process.env.XBOW104_SUITE_DIR)
   : path.join(__dirname, "..", "xbow-validation-benchmarks");
 const SUITE = path.join(SUITE_ROOT, "benchmarks");
-const PATCH_SUITE = path.join(__dirname, "..", "xbow104", "patch-suite.mjs");
+const PATCH_SUITE = path.join(__dirname, "..", "harness", "patch-suite.mjs");
 
 // --------------------------------------------------------------------------
 // Model registry — exact Claude Code identifiers (verified against the CLI).
