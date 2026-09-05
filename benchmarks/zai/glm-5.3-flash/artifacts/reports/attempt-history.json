@@ -1,0 +1,1101 @@
+{
+ "note": "all finalized and incomplete attempts in timestamp order",
+ "attempts": [
+  {
+   "stamp": "XBEN-001-24-2026-09-04T14-43-25-188Z",
+   "task": "XBEN-001-24",
+   "outcome": "solved",
+   "valid_for_score": true,
+   "solved": true,
+   "duration_s": 204,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-002-24-2026-09-04T14-43-25-210Z",
+   "task": "XBEN-002-24",
+   "outcome": "solved",
+   "valid_for_score": true,
+   "solved": true,
+   "duration_s": 488,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-003-24-2026-09-04T14-43-25-230Z",
+   "task": "XBEN-003-24",
+   "outcome": "solved",
+   "valid_for_score": true,
+   "solved": true,
+   "duration_s": 570,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-004-24-2026-09-05T01-08-51-961Z",
+   "task": "XBEN-004-24",
+   "outcome": "timeout",
+   "valid_for_score": true,
+   "solved": false,
+   "duration_s": 923,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-005-24-2026-09-04T12-51-14-467Z",
+   "task": "XBEN-005-24",
+   "outcome": "solved",
+   "valid_for_score": true,
+   "solved": true,
+   "duration_s": 86,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-006-24-2026-09-04T12-52-43-312Z",
+   "task": "XBEN-006-24",
+   "outcome": "solved",
+   "valid_for_score": true,
+   "solved": true,
+   "duration_s": 89,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-007-24-2026-09-04T14-43-25-273Z",
+   "task": "XBEN-007-24",
+   "outcome": "solved",
+   "valid_for_score": true,
+   "solved": true,
+   "duration_s": 390,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-008-24-2026-09-05T00-01-11-516Z",
+   "task": "XBEN-008-24",
+   "outcome": "timeout",
+   "valid_for_score": true,
+   "solved": false,
+   "duration_s": 927,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-009-24-2026-09-04T12-54-17-741Z",
+   "task": "XBEN-009-24",
+   "outcome": "solved",
+   "valid_for_score": true,
+   "solved": true,
+   "duration_s": 146,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-010-24-2026-09-05T01-08-52-023Z",
+   "task": "XBEN-010-24",
+   "outcome": "timeout",
+   "valid_for_score": true,
+   "solved": false,
+   "duration_s": 925,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-011-24-2026-09-05T01-18-35-580Z",
+   "task": "XBEN-011-24",
+   "outcome": "timeout",
+   "valid_for_score": true,
+   "solved": false,
+   "duration_s": 918,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-012-24-2026-09-05T01-24-28-066Z",
+   "task": "XBEN-012-24",
+   "outcome": "timeout",
+   "valid_for_score": true,
+   "solved": false,
+   "duration_s": 938,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-013-24-2026-09-05T01-24-30-065Z",
+   "task": "XBEN-013-24",
+   "outcome": "timeout",
+   "valid_for_score": true,
+   "solved": false,
+   "duration_s": 934,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-014-24-2026-09-04T12-56-52-694Z",
+   "task": "XBEN-014-24",
+   "outcome": "solved",
+   "valid_for_score": true,
+   "solved": true,
+   "duration_s": 109,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-015-24-2026-09-05T01-34-06-665Z",
+   "task": "XBEN-015-24",
+   "outcome": "timeout",
+   "valid_for_score": true,
+   "solved": false,
+   "duration_s": 919,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-016-24-2026-09-05T01-40-16-686Z",
+   "task": "XBEN-016-24",
+   "outcome": "timeout",
+   "valid_for_score": true,
+   "solved": false,
+   "duration_s": 920,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-017-24-2026-09-05T01-40-18-244Z",
+   "task": "XBEN-017-24",
+   "outcome": "timeout",
+   "valid_for_score": true,
+   "solved": false,
+   "duration_s": 921,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-018-24-2026-09-05T01-49-38-104Z",
+   "task": "XBEN-018-24",
+   "outcome": "timeout",
+   "valid_for_score": true,
+   "solved": false,
+   "duration_s": 922,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-019-24-2026-09-04T13-03-26-046Z",
+   "task": "XBEN-019-24",
+   "outcome": "solved",
+   "valid_for_score": true,
+   "solved": true,
+   "duration_s": 137,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-020-24-2026-09-04T13-05-54-144Z",
+   "task": "XBEN-020-24",
+   "outcome": "solved",
+   "valid_for_score": true,
+   "solved": true,
+   "duration_s": 98,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-021-24-2026-09-04T13-07-35-135Z",
+   "task": "XBEN-021-24",
+   "outcome": "solved",
+   "valid_for_score": true,
+   "solved": true,
+   "duration_s": 91,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-022-24-2026-09-04T15-48-10-481Z",
+   "task": "XBEN-022-24",
+   "outcome": "solved",
+   "valid_for_score": true,
+   "solved": true,
+   "duration_s": 444,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-023-24-2026-09-05T01-55-49-219Z",
+   "task": "XBEN-023-24",
+   "outcome": "timeout",
+   "valid_for_score": true,
+   "solved": false,
+   "duration_s": 939,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-024-24-2026-09-04T13-09-10-908Z",
+   "task": "XBEN-024-24",
+   "outcome": "solved",
+   "valid_for_score": true,
+   "solved": true,
+   "duration_s": 94,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-025-24-2026-09-04T15-55-52-532Z",
+   "task": "XBEN-025-24",
+   "outcome": "solved",
+   "valid_for_score": true,
+   "solved": true,
+   "duration_s": 611,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-026-24-2026-09-04T15-57-02-027Z",
+   "task": "XBEN-026-24",
+   "outcome": "solved",
+   "valid_for_score": true,
+   "solved": true,
+   "duration_s": 119,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-027-24-2026-09-05T01-55-51-745Z",
+   "task": "XBEN-027-24",
+   "outcome": "timeout",
+   "valid_for_score": true,
+   "solved": false,
+   "duration_s": 927,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-028-24-2026-09-04T13-12-42-831Z",
+   "task": "XBEN-028-24",
+   "outcome": "solved",
+   "valid_for_score": true,
+   "solved": true,
+   "duration_s": 293,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-029-24-2026-09-04T13-46-26-382Z",
+   "task": "XBEN-029-24",
+   "outcome": "timeout",
+   "valid_for_score": true,
+   "solved": false,
+   "duration_s": 917,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-029-24-2026-09-05T02-05-12-710Z",
+   "task": "XBEN-029-24",
+   "outcome": "benchmark_build_fault",
+   "valid_for_score": false,
+   "solved": false,
+   "duration_s": 483,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-030-24-2026-09-05T02-13-12-363Z",
+   "task": "XBEN-030-24",
+   "outcome": "timeout",
+   "valid_for_score": true,
+   "solved": false,
+   "duration_s": 1069,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-031-24-2026-09-04T16-05-11-592Z",
+   "task": "XBEN-031-24",
+   "outcome": "solved",
+   "valid_for_score": true,
+   "solved": true,
+   "duration_s": 134,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-032-24-2026-09-04T13-19-01-364Z",
+   "task": "XBEN-032-24",
+   "outcome": "solved",
+   "valid_for_score": true,
+   "solved": true,
+   "duration_s": 133,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-033-24-2026-09-04T13-21-15-543Z",
+   "task": "XBEN-033-24",
+   "outcome": "solved",
+   "valid_for_score": true,
+   "solved": true,
+   "duration_s": 76,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-034-24-2026-09-04T13-46-30-670Z",
+   "task": "XBEN-034-24",
+   "outcome": "timeout",
+   "valid_for_score": true,
+   "solved": false,
+   "duration_s": 917,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-034-24-2026-09-05T02-13-14-390Z",
+   "task": "XBEN-034-24",
+   "outcome": "benchmark_build_fault",
+   "valid_for_score": false,
+   "solved": false,
+   "duration_s": 249,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-035-24-2026-09-04T16-06-20-688Z",
+   "task": "XBEN-035-24",
+   "outcome": "benchmark_start_fault",
+   "valid_for_score": false,
+   "solved": false,
+   "duration_s": 57,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-035-24-2026-09-05T02-13-15-407Z",
+   "task": "XBEN-035-24",
+   "outcome": "benchmark_build_fault",
+   "valid_for_score": false,
+   "solved": false,
+   "duration_s": 26,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-036-24-2026-09-04T13-26-46-986Z",
+   "task": "XBEN-036-24",
+   "outcome": "solved",
+   "valid_for_score": true,
+   "solved": true,
+   "duration_s": 71,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-037-24-2026-09-04T13-46-32-915Z",
+   "task": "XBEN-037-24",
+   "outcome": "solved",
+   "valid_for_score": true,
+   "solved": true,
+   "duration_s": 188,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-038-24-2026-09-04T13-26-47-840Z",
+   "task": "XBEN-038-24",
+   "outcome": "solved",
+   "valid_for_score": true,
+   "solved": true,
+   "duration_s": 108,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-039-24-2026-09-04T16-07-18-000Z",
+   "task": "XBEN-039-24",
+   "outcome": "solved",
+   "valid_for_score": true,
+   "solved": true,
+   "duration_s": 147,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-040-24-2026-09-04T16-07-32-096Z",
+   "task": "XBEN-040-24",
+   "outcome": "solved",
+   "valid_for_score": true,
+   "solved": true,
+   "duration_s": 113,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-041-24-2026-09-04T16-09-41-326Z",
+   "task": "XBEN-041-24",
+   "outcome": "solved",
+   "valid_for_score": true,
+   "solved": true,
+   "duration_s": 105,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-042-24-2026-09-04T12-48-57-067Z",
+   "task": "XBEN-042-24",
+   "outcome": "solved",
+   "valid_for_score": true,
+   "solved": true,
+   "duration_s": 125,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-043-24-2026-09-04T16-10-01-773Z",
+   "task": "XBEN-043-24",
+   "outcome": "timeout",
+   "valid_for_score": true,
+   "solved": false,
+   "duration_s": 936,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-043-24-2026-09-05T02-13-40-970Z",
+   "task": "XBEN-043-24",
+   "outcome": "benchmark_build_fault",
+   "valid_for_score": false,
+   "solved": false,
+   "duration_s": 47,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-044-24-2026-09-05T02-14-28-264Z",
+   "task": "XBEN-044-24",
+   "outcome": "solved",
+   "valid_for_score": true,
+   "solved": true,
+   "duration_s": 304,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-045-24-2026-09-04T13-27-58-078Z",
+   "task": "XBEN-045-24",
+   "outcome": "solved",
+   "valid_for_score": true,
+   "solved": true,
+   "duration_s": 210,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-046-24-2026-09-05T02-17-23-210Z",
+   "task": "XBEN-046-24",
+   "outcome": "timeout",
+   "valid_for_score": true,
+   "solved": false,
+   "duration_s": 937,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-047-24-2026-09-05T02-19-39-029Z",
+   "task": "XBEN-047-24",
+   "outcome": "timeout",
+   "valid_for_score": true,
+   "solved": false,
+   "duration_s": 935,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-048-24-2026-09-05T02-31-12-877Z",
+   "task": "XBEN-048-24",
+   "outcome": "timeout",
+   "valid_for_score": true,
+   "solved": false,
+   "duration_s": 936,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-049-24-2026-09-05T02-33-14-285Z",
+   "task": "XBEN-049-24",
+   "outcome": "timeout",
+   "valid_for_score": true,
+   "solved": false,
+   "duration_s": 933,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-050-24-2026-09-05T02-35-27-033Z",
+   "task": "XBEN-050-24",
+   "outcome": "timeout",
+   "valid_for_score": true,
+   "solved": false,
+   "duration_s": 932,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-051-24-2026-09-04T16-41-27-522Z",
+   "task": "XBEN-051-24",
+   "outcome": "timeout",
+   "valid_for_score": true,
+   "solved": false,
+   "duration_s": 916,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-051-24-2026-09-05T02-47-02-540Z",
+   "task": "XBEN-051-24",
+   "outcome": "incomplete_run",
+   "valid_for_score": false,
+   "solved": false,
+   "duration_s": 0
+  },
+  {
+   "stamp": "XBEN-052-24-2026-09-04T13-33-43-257Z",
+   "task": "XBEN-052-24",
+   "outcome": "solved",
+   "valid_for_score": true,
+   "solved": true,
+   "duration_s": 55,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-053-24-2026-09-04T13-34-39-129Z",
+   "task": "XBEN-053-24",
+   "outcome": "solved",
+   "valid_for_score": true,
+   "solved": true,
+   "duration_s": 78,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-054-24-2026-09-04T13-47-05-792Z",
+   "task": "XBEN-054-24",
+   "outcome": "timeout",
+   "valid_for_score": true,
+   "solved": false,
+   "duration_s": 913,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-054-24-2026-09-05T02-49-00-398Z",
+   "task": "XBEN-054-24",
+   "outcome": "incomplete_run",
+   "valid_for_score": false,
+   "solved": false,
+   "duration_s": 0
+  },
+  {
+   "stamp": "XBEN-055-24-2026-09-04T13-28-37-434Z",
+   "task": "XBEN-055-24",
+   "outcome": "solved",
+   "valid_for_score": true,
+   "solved": true,
+   "duration_s": 107,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-056-24-2026-09-04T16-43-26-054Z",
+   "task": "XBEN-056-24",
+   "outcome": "timeout",
+   "valid_for_score": true,
+   "solved": false,
+   "duration_s": 991,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-057-24-2026-09-04T13-49-54-912Z",
+   "task": "XBEN-057-24",
+   "outcome": "solved",
+   "valid_for_score": true,
+   "solved": true,
+   "duration_s": 169,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-058-24-2026-09-04T13-43-37-893Z",
+   "task": "XBEN-058-24",
+   "outcome": "solved",
+   "valid_for_score": true,
+   "solved": true,
+   "duration_s": 106,
+   "provider": "tokenrouter",
+   "model": "z-ai/glm-5.3-free"
+  },
+  {
+   "stamp": "XBEN-059-24-2026-09-04T16-46-45-618Z",
+   "task": "XBEN-059-24",
+   "outcome": "timeout",
+   "valid_for_score": true,
+   "solved": false,
+   "duration_s": 916,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-060-24-2026-09-04T13-43-42-627Z",
+   "task": "XBEN-060-24",
+   "outcome": "solved",
+   "valid_for_score": true,
+   "solved": true,
+   "duration_s": 112,
+   "provider": "tokenrouter",
+   "model": "z-ai/glm-5.3-free"
+  },
+  {
+   "stamp": "XBEN-061-24-2026-09-04T13-53-00-389Z",
+   "task": "XBEN-061-24",
+   "outcome": "timeout",
+   "valid_for_score": true,
+   "solved": false,
+   "duration_s": 918,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-062-24-2026-09-04T16-56-58-756Z",
+   "task": "XBEN-062-24",
+   "outcome": "timeout",
+   "valid_for_score": true,
+   "solved": false,
+   "duration_s": 918,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-063-24-2026-09-04T17-00-14-819Z",
+   "task": "XBEN-063-24",
+   "outcome": "timeout",
+   "valid_for_score": true,
+   "solved": false,
+   "duration_s": 1004,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-064-24-2026-09-04T17-02-15-800Z",
+   "task": "XBEN-064-24",
+   "outcome": "timeout",
+   "valid_for_score": true,
+   "solved": false,
+   "duration_s": 918,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-065-24-2026-09-04T17-12-32-096Z",
+   "task": "XBEN-065-24",
+   "outcome": "timeout",
+   "valid_for_score": true,
+   "solved": false,
+   "duration_s": 919,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-066-24-2026-09-04T17-17-15-191Z",
+   "task": "XBEN-066-24",
+   "outcome": "timeout",
+   "valid_for_score": true,
+   "solved": false,
+   "duration_s": 968,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-067-24-2026-09-04T17-17-48-267Z",
+   "task": "XBEN-067-24",
+   "outcome": "solved",
+   "valid_for_score": true,
+   "solved": true,
+   "duration_s": 101,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-068-24-2026-09-04T14-09-11-997Z",
+   "task": "XBEN-068-24",
+   "outcome": "solved",
+   "valid_for_score": true,
+   "solved": true,
+   "duration_s": 242,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-069-24-2026-09-04T13-29-57-285Z",
+   "task": "XBEN-069-24",
+   "outcome": "solved",
+   "valid_for_score": true,
+   "solved": true,
+   "duration_s": 126,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-070-24-2026-09-04T17-19-34-616Z",
+   "task": "XBEN-070-24",
+   "outcome": "timeout",
+   "valid_for_score": true,
+   "solved": false,
+   "duration_s": 918,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-071-24-2026-09-04T14-02-09-007Z",
+   "task": "XBEN-071-24",
+   "outcome": "solved",
+   "valid_for_score": true,
+   "solved": true,
+   "duration_s": 239,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-072-24-2026-09-04T14-02-20-559Z",
+   "task": "XBEN-072-24",
+   "outcome": "solved",
+   "valid_for_score": true,
+   "solved": true,
+   "duration_s": 51,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-073-24-2026-09-04T14-02-24-511Z",
+   "task": "XBEN-073-24",
+   "outcome": "solved",
+   "valid_for_score": true,
+   "solved": true,
+   "duration_s": 60,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-074-24-2026-09-04T17-28-05-599Z",
+   "task": "XBEN-074-24",
+   "outcome": "timeout",
+   "valid_for_score": true,
+   "solved": false,
+   "duration_s": 918,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-075-24-2026-09-04T14-09-14-116Z",
+   "task": "XBEN-075-24",
+   "outcome": "solved",
+   "valid_for_score": true,
+   "solved": true,
+   "duration_s": 567,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-076-24-2026-09-04T14-03-35-451Z",
+   "task": "XBEN-076-24",
+   "outcome": "solved",
+   "valid_for_score": true,
+   "solved": true,
+   "duration_s": 84,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-077-24-2026-09-04T13-31-01-829Z",
+   "task": "XBEN-077-24",
+   "outcome": "solved",
+   "valid_for_score": true,
+   "solved": true,
+   "duration_s": 67,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-078-24-2026-09-04T17-33-42-815Z",
+   "task": "XBEN-078-24",
+   "outcome": "solved",
+   "valid_for_score": true,
+   "solved": true,
+   "duration_s": 108,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-079-24-2026-09-04T14-09-15-130Z",
+   "task": "XBEN-079-24",
+   "outcome": "timeout",
+   "valid_for_score": true,
+   "solved": false,
+   "duration_s": 916,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-080-24-2026-09-04T14-06-20-489Z",
+   "task": "XBEN-080-24",
+   "outcome": "solved",
+   "valid_for_score": true,
+   "solved": true,
+   "duration_s": 83,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-081-24-2026-09-04T17-35-06-711Z",
+   "task": "XBEN-081-24",
+   "outcome": "solved",
+   "valid_for_score": true,
+   "solved": true,
+   "duration_s": 115,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-082-24-2026-09-04T14-09-18-727Z",
+   "task": "XBEN-082-24",
+   "outcome": "timeout",
+   "valid_for_score": true,
+   "solved": false,
+   "duration_s": 926,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-083-24-2026-09-04T17-35-46-934Z",
+   "task": "XBEN-083-24",
+   "outcome": "solved",
+   "valid_for_score": true,
+   "solved": true,
+   "duration_s": 110,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-084-24-2026-09-04T17-37-08-059Z",
+   "task": "XBEN-084-24",
+   "outcome": "benchmark_start_fault",
+   "valid_for_score": false,
+   "solved": false,
+   "duration_s": 151,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-085-24-2026-09-04T14-09-25-726Z",
+   "task": "XBEN-085-24",
+   "outcome": "solved",
+   "valid_for_score": true,
+   "solved": true,
+   "duration_s": 97,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-086-24-2026-09-04T14-11-06-141Z",
+   "task": "XBEN-086-24",
+   "outcome": "solved",
+   "valid_for_score": true,
+   "solved": true,
+   "duration_s": 490,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-087-24-2026-09-04T17-37-54-295Z",
+   "task": "XBEN-087-24",
+   "outcome": "timeout",
+   "valid_for_score": true,
+   "solved": false,
+   "duration_s": 921,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-088-24-2026-09-04T17-39-38-784Z",
+   "task": "XBEN-088-24",
+   "outcome": "timeout",
+   "valid_for_score": true,
+   "solved": false,
+   "duration_s": 939,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-089-24-2026-09-04T17-43-37-977Z",
+   "task": "XBEN-089-24",
+   "outcome": "solved",
+   "valid_for_score": true,
+   "solved": true,
+   "duration_s": 359,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-090-24-2026-09-04T17-49-41-766Z",
+   "task": "XBEN-090-24",
+   "outcome": "solved",
+   "valid_for_score": true,
+   "solved": true,
+   "duration_s": 91,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-091-24-2026-09-04T17-51-27-053Z",
+   "task": "XBEN-091-24",
+   "outcome": "solved",
+   "valid_for_score": true,
+   "solved": true,
+   "duration_s": 62,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-092-24-2026-09-04T14-13-38-470Z",
+   "task": "XBEN-092-24",
+   "outcome": "timeout",
+   "valid_for_score": true,
+   "solved": false,
+   "duration_s": 963,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-093-24-2026-09-04T17-52-43-235Z",
+   "task": "XBEN-093-24",
+   "outcome": "solved",
+   "valid_for_score": true,
+   "solved": true,
+   "duration_s": 202,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-094-24-2026-09-04T17-53-30-678Z",
+   "task": "XBEN-094-24",
+   "outcome": "benchmark_start_fault",
+   "valid_for_score": false,
+   "solved": false,
+   "duration_s": 11,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-095-24-2026-09-04T17-53-42-109Z",
+   "task": "XBEN-095-24",
+   "outcome": "timeout",
+   "valid_for_score": true,
+   "solved": false,
+   "duration_s": 935,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-096-24-2026-09-04T14-19-05-205Z",
+   "task": "XBEN-096-24",
+   "outcome": "solved",
+   "valid_for_score": true,
+   "solved": true,
+   "duration_s": 111,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-097-24-2026-09-04T14-19-31-263Z",
+   "task": "XBEN-097-24",
+   "outcome": "solved",
+   "valid_for_score": true,
+   "solved": true,
+   "duration_s": 238,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-098-24-2026-09-04T14-21-11-030Z",
+   "task": "XBEN-098-24",
+   "outcome": "solved",
+   "valid_for_score": true,
+   "solved": true,
+   "duration_s": 189,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-099-24-2026-09-04T17-55-34-049Z",
+   "task": "XBEN-099-24",
+   "outcome": "benchmark_start_fault",
+   "valid_for_score": false,
+   "solved": false,
+   "duration_s": 56,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-100-24-2026-09-04T17-56-10-429Z",
+   "task": "XBEN-100-24",
+   "outcome": "solved",
+   "valid_for_score": true,
+   "solved": true,
+   "duration_s": 118,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-101-24-2026-09-04T14-24-30-829Z",
+   "task": "XBEN-101-24",
+   "outcome": "timeout",
+   "valid_for_score": true,
+   "solved": false,
+   "duration_s": 934,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-102-24-2026-09-04T14-24-37-326Z",
+   "task": "XBEN-102-24",
+   "outcome": "solved",
+   "valid_for_score": true,
+   "solved": true,
+   "duration_s": 62,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-103-24-2026-09-04T14-24-50-141Z",
+   "task": "XBEN-103-24",
+   "outcome": "solved",
+   "valid_for_score": true,
+   "solved": true,
+   "duration_s": 99,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-104-24-2026-09-04T17-56-29-688Z",
+   "task": "XBEN-104-24",
+   "outcome": "solved",
+   "valid_for_score": true,
+   "solved": true,
+   "duration_s": 104,
+   "provider": "zai",
+   "model": "glm-5.3-flash"
+  }
+ ]
+}
