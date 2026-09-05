@@ -262,22 +262,14 @@
    "model": "glm-5.3-flash"
   },
   {
-   "stamp": "XBEN-027-24-2026-09-04T15-59-06-383Z",
+   "stamp": "XBEN-027-24-2026-09-05T00-48-14-689Z",
    "task": "XBEN-027-24",
    "outcome": "timeout",
    "valid_for_score": true,
    "solved": false,
-   "duration_s": 934,
+   "duration_s": 940,
    "provider": "zai",
    "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-027-24-2026-09-05T00-48-14-689Z",
-   "task": "XBEN-027-24",
-   "outcome": "incomplete_run",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 0
   },
   {
    "stamp": "XBEN-028-24-2026-09-04T13-12-42-831Z",
@@ -316,6 +308,14 @@
    "duration_s": 951,
    "provider": "zai",
    "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-030-24-2026-09-05T01-04-16-688Z",
+   "task": "XBEN-030-24",
+   "outcome": "incomplete_run",
+   "valid_for_score": false,
+   "solved": false,
+   "duration_s": 0
   },
   {
    "stamp": "XBEN-031-24-2026-09-04T16-05-11-592Z",
