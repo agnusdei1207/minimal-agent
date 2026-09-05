@@ -19,6 +19,7 @@ import { promisify } from "node:util";
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { selectTargetService, resolveTargetEndpoint, targetDiscoveryError } from "./target.mjs";
 import {
   runCommandWithArtifacts,
   teeStream,
@@ -29,9 +30,11 @@ import {
 } from "./artifacts.mjs";
 import {
   acquireTaskLock,
+  cleanupTaskImages,
   resolveArtifactLayout,
   resolveBackboneFiles,
   runWithProgress,
+  validateRunLimits,
 } from "./control.mjs";
 import {
   assessEvidence,
@@ -108,17 +111,6 @@ function activateBackbone() {
 }
 activateBackbone();
 
-const INFRA_SERVICES = new Set([
-  "db",
-  "mysql",
-  "postgres",
-  "mariadb",
-  "redis",
-  "minio",
-  "mailpit",
-  "database",
-]);
-
 // ---------------------------------------------------------------------------
 // CLI arguments
 // ---------------------------------------------------------------------------
@@ -131,8 +123,8 @@ const arg = (name, dflt) => {
       : true
     : dflt;
 };
-const TIMEOUT_S = Number(arg("timeout", 3600));
-const CONCURRENCY = Number(arg("concurrency", 1));
+const TIMEOUT_S = Number(String(arg("timeout", 3600)));
+const CONCURRENCY = Number(String(arg("concurrency", 1)));
 const HINTS = !arg("no-hints", false);
 const NO_COMMIT = Boolean(arg("no-commit", false));
 const AGENT_IMAGE = arg("agent-image", "xbow-agent-runner:latest");
@@ -281,27 +273,11 @@ export function parseComposePsRows(stdout) {
 }
 
 export function resolveTargetDetails(service, row = null) {
-  const publishers = Array.isArray(row?.Publishers) ? row.Publishers : [];
-  const published =
-    publishers.find((e) => e && Number(e.PublishedPort) > 0) || null;
-  const targetPort = Number(
-    published?.TargetPort ??
-      published?.PublishedPort ??
-      row?.ServicePort ??
-      row?.TargetPort ??
-      80,
-  );
+  const target = resolveTargetEndpoint(service, row);
   return {
-    service,
-    host: published
-      ? `127.0.0.1:${published.PublishedPort}`
-      : `${service}:${targetPort}`,
-    hostUrl: published
-      ? `http://127.0.0.1:${published.PublishedPort}`
-      : null,
-    internalOnly: !published,
-    internalPort: targetPort,
-    internalUrl: `http://${service}:${targetPort}`,
+    ...target,
+    host: target.hostUrl ? `127.0.0.1:${target.published_port}` : `${service}:${target.internalPort}`,
+    internalOnly: !target.hostUrl,
   };
 }
 
@@ -312,12 +288,15 @@ async function pickTarget(proj, dir, runDir = null) {
     { cwd: dir },
   );
   if (runDir) writeCommandArtifacts(runDir, "compose-config-services", svc);
-  const names = svc.stdout.trim().split("\n").filter(Boolean);
-  const app =
-    names.find((n) => !INFRA_SERVICES.has(n.toLowerCase())) || names[0];
+  if (!svc.ok) throw targetDiscoveryError("compose config --services failed");
+  const names = svc.stdout.split(/\r?\n/).map((name) => name.trim()).filter(Boolean);
   const ps = await compose(proj, dir, ["ps", "--format", "json"]);
   if (runDir) writeCommandArtifacts(runDir, "compose-ps", ps);
-  const rows = parseComposePsRows(ps.stdout);
+  if (!ps.ok) throw targetDiscoveryError("compose ps failed");
+  let rows;
+  try { rows = parseComposePsRows(ps.stdout); }
+  catch { throw targetDiscoveryError("invalid compose ps JSON"); }
+  const app = selectTargetService(names, rows);
   const row = Array.isArray(rows)
     ? rows.find((e) => e && e.Service === app)
     : null;
@@ -370,7 +349,10 @@ async function runTask(id) {
     solved: false,
   };
   const startedAt = new Date(started).toISOString();
-  writeRunState(runDir, { task: id, phase: "created", started_at: startedAt });
+  const writeState = (state) => writeRunState(runDir, {
+    ...state, runner_pid: process.pid, wrapper_token: process.env.XBOW104_WRAPPER_TOKEN || null,
+  });
+  writeState({ task: id, phase: "created", started_at: startedAt });
 
   const recordedCompose = (label, args) =>
     runCommandWithArtifacts(
@@ -417,10 +399,19 @@ async function runTask(id) {
     ev.duration_s = Math.round((Date.now() - started) / 1000);
   };
   const finalize = () => {
+    // Build/start failures also finalize here, before entering solver cleanup.
+    // Remove this project's image tags for every outcome, preserving shared IDs.
+    if (process.env.XBOW104_KEEP_IMAGES !== "1") {
+      try {
+        cleanupTaskImages(proj, { cwd: PROJECT_ROOT });
+      } catch {
+        /* best-effort disk reclaim */
+      }
+    }
     if (ev.duration_s == null)
       ev.duration_s = Math.round((Date.now() - started) / 1000);
     writeJsonAtomic(path.join(runDir, "evidence.json"), ev);
-    writeRunState(runDir, {
+    writeState({
       task: id,
       phase: "finalized",
       started_at: startedAt,
@@ -443,7 +434,7 @@ async function runTask(id) {
 
   // ── compose build ──
   console.log(`[${id}] building...`);
-  writeRunState(runDir, {
+  writeState({
     task: id,
     phase: "compose_build",
     started_at: startedAt,
@@ -486,7 +477,7 @@ async function runTask(id) {
   }
 
   // ── compose up ──
-  writeRunState(runDir, {
+  writeState({
     task: id,
     phase: "compose_up",
     started_at: startedAt,
@@ -523,7 +514,7 @@ async function runTask(id) {
 
   // ── agent execution ──
   try {
-    writeRunState(runDir, {
+    writeState({
       task: id,
       phase: "target_discovery",
       started_at: startedAt,
@@ -598,7 +589,7 @@ async function runTask(id) {
     console.log(
       `[${id}] agent launching (${activeRuntimeModel()}, timeout ${TIMEOUT_S}s)...`,
     );
-    writeRunState(runDir, {
+    writeState({
       task: id,
       phase: "agent_running",
       started_at: startedAt,
@@ -629,8 +620,7 @@ async function runTask(id) {
           const timer = setTimeout(() => {
             timeoutCleanupInProgress = true;
             ev.timed_out = true;
-            child.kill("SIGKILL");
-            finish({ code: "timeout", signal: "SIGKILL" });
+            try { child.kill("SIGKILL"); } catch {}
             const deadline = new AbortController();
             const kt = setTimeout(() => deadline.abort(), 60_000);
             kt.unref?.();
@@ -647,7 +637,10 @@ async function runTask(id) {
                 ["rm", "-f", agentName],
                 { signal: deadline.signal },
               ).catch(() => null);
-            })().finally(() => clearTimeout(kt));
+            })().finally(() => {
+              clearTimeout(kt);
+              finish({ code: "timeout", signal: "SIGKILL" });
+            });
           }, TIMEOUT_S * 1000);
           child.on("exit", (code, signal) => {
             if (!timeoutCleanupInProgress) finish({ code, signal });
@@ -743,11 +736,11 @@ async function runTask(id) {
     ev.duration_s = Math.round((Date.now() - started) / 1000);
   } catch (error) {
     ev.error = `runner stage failed: ${String(error.message || error).slice(0, 300)}`;
-    ev.outcome = "runtime_fault";
+    ev.outcome = error.code === "BENCHMARK_TARGET_DISCOVERY" ? "benchmark_start_fault" : "runtime_fault";
     ev.valid_for_score = false;
     ev.duration_s = Math.round((Date.now() - started) / 1000);
   } finally {
-    writeRunState(runDir, {
+    writeState({
       task: id,
       phase: "compose_down",
       started_at: startedAt,
@@ -764,31 +757,6 @@ async function runTask(id) {
       "-v",
     ]).catch(() => null);
     ev.teardown_failed = cleanup?.ok !== true;
-    // Reclaim disk as we go: `down -v` already dropped this task's named
-    // volumes; also drop this task's built target images and dangling layers
-    // (shared base images like python:2.7 stay — they are tagged and in the
-    // reference set of later tasks). Best-effort; never fails the task.
-    if (process.env.XBOW104_KEEP_IMAGES !== "1") {
-      try {
-        const ls = spawnSync(
-          "docker",
-          ["images", "--filter", `reference=${proj}-*`, "-q"],
-          { cwd: PROJECT_ROOT, encoding: "utf8" },
-        );
-        const ids = [...new Set((ls.stdout || "").split(/\s+/).filter(Boolean))];
-        if (ids.length)
-          spawnSync("docker", ["rmi", "-f", ...ids], {
-            cwd: PROJECT_ROOT,
-            encoding: "utf8",
-          });
-        spawnSync("docker", ["image", "prune", "-f"], {
-          cwd: PROJECT_ROOT,
-          encoding: "utf8",
-        });
-      } catch {
-        /* best-effort disk reclaim */
-      }
-    }
   }
 
   finalize();
@@ -857,24 +825,23 @@ async function runTask(id) {
 
 async function setup() {
   const buildArgs =
-    process.env.XBOW104_NO_CACHE === "1" ? ["--no-cache"] : [];
+    process.env.XBOW104_NO_CACHE === "1" ? ["-NoCache"] : [];
   await new Promise((res, rej) => {
     const p = spawn(
-      "docker",
+      process.platform === "win32" ? "powershell" : "pwsh",
       [
-        "build",
-        ...buildArgs,
-        "-f",
-        path.join(__dirname, "Dockerfile.runner"),
-        "-t",
+        "-NoProfile", "-ExecutionPolicy", "Bypass", "-File",
+        path.join(PROJECT_ROOT, "scripts", "dimage.ps1"),
+        "-Target", "runner", "-Tag",
         AGENT_IMAGE,
-        __dirname,
+        ...buildArgs,
       ],
       { stdio: "inherit" },
     );
     p.on("exit", (c) =>
       c === 0 ? res() : rej(new Error("agent image build failed")),
     );
+    p.on("error", rej);
   });
   console.log("agent image ready:", AGENT_IMAGE);
 }
@@ -908,9 +875,8 @@ function doneTasks() {
 // ---------------------------------------------------------------------------
 
 async function main() {
+  validateRunLimits(CONCURRENCY, TIMEOUT_S);
   if (arg("setup")) return setup();
-  if (!Number.isInteger(CONCURRENCY) || CONCURRENCY < 1)
-    throw new Error("--concurrency must be a positive integer");
   fs.mkdirSync(OUT, { recursive: true });
   if (!NO_COMMIT) {
     try {
@@ -938,7 +904,7 @@ async function main() {
   const results = [];
   let idx = 0;
   async function worker() {
-    while (idx < tasks.length) {
+    while (idx < tasks.length && !runCancellation.signal) {
       const id = tasks[idx++];
       let lock = null;
       try {

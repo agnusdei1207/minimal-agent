@@ -21,6 +21,19 @@ export function findLatestRun(runsDir, task) {
   return name ? path.join(runsDir, name) : null;
 }
 
+/** Cleanup may only act on this wrapper's latest attempt, never a successor. */
+export function findOwnedLatestRun(runsDir, task, wrapperToken) {
+  if (!wrapperToken) return null;
+  const runDir = findLatestRun(runsDir, task);
+  if (!runDir) return null;
+  try {
+    const state = JSON.parse(fs.readFileSync(path.join(runDir, "run-state.json"), "utf8"));
+    return state.wrapper_token === wrapperToken ? runDir : null;
+  } catch {
+    return null;
+  }
+}
+
 /** Finalize the latest run for a task that was interrupted before evidence.json. */
 export function finalizeInterruptedRun(
   runsDir,

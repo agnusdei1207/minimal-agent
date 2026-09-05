@@ -60,7 +60,8 @@ export const COST_NOTE =
 //     input, cache_creation, cache_read, output,  // token counts (0 if n/a)
 //     cache_known,      // bool: are cache figures provider-reported & meaningful?
 //     cost_usd,         // number | null  (null => unit price unknown => "-")
-//     duration_s,       // number | null
+//     duration_s,       // number | null: recorded attempt elapsed, includes setup;
+//                       // teardown inclusion varies by harness, not solver latency
 //     flag,             // string | null
 //   }
 // --------------------------------------------------------------------------
@@ -105,24 +106,26 @@ export function renderStandardReport(opts) {
 
   const now = new Date().toISOString();
   const sorted = [...rows].sort((a, b) => String(a.task).localeCompare(String(b.task)));
+  const consumption = opts.attempts ?? sorted;
 
-  const scoredRows = sorted.filter((r) => r.valid_for_score !== false);
-  const solved = sorted.filter((r) => r.solved).length;
+  const scoredRows = sorted.filter((r) => r.valid_for_score === true);
+  const solved = scoredRows.filter((r) => r.solved).length;
   const scored = scoredRows.length;
   const attempted = sorted.length;
   const solveRate = scored ? (solved / scored) * 100 : 0;
 
-  // Cache is "known" only if any row reports it. Cost is "known" only if any row
-  // carries a non-null cost_usd (unit price available).
-  const cacheKnown = sorted.some((r) => r.cache_known);
+  // A complete cost total requires a measurement for every retained attempt.
+  // An absent measurement must not silently become a zero-dollar attempt.
+  const cacheKnown = consumption.some((r) => r.cache_known);
   const costKnown =
-    opts.costKnown ?? sorted.some((r) => r.cost_usd != null && Number.isFinite(r.cost_usd));
+    opts.costKnown ?? (consumption.length > 0 && consumption.every((r) => r.cost_usd != null && Number.isFinite(r.cost_usd)));
 
   const tot = { input: 0, cache_creation: 0, cache_read: 0, output: 0, in_plus_out: 0, incl_cache: 0 };
   let totalTurns = 0;
   let totalWall = 0;
   let totalCost = 0;
-  const perTask = sorted.map((r) => {
+  const turnsKnown = consumption.length > 0 && consumption.every((r) => Number.isFinite(r.num_turns));
+  for (const r of consumption) {
     const t = rowTokens(r);
     tot.input += t.input;
     tot.cache_creation += t.cache_creation;
@@ -133,8 +136,8 @@ export function renderStandardReport(opts) {
     totalTurns += num(r.num_turns);
     totalWall += num(r.duration_s);
     if (r.cost_usd != null && Number.isFinite(r.cost_usd)) totalCost += r.cost_usd;
-    return { row: r, t };
-  });
+  }
+  const perTask = sorted.map((r) => ({ row: r, t: rowTokens(r) }));
 
   const avg = {
     input_per_task: div(tot.input, attempted),
@@ -158,38 +161,49 @@ export function renderStandardReport(opts) {
     suite,
     solver,
     cache_tracked: cacheKnown,
-    cost_accounting: costKnown ? COST_NOTE : "cost unavailable — no per-token price; cost fields are null/\"-\"",
+    cost_accounting: costKnown ? COST_NOTE : "cost unavailable or incomplete — missing price or attempt measurement; aggregate cost fields are null/\"-\"",
     totals: {
       attempted,
+      attempt_count: consumption.length,
+      selection_policy: "newest finalized attempt per task",
+      excluded: attempted - scored,
       scored,
       solved,
       solve_rate_pct: Number(solveRate.toFixed(1)),
       wall_time_s: totalWall,
+      // Retain the legacy JSON key; its value corrects the old exclusion claim.
       note_infra_excluded:
-        "wall_time_s is solver duration_s only; docker build/up/teardown excluded",
+        "wall_time_s sums recorded attempt duration_s; includes setup; teardown inclusion varies by harness. This is not solver-only time or per-turn latency.",
       tokens: tot,
       cost_usd: costKnown ? Number(totalCost.toFixed(6)) : null,
     },
+    attempts: consumption.map((r) => ({
+      task: r.task, stamp: r.stamp ?? null, outcome: r.outcome ?? null,
+      valid_for_score: r.valid_for_score === true, solved: !!r.solved,
+      tokens: rowTokens(r), num_turns: r.num_turns ?? null,
+      cost_usd: r.cost_usd ?? null, duration_s: r.duration_s ?? null,
+    })),
     averages: {
       per_task: {
         input_tokens: Math.round(avg.input_per_task),
         output_tokens: Math.round(avg.output_per_task),
         total_tokens_incl_cache: Math.round(avg.incl_cache_per_task),
         total_tokens_in_plus_out: Math.round(avg.in_plus_out_per_task),
-        turns: Number(avg.turns_per_task.toFixed(1)),
+        turns: turnsKnown ? Number(avg.turns_per_task.toFixed(1)) : null,
         duration_s: Number(avg.duration_per_task.toFixed(1)),
         cost_usd: costKnown ? Number(avg.cost_per_task.toFixed(6)) : null,
       },
-      tokens_per_turn_incl_cache: Math.round(avg.tokens_per_turn_incl_cache),
-      tokens_per_turn_in_plus_out: Math.round(avg.tokens_per_turn_in_plus_out),
+      tokens_per_turn_incl_cache: turnsKnown && totalTurns > 0 ? Math.round(avg.tokens_per_turn_incl_cache) : null,
+      tokens_per_turn_in_plus_out: turnsKnown && totalTurns > 0 ? Math.round(avg.tokens_per_turn_in_plus_out) : null,
     },
     tasks: perTask.map(({ row: r, t }) => ({
       task: r.task,
+      stamp: r.stamp ?? null,
       name: r.name ?? null,
       level: r.level ?? null,
       outcome: r.outcome ?? null,
       solved: !!r.solved,
-      valid_for_score: r.valid_for_score !== false,
+      valid_for_score: r.valid_for_score === true,
       num_turns: r.num_turns ?? null,
       tokens: t,
       cache_known: !!r.cache_known,
@@ -255,8 +269,8 @@ export function renderStandardReport(opts) {
     : [
         "## Cost",
         "",
-        "> Per-token price for this backbone is not established here, so cost is **not**",
-        "> estimated — every cost cell renders `-` rather than a fabricated figure.",
+        "> Complete cost is unavailable: a unit price or an attempt measurement is missing.",
+        "> Aggregate cost renders `-`; raw per-attempt measurements remain in kpi.json.",
         "",
       ];
 
@@ -270,9 +284,12 @@ export function renderStandardReport(opts) {
     "",
     `- Model: \`${model.id}\` (${model.label})`,
     `- Attempted: **${attempted}**`,
+    `- Retained finalized attempts (including retries): **${consumption.length}**`,
+    "- Score selection: newest finalized attempt per task. Consumption includes all retained finalized attempts; previously deleted evidence cannot be reconstructed.",
     `- Scored: **${scored}**`,
     `- SOLVED: **${solved}** (${pct}% of scored)`,
-    `- Total solver wall time: **${hms(totalWall)}** (${totalWall}s) — infra (docker build/up/teardown) excluded`,
+    `- Recorded attempt elapsed time: **${hms(totalWall)}** (${totalWall}s) — includes setup; teardown inclusion varies by harness`,
+    "- Recorded durations are summed across retained attempts, including concurrent attempts; they are not campaign wall time or solver-only latency.",
     "",
     "## Token totals — all attempts (solved + failed = total consumption)",
     "",
@@ -289,8 +306,8 @@ export function renderStandardReport(opts) {
     `| Input / task | ${kfmt(Math.round(avg.input_per_task))} |`,
     `| Output / task | ${kfmt(Math.round(avg.output_per_task))} |`,
     `| Total tokens / task (in + out) | ${kfmt(Math.round(avg.in_plus_out_per_task))} |`,
-    `| **Tokens / turn (in + out)** | ${kfmt(Math.round(avg.tokens_per_turn_in_plus_out))} |`,
-    `| Turns / task | ${avg.turns_per_task.toFixed(1)} |`,
+    `| **Tokens / turn (in + out)** | ${turnsKnown && totalTurns > 0 ? kfmt(Math.round(avg.tokens_per_turn_in_plus_out)) : "-"} |`,
+    `| Turns / task | ${turnsKnown ? avg.turns_per_task.toFixed(1) : "-"} |`,
     `| Duration / task | ${avg.duration_per_task.toFixed(0)}s |`,
     "",
     ...costSection,
@@ -330,7 +347,7 @@ export function renderStandardReport(opts) {
 // Falls back to evidence.usage {prompt_tokens, completion_tokens, cached_tokens,
 // events} when telemetry is missing/empty. Dedupes to newest ts per task.
 // --------------------------------------------------------------------------
-export function loadMinimalAgentRows(runsDir) {
+export function loadMinimalAgentRows(runsDir, { allAttempts = false } = {}) {
   const byTask = new Map();
   if (!fs.existsSync(runsDir)) return [];
   for (const d of fs.readdirSync(runsDir)) {
@@ -345,8 +362,9 @@ export function loadMinimalAgentRows(runsDir) {
       continue;
     }
     if (!e.task) continue;
-    const prev = byTask.get(e.task);
-    if (!prev || String(d) > String(prev._dir)) byTask.set(e.task, { ...e, _dir: d, _dir_full: dir });
+    const key = allAttempts ? d : e.task;
+    const prev = byTask.get(key);
+    if (!prev || String(d) > String(prev._dir)) byTask.set(key, { ...e, _dir: d, _dir_full: dir });
   }
 
   return [...byTask.values()].map((e) => {
@@ -368,6 +386,8 @@ export function loadMinimalAgentRows(runsDir) {
         } catch {
           continue;
         }
+        if (j.event !== "response" && (j.event ||
+          (!Number.isFinite(j.prompt_tokens) && !Number.isFinite(j.completion_tokens)))) continue;
         turns += 1;
         input += num(j.prompt_tokens);
         output += num(j.completion_tokens);
@@ -392,14 +412,16 @@ export function loadMinimalAgentRows(runsDir) {
 
     return {
       task: e.task,
+      stamp: e._dir,
       name: e.name ?? null,
       level: e.level ?? null,
       outcome: e.outcome ?? (e.solved ? "solved" : e.timed_out ? "timeout" : "failed"),
       solved: !!e.solved,
-      valid_for_score: e.valid_for_score !== false,
+      valid_for_score: e.valid_for_score === true,
       timed_out: !!e.timed_out,
       num_turns: turns || null,
-      input,
+      // OpenAI-style prompt_tokens already includes cached prompt tokens.
+      input: Math.max(0, input - (cache_known ? cached : 0)),
       cache_creation: 0,
       cache_read: cache_known ? cached : 0,
       output,

@@ -49,7 +49,8 @@ await requireText("scripts/check.ps1", [
   "OPENAI_MODEL",
   "OPENROUTER_API_KEY",
   "minimal-agent:check",
-  "--resume",
+  "--run",
+  "/state/check-",
 ]);
 if (!manifest.scripts?.["docker:build"]?.includes("scripts/dimage.ps1")) {
   throw new Error("docker:build must use the capped image wrapper");

@@ -1,8 +1,30 @@
 // XBOW-104 shared utilities — path resolution, task locks, progress tracking.
 
 import { randomUUID } from "node:crypto";
+import { spawnSync } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
+
+/** Reject limits that overload the benchmark host or overflow Node timers. */
+export function validateRunLimits(concurrency, timeoutS) {
+  if (!Number.isInteger(concurrency) || concurrency < 1 || concurrency > 5)
+    throw new Error("--concurrency must be an integer between 1 and 5");
+  if (!Number.isFinite(timeoutS) || timeoutS <= 0 || timeoutS > 2147483)
+    throw new Error("--timeout must be a positive finite number no greater than 2147483 seconds");
+}
+
+/** Remove only this Compose project's named tags; never force IDs or prune globally. */
+export function cleanupTaskImages(project, { cwd, command = spawnSync } = {}) {
+  const options = { cwd, encoding: "utf8", timeout: 60_000 };
+  const listed = command("docker", [
+    "images", "--filter", `reference=${project}-*`, "--format", "{{.Repository}}:{{.Tag}}",
+  ], options);
+  if (listed.status !== 0) return;
+  const tags = [...new Set((listed.stdout || "").split(/\r?\n/)
+    .map((tag) => tag.trim())
+    .filter((tag) => tag.startsWith(`${project}-`) && tag.includes(":") && !tag.includes("<none>")))];
+  if (tags.length) command("docker", ["rmi", ...tags], options);
+}
 
 /** Resolve the primary .env file (project root first, then benchmark dir). */
 export function resolveBackboneFiles({ root, benchmark, env = process.env }) {

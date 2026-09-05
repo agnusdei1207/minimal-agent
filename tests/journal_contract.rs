@@ -4,7 +4,8 @@ use std::sync::Arc;
 
 use minimal_agent::domain::{AgentId, AgentState};
 use minimal_agent::journal::{
-    EventStorage, JournalConfig, JournalError, JournalEvent, RunJournal, TranscriptRole,
+    EventStorage, JournalConfig, JournalError, JournalEvent, JournalEventKind, RunJournal,
+    TranscriptRole,
 };
 use sha2::{Digest, Sha256};
 use tempfile::tempdir;
@@ -16,6 +17,133 @@ fn test_config() -> JournalConfig {
         max_run_bytes: 32 * 1024,
         reserved_fault_bytes: 512,
     }
+}
+
+#[test]
+fn latest_sequence_tracks_only_committed_appends_and_survives_reopen() {
+    let dir = tempdir().unwrap();
+    let journal = RunJournal::open(dir.path(), test_config()).unwrap();
+    assert_eq!(journal.latest_sequence().unwrap(), 0);
+    let ack = journal
+        .append_sync(JournalEvent::ToolResult {
+            agent_id: AgentId::main(),
+            call_id: "fixture".to_owned(),
+            content: "evidence".to_owned(),
+            success: true,
+        })
+        .unwrap();
+    assert_eq!(journal.latest_sequence().unwrap(), ack.sequence);
+    drop(journal);
+    let recovered = RunJournal::open(dir.path(), test_config()).unwrap();
+    assert_eq!(recovered.latest_sequence().unwrap(), ack.sequence);
+    if let EventStorage::Blob { sha256, .. } = ack.storage {
+        fs::write(dir.path().join("blobs").join(sha256), "unreadable payload").unwrap();
+        assert_eq!(recovered.latest_sequence().unwrap(), ack.sequence);
+    }
+}
+
+#[test]
+fn kind_visitor_skips_unrelated_blobs_and_bounds_each_selected_event_without_accumulating() {
+    let dir = tempdir().unwrap();
+    let journal = RunJournal::open(dir.path(), test_config()).unwrap();
+    let old = journal
+        .append_sync(JournalEvent::ToolResult {
+            agent_id: AgentId::main(),
+            call_id: "old".to_owned(),
+            content: "old evidence".to_owned(),
+            success: true,
+        })
+        .unwrap();
+    journal
+        .append_sync(JournalEvent::Transcript {
+            agent_id: AgentId::main(),
+            role: TranscriptRole::Assistant,
+            content: "x".repeat(2048),
+            complete: true,
+            atomic_group: None,
+        })
+        .unwrap();
+    for index in 0..20 {
+        journal
+            .append_sync(JournalEvent::ToolResult {
+                agent_id: AgentId::main(),
+                call_id: format!("new-{index}"),
+                content: "x".repeat(128),
+                success: true,
+            })
+            .unwrap();
+    }
+    let mut ids = Vec::new();
+    journal
+        .visit_kind_after(old.sequence, JournalEventKind::ToolResult, 1024, |entry| {
+            if let JournalEvent::ToolResult { call_id, .. } = entry.event {
+                ids.push(call_id);
+            }
+        })
+        .unwrap();
+    assert_eq!(ids.len(), 20);
+    assert_eq!(ids.first().unwrap(), "new-0");
+    assert_eq!(ids.last().unwrap(), "new-19");
+}
+
+#[test]
+fn kind_visitor_refuses_oversized_selected_payloads_and_checks_selected_blob_integrity() {
+    let dir = tempdir().unwrap();
+    let journal = RunJournal::open(dir.path(), test_config()).unwrap();
+    let ack = journal
+        .append_sync(JournalEvent::ToolResult {
+            agent_id: AgentId::main(),
+            call_id: "large".to_owned(),
+            content: "x".repeat(2048),
+            success: true,
+        })
+        .unwrap();
+    let mut visited = false;
+    assert!(matches!(
+        journal.visit_kind_after(0, JournalEventKind::ToolResult, 1024, |_| visited = true),
+        Err(JournalError::ReplayLimit { .. })
+    ));
+    assert!(!visited);
+    let EventStorage::Blob { sha256, .. } = ack.storage else {
+        panic!("fixture must use blob storage")
+    };
+    fs::write(dir.path().join("blobs").join(sha256), "corrupt").unwrap();
+    assert!(matches!(
+        journal.visit_kind_after(0, JournalEventKind::ToolResult, 4096, |_| visited = true),
+        Err(JournalError::BlobDigestMismatch { .. })
+    ));
+    assert!(!visited);
+}
+
+#[test]
+fn kind_visitor_validates_record_checksums_even_for_unrelated_event_kinds() {
+    let dir = tempdir().unwrap();
+    let journal = RunJournal::open(dir.path(), test_config()).unwrap();
+    journal
+        .append_sync(JournalEvent::Transcript {
+            agent_id: AgentId::main(),
+            role: TranscriptRole::Assistant,
+            content: "x".repeat(2048),
+            complete: true,
+            atomic_group: None,
+        })
+        .unwrap();
+    let segment = fs::read_dir(dir.path().join("journal"))
+        .unwrap()
+        .next()
+        .unwrap()
+        .unwrap()
+        .path();
+    let original = fs::read_to_string(&segment).unwrap();
+    let altered = original.replace("\"kind\":\"transcript\"", "\"kind\":\"fault\"");
+    assert_ne!(original, altered);
+    fs::write(segment, altered).unwrap();
+    assert!(matches!(
+        journal.visit_kind_after(0, JournalEventKind::ToolResult, 1024, |_| panic!(
+            "unrelated event must not be visited"
+        )),
+        Err(JournalError::ChecksumMismatch { .. })
+    ));
 }
 
 #[tokio::test]

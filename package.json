@@ -22,7 +22,7 @@
   ],
   "scripts": {
     "postinstall": "node scripts/install.mjs",
-    "test": "node --test test/npm-launcher.test.mjs",
+    "test": "node --test test/*.test.mjs",
     "check": "npm run check:docker",
     "check:docker": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/check.ps1",
     "docker:base": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/dimage.ps1 -Target base",

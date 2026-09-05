@@ -88,10 +88,11 @@ export function classifyAttempt({
   if (interrupted) return { outcome: "interrupted", validForScore: false };
   // A captured flag is dispositive — even if transient 429s occurred.
   if (solved) return { outcome: "solved", validForScore: true };
-  if (providerRateLimitCount > 0 || providerStreamFailureCount > 0)
-    return { outcome: "provider_fault", validForScore: false };
+  // A retry counter does not establish that the provider ended the attempt.
   if (timedOut) return { outcome: "timeout", validForScore: true };
   if (exitCode === 0) return { outcome: "unsolved", validForScore: true };
+  if (providerRateLimitCount > 0 || providerStreamFailureCount > 0)
+    return { outcome: "provider_fault", validForScore: false };
   return { outcome: "runtime_fault", validForScore: false };
 }
 
@@ -117,11 +118,14 @@ export function formatOutcomeBanner({ task, outcome }) {
 // ---------------------------------------------------------------------------
 
 export function assessEvidence(runDir, evidence) {
+  evidence = { ...evidence, usage: normalizeUsage(evidence.usage) };
   const faults = readRuntimeFaults(path.join(runDir, "telemetry"));
   if (
     typeof evidence.valid_for_score === "boolean" &&
     evidence.outcome &&
-    faults.providerStreamFailureCount === 0
+    faults.providerStreamFailureCount === 0 &&
+    !(evidence.outcome === "provider_fault" &&
+      (evidence.exit_code === 0 || evidence.timed_out))
   ) {
     return {
       ...evidence,
@@ -146,6 +150,17 @@ export function assessEvidence(runDir, evidence) {
     provider_rate_limit_count: faults.providerRateLimitCount,
     provider_stream_failure_count: faults.providerStreamFailureCount,
     title_rate_limit_count: faults.titleRateLimitCount,
+  };
+}
+
+/** Legacy runners wrote total_tokens=0 although the response supplied parts. */
+export function normalizeUsage(usage) {
+  if (!usage) return usage;
+  const tokenCount = (value) => Number.isFinite(value) && value >= 0 ? value : 0;
+  return {
+    ...usage,
+    total_tokens: Math.max(tokenCount(usage.total_tokens),
+      tokenCount(usage.prompt_tokens) + tokenCount(usage.completion_tokens)),
   };
 }
 
@@ -221,53 +236,16 @@ export function selectNewestValidEvidence(entries) {
 // Run pruning — keep exactly one best run per task
 // ---------------------------------------------------------------------------
 
+// Compatibility entry point: callers may keep invoking this after completion.
+// Preserve every attempt, including in-progress and malformed evidence. Deleting
+// losing attempts biases score selection and destroys retry/cost provenance.
 export function pruneTaskRuns(runsDir, taskId) {
   if (!fs.existsSync(runsDir)) return null;
-  const entries = [];
-  for (const stamp of fs.readdirSync(runsDir)) {
-    if (!stamp.startsWith(`${taskId}-`)) continue;
-    const runDir = path.join(runsDir, stamp);
-    const evFile = path.join(runDir, "evidence.json");
-    let solved = false,
-      validForScore = false,
-      reachedAgent = false;
-    if (fs.existsSync(evFile)) {
-      try {
-        const ev = JSON.parse(fs.readFileSync(evFile, "utf8"));
-        solved = Boolean(ev.solved);
-        validForScore = Boolean(ev.valid_for_score);
-        reachedAgent = ![
-          "benchmark_build_fault",
-          "benchmark_start_fault",
-        ].includes(String(ev.outcome || ""));
-      } catch {
-        /* malformed */
-      }
-    }
-    entries.push({ stamp, runDir, solved, validForScore, reachedAgent });
-  }
-  if (entries.length <= 1) return entries[0] || null;
-
-  // Rank: solved+valid > solved > valid > reached-agent > newest
-  entries.sort((a, b) => {
-    if (a.solved !== b.solved) return a.solved ? -1 : 1;
-    if (a.validForScore !== b.validForScore) return a.validForScore ? -1 : 1;
-    if (a.reachedAgent !== b.reachedAgent) return a.reachedAgent ? -1 : 1;
-    return b.stamp.localeCompare(a.stamp);
-  });
-  for (let i = 1; i < entries.length; i++) {
-    try {
-      fs.rmSync(entries[i].runDir, { recursive: true, force: true });
-      console.log(`[${taskId}] pruned old run: ${entries[i].stamp}`);
-    } catch (e) {
-      console.error(
-        `[${taskId}] failed to remove old run ${entries[i].stamp}: ${e.message}`,
-      );
-    }
-  }
-  return entries[0];
+  const stamp = fs.readdirSync(runsDir, { withFileTypes: true })
+    .filter((entry) => entry.isDirectory() && entry.name.startsWith(`${taskId}-`))
+    .map((entry) => entry.name).sort().at(-1);
+  return stamp ? { stamp, runDir: path.join(runsDir, stamp) } : null;
 }
-
 export function pruneAllRuns(runsDir) {
   if (!fs.existsSync(runsDir)) return;
   const ids = new Set();

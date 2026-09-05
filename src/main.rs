@@ -1,4 +1,3 @@
-use std::collections::HashSet;
 use std::future::Future;
 use std::io::{self, IsTerminal};
 use std::path::{Path, PathBuf};
@@ -12,7 +11,7 @@ use minimal_agent::brief::AgentBriefStore;
 use minimal_agent::coordinator::AgentCoordinator;
 use minimal_agent::domain::{AgentId, ContextBudget, MAX_USER_INPUT_BYTES};
 use minimal_agent::engagement::{Engagement, EngagementKind};
-use minimal_agent::journal::{JournalConfig, RunJournal};
+use minimal_agent::journal::{JournalConfig, JournalEvent, JournalEventKind, RunJournal};
 use minimal_agent::provider::{OpenAiChatProvider, ProviderSlot};
 use minimal_agent::runtime::{RuntimeConfig, RuntimeEvent, TeamRuntime};
 use minimal_agent::settings::{ProviderSettings, ProviderSettingsStore};
@@ -402,37 +401,11 @@ async fn run_headless(
         Duration::from_secs(2)
     };
 
-    let mut events = runtime.subscribe();
-    let mut observation = HeadlessObservation::default();
-
-    let turn = match runtime.submit_user(goal.clone()).await {
-        Ok(turn) => Some(turn),
-        Err(error) => {
-            eprintln!("runtime error: {error}");
-            None
-        }
-    };
-    observation.summary = turn
-        .as_ref()
-        .map(|turn| turn.text.trim().to_owned())
-        .unwrap_or_default();
-    let deadline = tokio::time::Instant::now() + MAX_WALL;
-    loop {
-        if tokio::time::Instant::now() >= deadline {
-            break;
-        }
-        match tokio::time::timeout(idle_window, events.recv()).await {
-            Ok(Ok(event)) => observation.apply(event),
-            Ok(Err(tokio::sync::broadcast::error::RecvError::Lagged(_))) => continue,
-            Ok(Err(tokio::sync::broadcast::error::RecvError::Closed)) => break,
-            Err(_) if observation.active.is_empty() => break,
-            Err(_) => {}
-        }
-    }
-
-    let flag = engagement
-        .as_ref()
-        .and_then(|engagement| engagement.extract_flag(&observation.tool_evidence));
+    let observation =
+        observe_headless(&runtime, &goal, engagement.as_ref(), MAX_WALL, idle_window).await;
+    runtime.shutdown().await;
+    let observation = observation?;
+    let flag = observation.flag;
     let flag_required = engagement
         .as_ref()
         .is_some_and(|engagement| engagement.flag_format.is_some());
@@ -446,7 +419,6 @@ async fn run_headless(
         }))?
     );
 
-    runtime.shutdown().await;
     if flag_required && flag.is_none() {
         std::process::exit(1);
     }
@@ -455,26 +427,97 @@ async fn run_headless(
 
 #[derive(Default)]
 struct HeadlessObservation {
-    active: HashSet<AgentId>,
-    tool_evidence: String,
     summary: String,
+    flag: Option<String>,
+}
+
+async fn observe_headless(
+    runtime: &TeamRuntime,
+    goal: &str,
+    engagement: Option<&Engagement>,
+    max_wall: Duration,
+    idle_window: Duration,
+) -> anyhow::Result<HeadlessObservation> {
+    let deadline = tokio::time::Instant::now() + max_wall;
+    let mut events = runtime.subscribe();
+    let journal = runtime.coordinator().journal();
+    // A resumed run must not inherit an old flag as evidence for this submission.
+    let prior_sequence = journal.latest_sequence()?;
+    let mut observation = HeadlessObservation::default();
+    let submission = runtime.submit_user(goal);
+    tokio::pin!(submission);
+    let mut submitted = false;
+    let mut idle_deadline = tokio::time::Instant::now() + idle_window;
+    loop {
+        tokio::select! {
+            biased;
+            _ = tokio::time::sleep_until(deadline) => break,
+            turn = &mut submission, if !submitted => {
+                submitted = true;
+                idle_deadline = tokio::time::Instant::now() + idle_window;
+                match turn {
+                    Ok(turn) if !turn.text.trim().is_empty() => observation.summary = turn.text.trim().to_owned(),
+                    Ok(_) => {},
+                    Err(error) => eprintln!("runtime error: {error}"),
+                }
+            }
+            event = events.recv() => {
+                idle_deadline = tokio::time::Instant::now() + idle_window;
+                match event {
+                    Ok(event) => observation.apply(event),
+                    Err(tokio::sync::broadcast::error::RecvError::Lagged(_)) => {},
+                    Err(tokio::sync::broadcast::error::RecvError::Closed) => break,
+                }
+            }
+            _ = tokio::time::sleep_until(idle_deadline), if submitted => {
+                // Broadcast lag can lose TurnStarted/TurnFinished. Check the
+                // runtime's active-turn counter before declaring the team idle.
+                match tokio::time::timeout_at(deadline, runtime.wait_until_idle(Duration::from_millis(100))).await {
+                    Ok(Ok(())) | Err(_) => break,
+                    Ok(Err(_)) => idle_deadline = tokio::time::Instant::now() + idle_window,
+                }
+            }
+        }
+    }
+    // Stop writers before the final replay, including a submission still in
+    // flight when the deadline fired. ToolResult is the durable evidence source.
+    runtime.shutdown().await;
+    if engagement.is_some_and(|engagement| engagement.flag_format.is_some()) {
+        // Always use the watermark-filtered journal. A resumed worker can emit
+        // a broadcast before the watermark is captured; that old event must not
+        // become evidence for the new submission merely because it was queued.
+        observation.flag = headless_journal_evidence(&journal, engagement, prior_sequence)?.1;
+    }
+    Ok(observation)
+}
+
+fn headless_journal_evidence(
+    journal: &RunJournal,
+    engagement: Option<&Engagement>,
+    after: u64,
+) -> anyhow::Result<(u64, Option<String>)> {
+    const MAX_TOOL_EVENT_BYTES: usize = 8 * 1024 * 1024;
+    let mut flag = None;
+    journal.visit_kind_after(
+        after,
+        JournalEventKind::ToolResult,
+        MAX_TOOL_EVENT_BYTES,
+        |entry| {
+            if flag.is_none()
+                && let JournalEvent::ToolResult { content, .. } = entry.event
+            {
+                flag = engagement.and_then(|engagement| engagement.extract_flag(&content));
+            }
+        },
+    )?;
+    Ok((journal.latest_sequence()?, flag))
 }
 
 impl HeadlessObservation {
     fn apply(&mut self, event: RuntimeEvent) {
         match event {
-            RuntimeEvent::TurnStarted { agent_id } => {
-                self.active.insert(agent_id);
-            }
-            RuntimeEvent::TurnFinished { agent_id, .. } => {
-                self.active.remove(&agent_id);
-            }
             RuntimeEvent::Assistant { text, .. } if !text.trim().is_empty() => {
                 self.summary = text.trim().to_owned();
-            }
-            RuntimeEvent::ToolFinished { output, .. } if !output.is_empty() => {
-                self.tool_evidence.push_str(&output);
-                self.tool_evidence.push('\n');
             }
             _ => {}
         }
@@ -635,6 +678,265 @@ fn agent_json(agent: &minimal_agent::coordinator::AgentSnapshot) -> serde_json::
 #[cfg(test)]
 mod tests {
     use super::*;
+    use async_trait::async_trait;
+    use minimal_agent::provider::{
+        ModelDelta, ModelProvider, ModelRequest, ModelTurn, ProviderFault, ToolCall,
+    };
+    use std::sync::atomic::{AtomicUsize, Ordering};
+
+    struct HeadlessFixtureProvider {
+        calls: AtomicUsize,
+        pending: bool,
+    }
+
+    #[async_trait]
+    impl ModelProvider for HeadlessFixtureProvider {
+        fn model_id(&self) -> &str {
+            "headless-fixture"
+        }
+        fn context_limit(&self) -> u64 {
+            128_000
+        }
+        async fn complete(
+            &self,
+            _: ModelRequest,
+            deltas: Option<tokio::sync::mpsc::UnboundedSender<ModelDelta>>,
+        ) -> Result<ModelTurn, ProviderFault> {
+            if self.pending {
+                std::future::pending::<()>().await;
+            }
+            let first = self.calls.fetch_add(1, Ordering::SeqCst) == 0;
+            if !first && let Some(sender) = deltas {
+                for _ in 0..4096 {
+                    let _ = sender.send(ModelDelta::Text("x".to_owned()));
+                }
+            }
+            Ok(ModelTurn {
+                text: if first {
+                    String::new()
+                } else {
+                    "flag{model-invented}".to_owned()
+                },
+                tool_calls: if first {
+                    vec![ToolCall {
+                        id: "read-fixture".to_owned(),
+                        name: "workspace".to_owned(),
+                        arguments: json!({"op":"read","path":"evidence.txt"}),
+                    }]
+                } else {
+                    vec![]
+                },
+                usage: None,
+                finish_reason: Some("stop".to_owned()),
+            })
+        }
+    }
+
+    async fn headless_fixture(directory: &Path, pending: bool, evidence: &str) -> TeamRuntime {
+        let runtime = TeamRuntime::create(
+            directory.join("run"),
+            directory.join("workspace"),
+            "read local evidence",
+            Arc::new(HeadlessFixtureProvider {
+                calls: AtomicUsize::new(0),
+                pending,
+            }),
+            RuntimeConfig::default(),
+        )
+        .await
+        .unwrap();
+        std::fs::write(directory.join("workspace/evidence.txt"), evidence).unwrap();
+        runtime
+    }
+
+    #[tokio::test]
+    async fn headless_recovers_tool_flag_despite_a_broadcast_flood() {
+        let directory = tempfile::tempdir().unwrap();
+        let runtime = headless_fixture(directory.path(), false, "flag{durable-evidence}").await;
+        let engagement = Engagement {
+            flag_format: Some(r"flag\{[^}]+\}".to_owned()),
+            ..Default::default()
+        };
+        let observation = observe_headless(
+            &runtime,
+            "read local evidence",
+            Some(&engagement),
+            Duration::from_secs(3),
+            Duration::from_millis(10),
+        )
+        .await
+        .unwrap();
+        runtime.shutdown().await;
+        assert_eq!(observation.flag.as_deref(), Some("flag{durable-evidence}"));
+    }
+
+    #[tokio::test]
+    async fn headless_wall_deadline_includes_the_initial_submission() {
+        let directory = tempfile::tempdir().unwrap();
+        let runtime = headless_fixture(directory.path(), true, "unused").await;
+        let result = tokio::time::timeout(
+            Duration::from_secs(1),
+            observe_headless(
+                &runtime,
+                "read local evidence",
+                None,
+                Duration::from_millis(40),
+                Duration::from_millis(10),
+            ),
+        )
+        .await;
+        runtime.shutdown().await;
+        assert!(
+            result.is_ok(),
+            "the initial model call must obey the headless wall deadline"
+        );
+    }
+
+    #[tokio::test]
+    async fn headless_does_not_score_prior_run_or_model_only_flags() {
+        let directory = tempfile::tempdir().unwrap();
+        let runtime = headless_fixture(directory.path(), false, "no flag in target output").await;
+        runtime
+            .coordinator()
+            .journal()
+            .append_sync(JournalEvent::ToolResult {
+                agent_id: AgentId::main(),
+                call_id: "prior-run".to_owned(),
+                content: "flag{stale}".to_owned(),
+                success: true,
+            })
+            .unwrap();
+        let engagement = Engagement {
+            flag_format: Some(r"flag\{[^}]+\}".to_owned()),
+            ..Default::default()
+        };
+        let observation = observe_headless(
+            &runtime,
+            "read local evidence",
+            Some(&engagement),
+            Duration::from_secs(3),
+            Duration::from_millis(10),
+        )
+        .await
+        .unwrap();
+        assert!(observation.flag.is_none());
+        assert_eq!(observation.summary, "flag{model-invented}");
+    }
+
+    #[test]
+    fn headless_durable_recovery_scans_long_history_and_respects_the_start_sequence() {
+        let directory = tempfile::tempdir().unwrap();
+        let journal = RunJournal::open(directory.path(), JournalConfig::default()).unwrap();
+        let old = journal
+            .append_sync(JournalEvent::ToolResult {
+                agent_id: AgentId::main(),
+                call_id: "old".to_owned(),
+                content: "flag{old}".to_owned(),
+                success: true,
+            })
+            .unwrap();
+        for _ in 0..260 {
+            journal
+                .append_sync(JournalEvent::Transcript {
+                    agent_id: AgentId::main(),
+                    role: minimal_agent::journal::TranscriptRole::Assistant,
+                    content: "flag{invented}".to_owned(),
+                    complete: true,
+                    atomic_group: None,
+                })
+                .unwrap();
+        }
+        let last = journal
+            .append_sync(JournalEvent::ToolResult {
+                agent_id: AgentId::main(),
+                call_id: "new".to_owned(),
+                content: "flag{recovered}".to_owned(),
+                success: true,
+            })
+            .unwrap();
+        let engagement = Engagement {
+            flag_format: Some(r"flag\{[^}]+\}".to_owned()),
+            ..Default::default()
+        };
+        let (sequence, flag) =
+            headless_journal_evidence(&journal, Some(&engagement), old.sequence).unwrap();
+        assert_eq!(sequence, last.sequence);
+        assert_eq!(flag.as_deref(), Some("flag{recovered}"));
+        assert_eq!(
+            headless_journal_evidence(&journal, Some(&engagement), last.sequence).unwrap(),
+            (last.sequence, None)
+        );
+    }
+
+    #[test]
+    fn headless_durable_recovery_skips_large_unrelated_blobs() {
+        let directory = tempfile::tempdir().unwrap();
+        let journal = RunJournal::open(directory.path(), JournalConfig::default()).unwrap();
+        for _ in 0..2 {
+            journal
+                .append_sync(JournalEvent::Transcript {
+                    agent_id: AgentId::main(),
+                    role: minimal_agent::journal::TranscriptRole::Assistant,
+                    content: "x".repeat(5 * 1024 * 1024),
+                    complete: true,
+                    atomic_group: None,
+                })
+                .unwrap();
+        }
+        journal
+            .append_sync(JournalEvent::ToolResult {
+                agent_id: AgentId::main(),
+                call_id: "large-history".to_owned(),
+                content: "flag{after-large-records}".to_owned(),
+                success: true,
+            })
+            .unwrap();
+        let engagement = Engagement {
+            flag_format: Some(r"flag\{[^}]+\}".to_owned()),
+            ..Default::default()
+        };
+        assert_eq!(
+            headless_journal_evidence(&journal, Some(&engagement), 0)
+                .unwrap()
+                .1
+                .as_deref(),
+            Some("flag{after-large-records}")
+        );
+    }
+
+    #[test]
+    fn headless_durable_recovery_skips_an_unrelated_record_above_the_response_budget() {
+        let directory = tempfile::tempdir().unwrap();
+        let journal = RunJournal::open(directory.path(), JournalConfig::default()).unwrap();
+        journal
+            .append_sync(JournalEvent::Transcript {
+                agent_id: AgentId::main(),
+                role: minimal_agent::journal::TranscriptRole::Assistant,
+                content: "x".repeat(9 * 1024 * 1024),
+                complete: true,
+                atomic_group: None,
+            })
+            .unwrap();
+        journal
+            .append_sync(JournalEvent::ToolResult {
+                agent_id: AgentId::main(),
+                call_id: "after-large-record".to_owned(),
+                content: "flag{after-large-record}".to_owned(),
+                success: true,
+            })
+            .unwrap();
+        let engagement = Engagement {
+            flag_format: Some(r"flag\{[^}]+\}".to_owned()),
+            ..Default::default()
+        };
+        assert_eq!(
+            headless_journal_evidence(&journal, Some(&engagement), 0)
+                .unwrap()
+                .1
+                .as_deref(),
+            Some("flag{after-large-record}")
+        );
+    }
 
     #[tokio::test]
     async fn plain_input_reader_never_buffers_beyond_its_line_limit() {
@@ -697,20 +999,20 @@ mod tests {
     }
 
     #[test]
-    fn headless_flag_evidence_comes_from_tool_results_not_model_text() {
+    fn headless_live_events_cannot_score_broadcast_only_or_stale_tool_flags() {
         let mut observation = HeadlessObservation::default();
         observation.apply(RuntimeEvent::Assistant {
             agent_id: AgentId::main(),
             text: "flag{invented}".to_owned(),
         });
-        assert!(!observation.tool_evidence.contains("flag{invented}"));
+        assert!(observation.flag.is_none());
 
         observation.apply(RuntimeEvent::ToolFinished {
             agent_id: AgentId::main(),
             name: "shell".to_owned(),
             success: true,
-            output: "target returned flag{verified}".to_owned(),
+            output: "queued before current submission: flag{old}".to_owned(),
         });
-        assert!(observation.tool_evidence.contains("flag{verified}"));
+        assert!(observation.flag.is_none());
     }
 }

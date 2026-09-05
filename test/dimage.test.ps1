@@ -26,8 +26,8 @@ try {
     if (($baseBuild -join ' ') -notmatch '^buildx bake .*--load .* base$') {
         throw "base target did not invoke buildx bake with --load: $($baseBuild -join ' ')"
     }
-    if ($baseBuild -contains '--builder') {
-        throw 'build used an unexpected custom builder instead of default docker driver'
+    if (($baseBuild -join ' ') -notmatch '--builder default(?: |$)') {
+        throw 'build must explicitly select the default builder regardless of the active buildx selection'
     }
 
     $global:dimageCalls.Clear()
@@ -40,6 +40,19 @@ try {
     $allBuild = $global:dimageCalls[0]
     if (($allBuild -join ' ') -notmatch '--set app.tags=minimal-agent:test app$') {
         throw "all target must build app with custom tag: $($allBuild -join ' ')"
+    }
+
+    $global:dimageCalls.Clear()
+    & (Join-Path $PSScriptRoot '..\scripts\dimage.ps1') -Target runner -Tag 'xbow-agent-runner:test' -NoCache
+    if ($global:dimageCalls.Count -ne 1) {
+        throw "runner must use one bake pipeline; got $($global:dimageCalls.Count) calls"
+    }
+    $runnerBuild = $global:dimageCalls[0]
+    if (($runnerBuild -join ' ') -notmatch '--set runner.tags=xbow-agent-runner:test --no-cache runner$') {
+        throw "runner must build the runner target with its own tag and no-cache: $($runnerBuild -join ' ')"
+    }
+    if ($runnerBuild -notcontains '--load') {
+        throw 'runner must load straight into the default image store'
     }
 }
 finally {

@@ -27,6 +27,7 @@ const rows = loadMinimalAgentRows(RUNS_DIR);
 const s = renderStandardReport({
   model: { slug: MODEL.slug, id: MODEL.id, label: MODEL.label },
   rows,
+  attempts: loadMinimalAgentRows(RUNS_DIR, { allAttempts: true }),
   reportsDir: REPORTS_DIR,
   generator: "benchmarks/minimax/summarize.mjs",
   suite: "XBOW-104",

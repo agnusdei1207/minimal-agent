@@ -140,7 +140,7 @@ pub enum JournalEvent {
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
-enum JournalEventKind {
+pub enum JournalEventKind {
     AgentCreated,
     AgentAssigned,
     AgentStateChanged,
@@ -314,6 +314,12 @@ impl RunJournal {
         &self.root
     }
 
+    /// Last committed sequence, without replaying or hydrating any payloads.
+    pub fn latest_sequence(&self) -> Result<u64, JournalError> {
+        let writer = self.writer.lock().map_err(|_| JournalError::LockPoisoned)?;
+        Ok(writer.next_sequence.saturating_sub(1))
+    }
+
     pub async fn append(&self, event: JournalEvent) -> Result<JournalAck, JournalError> {
         tokio::task::yield_now().await;
         self.append_sync(event)
@@ -417,9 +423,42 @@ impl RunJournal {
                 start,
                 end,
                 max_bytes,
+                kind: None,
             }),
+            None,
         )?
         .events)
+    }
+
+    /// Visit one kind after a watermark in one scan. Each selected payload is
+    /// bounded independently and released after the callback; unrelated blobs
+    /// stay on disk. Record order/checksums and selected blob digests are checked.
+    pub fn visit_kind_after(
+        &self,
+        after: u64,
+        kind: JournalEventKind,
+        max_event_bytes: usize,
+        mut visit: impl FnMut(ReplayedEvent),
+    ) -> Result<(), JournalError> {
+        if max_event_bytes == 0 {
+            return Err(JournalError::InvalidReplayRange);
+        }
+        if after == u64::MAX {
+            return Ok(());
+        }
+        scan_records_selected(
+            &self.journal_dir,
+            &self.blobs_dir,
+            false,
+            Some(ReplaySelection {
+                start: after + 1,
+                end: u64::MAX,
+                max_bytes: max_event_bytes,
+                kind: Some(kind),
+            }),
+            Some(&mut visit),
+        )?;
+        Ok(())
     }
 }
 
@@ -559,7 +598,7 @@ fn scan_records(
     blobs_dir: &Path,
     repair_partial_tail: bool,
 ) -> Result<ScanResult, JournalError> {
-    scan_records_selected(journal_dir, blobs_dir, repair_partial_tail, None)
+    scan_records_selected(journal_dir, blobs_dir, repair_partial_tail, None, None)
 }
 
 #[derive(Debug, Clone, Copy)]
@@ -567,6 +606,7 @@ struct ReplaySelection {
     start: u64,
     end: u64,
     max_bytes: usize,
+    kind: Option<JournalEventKind>,
 }
 
 fn scan_records_selected(
@@ -574,6 +614,7 @@ fn scan_records_selected(
     blobs_dir: &Path,
     repair_partial_tail: bool,
     selection: Option<ReplaySelection>,
+    mut visit: Option<&mut dyn FnMut(ReplayedEvent)>,
 ) -> Result<ScanResult, JournalError> {
     let segments = segment_files(journal_dir)?;
     if segments.is_empty() {
@@ -629,8 +670,16 @@ fn scan_records_selected(
                     sequence: record.sequence,
                 });
             }
-            let selected = selection
-                .is_none_or(|range| record.sequence >= range.start && record.sequence <= range.end);
+            let selected = selection.is_none_or(|range| {
+                record.sequence >= range.start
+                    && record.sequence <= range.end
+                    && range.kind.is_none_or(|kind| match &record.event {
+                        StoredEvent::Inline { event } => event.kind() == kind,
+                        StoredEvent::Blob {
+                            kind: stored_kind, ..
+                        } => *stored_kind == kind,
+                    })
+            });
             if selected {
                 if let Some(range) = selection {
                     let event_bytes = match &record.event {
@@ -639,7 +688,8 @@ fn scan_records_selected(
                             usize::try_from(*bytes).unwrap_or(usize::MAX)
                         }
                     };
-                    selected_bytes = selected_bytes
+                    let retained_bytes = if visit.is_some() { 0 } else { selected_bytes };
+                    selected_bytes = retained_bytes
                         .checked_add(event_bytes)
                         .filter(|bytes| *bytes <= range.max_bytes)
                         .ok_or(JournalError::ReplayLimit {
@@ -647,12 +697,17 @@ fn scan_records_selected(
                         })?;
                 }
                 let (event, storage) = resolve_event(record.event, blobs_dir)?;
-                result.events.push(ReplayedEvent {
+                let replayed = ReplayedEvent {
                     sequence: record.sequence,
                     recorded_at: record.recorded_at,
                     event,
                     storage,
-                });
+                };
+                if let Some(visit) = visit.as_mut() {
+                    visit(replayed);
+                } else {
+                    result.events.push(replayed);
+                }
             }
             result.last_sequence = record.sequence;
             expected_sequence = expected_sequence.saturating_add(1);

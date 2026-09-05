@@ -19,3 +19,12 @@ target "app" {
   }
   tags = [APP_TAG]
 }
+
+target "runner" {
+  context    = "."
+  dockerfile = "benchmarks/xbow104/Dockerfile.runner"
+  contexts = {
+    "minimal-agent:check" = "target:app"
+  }
+  tags = ["xbow-agent-runner:latest"]
+}

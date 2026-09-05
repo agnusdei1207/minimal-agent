@@ -7,11 +7,13 @@
 //   npm run xbow -- 42 --dry-run         # print commands only
 
 import { spawn, spawnSync } from "node:child_process";
+import { randomUUID } from "node:crypto";
+import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { writeCommandArtifacts } from "./artifacts.mjs";
-import { resolveArtifactLayout } from "./control.mjs";
-import { finalizeInterruptedRun, findLatestRun } from "./interrupt.mjs";
+import { acquireTaskLock, resolveArtifactLayout } from "./control.mjs";
+import { finalizeInterruptedDirectory, findOwnedLatestRun } from "./interrupt.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const projectRoot = path.resolve(__dirname, "..", "..");
@@ -23,6 +25,7 @@ const suiteRoot = path.resolve(
 let activeChild = null;
 let interruptSignal = null;
 let interruptCleanupComplete = false;
+const wrapperToken = randomUUID();
 
 for (const sig of ["SIGINT", "SIGTERM"]) {
   process.on(sig, () => {
@@ -36,7 +39,7 @@ for (const sig of ["SIGINT", "SIGTERM"]) {
     } catch {
       activeChild?.kill();
     }
-    cleanupInterruptedTaskSync();
+    // The runner handles its signal first; fallback runs after child exit.
   });
 }
 
@@ -103,6 +106,8 @@ const watchdog = spawn(
     path.join(__dirname, "watchdog.mjs"),
     "--parent-pid",
     String(process.pid),
+    "--wrapper-token",
+    wrapperToken,
     "--task",
     id,
     "--runs-dir",
@@ -121,7 +126,7 @@ function run(cmd) {
     const child = spawn(
       process.execPath,
       [path.join(__dirname, cmd.file), ...cmd.args],
-      { stdio: "inherit" },
+      { stdio: "inherit", env: { ...process.env, XBOW104_WRAPPER_TOKEN: wrapperToken } },
     );
     activeChild = child;
     child.on("exit", (code) => {
@@ -135,43 +140,55 @@ function run(cmd) {
 function cleanupInterruptedTaskSync() {
   if (interruptCleanupComplete) return;
   interruptCleanupComplete = true;
-  const runDir = findLatestRun(runsDir, id);
-  if (!runDir) return;
-  const project = id.toLowerCase();
-  const composeFile = path.join(
-    suiteRoot,
-    "benchmarks",
-    id,
-    "docker-compose.yml",
-  );
-  const cmd = (args) => {
-    const r = spawnSync("docker", args, {
-      cwd: projectRoot,
-      encoding: "utf8",
-      maxBuffer: 64 * 1024 * 1024,
-    });
-    return {
-      ok: r.status === 0,
-      code: r.status ?? -1,
-      stdout: r.stdout || "",
-      stderr: r.stderr || r.error?.message || "",
+  const runDir = findOwnedLatestRun(runsDir, id, wrapperToken);
+  if (!runDir || fs.existsSync(path.join(runDir, "evidence.json"))) return;
+  let lock;
+  try {
+    lock = acquireTaskLock(runsDir, id);
+  } catch {
+    return;
+  }
+  try {
+    if (findOwnedLatestRun(runsDir, id, wrapperToken) !== runDir) return;
+    const project = id.toLowerCase();
+    const composeFile = path.join(
+      suiteRoot,
+      "benchmarks",
+      id,
+      "docker-compose.yml",
+    );
+    const cmd = (args) => {
+      const r = spawnSync("docker", args, {
+        cwd: projectRoot,
+        encoding: "utf8",
+        maxBuffer: 64 * 1024 * 1024,
+        timeout: 60_000,
+      });
+      return {
+        ok: r.status === 0,
+        code: r.status ?? -1,
+        stdout: r.stdout || "",
+        stderr: r.stderr || r.error?.message || "",
+      };
     };
-  };
-  const agentCleanup = cmd(["rm", "-f", `${project}-agent`]);
-  writeCommandArtifacts(runDir, "wrapper-interrupt-agent-cleanup", agentCleanup);
-  const teardown = cmd([
-    "compose",
-    "-p",
-    project,
-    "-f",
-    composeFile,
-    "down",
-    "-v",
-  ]);
-  writeCommandArtifacts(runDir, "wrapper-interrupt-compose-down", teardown);
-  finalizeInterruptedRun(runsDir, id, interruptSignal || "signal", {
-    teardownFailed: teardown.ok !== true,
-  });
+    const agentCleanup = cmd(["rm", "-f", `${project}-agent`]);
+    writeCommandArtifacts(runDir, "wrapper-interrupt-agent-cleanup", agentCleanup);
+    const teardown = cmd([
+      "compose",
+      "-p",
+      project,
+      "-f",
+      composeFile,
+      "down",
+      "-v",
+    ]);
+    writeCommandArtifacts(runDir, "wrapper-interrupt-compose-down", teardown);
+    finalizeInterruptedDirectory(runDir, id, interruptSignal || "signal", {
+      teardownFailed: teardown.ok !== true,
+    });
+  } finally {
+    lock.release();
+  }
 }
 
 console.log(`[${id}] starting single-task pipeline...`);

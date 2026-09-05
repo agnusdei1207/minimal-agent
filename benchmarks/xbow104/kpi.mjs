@@ -8,6 +8,7 @@ import {
   loadAssessedEntries,
   selectNewestEvidence,
   selectNewestValidEvidence,
+  normalizeUsage,
 } from "./evidence.mjs";
 import { resolveArtifactLayout } from "./control.mjs";
 
@@ -38,6 +39,12 @@ function readJsonLines(file) {
 
 function countMatches(text, pattern) {
   return [...String(text || "").matchAll(pattern)].length;
+}
+
+function measuredSum(values) {
+  return values.length && values.every(Number.isFinite)
+    ? values.reduce((sum, value) => sum + value, 0)
+    : null;
 }
 
 function percentile(values, frac) {
@@ -76,33 +83,42 @@ function summarizeRuntimeLogs(runDir) {
     .filter((r) => r.event === "stage_end" && r.stage === "provider_wait")
     .map((r) => Number(r.duration_ms || 0));
   const toolEnds = rows.filter((r) => r.event === "tool_end");
-  const responses = rows.filter((r) => r.event === "response");
+  const loggedResponses = rows.filter((r) => r.event === "response");
+  const usageResponses = readJsonLines(path.join(runDir, "telemetry", "usage.jsonl"))
+    .filter((r) => r.event === "response" || (!r.event &&
+      (Number.isFinite(r.prompt_tokens) || Number.isFinite(r.completion_tokens))));
+  // usage.jsonl is authoritative when present; logs can repeat the same events.
+  const responses = usageResponses.length ? usageResponses : loggedResponses;
+  const toolsMeasured = toolEnds.length > 0;
+  const waitsMeasured = providerWaits.length > 0;
   return {
     log_rows: rows.length,
-    request_count: rows.filter((r) => r.event === "request_start").length,
-    response_count: responses.length,
-    tool_call_count: toolEnds.length,
-    tool_failure_count: toolEnds.filter((r) => r.ok === false).length,
-    shell_tool_calls: toolEnds.filter((r) => r.tool === "shell").length,
-    shell_tool_failures: toolEnds.filter(
+    telemetry_source: usageResponses.length ? "usage.jsonl" : loggedResponses.length ? "logs" : null,
+    tool_metrics_measured: toolsMeasured,
+    request_count: rows.some((r) => r.event === "request_start") ? rows.filter((r) => r.event === "request_start").length : null,
+    response_count: responses.length || null,
+    tool_call_count: toolsMeasured ? toolEnds.length : null,
+    tool_failure_count: toolsMeasured ? toolEnds.filter((r) => r.ok === false).length : null,
+    shell_tool_calls: toolsMeasured ? toolEnds.filter((r) => r.tool === "shell").length : null,
+    shell_tool_failures: toolsMeasured ? toolEnds.filter(
       (r) => r.tool === "shell" && r.ok === false,
-    ).length,
-    fetch_tool_failures: toolEnds.filter(
+    ).length : null,
+    fetch_tool_failures: toolsMeasured ? toolEnds.filter(
       (r) => r.tool === "fetch" && r.ok === false,
-    ).length,
-    slow_stage_count: rows.filter((r) => r.event === "slow_stage").length,
-    provider_wait_total_ms: providerWaits.reduce((s, v) => s + v, 0),
+    ).length : null,
+    slow_stage_count: waitsMeasured ? rows.filter((r) => r.event === "slow_stage").length : null,
+    provider_wait_total_ms: waitsMeasured ? providerWaits.reduce((s, v) => s + v, 0) : null,
     provider_wait_max_ms: providerWaits.length
       ? Math.max(...providerWaits)
-      : 0,
-    response_prompt_tokens: responses.reduce(
+      : null,
+    response_prompt_tokens: responses.length ? responses.reduce(
       (s, r) => s + Number(r.prompt_tokens || 0),
       0,
-    ),
-    response_total_tokens: responses.reduce(
-      (s, r) => s + Number(r.total_tokens || 0),
+    ) : null,
+    response_total_tokens: responses.length ? responses.reduce(
+      (s, r) => s + normalizeUsage(r).total_tokens,
       0,
-    ),
+    ) : null,
     unique_tools: [
       ...new Set(toolEnds.map((r) => r.tool).filter(Boolean)),
     ].sort(),
@@ -112,24 +128,20 @@ function summarizeRuntimeLogs(runDir) {
 function summarizeShellListener(runDir) {
   const base = path.join(runDir, "telemetry", "shell-listener");
   const auditRows = readJsonLines(path.join(base, "audit.jsonl"));
-  const eventRows = readJsonLines(path.join(base, "events.jsonl"));
-  const snapshot = fs.existsSync(path.join(base, "sessions.snapshot.json"))
-    ? JSON.parse(
-        fs.readFileSync(path.join(base, "sessions.snapshot.json"), "utf8"),
-      )
-    : { sessions: [] };
-  const sessions = Array.isArray(snapshot.sessions)
-    ? snapshot.sessions
-    : [];
+  let snapshot;
+  try { snapshot = JSON.parse(readText(path.join(base, "sessions.snapshot.json"))); }
+  catch { /* Live snapshots can be absent or partially flushed. */ }
+  const sessions = Array.isArray(snapshot?.sessions) ? snapshot.sessions : null;
+  const auditMeasured = fs.existsSync(path.join(base, "audit.jsonl"));
   return {
-    audit_request_count: auditRows.length,
-    spawn_request_count: auditRows.filter(
+    audit_request_count: auditMeasured ? auditRows.length : null,
+    spawn_request_count: auditMeasured ? auditRows.filter(
       (r) => r.request?.op === "spawn",
-    ).length,
-    session_count: sessions.length,
-    nonzero_exit_session_count: sessions.filter(
+    ).length : null,
+    session_count: sessions?.length ?? null,
+    nonzero_exit_session_count: sessions?.filter(
       (r) => Number(r.exit_status?.code || 0) !== 0,
-    ).length,
+    ).length ?? null,
   };
 }
 
@@ -137,6 +149,11 @@ export function summarizeRunKpi(runDir, evidence) {
   const transcript = summarizeTranscript(runDir);
   const runtime = summarizeRuntimeLogs(runDir);
   const shellListener = summarizeShellListener(runDir);
+  const usage = normalizeUsage(evidence.usage);
+  if (runtime.response_count === null && Number.isFinite(usage?.events) && usage.events > 0) {
+    runtime.response_count = usage.events;
+    runtime.telemetry_source = "evidence.usage";
+  }
   const issues = [];
   if (transcript.failed_message_stream_count > 0)
     issues.push("message_stream_failure");
@@ -176,7 +193,7 @@ export function summarizeRunKpi(runDir, evidence) {
       prompt_tokens: Number(evidence.usage?.prompt_tokens || 0),
       completion_tokens: Number(evidence.usage?.completion_tokens || 0),
       cached_tokens: Number(evidence.usage?.cached_tokens || 0),
-      total_tokens: Number(evidence.usage?.total_tokens || 0),
+      total_tokens: usage?.total_tokens ?? runtime.response_total_tokens,
       cost_usd: Number(evidence.usage?.cost_usd || 0),
     },
     transcript,
@@ -210,10 +227,7 @@ export function buildReport(runsDir) {
       issueSummary[i] = (issueSummary[i] || 0) + 1;
 
   const validDurations = validReports.map((r) => r.benchmark.duration_s);
-  const toolCalls = reports.reduce(
-    (s, r) => s + r.runtime.tool_call_count,
-    0,
-  );
+  const toolCalls = measuredSum(reports.map((r) => r.runtime.tool_call_count));
   const totals = {
     run_count: reports.length,
     latest_task_count: latestReports.length,
@@ -223,10 +237,7 @@ export function buildReport(runsDir) {
     excluded_latest_task_count: latestReports.filter(
       (r) => !r.benchmark.valid_for_score,
     ).length,
-    runtime_tool_failures: reports.reduce(
-      (s, r) => s + r.runtime.tool_failure_count,
-      0,
-    ),
+    runtime_tool_failures: measuredSum(reports.map((r) => r.runtime.tool_failure_count)),
     tool_call_count: toolCalls,
     tool_failure_rate_pct: toolCalls
       ? Number(
@@ -239,32 +250,20 @@ export function buildReport(runsDir) {
             toolCalls
           ).toFixed(2),
         )
-      : 0,
+      : null,
     solve_rate_pct: 0,
     duration_p50_s: percentile(validDurations, 0.5),
     duration_p95_s: percentile(validDurations, 0.95),
-    total_tokens: validReports.reduce(
-      (s, r) => s + r.benchmark.total_tokens,
-      0,
-    ),
+    total_tokens: measuredSum(validReports.map((r) => r.benchmark.total_tokens)),
     total_elapsed_s: reports.reduce(
       (s, r) => s + r.benchmark.duration_s,
       0,
     ),
-    total_turn_count: reports.reduce(
-      (s, r) => s + r.runtime.response_count,
-      0,
-    ),
+    total_turn_count: measuredSum(reports.map((r) => r.runtime.response_count)),
     average_elapsed_per_turn_s: 0,
     tokens_per_turn: 0,
-    provider_wait_total_ms: reports.reduce(
-      (s, r) => s + r.runtime.provider_wait_total_ms,
-      0,
-    ),
-    nonzero_shell_exit_sessions: reports.reduce(
-      (s, r) => s + r.shell_listener.nonzero_exit_session_count,
-      0,
-    ),
+    provider_wait_total_ms: measuredSum(reports.map((r) => r.runtime.provider_wait_total_ms)),
+    nonzero_shell_exit_sessions: measuredSum(reports.map((r) => r.shell_listener.nonzero_exit_session_count)),
   };
   totals.solve_rate_pct = totals.valid_task_count
     ? Number(
@@ -276,7 +275,7 @@ export function buildReport(runsDir) {
     : 0;
   totals.average_elapsed_per_turn_s = totals.total_turn_count
     ? Number((totals.total_elapsed_s / totals.total_turn_count).toFixed(2))
-    : 0;
+    : null;
   totals.tokens_per_turn = totals.total_turn_count
     ? Number(
         (
@@ -284,7 +283,7 @@ export function buildReport(runsDir) {
           totals.total_turn_count
         ).toFixed(2),
       )
-    : 0;
+    : null;
 
   return {
     totals,

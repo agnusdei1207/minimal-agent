@@ -1,7 +1,8 @@
 param(
-    [ValidateSet('base', 'app', 'all')]
+    [ValidateSet('base', 'app', 'all', 'runner')]
     [string] $Target = 'all',
-    [string] $Tag = 'minimal-agent:0.110.0'
+    [string] $Tag = 'minimal-agent:0.110.0',
+    [switch] $NoCache
 )
 
 $ErrorActionPreference = 'Stop'
@@ -11,10 +12,12 @@ $bakeFile = Join-Path $repoRoot 'docker-bake.hcl'
 # The `app` target pulls in `base` automatically as a build dependency
 # (app.Dockerfile `FROM runtime-base`, resolved via the bake `target:base`
 # context), so building only `app` for the full pipeline still builds base.
+# The benchmark `runner` similarly depends on app, then base.
 [string[]]$bakeTargets = switch ($Target) {
     'base' { @('base') }
     'app' { @('app') }
     'all' { @('app') }
+    'runner' { @('runner') }
 }
 
 # Build with the default (docker) builder rather than a memory-capped
@@ -27,12 +30,20 @@ Push-Location $repoRoot
 try {
     [string[]]$bakeArgs = @(
         'buildx', 'bake',
+        '--builder', 'default',
         '--file', $bakeFile,
         '--provenance=false',
         '--sbom=false',
-        '--load',
-        '--set', "app.tags=$Tag"
+        '--load'
     )
+    if ($Target -eq 'runner') {
+        if (-not $PSBoundParameters.ContainsKey('Tag')) { $Tag = 'xbow-agent-runner:latest' }
+        $bakeArgs += @('--set', "runner.tags=$Tag")
+    }
+    else {
+        $bakeArgs += @('--set', "app.tags=$Tag")
+    }
+    if ($NoCache) { $bakeArgs += '--no-cache' }
     $bakeArgs += $bakeTargets
     & docker @bakeArgs
     if ($LASTEXITCODE -ne 0) {

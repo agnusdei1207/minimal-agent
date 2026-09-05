@@ -103,7 +103,7 @@ if (noDocker) {
   const docker = spawnSync(
     "docker",
     ["version", "--format", "{{.Server.Version}}"],
-    { encoding: "utf8" },
+    { encoding: "utf8", timeout: 30_000 },
   );
   add(
     "docker_daemon",
@@ -113,7 +113,7 @@ if (noDocker) {
   const inspect = spawnSync(
     "docker",
     ["image", "inspect", image, "--format", "{{.Id}}"],
-    { encoding: "utf8" },
+    { encoding: "utf8", timeout: 30_000 },
   );
   add(
     "agent_image",
@@ -121,9 +121,10 @@ if (noDocker) {
     inspect.status === 0 ? image : "missing",
   );
   if (inspect.status === 0) {
-    // Check for orphaned xbow networks
+    // Attached endpoints are normal during a run. Empty networks are only
+    // cleanup candidates: a concurrent compose up may still be creating them.
     try {
-      const nets = spawnSync(
+      const listing = spawnSync(
         "docker",
         [
           "network",
@@ -133,18 +134,26 @@ if (noDocker) {
           "--format",
           "{{.Name}}",
         ],
-        { encoding: "utf8" },
-      )
-        .stdout.trim()
+        { encoding: "utf8", timeout: 30_000 },
+      );
+      if (listing.status !== 0) throw new Error("network listing failed");
+      const nets = listing.stdout.trim()
         .split(/\r?\n/)
         .filter(Boolean);
-      add(
-        "orphan_xben_networks",
-        nets.length ? "WARN" : "PASS",
-        nets.length ? nets.join(",") : "0",
-      );
+      let networks = [];
+      if (nets.length) {
+        const inspectNetworks = spawnSync("docker", ["network", "inspect", ...nets], {
+          encoding: "utf8", timeout: 30_000,
+        });
+        if (inspectNetworks.status !== 0) throw new Error("network inspection failed");
+        networks = JSON.parse(inspectNetworks.stdout);
+      }
+      const active = networks.filter((net) => Object.keys(net.Containers || {}).length > 0).map((net) => net.Name);
+      const empty = networks.filter((net) => Object.keys(net.Containers || {}).length === 0).map((net) => net.Name);
+      add("active_xben_networks", "PASS", active.join(",") || "0");
+      add("empty_xben_networks", empty.length ? "WARN" : "PASS", empty.join(",") || "0");
     } catch {
-      add("orphan_xben_networks", "FAIL", "query failed");
+      add("xben_network_inspection", "WARN", "query failed; ownership unknown, do not clean up");
     }
   }
 }

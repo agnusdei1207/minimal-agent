@@ -6,8 +6,9 @@ upstream base images and mirrors aged out. Symptoms show up as `BUILD FAILED` /
 `UP FAILED` in the runner log and land in `excluded_attempts` (they never reach
 the agent). Run the patch script first:
 
-```bash
-node benchmarks/xbow104/patch-suite.mjs   # idempotent; safe to re-run
+```powershell
+# Only after active runs/builds sharing the suite have finished.
+& ./scripts/nverify.ps1 -HostNode -NodeArguments @('benchmarks/xbow104/patch-suite.mjs')
 ```
 
 The script edits the **gitignored** suite under
@@ -50,21 +51,20 @@ rejects it (`invalid start port '3306:3306': invalid syntax`).
 - **Fix:** rewrite `expose: - N:M` → `expose: - M` (keep the container port).
   `ports:` mappings are left untouched — those are valid.
 
-### 4. `failed to load cache key: "" failed validation` (old image) — DOCKER-SIDE
+### 4. `failed to load cache key: "" failed validation` (old image) — INVESTIGATE
 Ancient bases like `mysql:5.7.15` (used by the `db` service in the IDOR-style
 challenges) fail at `FROM` with `"" failed validation` /
-`content digest … not found`. This is a **corrupt/incomplete layer in the local
-containerd content store**, not a Dockerfile problem — the script does NOT touch
-it.
-- **Fix (docker-side, no file edit):**
-  ```bash
-  docker rmi -f mysql:5.7.15            # drop the bad tag
-  docker image prune -f                 # GC the dangling/corrupt layer
-  docker pull mysql:5.7.15              # re-fetch clean
-  ```
-  If a layer is still cached as "Already exists" and the digest stays missing,
-  restart the Docker engine (rebuilds the content-store index) and re-pull.
-  Verify with `docker build <task>/mysql`.
+`content digest … not found`. A corrupt/incomplete local content-store layer is
+one possible cause; the error alone does not prove it. Retain the failed build
+log, image reference/digest and Docker inspection result before classifying it.
+The patch script does not modify this case.
+- During a live run, do not force-delete a shared image, prune the builder, or
+  restart Docker. Those actions can break unrelated tasks.
+- When all affected runs/builds are idle, the owner may remove only an unused
+  affected reference without force and re-pull that exact reference. If it is
+  still in use, stop cleanup and investigate ownership.
+- Verify by retrying only the failed task through the harness. Application and
+  runner images must use `scripts/dimage.ps1`; do not bypass it with docker build.
 
 ### 5. `composer install` exit 2 (advisory-blocked packages) — FIXABLE
 Recent `composer:latest` refuses to install dependencies that carry a published
@@ -77,16 +77,41 @@ composer **builder stage** version matters (the base image is unaffected).
   install-time advisory block and supports php 7.2+, so it covers every
   composer-using challenge here. (Targets: XBEN-044; also applies to XBEN-092.)
 
+### 6. XBEN-020 `no published port` — HARNESS TARGET SELECTION
+
+The public entrypoint `ssrf-demo-app` already has `ports: ["80"]`.
+`internal-service` intentionally has only `expose: ["80"]`: the solver must
+reach it through SSRF. Compose can list the internal dependency first. Older
+runners chose the first non-database service, so Claude could not reach it from
+the host and native solvers could target the private service directly.
+
+The shared `target.mjs` selects a configured non-infrastructure service with a
+published port before falling back to an internal-only application. All three
+runners use it. **Do not publish internal-service or alter challenge logic.**
+Retain previous attempts and retry XBEN-020 from the public entrypoint after
+the current shared-suite runs finish. Existing processes do not hot-reload fixes.
+
+### 7. False diagnostics and lifecycle failures — HARNESS
+
+- An active benchmark network is expected, not orphaned. An empty network needs
+  ownership checks; Docker query failure means unknown, not empty.
+- A watchdog must match its wrapper token and exact attempt and must not clean
+  up while the owning runner is alive. A task name alone is not ownership.
+- Cancellation stops scheduling new tasks. Timeout cleanup must complete before
+  evidence/manifest finalization.
+- Provider runners stop if patch-suite fails; they do not start a broken suite.
+- Concurrency must be an integer 1–5; timeout must be positive and finite.
+- Build the runner through dimage's base → app → runner dependency graph. This
+  avoids silently inheriting a stale `minimal-agent:check` image and uses the
+  default Docker builder with direct image-store loading.
+
 ## Housekeeping during a run
-Old base images and per-task target images/volumes pile up fast. Between tasks
-(or between runs) reclaim space **without touching what's in use**:
-```bash
-docker image prune -f          # dangling images
-docker volume prune -f         # unused volumes
-docker builder prune -f        # build cache
-```
-Do NOT run `docker system prune -a --volumes` while a run is live — it removes
-base images the remaining tasks still need and can break in-flight builds.
+
+Let each runner remove its own finished task's project resources and exact
+image references. Do not use global image/builder/volume prune, wildcard
+container deletion, shared image-ID force removal, or Docker restart while runs
+are active. Identical image IDs may be shared by different task tags.
+Never delete losing attempts to reclaim space: they carry retry/cost provenance.
 
 ## What stays broken (upstream, out of scope here)
 A handful of challenges have genuinely unbuildable upstreams beyond mirror/image
@@ -96,6 +121,8 @@ rot (e.g. sources that no longer resolve at all). Those remain in
 ## Backbone note (unrelated to builds)
 The Rust runtime reads `OPENAI_*` only (never `ANTHROPIC_*`). z.ai GLM runs via
 `OPENAI_BASE_URL=https://api.z.ai/api/coding/paas/v4`, `OPENAI_MODEL=glm-5.3-flash`.
-Keep `--concurrency` at **5 or below**: at 10 the provider returns 429
-(`code 1302`) which cascades into `RUNTIME_FAULT` exclusions. See the run-state
-memory for details.
+Keep combined active task concurrency at **5 or below**, and lower it if the
+selected provider requires it. A transient 429 followed by normal completion
+is not an infrastructure exclusion. Check the actual terminal outcome.
+Missing tool/wait/safety telemetry is **unmeasured**, not zero failures.
+See [RUNBOOK.md](RUNBOOK.md) for reporting and escalation rules.

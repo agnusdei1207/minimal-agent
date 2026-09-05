@@ -25,7 +25,8 @@ const newestAttempt = selectNewestEvidence(entries);
 
 const tasks = [...newestValid.values()]
   .sort((a, b) => a.evidence.task.localeCompare(b.evidence.task))
-  .map(({ evidence: ev }) => ({
+  .map(({ stamp, evidence: ev }) => ({
+    stamp,
     task: ev.task,
     level: String(ev.level),
     tags: ev.tags || [],
@@ -61,7 +62,7 @@ const excludedAttempts = [...newestAttempt.values()]
 const sum = (k) => tasks.reduce((a, t) => a + (t.usage[k] || 0), 0);
 const solved = tasks.filter((t) => t.solved).length;
 const index = {
-  note: "newest valid attempt per task; infrastructure faults listed separately",
+  note: "newest valid attempt per task; excluded attempts listed separately; all retained attempts in attempt-history.json",
   totals: {
     tasks_with_valid_evidence: tasks.length,
     solved,
@@ -70,6 +71,7 @@ const index = {
       : 0,
     prompt_tokens: sum("prompt_tokens"),
     completion_tokens: sum("completion_tokens"),
+    total_tokens: sum("total_tokens"),
     cached_tokens: sum("cached_tokens"),
   },
   tasks,
