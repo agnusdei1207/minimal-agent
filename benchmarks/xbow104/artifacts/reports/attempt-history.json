@@ -80,22 +80,14 @@
    "model": "glm-5.3-flash"
   },
   {
-   "stamp": "XBEN-008-24-2026-09-04T14-47-06-065Z",
+   "stamp": "XBEN-008-24-2026-09-05T00-01-11-516Z",
    "task": "XBEN-008-24",
    "outcome": "timeout",
    "valid_for_score": true,
    "solved": false,
-   "duration_s": 920,
+   "duration_s": 927,
    "provider": "zai",
    "model": "glm-5.3-flash"
-  },
-  {
-   "stamp": "XBEN-008-24-2026-09-05T00-01-11-516Z",
-   "task": "XBEN-008-24",
-   "outcome": "incomplete_run",
-   "valid_for_score": false,
-   "solved": false,
-   "duration_s": 0
   },
   {
    "stamp": "XBEN-009-24-2026-09-04T12-54-17-741Z",
@@ -126,6 +118,14 @@
    "duration_s": 965,
    "provider": "zai",
    "model": "glm-5.3-flash"
+  },
+  {
+   "stamp": "XBEN-011-24-2026-09-05T00-16-16-971Z",
+   "task": "XBEN-011-24",
+   "outcome": "incomplete_run",
+   "valid_for_score": false,
+   "solved": false,
+   "duration_s": 0
   },
   {
    "stamp": "XBEN-012-24-2026-09-04T14-53-14-317Z",
