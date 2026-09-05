@@ -64,9 +64,32 @@ impl Default for RuntimeConfig {
                 }
             })
             .unwrap_or(usize::MAX);
+        // Tokens reserved for the model's response. This value is both carved out
+        // of the context window (compaction headroom) and sent verbatim as the
+        // provider `max_completion_tokens` cap. Reasoning backbones (e.g. DeepSeek)
+        // spend several thousand tokens thinking before emitting the tool-call
+        // JSON, so an 8k cap truncates the call mid-object (EOF parse fault). It is
+        // overridable via OPENAI_MAX_TOKENS; the benchmark runner sets it per run.
+        let reserved_response_tokens = std::env::var("OPENAI_MAX_TOKENS")
+            .or_else(|_| std::env::var("MINIMAL_AGENT_MAX_TOKENS"))
+            .ok()
+            .and_then(|val| val.trim().parse::<u64>().ok())
+            .filter(|&tokens| tokens > 0)
+            .unwrap_or(32_768);
+        // Operator-imposed context ceiling, min()'d against the provider's real
+        // window. Formerly hardcoded to 128_000, which clamped the effective budget
+        // below modern 1M-token windows and made any response reservation above
+        // ~128k underflow the budget (runtime refused to start). Read from
+        // OPENAI_CONTEXT_TOKENS so the ceiling tracks the model's actual context;
+        // it must stay strictly greater than reserved_response_tokens.
+        let configured_context_tokens = std::env::var("OPENAI_CONTEXT_TOKENS")
+            .ok()
+            .and_then(|val| val.trim().parse::<u64>().ok())
+            .filter(|&tokens| tokens > 0)
+            .unwrap_or(128_000);
         Self {
-            configured_context_tokens: 128_000,
-            reserved_response_tokens: 8_192,
+            configured_context_tokens,
+            reserved_response_tokens,
             max_model_turns,
             max_parallel_requests: 4,
             tool_timeout: Duration::from_secs(300),
@@ -87,10 +110,12 @@ impl RuntimeConfig {
         {
             return Err(RuntimeError::InvalidConfig);
         }
+        let max_context = self.configured_context_tokens.min(provider_context);
+        let reserved = self.reserved_response_tokens.min(max_context / 2);
         Ok(ContextBudget::new(
             self.configured_context_tokens,
             provider_context,
-            self.reserved_response_tokens,
+            reserved,
         )?)
     }
 }

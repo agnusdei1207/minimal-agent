@@ -606,6 +606,7 @@ struct PartialToolCall {
 
 #[derive(Default)]
 struct ModelAccumulator {
+    reasoning: String,
     text: String,
     tool_calls: BTreeMap<usize, PartialToolCall>,
     usage: Option<TokenUsage>,
@@ -615,7 +616,7 @@ struct ModelAccumulator {
 impl ModelAccumulator {
     fn push(&mut self, delta: ModelDelta) {
         match delta {
-            ModelDelta::Reasoning(_) => {}
+            ModelDelta::Reasoning(reasoning) => self.reasoning.push_str(&reasoning),
             ModelDelta::Text(text) => self.text.push_str(&text),
             ModelDelta::ToolCall(delta) => {
                 let call = self.tool_calls.entry(delta.index).or_default();
@@ -632,7 +633,7 @@ impl ModelAccumulator {
         }
     }
 
-    fn finish(self) -> Result<ModelTurn, ProviderFault> {
+    fn finish(mut self) -> Result<ModelTurn, ProviderFault> {
         if matches!(
             self.finish_reason.as_deref(),
             Some("length" | "content_filter")
@@ -672,7 +673,13 @@ impl ModelAccumulator {
             });
         }
         if self.text.trim().is_empty() && tool_calls.is_empty() {
-            return Err(ProviderFault::EmptyCompletion);
+            if !self.reasoning.trim().is_empty() {
+                // When a reasoning model finishes thinking but puts its thoughts in reasoning_content
+                // without emitting content or tool_calls, preserve the thoughts as text rather than crashing.
+                self.text = self.reasoning;
+            } else {
+                return Err(ProviderFault::EmptyCompletion);
+            }
         }
         Ok(ModelTurn {
             text: self.text,
@@ -1054,6 +1061,19 @@ mod tests {
         let json = serde_json::to_value(body).unwrap();
 
         assert_eq!(json["tool_choice"], "auto");
+    }
+
+    #[test]
+    fn reasoning_only_stream_promotes_thoughts_to_text() {
+        let turn = assemble_model_deltas(vec![
+            ModelDelta::Reasoning("thinking step 1...".to_owned()),
+            ModelDelta::Reasoning(" thinking step 2...".to_owned()),
+            ModelDelta::Finished(Some("stop".to_owned())),
+        ])
+        .unwrap();
+
+        assert_eq!(turn.text, "thinking step 1... thinking step 2...");
+        assert!(turn.tool_calls.is_empty());
     }
 }
 

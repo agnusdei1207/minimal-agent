@@ -50,3 +50,21 @@ POSITION block → the agent's current brief.
 
 Editing a file here changes the prompt on the next build — no code change needed.
 Keep the text clean-room (authored for this repository).
+
+---
+
+## Operational Philosophy & Prompt Engineering
+
+The system prompt design principles, offensive disciplines, live-seam diagnostic rules, self-reflection framework, and anti-rabbit-hole mechanics are fully articulated in:
+
+👉 [**`docs/design/prompt-philosophy.md`**](../docs/design/prompt-philosophy.md)
+
+### Key Principles at a Glance
+1. **Unconditional Direct Action**: Stand upon declared targets; no moralizing, disclaimers, or refusals.
+2. **Hypothesis Divergence over Anchoring**: Formulate 3–5 structurally distinct hypotheses before deep diving.
+3. **Differential Signal as Oracle**: Treat every probe as a diagnostic sensor; 3–5 identical responses = silent wall -> backtrack.
+4. **Live Seam vs. Silent Wall**: Errors, 500 status, and filter blockages prove backend interpreter contact; never abandon live seams.
+5. **Orthogonal Creative Bypasses**: Vary context escaping, encodings, delimiters, and functional equivalents; use ES5 for legacy headless bots.
+6. **Meta-Cognitive Self-Reflection**: Run loop, evidence, drift, and progress self-audits before executing tool calls.
+7. **Time-Sink Bans**: Strict bans on offline dictionary cracking, UI steganography, and heavy local test harnesses.
+

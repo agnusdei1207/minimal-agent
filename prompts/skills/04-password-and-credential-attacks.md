@@ -3,21 +3,20 @@
 When: Hashes, login forms, auth tokens, memory dumps, or credential artifacts appear.
 
 ## Mental model
-Credentials are heavily reused, weak by default, and leaked across memory, disk, and logs. Obtaining an existing secret key or valid identity is exponentially faster and stealthier than discovering a novel vulnerability.
+Credentials are leaked across memory, disk, configuration files, and logs. High-leverage credential attacks operate on precision and signal: harvest artifacts first, test default credentials and pattern-based mutations next, and use cracking as a targeted lever rather than unguided guesswork. Balance credential attacks against application logic and code execution seams: if credentials do not yield immediate access, pivot to adjacent attack surfaces.
 
 ## Attack arc
 - Harvest Secrets:
   - *Process memory:* LSASS dumps (Mimikatz/procdump), web server memory, shell process memory.
   - *Static artifacts:* Configuration files (`.env`, `web.config`, `settings.py`, `wp-config.php`), git commit history (`trufflehog`, `gitleaks`), SSH keys, bash history.
   - *Network extraction:* Active Directory Kerberoasting (`$krb5tgs$`), AS-REP Roasting (`$krb5asrep$`).
-- Offline Hash Identification & Cracking:
+- Targeted Cracking & Verification:
   - Identify hash algorithm (`hash-identifier`, `hashcat -m`).
-  - High-performance offline cracking with `hashcat` or `john` using targeted dictionaries (rockyou) combined with rule-based mutations (`OneRuleToRuleTheyAll`, `dive.rule`, `best64`).
-  - Mask attacks for known password policy patterns (e.g. `?u?l?l?l?l?d?d?d?s`).
-- Online Password Spraying:
-  - Execute slow, distributed spraying across target user lists to avoid lockout thresholds (e.g. 1 attempt per user every 30 minutes).
-- Credential Reuse & Pass-the-Hash:
-  - Authenticate using captured NTLM hashes directly (`pth-winexe`, `impacket-wmiexec`) without cracking.
+  - High-performance targeted cracking with `hashcat` or `john` using candidate lists and rule-based mutations (`OneRuleToRuleTheyAll`, `best64`).
+  - Keep cracking loops tight and fast; if targeted masks fail to produce results quickly, re-examine the target for alternative auth flaws (e.g. key confusion, token forgery, logic bypasses).
+- Credential Spraying & Reuse:
+  - Test known service defaults and harvested accounts across exposed administrative interfaces.
+  - Authenticate using captured NTLM hashes or tokens directly (`pth-winexe`, `impacket-wmiexec`) without cracking.
 
 ## Key techniques & primitives
 - Kerberoasting: Request service tickets (TGS) for accounts with Service Principal Names (SPN) and crack the RC4/AES-encrypted ticket offline.

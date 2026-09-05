@@ -4,10 +4,18 @@ This folder holds principle-level direction cards for international CTF and adva
 
 ## Usage (autonomous)
 
-1. When you face a target class, skim this index and read the one or two relevant cards.
-2. A card is analytical direction, not a copy-paste recipe. Adapt it; build targeted exploit/solver scripts (pwntools, Z3, Scapy, curl, Python) directly.
-3. If several domains overlap (e.g. Linux kernel behind a web app), combine their mental models.
-4. If a technique fails after two iterations, record the dead end and pivot to an alternative hypothesis.
+1. **Architecture Mental Model**: Do not attack blindly. Infer the technology stack, backend runtime, parsers, and companion services on the network.
+2. **Attack Frontier (Breadth-First)**: Establish 3–5 structurally distinct hypotheses (auth/IDOR, injection, SSRF, state/logic, config) in your brief before diving deep.
+3. **Signal Reading (Live Seam vs. Silent Wall)**:
+   - *Silent Wall:* 3–5 probes with zero differential response (unchanged status/length) means the vector is unhandled. Mark as DEAD END and backtrack to another seam.
+   - *Live Seam:* Error 500, syntax crash, reflection, timing delay, or "Blocked: X" filter response proves your input reached the backend interpreter! Do NOT abandon; apply creative bypasses.
+4. **Creative Lateral Bypasses (Orthogonal Dimensions)**:
+   - *Context:* Minimal break out of enclosing quotes, attributes, templates, or subshells.
+   - *Encodings:* URL, double-URL, Unicode `\u`, Hex, Base64, parameter pollution.
+   - *Delimiters:* Whitespace alternatives (`$IFS`, `/**/`, `%09`, `%0a`, `+`).
+   - *Functional Equivalents:* If primary keywords (`alert`, `script`, `union`, `cat`) are blacklisted, use functional equivalents (`prompt`, `confirm`, `String.fromCharCode`, `tac`, `sh`, oracles).
+   - *Client/Bot Compatibility:* For client-side exploitation against headless bot verifiers, always use backward-compatible ES5 JavaScript (`"..."`, regex `.source`, `String.fromCharCode`) to prevent silent crashes in legacy engines (PhantomJS, QtWebKit).
+5. **Ban Low-Probability Sinks**: Never run dictionary cracking (rockyou) against unknown random secrets; never divert to steganography on UI decoration images (logos, icons); keep tooling remote and lightweight.
 
 ## Cards
 

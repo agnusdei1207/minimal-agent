@@ -2,6 +2,7 @@
 
 공통 코드와 문서는 이 폴더에서 관리한다. GLM은 `runner.mjs`, Claude는 해당 모델 폴더의 `run.mjs`로 실행하며 타깃·제어·보고서 코드를 공유한다.
 
+- 👉 [**GUIDE**](GUIDE.md): **XBOW-104 벤치마크 원스톱 실행 가이드라인 (세팅·실행·수칙·트러블슈팅)**
 - [METHOD](docs/METHOD.md): 분석 방법, 증거와 집계 기준
 - [STATUS](docs/STATUS.md): 수정 원인, 남은 문제, 검증 기록
 - [BUILD-INFRA](docs/BUILD-INFRA.md): 타깃 인프라·빌드 결함 원인과 보정 기준

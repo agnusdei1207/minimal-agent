@@ -12,13 +12,8 @@ benchmarks/xbow-validation-benchmarks/
 benchmarks/harness/artifacts/runs/
 benchmarks/harness/.env
 
-# Claude Code solver benchmark (runs/ = immutable local evidence; reports/ committed)
-benchmarks/claude/*/artifacts/runs/
-
-# MiniMax-M3 solver benchmark (runs/ = immutable local evidence; reports/ committed)
-# backbone .env holds the OpenRouter key — never commit it.
-benchmarks/minimax/artifacts/runs/
-benchmarks/minimax/.env
-benchmarks/zai/*/artifacts/runs/
+# Benchmark runs (runs/ = immutable local evidence; reports/ committed)
+benchmarks/**/artifacts/runs/
+benchmarks/**/.env
 benchmarks/artifacts/
 .opencode/

@@ -73,13 +73,16 @@
 
 ---
 
-### ⑤ Debian Bullseye 보안 저장소(Security Mirror) 404
-- **대상 과제**: XBEN-043, 056, 063, 066, 088, 092
-- **증상**: Docker 이미지 빌드 중 `404 Not Found` 실패.
+### ⑤ Debian Bullseye 보안 저장소(Security Mirror) CDN 404
+- **대상 과제**: XBEN-001, 002, 003, 019, 022, 023, 025, 027, 043, 056, 057, 063, 066, 075, 088, 104 (Bullseye 기반 16건)
+- **증상**: Docker 이미지 빌드 중 `apt-get install` 단계에서 보안 패키지(`gpgsm`, `python3-pkg-resources`, `python3-setuptools` 등) 다운로드 시 HTTP `404 Not Found` 실패 (`benchmark_build_fault`).
 - **실제 구현상 원인**:
-  - Debian 11(Bullseye) 보안 저장소(`debian-security`)는 최신 보안 패치가 나오면 이전 빌드의 `.deb` 파일을 미러 풀에서 삭제함.
-  - 빌드 시점의 로컬 패키지 인덱스와 CDN 미러 풀 간 일시적 불일치로 발생.
-  - 일시적 미러 불일치이므로 재시도 시 최신 미러 싱크를 받아 정상 빌드됨을 확인.
+  - 로컬 도커 빌드 캐시 문제가 아님.
+  - Debian 11(Bullseye)의 기본 저장소 `deb.debian.org/debian-security`는 Fastly CDN 엣지 노드를 경유하는데, 저장소 인덱스(Release/Packages)와 실제 패키지 풀(.deb 파일) 간 엣지 노드 동기화 시차(Mirror Skew)가 빈번하여 인덱스에 명시된 버전의 deb 파일을 CDN에서 404 반환함.
+  - 상위 업스트림에는 파일이 존재하더라도 엣지 미러 불일치로 인해 빌드가 무작위로 실패함.
+- **보정 대책**:
+  - `debian:bullseye-slim` 베이스 이미지에 사전 정의되어 있는 불변(immutable) 스냅샷 미러(`snapshot.debian.org/archive/.../20260824T000000Z`)를 활성화하도록 `patch-suite.mjs`의 `ARCHIVE_RUN`을 보강.
+  - `deb.debian.org`를 스냅샷 미러로 리포인팅하고 `Acquire::Check-Valid-Until "false";`, `Acquire::Retries "3";` 옵션을 주입하여 100% 멱등하고 영구적인 패키지 다운로드를 보장.
 
 ---
 

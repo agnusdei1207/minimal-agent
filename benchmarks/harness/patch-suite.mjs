@@ -27,6 +27,8 @@
 //      to fix early JDK 17 cgroup v2 NPE (JDK-8272270) and preinstalled curl (XBEN-035).
 //   8. xss-verdict : remove `print(status)` in `check.js` which was emitting "success\n"
 //      ahead of `page.onAlert`'s "XSS\n", breaking Python `readline()` in all 23 XSS tasks.
+//   9. healthcheck-timeout: rewrite overly aggressive `timeout: 1s` to `timeout: 5s` in
+//      compose healthchecks so cold-start DB queries do not trigger exit 28 (XBEN-088).
 //
 // NOT handled here (needs docker-engine repair, not a file edit): old base
 // images like mysql:5.7.15 failing with `failed to load cache key: "" failed
@@ -44,19 +46,26 @@ const SUITE = path.resolve(
 );
 
 const ARCHIVE_MARKER = "# xbow-patch:archive-sources";
-// Only rewrite when sources.list names an ARCHIVED Debian release (buster and
-// older 404 on deb.debian.org — they moved to archive.debian.org). bullseye /
-// bookworm are still live on deb.debian.org + security.debian.org, so leave
-// them untouched (repointing them to archive 404s, and dropping security causes
-// version skew with the image's pre-installed security packages). For archived
-// releases, repoint BOTH main and security to archive (archive carries e.g.
-// `buster/updates`), and drop only the `*-updates` suite (not on archive).
+// For EOL Debian releases (buster/stretch/jessie/wheezy), repoint deb.debian.org
+// and security.debian.org to archive.debian.org and drop -updates.
+// For Debian bullseye, deb.debian.org CDN edge mirrors suffer from partial package
+// 404s (version skew in security pool). Repoint to the immutable snapshot mirror
+// (pre-populated in debian:bullseye-slim /etc/apt/sources.list or derived) with
+// retry and no-check-valid-until options.
 const ARCHIVE_RUN =
   `${ARCHIVE_MARKER}\n` +
   `RUN if [ -f /etc/apt/sources.list ] && grep -qE 'buster|stretch|jessie|wheezy' /etc/apt/sources.list; then ` +
   `sed -i -E '/-updates/d; s|https?://deb.debian.org|http://archive.debian.org|g; ` +
   `s|https?://security.debian.org|http://archive.debian.org|g' /etc/apt/sources.list ` +
-  `&& echo 'Acquire::Check-Valid-Until "false";' > /etc/apt/apt.conf.d/99no-check; fi`;
+  `&& echo 'Acquire::Check-Valid-Until "false";' > /etc/apt/apt.conf.d/99no-check; ` +
+  `elif [ -f /etc/apt/sources.list ] && grep -q 'bullseye' /etc/apt/sources.list; then ` +
+  `if grep -q '^# deb http://snapshot' /etc/apt/sources.list; then ` +
+  `sed -i -e 's|^# deb http://snapshot|deb http://snapshot|' -e '/deb\\.debian\\.org/d' /etc/apt/sources.list; ` +
+  `else sed -i -E 's|https?://deb\\.debian\\.org/debian-security|http://snapshot.debian.org/archive/debian-security/20260824T000000Z|g; ` +
+  `s|https?://security\\.debian\\.org|http://snapshot.debian.org/archive/debian-security/20260824T000000Z|g; ` +
+  `s|https?://deb\\.debian\\.org/debian|http://snapshot.debian.org/archive/debian/20260824T000000Z|g' /etc/apt/sources.list; fi ` +
+  `&& echo 'Acquire::Check-Valid-Until "false";' > /etc/apt/apt.conf.d/99no-check ` +
+  `&& echo 'Acquire::Retries "3";' >> /etc/apt/apt.conf.d/99no-check; fi`;
 
 const PHANTOM_MARKER = "# xbow-patch:phantomjs-binary";
 const PHANTOM_RUN =
@@ -85,6 +94,7 @@ const stats = {
   nodeVersion: 0,
   tomcatJdk: 0,
   checkJs: 0,
+  healthcheckTimeout: 0,
 };
 
 function listDirs(root) {
@@ -176,6 +186,12 @@ function patchCompose(file) {
   let portsIndent = -1;
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
+    if (/^\s*timeout:\s*[12]s\s*$/i.test(line)) {
+      lines[i] = line.replace(/:\s*[12]s/i, ": 5s");
+      changed = true;
+      stats.healthcheckTimeout++;
+      continue;
+    }
     const mExpose = line.match(/^(\s*)expose:\s*$/);
     if (mExpose) {
       inExpose = true;
@@ -271,5 +287,5 @@ console.log(
     `composer-pin=${stats.composerPin}, node-version=${stats.nodeVersion}, ` +
     `tomcat-jdk=${stats.tomcatJdk}), ` +
     `compose-expose=${stats.composeExpose}, compose-ports=${stats.composePorts}, ` +
-    `check-js=${stats.checkJs}`,
+    `check-js=${stats.checkJs}, healthcheck-timeout=${stats.healthcheckTimeout}`,
 );

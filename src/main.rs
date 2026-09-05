@@ -9,7 +9,7 @@ use chrono::Utc;
 use clap::{Parser, Subcommand};
 use minimal_agent::brief::AgentBriefStore;
 use minimal_agent::coordinator::AgentCoordinator;
-use minimal_agent::domain::{AgentId, ContextBudget, MAX_USER_INPUT_BYTES};
+use minimal_agent::domain::{AgentId, AgentState, ContextBudget, MAX_USER_INPUT_BYTES};
 use minimal_agent::engagement::{Engagement, EngagementKind};
 use minimal_agent::journal::{JournalConfig, JournalEvent, JournalEventKind, RunJournal};
 use minimal_agent::provider::{OpenAiChatProvider, ProviderSlot};
@@ -75,6 +75,9 @@ enum Command {
         /// Maximum model turns allowed per user turn (0 or 'unlimited' for no limit).
         #[arg(long)]
         max_turns: Option<String>,
+        /// Maximum completion tokens reserved for model output. Overrides OPENAI_MAX_TOKENS.
+        #[arg(long)]
+        max_tokens: Option<u64>,
         /// Non-interactive autonomous run: submit the objective, wait for the team to
         /// settle, print a one-line JSON result, and exit. Implies plain mode.
         #[arg(long)]
@@ -108,6 +111,7 @@ async fn main() -> anyhow::Result<()> {
             flag_format,
             objective,
             max_turns,
+            max_tokens,
             headless,
         } => {
             let engagement = build_engagement(
@@ -127,6 +131,7 @@ async fn main() -> anyhow::Result<()> {
                 plain,
                 engagement,
                 max_turns,
+                max_tokens,
                 headless,
             })
             .await
@@ -170,6 +175,7 @@ struct RunArgs {
     plain: bool,
     engagement: Option<Engagement>,
     max_turns: Option<String>,
+    max_tokens: Option<u64>,
     headless: bool,
 }
 
@@ -183,6 +189,7 @@ async fn run(args: RunArgs) -> anyhow::Result<()> {
         plain,
         engagement,
         max_turns,
+        max_tokens,
         headless,
     } = args;
     // A run objective may come from --goal or, failing that, the engagement.
@@ -211,9 +218,12 @@ async fn run(args: RunArgs) -> anyhow::Result<()> {
         }
         None => RuntimeConfig::default().max_model_turns,
     };
+    let reserved_response_tokens =
+        max_tokens.unwrap_or_else(|| RuntimeConfig::default().reserved_response_tokens);
     let config = RuntimeConfig {
         auto,
         max_model_turns,
+        reserved_response_tokens,
         engagement: engagement.clone(),
         ..RuntimeConfig::default()
     };
@@ -401,8 +411,15 @@ async fn run_headless(
         Duration::from_secs(2)
     };
 
-    let observation =
-        observe_headless(&runtime, &goal, engagement.as_ref(), MAX_WALL, idle_window).await;
+    let observation = observe_headless(
+        &runtime,
+        &goal,
+        engagement.as_ref(),
+        MAX_WALL,
+        idle_window,
+        auto,
+    )
+    .await;
     runtime.shutdown().await;
     let observation = observation?;
     let flag = observation.flag;
@@ -437,6 +454,7 @@ async fn observe_headless(
     engagement: Option<&Engagement>,
     max_wall: Duration,
     idle_window: Duration,
+    auto: bool,
 ) -> anyhow::Result<HeadlessObservation> {
     let deadline = tokio::time::Instant::now() + max_wall;
     let mut events = runtime.subscribe();
@@ -448,6 +466,7 @@ async fn observe_headless(
     tokio::pin!(submission);
     let mut submitted = false;
     let mut idle_deadline = tokio::time::Instant::now() + idle_window;
+    let mut retry_count = 0_usize;
     loop {
         tokio::select! {
             biased;
@@ -473,7 +492,25 @@ async fn observe_headless(
                 // Broadcast lag can lose TurnStarted/TurnFinished. Check the
                 // runtime's active-turn counter before declaring the team idle.
                 match tokio::time::timeout_at(deadline, runtime.wait_until_idle(Duration::from_millis(100))).await {
-                    Ok(Ok(())) | Err(_) => break,
+                    Ok(Ok(())) => {
+                        if auto
+                            && retry_count < 3
+                            && runtime
+                                .coordinator()
+                                .inspect(&AgentId::main())
+                                .is_ok_and(|agent| agent.state == AgentState::Waiting)
+                        {
+                            retry_count += 1;
+                            tokio::time::sleep(Duration::from_secs(2)).await;
+                            let _ = runtime
+                                .submit_user("Continue the goal from the latest brief and team inbox.")
+                                .await;
+                            idle_deadline = tokio::time::Instant::now() + idle_window;
+                        } else {
+                            break;
+                        }
+                    }
+                    Err(_) => break,
                     Ok(Err(_)) => idle_deadline = tokio::time::Instant::now() + idle_window,
                 }
             }
@@ -763,6 +800,7 @@ mod tests {
             Some(&engagement),
             Duration::from_secs(3),
             Duration::from_millis(10),
+            false,
         )
         .await
         .unwrap();
@@ -782,6 +820,7 @@ mod tests {
                 None,
                 Duration::from_millis(40),
                 Duration::from_millis(10),
+                false,
             ),
         )
         .await;
@@ -816,6 +855,7 @@ mod tests {
             Some(&engagement),
             Duration::from_secs(3),
             Duration::from_millis(10),
+            false,
         )
         .await
         .unwrap();

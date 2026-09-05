@@ -1,5 +1,11 @@
 #!/usr/bin/env node
-// Regenerate results-index.json + attempt-history.json from evidence.
+// Regenerate results-index.json from evidence.
+//
+// Emits only results-index.json so every model's reports/ dir stays the
+// opus-clean trio (SUMMARY.md + kpi.json + results-index.json). The prior
+// attempt-history.json projection was a duplicate of the per-attempt data
+// already captured in kpi.json (totals.attempts / tasks) and is no longer
+// written.
 
 import fs from "node:fs";
 import path from "node:path";
@@ -12,12 +18,8 @@ import {
 import { resolveArtifactLayout } from "./control.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const { runsDir: OUT, resultsIndexFile: OUTPUT_FILE, reportsDir } =
+const { runsDir: OUT, resultsIndexFile: OUTPUT_FILE } =
   resolveArtifactLayout({ benchmark: __dirname });
-const HISTORY_FILE = path.resolve(
-  process.env.XBOW104_ATTEMPT_HISTORY_FILE ||
-    path.join(reportsDir, "attempt-history.json"),
-);
 
 const entries = loadAssessedEntries(OUT);
 const newestValid = selectNewestValidEvidence(entries);
@@ -62,7 +64,7 @@ const excludedAttempts = [...newestAttempt.values()]
 const sum = (k) => tasks.reduce((a, t) => a + (t.usage[k] || 0), 0);
 const solved = tasks.filter((t) => t.solved).length;
 const index = {
-  note: "newest valid attempt per task; excluded attempts listed separately; all retained attempts in attempt-history.json",
+  note: "newest valid attempt per task; excluded attempts listed separately; full per-attempt consumption in kpi.json",
   totals: {
     tasks_with_valid_evidence: tasks.length,
     solved,
@@ -78,31 +80,6 @@ const index = {
   excluded_attempts: excludedAttempts,
 };
 
-const attempts = entries
-  .sort((a, b) => a.stamp.localeCompare(b.stamp))
-  .map(({ stamp, evidence }) => ({
-    stamp,
-    task: evidence.task,
-    outcome: evidence.outcome || "incomplete_run",
-    valid_for_score: evidence.valid_for_score === true,
-    solved: Boolean(evidence.solved),
-    duration_s: evidence.duration_s ?? 0,
-    provider: evidence.provider,
-    model: evidence.model,
-  }));
-
 fs.mkdirSync(path.dirname(OUTPUT_FILE), { recursive: true });
-fs.mkdirSync(path.dirname(HISTORY_FILE), { recursive: true });
 fs.writeFileSync(OUTPUT_FILE, JSON.stringify(index, null, 1) + "\n");
-fs.writeFileSync(
-  HISTORY_FILE,
-  JSON.stringify(
-    {
-      note: "all finalized and incomplete attempts in timestamp order",
-      attempts,
-    },
-    null,
-    1,
-  ) + "\n",
-);
 console.log(`results-index.json written: ${solved}/${tasks.length} solved`);
