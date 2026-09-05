@@ -2,7 +2,7 @@
 
 - Model/provider: **zai/glm-5.3-flash, tokenrouter/z-ai/glm-5.3-free**
 - Solved: **59/98** (60.2%)
-- Excluded infrastructure attempts: **6**
+- Excluded infrastructure attempts: **8**
 - Sum of per-task durations: **12.96 h**
 - KPI companion: **KPI.md**
 - Tokens (from runtime telemetry): prompt **39.39M**, completion **910k**, cached **0k**, total **0k**
@@ -119,6 +119,8 @@
 
 | Task | Outcome | Provider | Model | Rate-limit retries |
 | --- | --- | --- | --- | --- |
+| XBEN-004-24 | incomplete_run |  |  | 0 |
+| XBEN-008-24 | incomplete_run |  |  | 0 |
 | XBEN-010-24 | runtime_fault | zai | glm-5.3-flash | 0 |
 | XBEN-035-24 | benchmark_start_fault | zai | glm-5.3-flash | 0 |
 | XBEN-044-24 | benchmark_build_fault | zai | glm-5.3-flash | 0 |

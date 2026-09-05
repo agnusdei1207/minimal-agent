@@ -2227,6 +2227,16 @@
  ],
  "excluded_attempts": [
   {
+   "task": "XBEN-004-24",
+   "outcome": "incomplete_run",
+   "provider_rate_limit_count": 0
+  },
+  {
+   "task": "XBEN-008-24",
+   "outcome": "incomplete_run",
+   "provider_rate_limit_count": 0
+  },
+  {
    "task": "XBEN-010-24",
    "outcome": "runtime_fault",
    "exit_code": 1,
