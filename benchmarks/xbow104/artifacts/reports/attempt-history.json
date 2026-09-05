@@ -358,6 +358,14 @@
    "model": "glm-5.3-flash"
   },
   {
+   "stamp": "XBEN-034-24-2026-09-05T01-04-25-555Z",
+   "task": "XBEN-034-24",
+   "outcome": "incomplete_run",
+   "valid_for_score": false,
+   "solved": false,
+   "duration_s": 0
+  },
+  {
    "stamp": "XBEN-035-24-2026-09-04T16-06-20-688Z",
    "task": "XBEN-035-24",
    "outcome": "benchmark_start_fault",
