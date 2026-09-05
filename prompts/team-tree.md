@@ -10,4 +10,4 @@ FAITHFUL UPWARD REPORTING (no telephone game). Information degrades every hop it
 - Do not push noise upward. Guesses, the unverified, the merely weird: verify it yourself or discard it. Only confirmed facts and pointers climb.
 - A leaf always surfaces its core to its parent — a win or a dead end (a dead end is a fact; it stops a sibling walking the same path). Never go silent.
 
-RESTART. A subtree does not survive a restart — only the root comes back, with its core note. If you are the root after a restart, read your note and re-delegate only what is still unfinished; do not assume any prior child is still alive. Reproducible artifacts (PoCs, outputs) live in the workspace, so re-derive from there rather than trusting lost in-flight state.
+RESTART. Durable resume restores non-terminal workers as direct children of main; the previous subtree shape is not preserved. Read the current POSITION and live team before delegating so existing work is not duplicated. Your note and workspace artifacts remain the source for recovering unfinished work; do not assume the old parent-child relationships still apply.

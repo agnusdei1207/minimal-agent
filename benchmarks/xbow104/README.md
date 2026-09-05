@@ -107,7 +107,7 @@ FLAG{sha256(TASK_ID.toUpperCase())}
 
 ## 관련 문서
 
-- [벤치마크 방법론](../../docs/BENCHMARK_METHODOLOGY.md) — 5단계 파이프라인
+- [벤치마크 방법론](../../docs/benchmark/METHODOLOGY.md) — 5단계 파이프라인
 - [증거 보존 계약](EVIDENCE-RETENTION.md) — 불변성 및 감사 규칙
 
-관련 변경 설명: [벤치마크 신뢰성 개선 보고서 — 원인·변경 전후·검증](../../docs/quality/benchmark-improvements-2026-09-05.md)
+관련 변경 설명: [벤치마크 신뢰성 개선 보고서 — 원인·변경 전후·검증](../../docs/benchmark/reliability-2026-09-05.md)

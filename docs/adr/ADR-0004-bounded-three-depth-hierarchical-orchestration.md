@@ -1,6 +1,6 @@
 # ADR-0004: Bounded Three-Depth Hierarchical Orchestration and Exact-Value Propagation
 
-- Status: Proposed
+- Status: Implemented (후속 코어 수정 및 검증 상태는 docs/benchmark/project-audit-2026-09-05.md 참조)
 - Created: 2026-09-01 +09:00
 - Version target: 0.111.0 (ADR-0002/0003과 함께 릴리스). Docker 게이트가 초록이고 사용자가
   요청하기 전까지 crate 버전은 0.110.0으로 유지한다(ADR-0002 버전 홀드 규율).
@@ -142,9 +142,7 @@ ADR-0001의 평평한 스타 구조(Depth 1, Main 1 + Worker 최대 9)는 단순
       `recalling_an_internal_node_cascades_recall_to_its_subtree` — 첫 구현 시 누락됐던 것).
       **죽음 감지 범위 한계(정직히 명시):** worker_driver가 회복불가 fault를 `Faulted`로,
       recall을 `Stopped`로 mark_terminal → 그 경로들은 서브트리를 회수한다. 그러나 worker task가
-      **mark_terminal 없이 하드 panic으로 죽으면**(런타임 버그) 코디네이터는 여전히 Running으로
-      보아 서브트리가 고아가 될 수 있다(전용 task 수퍼바이저 없음). 실무상 드물며, 필요 시
-      JoinHandle 감시로 죽은 task를 감지해 mark_terminal을 거는 후속 증분으로 보완한다.
+      worker의 unwind panic도 수명 종료 guard가 기존 mark_terminal 경로로 넘겨 하위 트리와 슬롯을 회수한다. 프로세스 abort·강제 종료는 destructor가 실행되지 않으므로 이 보장 밖이며 durable resume 대상이다.
   - **위치 기반 프롬프트 배선:** `build_system`이 POSITION 블록(depth·리프/내부·부모·자식·형제)을
     주입하고 `team-tree.md` 상시 + 비-main에 `node-internal.md`(자식 있음)/`node-leaf.md`(리프)를
     선택 삽입.

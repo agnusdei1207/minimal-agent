@@ -35,7 +35,7 @@ without exploding, and a lifecycle that can lose a turn but never the source.
 
 | Principle | What it means here |
 | :--- | :--- |
-| **Smallest thing that works** | A new abstraction is added only when the existing pieces genuinely cannot express it. A flat two-depth team beats a tower of layers you have to reason about. |
+| **Smallest thing that works** | A new abstraction is added only when the existing pieces genuinely cannot express it. A bounded three-level team keeps delegation small and explicit. |
 | **Leverage the model, don't cage it** | Strategy is the model's job, not a rule engine's. The runtime enforces data-loss prevention and resource caps as invariants — never a hardcoded playbook. As models improve, the framework, not the prompt tricks, is what has to keep up. |
 | **Make the loops observable** | Good systems start with honest self-observation. Reasoning, tool calls, team messages, and faults are surfaced as distinct, typed transcript lines so you can watch how the team perceives, decides, and recovers. |
 | **Divide and conquer, then fan in** | Main decomposes a mission into worker assignments that run in parallel and report back through direct messages; important insights reach main exactly once. Depth is fixed at two so orchestration never recurses out of control. |

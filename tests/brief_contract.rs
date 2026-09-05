@@ -342,3 +342,26 @@ fn latest_checkpoint_restores_the_brief_projection() {
     restored.recover().unwrap();
     assert_eq!(restored.read(&worker).unwrap(), valid_worker_markdown());
 }
+
+#[test]
+fn rejected_note_does_not_poison_durable_recovery() {
+    let (_dir, journal, coordinator, store, worker) = setup();
+    store
+        .initialize(&coordinator.inspect(&worker).unwrap())
+        .unwrap();
+    store
+        .write_note(&worker, &worker, "keep this strategy")
+        .unwrap();
+    let before = journal.latest_sequence().unwrap();
+    assert!(
+        store
+            .write_note(&worker, &worker, &"x".repeat(1_000_000))
+            .is_err()
+    );
+    assert_eq!(journal.latest_sequence().unwrap(), before);
+    store.recover().unwrap();
+    assert_eq!(
+        store.read_note(&worker).unwrap().as_deref(),
+        Some("keep this strategy")
+    );
+}

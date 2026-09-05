@@ -482,20 +482,20 @@ async fn observe_headless(
     // Stop writers before the final replay, including a submission still in
     // flight when the deadline fired. ToolResult is the durable evidence source.
     runtime.shutdown().await;
-    if engagement.is_some_and(|engagement| engagement.flag_format.is_some()) {
+    if let Some(engagement) = engagement.filter(|value| value.flag_format.is_some()) {
         // Always use the watermark-filtered journal. A resumed worker can emit
         // a broadcast before the watermark is captured; that old event must not
         // become evidence for the new submission merely because it was queued.
-        observation.flag = headless_journal_evidence(&journal, engagement, prior_sequence)?.1;
+        observation.flag = headless_journal_evidence(&journal, engagement, prior_sequence)?;
     }
     Ok(observation)
 }
 
 fn headless_journal_evidence(
     journal: &RunJournal,
-    engagement: Option<&Engagement>,
+    engagement: &Engagement,
     after: u64,
-) -> anyhow::Result<(u64, Option<String>)> {
+) -> anyhow::Result<Option<String>> {
     const MAX_TOOL_EVENT_BYTES: usize = 8 * 1024 * 1024;
     let mut flag = None;
     journal.visit_kind_after(
@@ -506,11 +506,11 @@ fn headless_journal_evidence(
             if flag.is_none()
                 && let JournalEvent::ToolResult { content, .. } = entry.event
             {
-                flag = engagement.and_then(|engagement| engagement.extract_flag(&content));
+                flag = engagement.extract_flag(&content);
             }
         },
     )?;
-    Ok((journal.latest_sequence()?, flag))
+    Ok(flag)
 }
 
 impl HeadlessObservation {
@@ -858,13 +858,11 @@ mod tests {
             flag_format: Some(r"flag\{[^}]+\}".to_owned()),
             ..Default::default()
         };
-        let (sequence, flag) =
-            headless_journal_evidence(&journal, Some(&engagement), old.sequence).unwrap();
-        assert_eq!(sequence, last.sequence);
+        let flag = headless_journal_evidence(&journal, &engagement, old.sequence).unwrap();
         assert_eq!(flag.as_deref(), Some("flag{recovered}"));
         assert_eq!(
-            headless_journal_evidence(&journal, Some(&engagement), last.sequence).unwrap(),
-            (last.sequence, None)
+            headless_journal_evidence(&journal, &engagement, last.sequence).unwrap(),
+            None
         );
     }
 
@@ -896,9 +894,8 @@ mod tests {
             ..Default::default()
         };
         assert_eq!(
-            headless_journal_evidence(&journal, Some(&engagement), 0)
+            headless_journal_evidence(&journal, &engagement, 0)
                 .unwrap()
-                .1
                 .as_deref(),
             Some("flag{after-large-records}")
         );
@@ -930,9 +927,8 @@ mod tests {
             ..Default::default()
         };
         assert_eq!(
-            headless_journal_evidence(&journal, Some(&engagement), 0)
+            headless_journal_evidence(&journal, &engagement, 0)
                 .unwrap()
-                .1
                 .as_deref(),
             Some("flag{after-large-record}")
         );

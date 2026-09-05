@@ -235,6 +235,7 @@ impl AgentBriefStore {
                 target: target.clone(),
             });
         }
+        self.validate_projection_bytes(markdown.len())?;
         self.inner
             .journal
             .append_sync(JournalEvent::BriefNote {
@@ -265,13 +266,7 @@ impl AgentBriefStore {
     }
 
     fn write_projection(&self, path: &Path, bytes: &[u8]) -> Result<(), BriefError> {
-        let max_bytes = self.max_projection_bytes();
-        if bytes.len() > max_bytes {
-            return Err(BriefError::TooManyBytes {
-                actual: bytes.len(),
-                max: max_bytes,
-            });
-        }
+        self.validate_projection_bytes(bytes.len())?;
         let _guard = self
             .inner
             .write_lock
@@ -290,12 +285,7 @@ impl AgentBriefStore {
         );
         file.take((max_bytes as u64).saturating_add(1))
             .read_to_end(&mut bytes)?;
-        if bytes.len() > max_bytes {
-            return Err(BriefError::TooManyBytes {
-                actual: bytes.len(),
-                max: max_bytes,
-            });
-        }
+        self.validate_projection_bytes(bytes.len())?;
         String::from_utf8(bytes).map_err(|error| {
             BriefError::Io(std::io::Error::new(std::io::ErrorKind::InvalidData, error))
         })
@@ -311,6 +301,14 @@ impl AgentBriefStore {
                 actual_tokens,
                 max_tokens,
             });
+        }
+        Ok(())
+    }
+
+    fn validate_projection_bytes(&self, actual: usize) -> Result<(), BriefError> {
+        let max = self.max_projection_bytes();
+        if actual > max {
+            return Err(BriefError::TooManyBytes { actual, max });
         }
         Ok(())
     }

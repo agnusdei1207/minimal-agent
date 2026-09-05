@@ -194,6 +194,15 @@ struct RuntimeInner {
     engagement: Mutex<Option<Engagement>>,
 }
 
+impl RuntimeInner {
+    // Runtime-owned projection: the caller's semantic brief authority is unrelated.
+    fn sync_main_brief(&self) -> Result<(), RuntimeError> {
+        self.briefs
+            .sync_main_runtime(&AgentId::main(), &self.coordinator.live_team()?)?;
+        Ok(())
+    }
+}
+
 struct RuntimeSpawner {
     inner: Weak<RuntimeInner>,
 }
@@ -454,7 +463,7 @@ impl TeamRuntime {
     /// (journaled) and every subsequent prompt build — including an in-flight main
     /// turn's next model-turn — renders the new target.
     pub fn set_engagement_scope(&self, scope: Option<String>) -> Result<(), RuntimeError> {
-        let updated = {
+        {
             let mut guard = self
                 .inner
                 .engagement
@@ -463,15 +472,14 @@ impl TeamRuntime {
             if guard.is_none() && scope.is_none() {
                 return Ok(());
             }
-            let updated = guard.take().unwrap_or_default().set_scope(scope)?;
-            *guard = Some(updated.clone());
-            updated
-        };
-        self.inner
-            .journal
-            .append_sync(JournalEvent::EngagementSet {
-                engagement: updated,
-            })?;
+            let updated = guard.clone().unwrap_or_default().set_scope(scope)?;
+            self.inner
+                .journal
+                .append_sync(JournalEvent::EngagementSet {
+                    engagement: updated.clone(),
+                })?;
+            *guard = Some(updated);
+        }
         self.inner.coordinator.nudge_active()?;
         Ok(())
     }
@@ -509,22 +517,18 @@ impl TeamRuntime {
             .initialize(&self.inner.coordinator.inspect(&id)?)
             .map_err(RuntimeError::from)
             .and_then(|()| {
-                self.inner
-                    .briefs
-                    .sync_main_runtime(caller, &self.inner.coordinator.live_team()?)?;
+                self.inner.sync_main_brief()?;
                 self.start_worker_driver(id.clone(), AgentSession::default(), Some(task))
             });
         if let Err(error) = startup {
             let _ = self.inner.coordinator.mark_terminal(
-                caller,
+                &AgentId::main(),
                 &id,
                 AgentState::Faulted,
                 "worker startup failed",
             );
             let _ = self.inner.briefs.remove_projection(&id);
-            if let Ok(team) = self.inner.coordinator.live_team() {
-                let _ = self.inner.briefs.sync_main_runtime(caller, &team);
-            }
+            let _ = self.inner.sync_main_brief();
             let _ = self.inner.events.send(RuntimeEvent::TeamChanged);
             return Err(error);
         }
@@ -603,10 +607,37 @@ impl TeamRuntime {
         let inner = self.inner.clone();
         let worker_id = id.clone();
         let handle = tokio::spawn(async move {
+            let _exit = WorkerExit {
+                inner: inner.clone(),
+                id: worker_id.clone(),
+            };
             worker_driver(inner, worker_id, session, initial).await;
         });
         tasks.insert(id, handle);
         Ok(())
+    }
+}
+
+// An unwinding worker must release the same subtree as an ordinary terminal fault.
+// Process aborts cannot run destructors and remain a restart concern.
+struct WorkerExit {
+    inner: Arc<RuntimeInner>,
+    id: AgentId,
+}
+
+impl Drop for WorkerExit {
+    fn drop(&mut self) {
+        if !std::thread::panicking() {
+            return;
+        }
+        let _ = self.inner.coordinator.mark_terminal(
+            &self.id,
+            &self.id,
+            AgentState::Faulted,
+            "worker task panicked",
+        );
+        let _ = self.inner.briefs.remove_projection(&self.id);
+        let _ = self.inner.events.send(RuntimeEvent::TeamChanged);
     }
 }
 
@@ -803,16 +834,7 @@ async fn main_driver(
             activity = inner.coordinator.wait_for_activity_after(&main_id, observed_activity, Duration::from_secs(3600)) => {
                 if let Ok(revision) = activity {
                     observed_activity = revision;
-                    let projection = inner
-                        .coordinator
-                        .live_team()
-                        .map_err(RuntimeError::from)
-                        .and_then(|team| {
-                            inner
-                                .briefs
-                                .sync_main_runtime(&main_id, &team)
-                                .map_err(RuntimeError::from)
-                        });
+                    let projection = inner.sync_main_brief();
                     match projection {
                         Ok(()) => auto_pending = *auto.borrow_and_update(),
                         Err(error) => {
@@ -970,9 +992,7 @@ async fn run_main_turn(
             .coordinator
             .mark_running(&main, "explicit input or autonomous resume")?;
     }
-    inner
-        .briefs
-        .sync_main_runtime(&main, &inner.coordinator.live_team()?)?;
+    inner.sync_main_brief()?;
     let turn_interrupt = CancellationToken::new();
     inner
         .main_turn_interrupt
@@ -1010,9 +1030,7 @@ async fn run_main_turn(
         inner
             .coordinator
             .mark_waiting(&main, recoverable_wait_reason(error).unwrap_or_default())?;
-        inner
-            .briefs
-            .sync_main_runtime(&main, &inner.coordinator.live_team()?)?;
+        inner.sync_main_brief()?;
     }
     result
 }
@@ -1044,9 +1062,7 @@ async fn run_main_compaction(
         }
         _ => {}
     }
-    inner
-        .briefs
-        .sync_main_runtime(&main, &inner.coordinator.live_team()?)?;
+    inner.sync_main_brief()?;
     result
 }
 
@@ -1360,9 +1376,7 @@ async fn run_agent_turn_inner(
             }
         }
         if agent_id.is_main() {
-            inner
-                .briefs
-                .sync_main_runtime(agent_id, &inner.coordinator.live_team()?)?;
+            inner.sync_main_brief()?;
         }
         if finalized {
             return Ok(TurnResult {
@@ -1460,9 +1474,7 @@ fn update_main_goal(
     inner
         .coordinator
         .set_goal(&main, objective.unwrap_or_default())?;
-    inner
-        .briefs
-        .sync_main_runtime(&main, &inner.coordinator.live_team()?)?;
+    inner.sync_main_brief()?;
     let _ = inner.events.send(RuntimeEvent::TeamChanged);
     Ok(())
 }
@@ -1782,9 +1794,7 @@ async fn compact_if_needed(
         &required_insights,
     )?;
     if agent_id.is_main() {
-        inner
-            .briefs
-            .sync_main_runtime(agent_id, &inner.coordinator.live_team()?)?;
+        inner.sync_main_brief()?;
     }
     let live_ranges: HashSet<_> = result
         .live_tail

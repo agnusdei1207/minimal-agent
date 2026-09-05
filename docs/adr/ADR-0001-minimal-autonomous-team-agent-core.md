@@ -6,7 +6,7 @@
 - Version target: 0.110.0
 - Repository: `agnusdei1207/minimal-agent`
 - 확장: 승인된 교전 주입·CTF doctrine·transcript/TUI 가독성은 ADR-0002가 다룬다.
-  코어 topology/journal/brief/compaction/provider 불변식은 본 ADR이 계속 규범이다.
+  topology·통신·resume은 ADR-0004의 후속 결정을 적용한다. 아래 초기 2-depth 및 main 자동 복사 설명은 그 범위에서 대체되었다. journal/brief/compaction/provider의 기본 소유권은 유지한다.
 
 ## 1. 한 문장 결정
 

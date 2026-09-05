@@ -23,6 +23,7 @@ struct Gate {
 }
 
 enum Script {
+    Panic,
     Turn { turn: ModelTurn, delay_ms: u64 },
     Gated { gate: Gate, turn: ModelTurn },
     Fault(ProviderFault),
@@ -203,6 +204,7 @@ impl ModelProvider for ScriptedProvider {
         let active = self.active.fetch_add(1, Ordering::AcqRel) + 1;
         self.max_active.fetch_max(active, Ordering::AcqRel);
         let result = match script {
+            Script::Panic => panic!("worker fixture panic"),
             Script::Turn { turn, delay_ms } => {
                 if delay_ms > 0 {
                     tokio::time::sleep(Duration::from_millis(delay_ms)).await;
@@ -2458,4 +2460,148 @@ async fn setting_a_target_live_injects_scope_into_the_next_prompt() {
     assert!(after.contains("AUTHORIZED ENGAGEMENT"));
     assert!(after.contains("10.10.11.20:8080"));
     runtime.shutdown().await;
+}
+
+#[tokio::test]
+async fn nested_worker_runs_and_failed_startup_releases_its_slot() {
+    let dir = tempdir().unwrap();
+    let provider = Arc::new(ScriptedProvider::new(HashMap::new()));
+    let runtime = TeamRuntime::create(
+        dir.path().join("run"),
+        dir.path().join("workspace"),
+        "generic task",
+        provider.clone(),
+        RuntimeConfig::default(),
+    )
+    .await
+    .unwrap();
+    runtime.set_auto(true);
+    let lead = runtime
+        .spawn_worker(&AgentId::main(), "lead", "coordinate")
+        .await
+        .unwrap();
+    let leaf = runtime
+        .spawn_worker(&lead, "leaf", "execute")
+        .await
+        .unwrap();
+    tokio::time::timeout(Duration::from_secs(3), async {
+        while provider.requests_for(leaf.as_str()).is_empty() {
+            tokio::time::sleep(Duration::from_millis(10)).await;
+        }
+    })
+    .await
+    .unwrap();
+    runtime.set_auto(false);
+    runtime
+        .wait_until_idle(Duration::from_secs(3))
+        .await
+        .unwrap();
+    assert!(!provider.requests_for(leaf.as_str()).is_empty());
+    assert_eq!(
+        runtime.coordinator().inspect(&leaf).unwrap().parent,
+        Some(lead.clone())
+    );
+    let before = runtime.coordinator().live_team().unwrap().len();
+    // A deterministic projection failure after create_worker must release the child.
+    std::fs::write(
+        dir.path().join("run/agents/main/brief.md"),
+        "invalid projection",
+    )
+    .unwrap();
+    assert!(
+        runtime
+            .spawn_worker(&lead, "failed", "cannot start")
+            .await
+            .is_err()
+    );
+    assert_eq!(runtime.coordinator().live_team().unwrap().len(), before);
+    runtime.shutdown().await;
+}
+
+#[tokio::test]
+async fn invalid_scope_update_preserves_previous_context() {
+    let dir = tempdir().unwrap();
+    let provider = Arc::new(ScriptedProvider::new(HashMap::new()));
+    let runtime = TeamRuntime::create(
+        dir.path().join("run"),
+        dir.path().join("workspace"),
+        "generic task",
+        provider.clone(),
+        RuntimeConfig::default(),
+    )
+    .await
+    .unwrap();
+    runtime
+        .set_engagement_scope(Some("local fixture".to_owned()))
+        .unwrap();
+    let before = runtime.coordinator().journal().latest_sequence().unwrap();
+    assert!(
+        runtime
+            .set_engagement_scope(Some("x".repeat(1_000_000)))
+            .is_err()
+    );
+    assert_eq!(
+        runtime.coordinator().journal().latest_sequence().unwrap(),
+        before
+    );
+    runtime.submit_user("inspect context").await.unwrap();
+    assert!(
+        provider.requests_for("main").last().unwrap().messages[0]
+            .content
+            .contains("scope: local fixture")
+    );
+    runtime.shutdown().await;
+}
+
+#[tokio::test]
+async fn worker_panic_releases_the_subtree() {
+    let dir = tempdir().unwrap();
+    let provider = Arc::new(ScriptedProvider::new(HashMap::from([(
+        "worker-01".to_owned(),
+        VecDeque::from([Script::Panic]),
+    )])));
+    let runtime = TeamRuntime::create(
+        dir.path().join("run"),
+        dir.path().join("workspace"),
+        "generic task",
+        provider,
+        RuntimeConfig::default(),
+    )
+    .await
+    .unwrap();
+    let lead = runtime
+        .spawn_worker(&AgentId::main(), "lead", "coordinate")
+        .await
+        .unwrap();
+    let leaf = runtime
+        .spawn_worker(&lead, "leaf", "execute")
+        .await
+        .unwrap();
+    runtime.set_auto(true);
+    let result = tokio::time::timeout(Duration::from_secs(2), async {
+        loop {
+            if runtime
+                .coordinator()
+                .inspect(&lead)
+                .unwrap()
+                .state
+                .is_terminal()
+            {
+                break;
+            }
+            tokio::time::sleep(Duration::from_millis(10)).await;
+        }
+    })
+    .await;
+    runtime.shutdown().await;
+    assert!(result.is_ok(), "panicked worker must become terminal");
+    assert!(
+        runtime
+            .coordinator()
+            .inspect(&leaf)
+            .unwrap()
+            .state
+            .is_terminal()
+    );
+    assert_eq!(runtime.coordinator().live_team().unwrap().len(), 1);
 }
