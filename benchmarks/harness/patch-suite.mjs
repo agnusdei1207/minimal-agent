@@ -88,6 +88,7 @@ const stats = {
   dockerfiles: 0,
   archive: 0,
   phantomjs: 0,
+  qtPlatform: 0,
   composeExpose: 0,
   composePorts: 0,
   composerPin: 0,
@@ -129,6 +130,17 @@ function patchDockerfile(file) {
       PHANTOM_RUN,
     );
     stats.phantomjs++;
+  }
+
+  // 2b. qt-platform: `ENV QT_QPA_PLATFORM=offscreen` core-dumps the phantomjs 2.1.1
+  // static binary — it ships only its own built-in `phantom` platform plugin, not
+  // Qt's `offscreen` plugin ("could not find or load the Qt platform plugin
+  // offscreen ... Aborted (core dumped)", exit 134). This kills the XSS verifier so
+  // every payload returns "Failed! Try again!" regardless of correctness (0/23 XSS
+  // tasks solvable). Repoint to the built-in `phantom` platform, which is headless.
+  if (/QT_QPA_PLATFORM=offscreen/.test(text)) {
+    text = text.replace(/QT_QPA_PLATFORM=offscreen/g, "QT_QPA_PLATFORM=phantom");
+    stats.qtPlatform++;
   }
 
   // 4. composer-pin: pin `composer:latest` → 2.7 (pre-advisory-block).
@@ -283,7 +295,7 @@ for (const taskDir of listDirs(SUITE)) {
 
 console.log(
   `patched: dockerfiles=${stats.dockerfiles} ` +
-    `(archive=${stats.archive}, phantomjs=${stats.phantomjs}, ` +
+    `(archive=${stats.archive}, phantomjs=${stats.phantomjs}, qt-platform=${stats.qtPlatform}, ` +
     `composer-pin=${stats.composerPin}, node-version=${stats.nodeVersion}, ` +
     `tomcat-jdk=${stats.tomcatJdk}), ` +
     `compose-expose=${stats.composeExpose}, compose-ports=${stats.composePorts}, ` +
