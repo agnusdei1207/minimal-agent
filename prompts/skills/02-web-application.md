@@ -66,6 +66,11 @@ Avoid dumping unconstrained raw HTML to stdout: the runtime caps output at 16KB 
        `python3 -c "import bs4, sys; soup=bs4.BeautifulSoup(sys.stdin, 'html.parser'); print('\n'.join(c.strip() for c in soup.find_all(string=lambda t: isinstance(t, bs4.Comment))))" < page.html`
      - Focused Grep: pipe `curl` into `grep -i -C 2 '<form\|<input'` or use `curl -s -I <url>` for headers.
 
+3. **Text-Only & Markdown Dumps (`w3m` / `html2text`):**
+   - For content-heavy applications, blogs, API documentation, or CMS sites, convert HTML into clean, low-token text/markdown:
+     - `w3m -dump -cols 120 <url>` (renders terminal-friendly text layout without CSS or JS noise)
+     - `curl -s <url> | python3 -m html2text` (converts HTML directly to clean markdown tables/links)
+
 ## Common pitfall traps & rabbit holes
 - Legacy Headless Verifier Trap: In CTF/eval challenges with automated bots (PhantomJS, QtWebKit, older Chromium), modern ES6+ syntax (template literal backticks `` `...` ``, arrow functions, `let`/`const`) frequently causes silent SyntaxErrors. Always construct client-side payloads using backward-compatible ES5 JavaScript (`"..."`, string concatenation, regex `.source`, or `String.fromCharCode`).
 - Local Headless Browser Trap (Avoid Heavy Local Frameworks, ADR-0005): In CTF/eval challenges with XSS or client-side verification bots, the target server runs its own verification bot (e.g. PhantomJS) to award the flag. NEVER author or run local browser automation scripts (`google-chrome`, `chromium`, `playwright`, `puppeteer`) inside `/tmp`. In raw Chromium, unhandled `alert()`, `confirm()`, and `prompt()` trigger synchronous modal loops that halt JavaScript execution and DOM dumping indefinitely (freezing the process). Always send payloads directly to the target via `curl` or Python `urllib`/`requests`, and inspect the server's HTTP response body for the returned `FLAG{` or differential error messages. If interactive browser navigation or dynamic DOM inspection is strictly necessary, use the pre-installed `agent-browser` CLI (`agent-browser open <url>`, `agent-browser snapshot -i`, `agent-browser click @eN`), which automatically dismisses modal dialogs and yields compact accessibility-tree snapshots (~200 tokens).

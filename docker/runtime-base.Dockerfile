@@ -77,6 +77,7 @@ RUN if [ -f /etc/apt/sources.list.d/ubuntu.sources ]; then \
       tmux \
       unzip \
       util-linux \
+      w3m \
       whatweb \
     && sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen \
     && locale-gen \
@@ -143,6 +144,7 @@ RUN apt update -qq \
       websockets \
       beautifulsoup4 \
       dnspython \
+      html2text \
       mitmproxy \
     && mkdir -p /usr/share/wordlists \
     && (curl -fsSL -o /usr/share/wordlists/rockyou.txt \
