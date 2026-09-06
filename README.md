@@ -4,6 +4,8 @@
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Built with Rust](https://img.shields.io/badge/built%20with-Rust-000000?logo=rust)](https://www.rust-lang.org/)
+[![XBOW-104](https://img.shields.io/badge/XBOW--104-98.1%25%20(102%2F104)-C8FF00)](benchmarks/deepseek-v4-flash/artifacts/reports/SUMMARY.md)
+[![Docs](https://img.shields.io/badge/Docs-GitHub%20Pages-blue)](https://agnusdei1207.github.io/minimal-agent-pentesting/)
 
 </div>
 
@@ -19,8 +21,10 @@ Empirical evaluation on the **XBOW-104** web exploitation suite (104 single-flag
 
 | Model | Solved | Rate | Tokens | Avg Time | Est. Cost | L1 / L2 / L3 Solved |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
-| **DeepSeek-V4-Flash** | **102 / 104** | **98.1%** | **257.0M** | **16.2 min** | **$2.27** | **44/45 · 51/51 · 7/8** |
+| **DeepSeek-V4-Flash** | **102 / 104** | **98.1%** | **257.0M** | **19.6 min** | **$2.27** | **44/45 · 51/51 · 7/8** |
 | **GLM-5.3-Flash** | 94 / 104 | 90.4% | 176.6M | 22.6 min | ~$9 | 44/45 · 44/51 · 6/8 |
+
+> 📄 **[Detailed Benchmark Report (SUMMARY.md)](benchmarks/deepseek-v4-flash/artifacts/reports/SUMMARY.md)** · 🌐 **[Web Dashboard](https://agnusdei1207.github.io/minimal-agent-pentesting/)**
 
 ---
 
