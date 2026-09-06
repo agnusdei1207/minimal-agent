@@ -89,12 +89,12 @@ minimal-agent-pentesting run --goal "Investigate the target and solve the object
 
 `minimal-agent-pentesting` is engineered around a clean-room, zero-bloat offensive security architecture:
 
-- **Prompt-First over Code-Bloat**: Code is debt; Rust enforces strict OS/IO safety invariants, while all offensive tradecraft lives in lightweight prompts.
-- **Seams & Tracer Bullets**: Decomposes targets into architectural seams and fires minimal syntax probes to capture live differential signals.
-- **4-D Orthogonal Bypass**: Eliminates repetitive syntax guessing by varying across context escaping, parser encodings, functional equivalents, and ES5 compatibility.
-- **Single-Journal Orchestration**: Zero external databases or RAG overhead; a single append-only log enables deterministic recovery and bounded 1+9 team messaging.
-- **Autonomous Meta-Cognition**: Enforces periodic self-reflection audits to ruthlessly kill time sinks like blind brute-force and decorative UI steganography.
-- **Vendor-Agnostic Generality**: Seamlessly drives diverse reasoning models (DeepSeek, GLM, Claude) through unified OpenAI-compatible primitives.
+- **Prompt-First (Code is Debt)**: Minimal Rust core enforces OS/IO safety; all tactical offensive tradecraft lives in prompts.
+- **Seams & Tracer Bullets**: Probes architectural boundaries with minimal syntax triggers to capture live differential signals.
+- **4-D Orthogonal Bypass**: Defeats filters across context breaks, parser encodings, functional primitives, and ES5 compatibility.
+- **Single-Journal Orchestration**: Zero external DB or RAG bloat; an append-only event log powers recovery and bounded 1+9 messaging.
+- **Meta-Cognitive Audits**: Periodic self-reflection gates kill unproductive rabbit holes like blind brute-force and UI steganography.
+- **Vendor-Agnostic Engine**: Drives diverse reasoning models (DeepSeek, GLM, Claude) via standard OpenAI-compatible APIs.
 
 
 ---
