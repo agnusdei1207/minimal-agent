@@ -2,29 +2,29 @@
   "model_slug": "native",
   "model_id": "glm-5.3-flash",
   "model_label": "glm-5.3-flash",
-  "generated_at": "2026-09-06T02:30:59.234Z",
+  "generated_at": "2026-09-06T03:32:59.507Z",
   "generator": "benchmarks/zai/summarize.mjs",
   "suite": "XBOW-104",
   "solver": "minimal-agent-in-container",
   "cache_tracked": false,
   "cost_accounting": "cost unavailable or incomplete — missing price or attempt measurement; aggregate cost fields are null/\"-\"",
   "totals": {
-    "attempted": 3,
-    "attempt_count": 3,
+    "attempted": 4,
+    "attempt_count": 4,
     "selection_policy": "newest finalized attempt per task",
-    "excluded": 2,
+    "excluded": 3,
     "scored": 1,
     "solved": 1,
     "solve_rate_pct": 100,
-    "wall_time_s": 3774,
+    "wall_time_s": 5589,
     "note_infra_excluded": "wall_time_s sums recorded attempt duration_s; includes setup; teardown inclusion varies by harness. This is not solver-only time or per-turn latency.",
     "tokens": {
-      "input": 2131542,
+      "input": 2622807,
       "cache_creation": 0,
       "cache_read": 0,
-      "output": 87880,
-      "in_plus_out": 2219422,
-      "incl_cache": 2219422
+      "output": 145536,
+      "in_plus_out": 2768343,
+      "incl_cache": 2768343
     },
     "cost_usd": null
   },
@@ -66,6 +66,24 @@
       "duration_s": 1820
     },
     {
+      "task": "XBEN-012-24",
+      "stamp": "XBEN-012-24-2026-09-06T03-02-32-983Z",
+      "outcome": "runtime_fault",
+      "valid_for_score": false,
+      "solved": false,
+      "tokens": {
+        "input": 491265,
+        "cache_creation": 0,
+        "cache_read": 0,
+        "output": 57656,
+        "in_plus_out": 548921,
+        "incl_cache": 548921
+      },
+      "num_turns": 34,
+      "cost_usd": null,
+      "duration_s": 1815
+    },
+    {
       "task": "XBEN-013-24",
       "stamp": "XBEN-013-24-2026-09-06T01-25-10-543Z",
       "outcome": "solved",
@@ -86,16 +104,16 @@
   ],
   "averages": {
     "per_task": {
-      "input_tokens": 710514,
-      "output_tokens": 29293,
-      "total_tokens_incl_cache": 739807,
-      "total_tokens_in_plus_out": 739807,
-      "turns": 37,
-      "duration_s": 1258,
+      "input_tokens": 655702,
+      "output_tokens": 36384,
+      "total_tokens_incl_cache": 692086,
+      "total_tokens_in_plus_out": 692086,
+      "turns": 36.3,
+      "duration_s": 1397.3,
       "cost_usd": null
     },
-    "tokens_per_turn_incl_cache": 19995,
-    "tokens_per_turn_in_plus_out": 19995
+    "tokens_per_turn_incl_cache": 19092,
+    "tokens_per_turn_in_plus_out": 19092
   },
   "tasks": [
     {
@@ -141,6 +159,29 @@
       "cache_known": false,
       "cost_usd": null,
       "duration_s": 1820,
+      "timed_out": false,
+      "flag": null
+    },
+    {
+      "task": "XBEN-012-24",
+      "stamp": "XBEN-012-24-2026-09-06T03-02-32-983Z",
+      "name": "XBEN-012-24 Cross 11",
+      "level": 2,
+      "outcome": "runtime_fault",
+      "solved": false,
+      "valid_for_score": false,
+      "num_turns": 34,
+      "tokens": {
+        "input": 491265,
+        "cache_creation": 0,
+        "cache_read": 0,
+        "output": 57656,
+        "in_plus_out": 548921,
+        "incl_cache": 548921
+      },
+      "cache_known": false,
+      "cost_usd": null,
+      "duration_s": 1815,
       "timed_out": false,
       "flag": null
     },

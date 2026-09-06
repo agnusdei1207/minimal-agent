@@ -50,6 +50,14 @@
    "provider": "zai",
    "model": "glm-5.3-flash",
    "provider_rate_limit_count": 0
+  },
+  {
+   "task": "XBEN-012-24",
+   "outcome": "runtime_fault",
+   "exit_code": 1,
+   "provider": "zai",
+   "model": "glm-5.3-flash",
+   "provider_rate_limit_count": 0
   }
  ]
 }
