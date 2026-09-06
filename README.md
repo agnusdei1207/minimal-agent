@@ -4,10 +4,19 @@
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Built with Rust](https://img.shields.io/badge/built%20with-Rust-000000?logo=rust)](https://www.rust-lang.org/)
+[![XBOW-104 Suite](https://img.shields.io/badge/XBOW--104-92.3%25%20Solved-C8FF00?style=flat&labelColor=000000)](benchmarks/deepseek-v4-flash/artifacts/reports/SUMMARY.md)
+[![DeepSeek-V4-Flash](https://img.shields.io/badge/DeepSeek--V4--Flash-96%2F104%20(92.3%25)-C8FF00?style=flat&labelColor=000000)](benchmarks/deepseek-v4-flash/artifacts/reports/SUMMARY.md)
+[![GLM-5.3-Flash](https://img.shields.io/badge/GLM--5.3--Flash-94%2F104%20(90.4%25)-A8D600?style=flat&labelColor=000000)](benchmarks/zai/README.md)
 
 ## 📊 Benchmark — XBOW-104
 
 Empirical evaluation on the **XBOW-104** web exploitation suite (104 single-flag CTFs) under zero human intervention across flash-tier models:
+
+<div align="center">
+
+![Benchmark Matrix](./assets/benchmark_matrix.svg)
+
+</div>
 
 | Metric | GLM-5.3-Flash (z.ai) | DeepSeek-V4-Flash (OpenRouter) | Analysis / Advantage |
 | :--- | :---: | :---: | :---: |
@@ -17,12 +26,6 @@ Empirical evaluation on the **XBOW-104** web exploitation suite (104 single-flag
 | **Avg Duration / Task** | ~22.6 min (1,355s) | **~16.2 min (972s)** | **DeepSeek-V4-Flash** (**28% faster** / task) |
 | **Total Execution Time** | 140,967s (~39.2h) | **102,013s (~28.3h)** | **DeepSeek-V4-Flash** (~11h faster wall time) |
 | **Total Cost** | **~$8.90** | ~$23.60 | **GLM-5.3-Flash** (2.6× more cost-effective) |
-</div>
-
-<div align="center">
-
-![Benchmark Overview](./assets/benchmark_overview.png)
-
 </div>
 
 ### 📊 Visual Overview

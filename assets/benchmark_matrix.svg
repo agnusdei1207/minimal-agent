@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 840 290" width="100%" height="auto">
+  <defs>
+    <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#C8FF00" />
+      <stop offset="100%" stop-color="#E2FF66" />
+    </linearGradient>
+    <linearGradient id="barBg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#12161C" />
+      <stop offset="100%" stop-color="#0E1217" />
+    </linearGradient>
+    <filter id="glow" x="-10%" y="-20%" width="130%" height="150%">
+      <feDropShadow dx="0" dy="0" stdDeviation="4" flood-color="#C8FF00" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+
+  <!-- Card Background: Sleek Pitch Black -->
+  <rect width="840" height="290" rx="12" fill="#080A0D" stroke="#1E2631" stroke-width="1.5" />
+
+  <!-- Header -->
+  <circle cx="32" cy="34" r="5" fill="#C8FF00" filter="url(#glow)" />
+  <text x="48" y="38" fill="#FFFFFF" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="13" font-weight="bold" letter-spacing="1.5">XBOW-104 BENCHMARK · AUTONOMOUS EXPLOITATION</text>
+  <rect x="714" y="24" width="98" height="22" rx="11" fill="#141920" stroke="#C8FF00" stroke-width="0.8" />
+  <text x="763" y="38" fill="#C8FF00" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="10.5" font-weight="bold" text-anchor="middle">FLASH TIER</text>
+
+  <!-- Divider -->
+  <line x1="24" y1="58" x2="816" y2="58" stroke="#171D25" stroke-width="1" />
+
+  <!-- Model 1: DeepSeek-V4-Flash -->
+  <g transform="translate(28, 75)">
+    <text x="0" y="18" fill="#FFFFFF" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="15" font-weight="bold">DeepSeek-V4-Flash</text>
+    <text x="560" y="18" fill="#C8FF00" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="16" font-weight="bold" text-anchor="end">92.3%</text>
+    <text x="572" y="18" fill="#7A889B" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="13">(96 / 104 solved)</text>
+
+    <!-- Bar Container -->
+    <rect x="0" y="28" width="784" height="18" rx="5" fill="url(#barBg)" stroke="#1A212B" stroke-width="1" />
+    <!-- Filled Bar: 92.3% of 784 = 723.6 -->
+    <rect x="0" y="28" width="724" height="18" rx="5" fill="url(#accentGrad)" filter="url(#glow)" />
+
+    <!-- Badges / Metrics -->
+    <text x="0" y="66" fill="#8B949E" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="12">
+      Tokens: <tspan fill="#F0F6FC" font-weight="600">164.83M</tspan> (-6.7%)  ·  Avg Speed: <tspan fill="#F0F6FC" font-weight="600">16.2 min/task</tspan> (+28% faster)  ·  Total Wall Time: <tspan fill="#F0F6FC" font-weight="600">28.3h</tspan>
+    </text>
+  </g>
+
+  <!-- Model 2: GLM-5.3-Flash -->
+  <g transform="translate(28, 168)">
+    <text x="0" y="18" fill="#FFFFFF" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="15" font-weight="bold">GLM-5.3-Flash</text>
+    <text x="560" y="18" fill="#A8D600" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="16" font-weight="bold" text-anchor="end">90.4%</text>
+    <text x="572" y="18" fill="#7A889B" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="13">(94 / 104 solved)</text>
+
+    <!-- Bar Container -->
+    <rect x="0" y="28" width="784" height="18" rx="5" fill="url(#barBg)" stroke="#1A212B" stroke-width="1" />
+    <!-- Filled Bar: 90.4% of 784 = 708.7 -->
+    <rect x="0" y="28" width="709" height="18" rx="5" fill="#A8D600" opacity="0.88" />
+
+    <!-- Badges / Metrics -->
+    <text x="0" y="66" fill="#8B949E" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="12">
+      Tokens: <tspan fill="#F0F6FC" font-weight="600">176.58M</tspan>  ·  Avg Speed: <tspan fill="#F0F6FC" font-weight="600">22.6 min/task</tspan>  ·  Cost: <tspan fill="#C8FF00" font-weight="bold">~$8.90</tspan> (2.6x cost-effective)
+    </text>
+  </g>
+
+  <!-- Footer Tagline -->
+  <rect x="24" y="252" width="792" height="26" rx="6" fill="#0E1217" stroke="#1B222C" stroke-width="0.8" />
+  <text x="38" y="269" fill="#C8FF00" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="11" font-weight="bold">PARITY METRIC:</text>
+  <text x="150" y="269" fill="#8B949E" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="11">Both models achieve 90%+ autonomous capture rates under zero human intervention.</text>
+</svg>
