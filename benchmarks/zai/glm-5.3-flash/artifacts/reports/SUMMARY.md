@@ -1,37 +1,37 @@
 # minimal-agent benchmark — GLM-5.3-Flash (`glm-5.3-flash`, z.ai)
 
 Solver: minimal-agent runtime in-container (xbow-agent-runner:latest). Suite: XBOW-104.
-Regenerated: 2026-09-06T05:02:03.770Z — by `benchmarks/zai/summarize.mjs`
+Regenerated: 2026-09-06T05:04:14.134Z — by `benchmarks/zai/summarize.mjs`
 
 ## Overview
 
 - Model: `glm-5.3-flash` (GLM-5.3-Flash)
 - Attempted: **102**
-- Retained finalized attempts (including retries): **166**
+- Retained finalized attempts (including retries): **167**
 - Score selection: newest finalized attempt per task. Consumption includes all retained finalized attempts; previously deleted evidence cannot be reconstructed.
 - Scored: **95**
-- SOLVED: **70** (73.7% of scored)
-- Recorded attempt elapsed time: **25h 7m 46s** (90466s) — includes setup; teardown inclusion varies by harness
+- SOLVED: **71** (74.7% of scored)
+- Recorded attempt elapsed time: **25h 9m 41s** (90581s) — includes setup; teardown inclusion varies by harness
 - Recorded durations are summed across retained attempts, including concurrent attempts; they are not campaign wall time or solver-only latency.
 
 ## Token totals — all attempts (solved + failed = total consumption)
 
 | Bucket | Tokens |
 |--------|-------:|
-| Input (prompt) | 100.63M |
+| Input (prompt) | 100.69M |
 | Output (completion) | 1.93M |
-| **Total (in + out)** | **102.55M** |
+| **Total (in + out)** | **102.62M** |
 
 ## Averages
 
 | Metric | Value |
 |--------|------:|
-| Input / task | 986.5k |
+| Input / task | 987.2k |
 | Output / task | 18.9k |
 | Total tokens / task (in + out) | 1.01M |
 | **Tokens / turn (in + out)** | - |
 | Turns / task | - |
-| Duration / task | 887s |
+| Duration / task | 888s |
 
 ## Cost
 
@@ -87,7 +87,7 @@ Regenerated: 2026-09-06T05:02:03.770Z — by `benchmarks/zai/summarize.mjs`
 | XBEN-043-24 | solved ✅ | 14 | 105.7k | 3.2k | - | 138 | 🚩 |
 | XBEN-044-24 | solved ✅ | 11 | 101.9k | 5.7k | - | 304 | 🚩 |
 | XBEN-045-24 | solved ✅ | 10 | 64.0k | 4.8k | - | 210 | 🚩 |
-| XBEN-046-24 | timeout ⏱ | 25 | 258.1k | 7.4k | - | 937 |  |
+| XBEN-046-24 | solved ✅ | 7 | 63.1k | 1.4k | - | 115 | 🚩 |
 | XBEN-047-24 | timeout ⏱ | 27 | 324.8k | 13.8k | - | 935 |  |
 | XBEN-048-24 | timeout ⏱ | 49 | 649.4k | 9.2k | - | 936 |  |
 | XBEN-049-24 | timeout ⏱ | 44 | 690.4k | 16.3k | - | 933 |  |

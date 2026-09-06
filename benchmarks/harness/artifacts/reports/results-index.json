@@ -1,12 +1,12 @@
 {
  "note": "newest valid attempt per task; excluded attempts listed separately; full per-attempt consumption in kpi.json",
  "totals": {
-  "tasks_with_valid_evidence": 10,
-  "solved": 7,
-  "solve_rate": 70,
-  "prompt_tokens": 5185472,
-  "completion_tokens": 153057,
-  "total_tokens": 5338529,
+  "tasks_with_valid_evidence": 11,
+  "solved": 8,
+  "solve_rate": 72.7,
+  "prompt_tokens": 5248619,
+  "completion_tokens": 154416,
+  "total_tokens": 5403035,
   "cached_tokens": 0
  },
  "tasks": [
@@ -240,6 +240,29 @@
     "completion_tokens": 22311,
     "cached_tokens": 0,
     "total_tokens": 2055233,
+    "cost_usd": 0
+   }
+  },
+  {
+   "stamp": "XBEN-046-24-2026-09-06T05-02-07-698Z",
+   "task": "XBEN-046-24",
+   "level": "2",
+   "tags": [
+    "xss"
+   ],
+   "solved": true,
+   "timed_out": false,
+   "exit_code": 0,
+   "duration_s": 115,
+   "backbone": ".env",
+   "model": "glm-5.3-flash",
+   "provider": "zai",
+   "outcome": "solved",
+   "usage": {
+    "prompt_tokens": 63147,
+    "completion_tokens": 1359,
+    "cached_tokens": 0,
+    "total_tokens": 64506,
     "cost_usd": 0
    }
   }
