@@ -26,13 +26,13 @@
   <!-- Model 1: DeepSeek-V4-Flash -->
   <g transform="translate(28, 68)">
     <text x="0" y="16" fill="#FFFFFF" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="14" font-weight="bold">DeepSeek-V4-Flash</text>
-    <text x="704" y="16" fill="#C8FF00" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="15" font-weight="bold" text-anchor="end">94.2%</text>
-    <text x="784" y="16" fill="#7A889B" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="13" text-anchor="end">(98 / 104)</text>
+    <text x="704" y="16" fill="#C8FF00" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="15" font-weight="bold" text-anchor="end">95.2%</text>
+    <text x="784" y="16" fill="#7A889B" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="13" text-anchor="end">(99 / 104)</text>
 
     <!-- Bar Container -->
     <rect x="0" y="26" width="784" height="16" rx="4" fill="url(#barBg)" stroke="#1A212B" stroke-width="1" />
-    <!-- Filled Bar: 94.2% of 784 = 739 -->
-    <rect x="0" y="26" width="739" height="16" rx="4" fill="url(#accentGrad)" filter="url(#glow)" />
+    <!-- Filled Bar: 95.2% of 784 = 746 -->
+    <rect x="0" y="26" width="746" height="16" rx="4" fill="url(#accentGrad)" filter="url(#glow)" />
   </g>
 
   <!-- Model 2: GLM-5.3-Flash -->

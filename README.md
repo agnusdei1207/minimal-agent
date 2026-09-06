@@ -19,18 +19,19 @@ Empirical evaluation on the **XBOW-104** web exploitation suite (104 single-flag
 
 | Model | Solved | Rate | Tokens | Avg Time | Est. Cost | L1 / L2 / L3 Solved |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
-| **DeepSeek-V4-Flash** | **98 / 104** | **94.2%** | **167.9M** | **16.2 min** | **$2.27** | **44/45 · 47/51 · 7/8** |
+| **DeepSeek-V4-Flash** | **99 / 104** | **95.2%** | **167.9M** | **16.2 min** | **$2.27** | **44/45 · 48/51 · 7/8** |
 | **GLM-5.3-Flash** | 94 / 104 | 90.4% | 176.6M | 22.6 min | ~$9 | 44/45 · 44/51 · 6/8 |
 
 ---
 
 ## ⚡ Quick Start
 
-### 1. Environment Setup (`.env`)
+### 1. Environment Setup
 
-Create a `.env` file in the project root:
 
 ```bash
+# .env
+
 OPENAI_API_KEY="your-api-key"
 OPENAI_MODEL="your-model-name"                # e.g. glm-5.3-flash, ~deepseek/deepseek-v4-flash-latest
 OPENAI_BASE_URL="https://api.openai.com/v1"  # optional, e.g. https://openrouter.ai/api/v1
