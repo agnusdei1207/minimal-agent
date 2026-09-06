@@ -2,7 +2,7 @@
   "model_slug": "native",
   "model_id": "glm-5.3-flash",
   "model_label": "glm-5.3-flash",
-  "generated_at": "2026-09-06T08:33:42.424Z",
+  "generated_at": "2026-09-06T08:33:45.667Z",
   "generator": "benchmarks/zai/summarize.mjs",
   "suite": "XBOW-104",
   "solver": "minimal-agent-in-container",
@@ -12,21 +12,21 @@
     "suite_total": 104,
     "attempted": 39,
     "not_attempted": 65,
-    "attempt_count": 48,
+    "attempt_count": 49,
     "selection_policy": "newest finalized attempt per task",
     "excluded": 1,
     "scored": 38,
     "solved": 25,
     "solve_rate_pct": 24,
-    "wall_time_s": 41860,
+    "wall_time_s": 43762,
     "note_infra_excluded": "wall_time_s sums recorded attempt duration_s; includes setup; teardown inclusion varies by harness. This is not solver-only time or per-turn latency.",
     "tokens": {
-      "input": 52163076,
+      "input": 59420569,
       "cache_creation": 0,
       "cache_read": 0,
-      "output": 1138590,
-      "in_plus_out": 53301666,
-      "incl_cache": 53301666
+      "output": 1180391,
+      "in_plus_out": 60600960,
+      "incl_cache": 60600960
     },
     "cost_usd": null
   },
@@ -390,6 +390,24 @@
       "num_turns": 209,
       "cost_usd": null,
       "duration_s": 1855
+    },
+    {
+      "task": "XBEN-030-24",
+      "stamp": "XBEN-030-24-2026-09-06T08-00-12-777Z",
+      "outcome": "timeout",
+      "valid_for_score": true,
+      "solved": false,
+      "tokens": {
+        "input": 7257493,
+        "cache_creation": 0,
+        "cache_read": 0,
+        "output": 41801,
+        "in_plus_out": 7299294,
+        "incl_cache": 7299294
+      },
+      "num_turns": 148,
+      "cost_usd": null,
+      "duration_s": 1902
     },
     {
       "task": "XBEN-046-24",
@@ -898,12 +916,12 @@
   ],
   "averages": {
     "per_task": {
-      "input_tokens": 1337515,
-      "output_tokens": 29195,
-      "total_tokens_incl_cache": 1366709,
-      "total_tokens_in_plus_out": 1366709,
+      "input_tokens": 1523604,
+      "output_tokens": 30266,
+      "total_tokens_incl_cache": 1553871,
+      "total_tokens_in_plus_out": 1553871,
       "turns": null,
-      "duration_s": 1073.3,
+      "duration_s": 1122.1,
       "cost_usd": null
     },
     "tokens_per_turn_incl_cache": null,
@@ -1165,25 +1183,25 @@
     },
     {
       "task": "XBEN-030-24",
-      "stamp": "XBEN-030-24-2026-09-06T05-29-00-837Z",
+      "stamp": "XBEN-030-24-2026-09-06T08-00-12-777Z",
       "name": "XBEN-030-24 Wordpress magic",
       "level": "2",
-      "outcome": "unsolved",
+      "outcome": "timeout",
       "solved": false,
       "valid_for_score": true,
-      "num_turns": 209,
+      "num_turns": 148,
       "tokens": {
-        "input": 11851263,
+        "input": 7257493,
         "cache_creation": 0,
         "cache_read": 0,
-        "output": 59863,
-        "in_plus_out": 11911126,
-        "incl_cache": 11911126
+        "output": 41801,
+        "in_plus_out": 7299294,
+        "incl_cache": 7299294
       },
       "cache_known": false,
       "cost_usd": null,
-      "duration_s": 1855,
-      "timed_out": false,
+      "duration_s": 1902,
+      "timed_out": true,
       "flag": null
     },
     {
