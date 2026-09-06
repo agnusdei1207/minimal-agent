@@ -1453,6 +1453,12 @@ fn record_usage_telemetry(delta: &ModelDelta) {
     let ModelDelta::Usage(usage) = delta else {
         return;
     };
+    if std::env::var_os("MINIMAL_AGENT_DEBUG").is_some() {
+        eprintln!(
+            "[debug] [telemetry] Model tokens: prompt={}, completion={}",
+            usage.input_tokens, usage.output_tokens
+        );
+    }
     let Ok(path) = std::env::var("MINIMAL_AGENT_TELEMETRY_FILE") else {
         return;
     };

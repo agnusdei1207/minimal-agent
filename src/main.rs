@@ -499,11 +499,20 @@ async fn observe_headless(
             event = events.recv() => {
                 idle_deadline = tokio::time::Instant::now() + idle_window;
                 match event {
-                    Ok(RuntimeEvent::TurnFinished { success: true, .. }) => {
-                        retry_count = 0;
+                    Ok(event) => {
+                        if std::env::var_os("MINIMAL_AGENT_DEBUG").is_some() {
+                            log_debug_event(&event);
+                        }
+                        if matches!(event, RuntimeEvent::TurnFinished { success: true, .. }) {
+                            retry_count = 0;
+                        }
+                        observation.apply(event);
                     }
-                    Ok(event) => observation.apply(event),
-                    Err(tokio::sync::broadcast::error::RecvError::Lagged(_)) => {},
+                    Err(tokio::sync::broadcast::error::RecvError::Lagged(n)) => {
+                        if std::env::var_os("MINIMAL_AGENT_DEBUG").is_some() {
+                            eprintln!("[debug] broadcast lagged: {n} messages dropped");
+                        }
+                    }
                     Err(tokio::sync::broadcast::error::RecvError::Closed) => break,
                 }
             }
@@ -548,6 +557,101 @@ async fn observe_headless(
     Ok(observation)
 }
 
+fn log_debug_event(event: &RuntimeEvent) {
+    match event {
+        RuntimeEvent::TurnStarted { agent_id } => {
+            eprintln!("[debug] [{agent_id}] >>> Turn Started");
+        }
+        RuntimeEvent::TurnFinished { agent_id, success } => {
+            eprintln!("[debug] [{agent_id}] <<< Turn Finished (success={success})");
+        }
+        RuntimeEvent::ToolStarted {
+            agent_id,
+            name,
+            summary,
+        } => {
+            let target = summary.as_deref().unwrap_or("-");
+            eprintln!("[debug] [{agent_id}] Tool Call: {name} | target: {target}");
+        }
+        RuntimeEvent::ToolFinished {
+            agent_id,
+            name,
+            success,
+            output,
+        } => {
+            let snippet = if output.len() > 400 {
+                let end = output
+                    .char_indices()
+                    .map(|(i, _)| i)
+                    .nth(400)
+                    .unwrap_or(output.len());
+                format!(
+                    "{}... (truncated, total {} bytes)",
+                    &output[..end].trim(),
+                    output.len()
+                )
+            } else {
+                output.trim().to_string()
+            };
+            eprintln!("[debug] [{agent_id}] Tool Result: {name} (success={success}) -> {snippet}");
+        }
+        RuntimeEvent::Assistant { agent_id, text } => {
+            let snippet = if text.len() > 400 {
+                let end = text
+                    .char_indices()
+                    .map(|(i, _)| i)
+                    .nth(400)
+                    .unwrap_or(text.len());
+                format!(
+                    "{}... (truncated, total {} bytes)",
+                    &text[..end].trim(),
+                    text.len()
+                )
+            } else {
+                text.trim().to_string()
+            };
+            eprintln!("[debug] [{agent_id}] Assistant: {snippet}");
+        }
+        RuntimeEvent::AgentMessage {
+            sender,
+            recipients,
+            kind,
+            body,
+        } => {
+            let recips: Vec<String> = recipients.iter().map(|r| r.to_string()).collect();
+            let snippet = if body.len() > 200 {
+                let end = body
+                    .char_indices()
+                    .map(|(i, _)| i)
+                    .nth(200)
+                    .unwrap_or(body.len());
+                format!("{}...", &body[..end].trim())
+            } else {
+                body.trim().to_string()
+            };
+            eprintln!(
+                "[debug] [{sender}] Msg to {:?} ({kind:?}): {snippet}",
+                recips
+            );
+        }
+        RuntimeEvent::Fault { agent_id, message } => {
+            eprintln!("[debug] [{agent_id}] FAULT: {message}");
+        }
+        RuntimeEvent::Delta { .. } | RuntimeEvent::TeamChanged => {}
+    }
+}
+
+impl HeadlessObservation {
+    fn apply(&mut self, event: RuntimeEvent) {
+        match event {
+            RuntimeEvent::Assistant { text, .. } if !text.trim().is_empty() => {
+                self.summary = text.trim().to_owned();
+            }
+            _ => {}
+        }
+    }
+}
+
 fn headless_journal_evidence(
     journal: &RunJournal,
     engagement: &Engagement,
@@ -568,17 +672,6 @@ fn headless_journal_evidence(
         },
     )?;
     Ok(flag)
-}
-
-impl HeadlessObservation {
-    fn apply(&mut self, event: RuntimeEvent) {
-        match event {
-            RuntimeEvent::Assistant { text, .. } if !text.trim().is_empty() => {
-                self.summary = text.trim().to_owned();
-            }
-            _ => {}
-        }
-    }
 }
 
 async fn interrupt_on_ctrl_c<T, E>(

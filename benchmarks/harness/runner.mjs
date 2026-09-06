@@ -625,6 +625,8 @@ async function runTask(id) {
         "-e",
         `OPENAI_MAX_TOKENS=${MAX_TOKENS}`,
       );
+    if (process.env.MINIMAL_AGENT_DEBUG || arg("debug", false))
+      args.push("-e", "MINIMAL_AGENT_DEBUG=1");
 
     const agentName = `${proj}-agent`;
     await recordedCommand("agent-container-preclean", "docker", [
