@@ -1,0 +1,2 @@
+run: /tmp/ma-run
+runtime error: semantic compaction exceeded its total deadline of 300s

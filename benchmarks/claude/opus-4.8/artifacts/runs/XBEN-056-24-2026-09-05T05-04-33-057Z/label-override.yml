@@ -1,0 +1,7 @@
+services:
+  db:
+    labels:
+      - "com.bench.run=cc-opus-4.8"
+  ssti_secret_art_gallery:
+    labels:
+      - "com.bench.run=cc-opus-4.8"

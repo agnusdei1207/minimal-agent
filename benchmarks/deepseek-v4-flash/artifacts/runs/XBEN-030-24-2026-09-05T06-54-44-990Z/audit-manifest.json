@@ -1,0 +1,182 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-09-05T07:12:46.180Z",
+  "complete": true,
+  "files": [
+    {
+      "path": "evidence.json",
+      "bytes": 1151,
+      "sha256": "7916a9355260e60e25d1f75e7787ae6745b5523efb106fb86548ef382acc27d1"
+    },
+    {
+      "path": "harness/agent-container-preclean.result.json",
+      "bytes": 30,
+      "sha256": "a8a9416f13278fa0eb2c43aa6ce036c1b65a30378c0bda93e67af869c12bc401"
+    },
+    {
+      "path": "harness/agent-container-preclean.stderr.log",
+      "bytes": 70,
+      "sha256": "c2b0b9402b5dbce6ba6dc696f63ead02d83c198e66d1c93bdc6e612ad85ee304"
+    },
+    {
+      "path": "harness/agent-container-preclean.stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "harness/agent-container-timeout-cleanup.result.json",
+      "bytes": 31,
+      "sha256": "c25cd44641bbf6527ae236b97cabe644476f9948f4d109469b7628b43c4a341f"
+    },
+    {
+      "path": "harness/agent-container-timeout-cleanup.stderr.log",
+      "bytes": 95,
+      "sha256": "8cc0daf76d90520f36560ac985545bf740ceac4faf6cd39cc06581665e81463d"
+    },
+    {
+      "path": "harness/agent-container-timeout-cleanup.stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "harness/agent-container-timeout-kill.result.json",
+      "bytes": 30,
+      "sha256": "a8a9416f13278fa0eb2c43aa6ce036c1b65a30378c0bda93e67af869c12bc401"
+    },
+    {
+      "path": "harness/agent-container-timeout-kill.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "harness/agent-container-timeout-kill.stdout.log",
+      "bytes": 23,
+      "sha256": "48336d4427f069147a15ec04f787c80d05cdc7bc776e0c745bf8fcdd7a148da6"
+    },
+    {
+      "path": "harness/agent-image-inspect.result.json",
+      "bytes": 30,
+      "sha256": "a8a9416f13278fa0eb2c43aa6ce036c1b65a30378c0bda93e67af869c12bc401"
+    },
+    {
+      "path": "harness/agent-image-inspect.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "harness/agent-image-inspect.stdout.log",
+      "bytes": 72,
+      "sha256": "29e862643bc63daa0687053082f09f321faa25bb5e6d5a9f731c553170d20a09"
+    },
+    {
+      "path": "harness/compose-build.result.json",
+      "bytes": 30,
+      "sha256": "a8a9416f13278fa0eb2c43aa6ce036c1b65a30378c0bda93e67af869c12bc401"
+    },
+    {
+      "path": "harness/compose-build.stderr.log",
+      "bytes": 427,
+      "sha256": "5a1ba3ce8878a825afbd3c55dffb8696e2646f6e052dcd2085d305146a3d9dd4"
+    },
+    {
+      "path": "harness/compose-build.stdout.log",
+      "bytes": 4304,
+      "sha256": "9fba61c5d73db9bc7e930b71adeb040131eb80c92df847dd2929eff33c33c536"
+    },
+    {
+      "path": "harness/compose-config-services.result.json",
+      "bytes": 30,
+      "sha256": "a8a9416f13278fa0eb2c43aa6ce036c1b65a30378c0bda93e67af869c12bc401"
+    },
+    {
+      "path": "harness/compose-config-services.stderr.log",
+      "bytes": 271,
+      "sha256": "a3d8f7f038aa734a20ad664d166239500b551f12ba1640c45838c715d180acaa"
+    },
+    {
+      "path": "harness/compose-config-services.stdout.log",
+      "bytes": 13,
+      "sha256": "1faabd23037936092cab4a52281edb23052736d6df95df92f038105c65e7e851"
+    },
+    {
+      "path": "harness/compose-down.result.json",
+      "bytes": 30,
+      "sha256": "a8a9416f13278fa0eb2c43aa6ce036c1b65a30378c0bda93e67af869c12bc401"
+    },
+    {
+      "path": "harness/compose-down.stderr.log",
+      "bytes": 726,
+      "sha256": "02ec542f9b4df0707ab092e8640dcb4b6d8453fcd1b5d0fc41618a6974987a08"
+    },
+    {
+      "path": "harness/compose-down.stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "harness/compose-ps.result.json",
+      "bytes": 30,
+      "sha256": "a8a9416f13278fa0eb2c43aa6ce036c1b65a30378c0bda93e67af869c12bc401"
+    },
+    {
+      "path": "harness/compose-ps.stderr.log",
+      "bytes": 271,
+      "sha256": "a3d8f7f038aa734a20ad664d166239500b551f12ba1640c45838c715d180acaa"
+    },
+    {
+      "path": "harness/compose-ps.stdout.log",
+      "bytes": 2872,
+      "sha256": "48ba07abca4881f2e98d70337c0afd0bb325b1b06d1f1d7edf822a4af9f5e106"
+    },
+    {
+      "path": "harness/compose-up.result.json",
+      "bytes": 30,
+      "sha256": "a8a9416f13278fa0eb2c43aa6ce036c1b65a30378c0bda93e67af869c12bc401"
+    },
+    {
+      "path": "harness/compose-up.stderr.log",
+      "bytes": 992,
+      "sha256": "43ab7118321bd3647e77c7816757ba9b23de6a21bd52899ca2c76bdca642ee70"
+    },
+    {
+      "path": "harness/compose-up.stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "ma-run/agents/main/brief.md",
+      "bytes": 1599,
+      "sha256": "5c06911acc2c71f8c60671010c79c878956891189b8d70b71c892102f59569b0"
+    },
+    {
+      "path": "ma-run/journal/0000000000000001.jsonl",
+      "bytes": 479035,
+      "sha256": "d5e54010a2ae34881c34701b75854ef071c81f7faefa1f0affc7fe4f63fafa9a"
+    },
+    {
+      "path": "ma-run/writer.lock",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "prompt.txt",
+      "bytes": 530,
+      "sha256": "74402b846849087bfd2473503fbc796331d8f23bd7af55a08c628c4cf8b5e57f"
+    },
+    {
+      "path": "run-state.json",
+      "bytes": 210,
+      "sha256": "9506e4012620e51c77b8cb0af3945f806d99588902770a1f0c9eaa7545dd6b52"
+    },
+    {
+      "path": "telemetry/usage.jsonl",
+      "bytes": 8109,
+      "sha256": "1e2dd450c26301420e5e2043d912978be2625b95a4557eb5132536fe01d9076d"
+    },
+    {
+      "path": "transcript.txt",
+      "bytes": 17,
+      "sha256": "e10dc66afd0e3826f65c5058f5114c8078dc9f314adb9189101b49d7549d9b05"
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+services:
+  internal-service:
+    labels:
+      - "com.bench.run=cc-opus-4.8"
+  ssrf-demo-app:
+    labels:
+      - "com.bench.run=cc-opus-4.8"

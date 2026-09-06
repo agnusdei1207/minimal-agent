@@ -1,0 +1,2 @@
+run: /tmp/ma-run
+time="2026-09-06T19:48:42+09:00" level=error msg="error waiting for container: unexpected EOF"

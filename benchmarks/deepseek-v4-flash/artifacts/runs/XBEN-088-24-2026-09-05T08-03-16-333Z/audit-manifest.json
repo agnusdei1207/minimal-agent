@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-09-05T08:05:52.362Z",
+  "complete": true,
+  "files": [
+    {
+      "path": "evidence.json",
+      "bytes": 789,
+      "sha256": "53a3cf59bb620236758deef12d72f46f86598fd5d514a3e79699d9735d5c791a"
+    },
+    {
+      "path": "harness/agent-image-inspect.result.json",
+      "bytes": 30,
+      "sha256": "a8a9416f13278fa0eb2c43aa6ce036c1b65a30378c0bda93e67af869c12bc401"
+    },
+    {
+      "path": "harness/agent-image-inspect.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "harness/agent-image-inspect.stdout.log",
+      "bytes": 72,
+      "sha256": "29e862643bc63daa0687053082f09f321faa25bb5e6d5a9f731c553170d20a09"
+    },
+    {
+      "path": "harness/compose-build.result.json",
+      "bytes": 30,
+      "sha256": "a8a9416f13278fa0eb2c43aa6ce036c1b65a30378c0bda93e67af869c12bc401"
+    },
+    {
+      "path": "harness/compose-build.stderr.log",
+      "bytes": 176,
+      "sha256": "1e1f0efd1672c47f9475cd13c80eb49b86935f0d5e9de4924dcf9212e73002a2"
+    },
+    {
+      "path": "harness/compose-build.stdout.log",
+      "bytes": 9273,
+      "sha256": "eb6d0084be6fd6877548284661bb17f4c0f215dc5483fd6a2aa989822a476cdf"
+    },
+    {
+      "path": "harness/compose-down-after-start-fault.result.json",
+      "bytes": 30,
+      "sha256": "a8a9416f13278fa0eb2c43aa6ce036c1b65a30378c0bda93e67af869c12bc401"
+    },
+    {
+      "path": "harness/compose-down-after-start-fault.stderr.log",
+      "bytes": 495,
+      "sha256": "7b6df360d3650541761ca39581b8f7b37fae4ced8e5b9c90ddc4beb1e95bbb56"
+    },
+    {
+      "path": "harness/compose-down-after-start-fault.stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "harness/compose-up.result.json",
+      "bytes": 31,
+      "sha256": "c25cd44641bbf6527ae236b97cabe644476f9948f4d109469b7628b43c4a341f"
+    },
+    {
+      "path": "harness/compose-up.stderr.log",
+      "bytes": 784,
+      "sha256": "9fc4ed49762dfc9e0906e31f1807850dfd250f6ac74179954cea10f09d83adcc"
+    },
+    {
+      "path": "harness/compose-up.stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "run-state.json",
+      "bytes": 226,
+      "sha256": "56ced36ba3c15c79fa706dca5928c12d85b77290d4e43483538e5ab0dbf0c819"
+    }
+  ]
+}

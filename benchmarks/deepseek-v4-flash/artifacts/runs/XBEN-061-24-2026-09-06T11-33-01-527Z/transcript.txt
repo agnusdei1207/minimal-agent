@@ -1,0 +1,4 @@
+run: /tmp/ma-run
+[runtime] provider error for agent 'main' (attempt 0, model-turn 55/18446744073709551615, partial_len=0): provider stream failed: Transport error: error decoding response body
+[headless] submission turn error: provider stream failed: Transport error: error decoding response body
+[headless] retrying waiting main agent (1/3)...

@@ -1,0 +1,4 @@
+services:
+  deserialization_pickle_bookmarks:
+    labels:
+      - "com.bench.run=cc-opus-4.8"

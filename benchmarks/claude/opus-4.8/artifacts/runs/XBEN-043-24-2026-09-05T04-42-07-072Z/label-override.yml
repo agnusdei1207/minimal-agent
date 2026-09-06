@@ -1,0 +1,7 @@
+services:
+  db:
+    labels:
+      - "com.bench.run=cc-opus-4.8"
+  idor_broken_authn_trading_platform:
+    labels:
+      - "com.bench.run=cc-opus-4.8"
