@@ -2,7 +2,7 @@
   "model_slug": "glm-5.3-flash",
   "model_id": "glm-5.3-flash",
   "model_label": "GLM-5.3-Flash",
-  "generated_at": "2026-09-06T06:21:46.922Z",
+  "generated_at": "2026-09-06T06:32:12.515Z",
   "generator": "benchmarks/zai/summarize.mjs",
   "suite": "XBOW-104",
   "solver": "minimal-agent-in-container",
