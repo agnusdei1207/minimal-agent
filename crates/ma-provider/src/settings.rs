@@ -16,6 +16,67 @@ pub struct ProviderSettings {
     pub model: String,
     pub api_key: String,
     pub context_tokens: u64,
+    #[serde(default, alias = "max_tokens", alias = "max_completion_tokens")]
+    pub max_output_tokens: Option<u64>,
+}
+
+/// Parse a token count that may carry a `k`/`m`/`g` suffix
+/// (e.g. `128k`, `1m`, `32k`). A bare integer is also accepted. Returns the value in
+/// tokens; `None` on any malformed input.
+pub fn parse_token_input(value: &str) -> Option<u64> {
+    let value = value.trim();
+    if value.is_empty() {
+        return None;
+    }
+    let (digits, multiplier) = match value.chars().next_back() {
+        Some('k' | 'K') => (&value[..value.len() - 1], 1024u64),
+        Some('m' | 'M') => (&value[..value.len() - 1], 1024u64 * 1024),
+        Some('g' | 'G') => (&value[..value.len() - 1], 1024u64 * 1024 * 1024),
+        _ => (value, 1u64),
+    };
+    let number: u64 = digits.trim().parse().ok()?;
+    number.checked_mul(multiplier)
+}
+
+/// Resolve the configured context token ceiling from standard environment variables.
+/// Accepts k/m suffixes (e.g. `128k`, `1m`).
+pub fn env_context_tokens() -> Option<u64> {
+    const KEYS: &[&str] = &[
+        "OPENAI_CONTEXT_TOKENS",
+        "MINIMAL_AGENT_CONTEXT_TOKENS",
+        "OPENAI_MAX_CONTEXT_TOKENS",
+        "MINIMAL_AGENT_MAX_CONTEXT_TOKENS",
+        "CONTEXT_TOKENS",
+        "MAX_CONTEXT_TOKENS",
+    ];
+    KEYS.iter().find_map(|&key| {
+        std::env::var(key)
+            .ok()
+            .and_then(|val| parse_token_input(&val))
+            .filter(|&tokens| tokens > 0)
+    })
+}
+
+/// Resolve the maximum output/completion tokens from standard environment variables.
+/// Accepts k/m suffixes (e.g. `16k`, `32k`).
+pub fn env_max_output_tokens() -> Option<u64> {
+    const KEYS: &[&str] = &[
+        "OPENAI_MAX_TOKENS",
+        "OPENAI_MAX_OUTPUT_TOKENS",
+        "OPENAI_OUTPUT_MAX_TOKENS",
+        "OPENAI_MAX_COMPLETION_TOKENS",
+        "MINIMAL_AGENT_MAX_TOKENS",
+        "MINIMAL_AGENT_MAX_OUTPUT_TOKENS",
+        "MINIMAL_AGENT_OUTPUT_MAX_TOKENS",
+        "MAX_OUTPUT_TOKENS",
+        "OUTPUT_MAX_TOKENS",
+    ];
+    KEYS.iter().find_map(|&key| {
+        std::env::var(key)
+            .ok()
+            .and_then(|val| parse_token_input(&val))
+            .filter(|&tokens| tokens > 0)
+    })
 }
 
 impl ProviderSettings {
@@ -34,18 +95,15 @@ impl ProviderSettings {
         };
         let base_url = std::env::var("OPENAI_BASE_URL")
             .unwrap_or_else(|_| "https://api.openai.com/v1".to_owned());
-        let context_tokens = std::env::var("OPENAI_CONTEXT_TOKENS")
-            .ok()
-            .map(|value| value.parse::<u64>())
-            .transpose()?
-            .unwrap_or(128_000);
-        anyhow::ensure!(context_tokens > 0, "OPENAI_CONTEXT_TOKENS must be positive");
+        let context_tokens = env_context_tokens().unwrap_or(128_000);
+        let max_output_tokens = env_max_output_tokens();
         Ok(Some(Self {
             provider: "openai-compatible".to_owned(),
             base_url,
             model,
             api_key,
             context_tokens,
+            max_output_tokens,
         }))
     }
 
@@ -55,6 +113,7 @@ impl ProviderSettings {
             api_key: self.api_key.clone(),
             model: self.model.clone(),
             context_tokens: self.context_tokens,
+            max_output_tokens: self.max_output_tokens,
             timeout: std::env::var("MINIMAL_AGENT_PROVIDER_TIMEOUT")
                 .or_else(|_| std::env::var("OPENAI_TIMEOUT"))
                 .ok()
@@ -164,5 +223,58 @@ impl ProviderSettingsStore {
             let _ = fs::remove_file(&temporary);
         }
         result
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn parses_plain_and_suffixed_token_inputs() {
+        assert_eq!(parse_token_input("128000"), Some(128_000));
+        assert_eq!(parse_token_input("16k"), Some(16 * 1024));
+        assert_eq!(parse_token_input("32K"), Some(32 * 1024));
+        assert_eq!(parse_token_input("1m"), Some(1024 * 1024));
+        assert_eq!(parse_token_input("  2M  "), Some(2 * 1024 * 1024));
+        assert_eq!(parse_token_input("1g"), Some(1024 * 1024 * 1024));
+        assert_eq!(parse_token_input(""), None);
+        assert_eq!(parse_token_input("abc"), None);
+        assert_eq!(parse_token_input("-10"), None);
+    }
+
+    #[test]
+    fn provider_settings_deserializes_with_optional_max_output_tokens() {
+        let json = r#"{
+            "provider": "openai-compatible",
+            "base_url": "https://api.openai.com/v1",
+            "model": "gpt-4o",
+            "api_key": "test-key",
+            "context_tokens": 128000
+        }"#;
+        let settings: ProviderSettings = serde_json::from_str(json).unwrap();
+        assert_eq!(settings.max_output_tokens, None);
+
+        let json_with_max_tokens = r#"{
+            "provider": "openai-compatible",
+            "base_url": "https://api.openai.com/v1",
+            "model": "gpt-4o",
+            "api_key": "test-key",
+            "context_tokens": 128000,
+            "max_tokens": 32768
+        }"#;
+        let settings: ProviderSettings = serde_json::from_str(json_with_max_tokens).unwrap();
+        assert_eq!(settings.max_output_tokens, Some(32_768));
+
+        let json_with_max_output_tokens = r#"{
+            "provider": "openai-compatible",
+            "base_url": "https://api.openai.com/v1",
+            "model": "gpt-4o",
+            "api_key": "test-key",
+            "context_tokens": 128000,
+            "max_output_tokens": 16384
+        }"#;
+        let settings: ProviderSettings = serde_json::from_str(json_with_max_output_tokens).unwrap();
+        assert_eq!(settings.max_output_tokens, Some(16_384));
     }
 }

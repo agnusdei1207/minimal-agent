@@ -75,9 +75,12 @@ enum Command {
         /// Maximum model turns allowed per user turn (0 or 'unlimited' for no limit).
         #[arg(long)]
         max_turns: Option<String>,
+        /// Operator-imposed context ceiling. Overrides OPENAI_CONTEXT_TOKENS.
+        #[arg(long, alias = "max-context-tokens")]
+        context_tokens: Option<String>,
         /// Maximum completion tokens reserved for model output. Overrides OPENAI_MAX_TOKENS.
-        #[arg(long)]
-        max_tokens: Option<u64>,
+        #[arg(long, alias = "max-output-tokens", alias = "output-max-tokens")]
+        max_tokens: Option<String>,
         /// Non-interactive autonomous run: submit the objective, wait for the team to
         /// settle, print a one-line JSON result, and exit. Implies plain mode.
         #[arg(long)]
@@ -111,6 +114,7 @@ async fn main() -> anyhow::Result<()> {
             flag_format,
             objective,
             max_turns,
+            context_tokens,
             max_tokens,
             headless,
         } => {
@@ -131,6 +135,7 @@ async fn main() -> anyhow::Result<()> {
                 plain,
                 engagement,
                 max_turns,
+                context_tokens,
                 max_tokens,
                 headless,
             })
@@ -175,7 +180,8 @@ struct RunArgs {
     plain: bool,
     engagement: Option<Engagement>,
     max_turns: Option<String>,
-    max_tokens: Option<u64>,
+    context_tokens: Option<String>,
+    max_tokens: Option<String>,
     headless: bool,
 }
 
@@ -189,6 +195,7 @@ async fn run(args: RunArgs) -> anyhow::Result<()> {
         plain,
         engagement,
         max_turns,
+        context_tokens,
         max_tokens,
         headless,
     } = args;
@@ -203,6 +210,9 @@ async fn run(args: RunArgs) -> anyhow::Result<()> {
     }
     let settings_root = provider_settings_root(run.as_deref(), resume.as_deref(), &workspace);
     let settings_store = ProviderSettingsStore::new(settings_root);
+    let settings = settings_store
+        .load()?
+        .or(ProviderSettings::from_standard_env()?);
     let provider = load_provider_slot(&settings_store).await?;
     let max_model_turns = match max_turns.as_deref() {
         Some(val) => {
@@ -218,11 +228,22 @@ async fn run(args: RunArgs) -> anyhow::Result<()> {
         }
         None => RuntimeConfig::default().max_model_turns,
     };
-    let reserved_response_tokens =
-        max_tokens.unwrap_or_else(|| RuntimeConfig::default().reserved_response_tokens);
+    let cli_max_tokens = max_tokens
+        .as_deref()
+        .and_then(minimal_agent::settings::parse_token_input);
+    let cli_context_tokens = context_tokens
+        .as_deref()
+        .and_then(minimal_agent::settings::parse_token_input);
+    let reserved_response_tokens = cli_max_tokens
+        .or_else(|| settings.as_ref().and_then(|s| s.max_output_tokens))
+        .unwrap_or_else(|| RuntimeConfig::default().reserved_response_tokens);
+    let configured_context_tokens = cli_context_tokens
+        .or_else(|| settings.as_ref().map(|s| s.context_tokens))
+        .unwrap_or_else(|| RuntimeConfig::default().configured_context_tokens);
     let config = RuntimeConfig {
         auto,
         max_model_turns,
+        configured_context_tokens,
         reserved_response_tokens,
         engagement: engagement.clone(),
         ..RuntimeConfig::default()
@@ -436,9 +457,11 @@ async fn run_headless(
         }))?
     );
 
-    if flag_required && flag.is_none() {
-        std::process::exit(1);
-    }
+    // Exit 0 even when the flag was not captured: the agent completed its
+    // exploration legitimately. The harness classifies exit(0) + no flag as
+    // "unsolved" (valid_for_score: true), whereas exit(1) would be recorded
+    // as "runtime_fault" (excluded), hiding genuine misses from the benchmark
+    // denominator. Reserve non-zero exits for actual crashes / panics.
     Ok(())
 }
 
@@ -587,7 +610,7 @@ fn log_debug_event(event: &RuntimeEvent) {
                     .unwrap_or(output.len());
                 format!(
                     "{}... (truncated, total {} bytes)",
-                    &output[..end].trim(),
+                    output[..end].trim(),
                     output.len()
                 )
             } else {
@@ -604,7 +627,7 @@ fn log_debug_event(event: &RuntimeEvent) {
                     .unwrap_or(text.len());
                 format!(
                     "{}... (truncated, total {} bytes)",
-                    &text[..end].trim(),
+                    text[..end].trim(),
                     text.len()
                 )
             } else {
@@ -625,7 +648,7 @@ fn log_debug_event(event: &RuntimeEvent) {
                     .map(|(i, _)| i)
                     .nth(200)
                     .unwrap_or(body.len());
-                format!("{}...", &body[..end].trim())
+                format!("{}...", body[..end].trim())
             } else {
                 body.trim().to_string()
             };
@@ -1138,6 +1161,7 @@ mod tests {
                 model: "small-model".to_owned(),
                 api_key: "secret".to_owned(),
                 context_tokens: 16_384,
+                max_output_tokens: None,
             })
             .unwrap();
 

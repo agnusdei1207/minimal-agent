@@ -29,7 +29,7 @@ main (depth 0)  ── Goal interpretation, team formulation, strategic synthesi
 
 - Only `main` creates, assigns, steers, and recalls workers. Workers cannot spawn arbitrary child subagents.
 - Maximum active team size is strictly capped at 10 (including `main`). Roles and assignments are determined dynamically at runtime.
-- Deep recursive sprawl is prevented by fixing team topology bounds. Rather than adding arbitrary hierarchical depth, `minimal-agent` prioritizes controllable, low-latency coordination. *(For bounded 3-depth extensions in complex operations, see [ADR-0004](../adr/ADR-0004-bounded-three-depth-hierarchical-orchestration.md) and [hierarchical-tree-orchestration-ideas.md](hierarchical-tree-orchestration-ideas.md)).*
+- Deep recursive sprawl is prevented by fixing team topology bounds. Rather than adding arbitrary hierarchical depth, `minimal-agent` prioritizes controllable, low-latency coordination. Bounded 3-depth extensions in complex operations are detailed in Section 2.5 and [ADR-0004](../adr/ADR-0004-bounded-three-depth-hierarchical-orchestration.md).
 
 ### 2.2 Direct Messaging over a Single Append-Only Journal
 
@@ -45,9 +45,40 @@ This single-journal, direct-communication model is the core of the runtime. Comm
 
 Every agent maintains an individually owned battlefield note (`brief.md`):
 - `main` maintains the global picture, team composition, active attack frontiers, and curated technical insights.
-- Workers track only their specific hypotheses, attempted vectors, and exact technical findings.
 - No agent directly modifies another agent's semantic brief.
-- When an individual agent's context approaches its threshold (~80%), **only that specific agent** undergoes LLM semantic compaction. The runtime cryptographically validates source digests, event coverage, and reduction ratios; rule-based truncation is never recognized as semantic compaction.
+- When an individual agent's context approaches its threshold (~80%), only that specific agent undergoes LLM semantic compaction.
+
+### 2.4 Inter-Agent Messaging: Underlying LLM Array Transformations
+
+At the LLM API layer, inter-agent communication is an append operation to the recipient's private conversation array (`messages: [...]`):
+
+```text
+[Agent A's Conversation Array]                 [Agent B's Conversation Array]
+┌────────────────────────────┐                 ┌────────────────────────────┐
+│ system : Role directives   │                 │ system : Role directives   │
+│ user   : Task instruction  │                 │ user   : Task instruction  │
+│ assistant: [Tool Call] ──┐ │ (Extract body)  │ assistant: Previous turn   │
+│ tool   : Delivery confirmed│ │               │ tool   : Tool result       │
+└────────────────────────────┘ └──────────────>│ user   : [Team Message]    │ <-- Appended to B's
+                                               │   "A: Port 80 found"       │     array tail!
+                                               └────────────────────────────┘
+```
+
+1. Sender invokes `team` tool with `op: "send"`.
+2. Sender receives a delivery confirmation tool result (`"Message delivered to worker-02"`).
+3. Central runtime intercepts the body and appends it as a `user` role message to the recipient's array on its next turn.
+4. Each agent maintains an isolated conversation graph, preventing context pollution across roles.
+
+### 2.5 Topology Evolution & Trade-offs: Star vs. Hierarchical Tree
+
+| Dimension | Star Topology (Active: Depth 1) | Hierarchical Tree (Extended: Depth 2–3) |
+| :--- | :--- | :--- |
+| **Structure** | Radial star graph (1 Main + ≤9 Workers) | $N$-ary Tree (Root $\to$ Leads $\to$ Leaf Workers) |
+| **Tool Rights** | Main + Workers | Strictly Leaf workers only |
+| **Strengths** | Minimum latency, zero multi-hop summarization loss | High context purity for supervisors; scales beyond 10 agents |
+| **Risks** | Coordinator span-of-control saturation at >10 agents | Value degradation across hops, turn latency explosion, spawn storms |
+
+For focused web penetration testing and CTFs (e.g., XBOW-104), Star Topology ($K_{1, n}$) minimizes latency and preserves exact exploit artifacts. Bounded tree structures (ADR-0004) are reserved for large-scale multi-track operations.
 
 ---
 
@@ -128,6 +159,8 @@ Consistent color palettes and CommonMark terminal rendering allow operators to i
 - Separate observation and telemetry microservices
 - Complex runtime policy and approval engines
 - Automated heuristic strategy classifiers
+- In-core PTY daemons: delegated to OS tmux; see [ADR-0003](../adr/ADR-0003-shell-execution-and-interactive-primitives.md)
+- Embedded browser engines: delegated to CLI and accessibility trees; see [ADR-0005](../adr/ADR-0005-web-browser-automation-and-traffic-interception-architecture.md)
 
 The architectural thesis of this project is that an append-only journal paired with individually owned semantic briefs provides complete state representation. New primitives will only be evaluated via formal ADRs if empirical recall failures are demonstrated.
 

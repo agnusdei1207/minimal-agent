@@ -4,8 +4,7 @@
 - Created: 2026-09-06 +09:00
 - Version target: 0.111.0
 - Repository: `agnusdei1207/minimal-agent`
-- Relation: ADR-0001(Anti-Bloat Clean-Room Core), ADR-0002(Authorized Engagement), ADR-0003(Shell & Interactive Terminal Primitives), ADR-0004(Bounded Three-Depth Hierarchy).
-- Background Design Doc: [`docs/design/browser-automation-trap-and-xss-execution-discipline.md`](../design/browser-automation-trap-and-xss-execution-discipline.md)
+- Relation: ADR-0001 (Clean-Room Core), ADR-0002 (Authorized Engagement), ADR-0003 (Shell Primitives), ADR-0004 (Bounded Three-Depth Hierarchy).
 - 상태 주석:
   - **인프라 및 안전 가드 계층 (Docker `--init` 좀비 수거, 원시 크롬 오용 차단 가드 스크립트):** 반영 완료 (Implemented).
   - **접근성 트리(Accessibility Tree) 및 핀포인트 DOM 관측 파이프라인:** 반영 완료 (Implemented via Skill Prompts). 별도의 Rust 런타임 코드나 복잡한 함수 툴 추가 없이, 시스템 프롬프트(`prompts/skills/02-web-application.md`)를 통해 관측 및 행동 규약을 확립.

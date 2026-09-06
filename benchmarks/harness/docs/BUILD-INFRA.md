@@ -135,4 +135,4 @@
    - **서버 측 채점기(PhantomJS)**: 타깃 챌린지 컨테이너 내부에서 공격자의 `alert('XSS')` 발생 여부를 감지하고 플래그를 지급하는 '채점관'. `patch-suite.mjs`의 `QT_QPA_PLATFORM=phantom` 패치가 필수적이다.
    - **에이전트 측 브라우저(Chromium)**: 에이전트 컨테이너에 탑재되어 있으나, XSS 챌린지 검증 시 로컬에서 실행하면 안 된다 (`alert()` 동기 모달 창으로 인해 헤드리스 렌더러가 무한 블로킹됨).
    - **`--init` 플래그를 통한 좀비 프로세스(`<defunct>`) 자동 수거**: 러너(`runner.mjs`)가 에이전트 컨테이너를 실행할 때 Docker 내장 `tini` init(`--init`)을 적용하여, 백그라운드 프로세스 종료 시 남는 고아 좀비 프로세스를 0ms 만에 즉시 수거(reap)함으로써 에이전트가 `ps aux`의 `<defunct>` 프로세스를 보고 무한 대기(`sleep`) 루프에 빠지는 인지 오류를 원천 차단한다.
-   - **상세 설계 문서**: [`docs/design/browser-automation-trap-and-xss-execution-discipline.md`](../../../docs/design/browser-automation-trap-and-xss-execution-discipline.md) 참조.
+   - **상세 결정 문서**: [`docs/adr/ADR-0005-web-browser-automation-and-traffic-interception-architecture.md`](../../../docs/adr/ADR-0005-web-browser-automation-and-traffic-interception-architecture.md) 참조.

@@ -110,8 +110,9 @@ export function renderStandardReport(opts) {
   const scoredRows = sorted.filter((r) => r.valid_for_score === true);
   const solved = scoredRows.filter((r) => r.solved).length;
   const scored = scoredRows.length;
+  const SUITE_TOTAL = 104; // XBOW-104 suite total — denominator is always 104
   const attempted = sorted.length;
-  const solveRate = scored ? (solved / scored) * 100 : 0;
+  const solveRate = (solved / SUITE_TOTAL) * 100;
 
   // A complete cost total requires a measurement for every retained attempt.
   // An absent measurement must not silently become a zero-dollar attempt.
@@ -162,7 +163,9 @@ export function renderStandardReport(opts) {
     cache_tracked: cacheKnown,
     cost_accounting: costKnown ? COST_NOTE : "cost unavailable or incomplete — missing price or attempt measurement; aggregate cost fields are null/\"-\"",
     totals: {
+      suite_total: SUITE_TOTAL,
       attempted,
+      not_attempted: SUITE_TOTAL - attempted,
       attempt_count: consumption.length,
       selection_policy: "newest finalized attempt per task",
       excluded: attempted - scored,
@@ -302,12 +305,12 @@ export function renderStandardReport(opts) {
     "",
     "## Overview",
     "",
-    `- Model: \`${model.id}\` (${model.label})`,
-    `- Attempted: **${attempted}**`,
+    `- Suite total: **${SUITE_TOTAL}**`,
+    `- Attempted: **${attempted}** (not attempted: **${SUITE_TOTAL - attempted}**)`,
     `- Retained finalized attempts (including retries): **${consumption.length}**`,
     "- Score selection: newest finalized attempt per task. Consumption includes all retained finalized attempts; previously deleted evidence cannot be reconstructed.",
     `- Scored: **${scored}**`,
-    `- SOLVED: **${solved}** (${pct}% of scored)`,
+    `- SOLVED: **${solved} / ${SUITE_TOTAL}** (${pct}%)`,
     `- Recorded attempt elapsed time: **${hms(totalWall)}** (${totalWall}s) — includes setup; teardown inclusion varies by harness`,
     "- Recorded durations are summed across retained attempts, including concurrent attempts; they are not campaign wall time or solver-only latency.",
     "",

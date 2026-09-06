@@ -1,7 +1,7 @@
 use std::collections::{BTreeMap, HashMap, HashSet};
 use std::io;
 use std::sync::Arc;
-use std::sync::atomic::{AtomicBool, Ordering};
+use std::sync::atomic::{AtomicBool, AtomicU64, Ordering};
 use std::time::Duration;
 
 use async_trait::async_trait;
@@ -127,7 +127,7 @@ pub struct ProviderSlot {
     current: RwLock<Option<Arc<dyn ModelProvider>>>,
     active_model: RwLock<Option<String>>,
     configured: AtomicBool,
-    context_limit: u64,
+    context_limit: AtomicU64,
 }
 
 impl ProviderSlot {
@@ -136,7 +136,7 @@ impl ProviderSlot {
             current: RwLock::new(None),
             active_model: RwLock::new(None),
             configured: AtomicBool::new(false),
-            context_limit,
+            context_limit: AtomicU64::new(context_limit),
         }
     }
 
@@ -145,7 +145,7 @@ impl ProviderSlot {
     }
 
     pub fn runtime_context_limit(&self) -> u64 {
-        self.context_limit
+        self.context_limit.load(Ordering::Acquire)
     }
 
     pub async fn active_model(&self) -> Option<String> {
@@ -153,6 +153,10 @@ impl ProviderSlot {
     }
 
     pub async fn replace(&self, provider: Arc<dyn ModelProvider>, model: String) {
+        let limit = provider.context_limit();
+        if limit > 0 {
+            self.context_limit.store(limit, Ordering::Release);
+        }
         *self.current.write().await = Some(provider);
         *self.active_model.write().await = Some(model);
         self.configured.store(true, Ordering::Release);
@@ -166,7 +170,7 @@ impl ModelProvider for ProviderSlot {
     }
 
     fn context_limit(&self) -> u64 {
-        self.context_limit
+        self.context_limit.load(Ordering::Acquire)
     }
 
     async fn complete(
@@ -192,6 +196,7 @@ pub struct OpenAiConfig {
     pub api_key: String,
     pub model: String,
     pub context_tokens: u64,
+    pub max_output_tokens: Option<u64>,
     pub timeout: Duration,
     pub headers: HashMap<String, String>,
 }
@@ -211,14 +216,18 @@ impl OpenAiConfig {
             .map_err(|error| ProviderFault::Configuration {
                 message: format!("invalid provider base URL: {error}"),
             })?;
-        let context_tokens =
-            parse_context_tokens(std::env::var("OPENAI_CONTEXT_TOKENS").ok().as_deref())?;
+        let context_tokens = match std::env::var("OPENAI_CONTEXT_TOKENS").ok() {
+            Some(val) => parse_context_tokens(Some(&val))?,
+            None => crate::settings::env_context_tokens().unwrap_or(128_000),
+        };
+        let max_output_tokens = crate::settings::env_max_output_tokens();
         let timeout = parse_provider_timeout();
         Ok(Self {
             base_url,
             api_key,
             model,
             context_tokens,
+            max_output_tokens,
             timeout,
             headers: HashMap::new(),
         })
@@ -239,16 +248,15 @@ impl OpenAiConfig {
     }
 }
 
-fn parse_context_tokens(value: Option<&str>) -> Result<u64, ProviderFault> {
+pub(crate) fn parse_context_tokens(value: Option<&str>) -> Result<u64, ProviderFault> {
     let Some(value) = value else {
         return Ok(128_000);
     };
-    value
-        .parse::<u64>()
-        .ok()
+    crate::settings::parse_token_input(value)
         .filter(|tokens| *tokens > 0)
         .ok_or_else(|| ProviderFault::Configuration {
-            message: "OPENAI_CONTEXT_TOKENS must be a positive integer".to_owned(),
+            message: "OPENAI_CONTEXT_TOKENS must be a positive integer (suffix k/m allowed)"
+                .to_owned(),
         })
 }
 
@@ -312,8 +320,12 @@ impl OpenAiChatProvider {
         request: &ModelRequest,
         deltas: Option<mpsc::UnboundedSender<ModelDelta>>,
     ) -> Result<ModelTurn, ProviderAttemptFault> {
-        let body = OpenAiRequest::from_model_request(&self.config.model, request)
-            .map_err(ProviderAttemptFault::terminal)?;
+        let body = OpenAiRequest::from_model_request(
+            &self.config.model,
+            request,
+            self.config.max_output_tokens,
+        )
+        .map_err(ProviderAttemptFault::terminal)?;
         let response = self
             .client
             .post(
@@ -349,7 +361,11 @@ impl OpenAiChatProvider {
             });
         }
 
-        let max_output_bytes = usize::try_from(request.max_output_tokens)
+        let effective_max_tokens = self
+            .config
+            .max_output_tokens
+            .unwrap_or(request.max_output_tokens);
+        let max_output_bytes = usize::try_from(effective_max_tokens)
             .unwrap_or(usize::MAX)
             .saturating_mul(16)
             .clamp(1_024, MAX_PROVIDER_OUTPUT_BYTES);
@@ -762,6 +778,7 @@ impl<'a> OpenAiRequest<'a> {
     fn from_model_request(
         model: &'a str,
         request: &'a ModelRequest,
+        max_output_tokens: Option<u64>,
     ) -> Result<Self, ProviderFault> {
         let messages = request
             .messages
@@ -792,7 +809,7 @@ impl<'a> OpenAiRequest<'a> {
             tool_choice,
             stream: true,
             include_reasoning: true,
-            max_completion_tokens: request.max_output_tokens,
+            max_completion_tokens: max_output_tokens.unwrap_or(request.max_output_tokens),
             temperature: request.temperature,
         })
     }
@@ -1059,6 +1076,7 @@ mod tests {
             api_key: "secret".to_owned(),
             model: "model-a".to_owned(),
             context_tokens: 64_000,
+            max_output_tokens: None,
             timeout: Duration::from_secs(1),
             headers: HashMap::new(),
         })
@@ -1135,10 +1153,16 @@ mod tests {
             temperature: None,
         };
 
-        let body = OpenAiRequest::from_model_request("test-model", &request).unwrap();
+        let body = OpenAiRequest::from_model_request("test-model", &request, None).unwrap();
         let json = serde_json::to_value(body).unwrap();
 
         assert_eq!(json["tool_choice"], "auto");
+        assert_eq!(json["max_completion_tokens"], 256);
+
+        let overridden =
+            OpenAiRequest::from_model_request("test-model", &request, Some(1024)).unwrap();
+        let json_overridden = serde_json::to_value(overridden).unwrap();
+        assert_eq!(json_overridden["max_completion_tokens"], 1024);
     }
 
     #[test]

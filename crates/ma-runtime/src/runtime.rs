@@ -69,24 +69,15 @@ impl Default for RuntimeConfig {
         // provider `max_completion_tokens` cap. Reasoning backbones (e.g. DeepSeek)
         // spend several thousand tokens thinking before emitting the tool-call
         // JSON, so an 8k cap truncates the call mid-object (EOF parse fault). It is
-        // overridable via OPENAI_MAX_TOKENS; the benchmark runner sets it per run.
-        let reserved_response_tokens = std::env::var("OPENAI_MAX_TOKENS")
-            .or_else(|_| std::env::var("MINIMAL_AGENT_MAX_TOKENS"))
-            .ok()
-            .and_then(|val| val.trim().parse::<u64>().ok())
-            .filter(|&tokens| tokens > 0)
-            .unwrap_or(32_768);
+        // overridable via OPENAI_MAX_TOKENS / OPENAI_MAX_OUTPUT_TOKENS with k/m suffix support.
+        let reserved_response_tokens =
+            ma_provider::settings::env_max_output_tokens().unwrap_or(32_768);
         // Operator-imposed context ceiling, min()'d against the provider's real
-        // window. Formerly hardcoded to 128_000, which clamped the effective budget
-        // below modern 1M-token windows and made any response reservation above
-        // ~128k underflow the budget (runtime refused to start). Read from
-        // OPENAI_CONTEXT_TOKENS so the ceiling tracks the model's actual context;
-        // it must stay strictly greater than reserved_response_tokens.
-        let configured_context_tokens = std::env::var("OPENAI_CONTEXT_TOKENS")
-            .ok()
-            .and_then(|val| val.trim().parse::<u64>().ok())
-            .filter(|&tokens| tokens > 0)
-            .unwrap_or(128_000);
+        // window. Read from OPENAI_CONTEXT_TOKENS (or aliases) with k/m suffix support
+        // so the ceiling tracks the model's actual context; it must stay strictly
+        // greater than reserved_response_tokens.
+        let configured_context_tokens =
+            ma_provider::settings::env_context_tokens().unwrap_or(128_000);
         Self {
             configured_context_tokens,
             reserved_response_tokens,

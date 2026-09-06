@@ -31,7 +31,10 @@ fn input_hint(state: &TuiState) -> &'static str {
         Some(ModelSetup::CustomUrl { .. }) => "Base URL - type, then Enter",
         Some(ModelSetup::Model { .. }) => "Model name - type, then Enter",
         Some(ModelSetup::ContextTokens { .. }) => {
-            "Context tokens - type a positive number (e.g. 128k, 1m)"
+            "Context tokens - type a positive number (e.g. 128k, 1m) or Enter for default"
+        }
+        Some(ModelSetup::MaxOutputTokens { .. }) => {
+            "Max output tokens - type a number (e.g. 16k, 32k) or Enter for default"
         }
         None => "",
     }

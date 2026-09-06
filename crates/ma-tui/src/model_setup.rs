@@ -1,7 +1,7 @@
 use std::sync::Arc;
 
 use ma_provider::provider::ProviderSlot;
-use ma_provider::settings::{ProviderSettings, ProviderSettingsStore};
+use ma_provider::settings::{ProviderSettings, ProviderSettingsStore, parse_token_input};
 
 use super::TuiState;
 
@@ -22,6 +22,12 @@ pub(super) enum ModelSetup {
         base_url: String,
         api_key: String,
         model: String,
+    },
+    MaxOutputTokens {
+        base_url: String,
+        api_key: String,
+        model: String,
+        context_tokens: u64,
     },
 }
 
@@ -62,7 +68,25 @@ pub(super) async fn advance(
             base_url,
             api_key,
             model,
-        } => save_configuration(state, value, base_url, api_key, model, slot, store).await,
+        } => accept_context_tokens(state, value, base_url, api_key, model),
+        ModelSetup::MaxOutputTokens {
+            base_url,
+            api_key,
+            model,
+            context_tokens,
+        } => {
+            save_configuration(
+                state,
+                value,
+                base_url,
+                api_key,
+                model,
+                context_tokens,
+                slot,
+                store,
+            )
+            .await
+        }
     }
 }
 
@@ -110,31 +134,73 @@ fn accept_model(state: &mut TuiState, value: String, base_url: String, api_key: 
         model: value,
     });
     state.status =
-        "model setup: enter context token count (suffix k/m allowed, e.g. 128k, 1m)".to_owned();
+        "model setup: enter context token count (suffix k/m allowed, e.g. 128k, 1m, default 128k)"
+            .to_owned();
 }
 
+fn accept_context_tokens(
+    state: &mut TuiState,
+    value: String,
+    base_url: String,
+    api_key: String,
+    model: String,
+) {
+    let context_tokens = if value.is_empty() {
+        128_000
+    } else {
+        match parse_token_input(&value) {
+            Some(tokens) if tokens > 0 => tokens,
+            _ => {
+                restore_context_prompt(state, base_url, api_key, model);
+                state.status =
+                    "context tokens must be a positive number (suffix k/m allowed, e.g. 128k or 1m), or Enter for default (128k)"
+                        .to_owned();
+                return;
+            }
+        }
+    };
+    state.model_setup = Some(ModelSetup::MaxOutputTokens {
+        base_url,
+        api_key,
+        model,
+        context_tokens,
+    });
+    state.status =
+        "model setup: enter max output tokens (suffix k/m allowed, e.g. 16k, 32k, default 32k, or Enter for default)"
+            .to_owned();
+}
+
+#[allow(clippy::too_many_arguments)]
 async fn save_configuration(
     state: &mut TuiState,
     value: String,
     base_url: String,
     api_key: String,
     model: String,
+    context_tokens: u64,
     slot: &Arc<ProviderSlot>,
     store: &ProviderSettingsStore,
 ) {
-    let context_tokens = match parse_token_input(&value) {
-        Some(tokens) => tokens,
-        None => {
-            restore_context_prompt(state, base_url, api_key, model);
-            state.status =
-                "context tokens must be a positive number (suffix k/m allowed, e.g. 128k or 1m)"
-                    .to_owned();
-            return;
+    let max_output_tokens = if value.is_empty() {
+        32_768u64.min(context_tokens.saturating_sub(1).max(1))
+    } else {
+        match parse_token_input(&value) {
+            Some(tokens) if tokens > 0 => tokens,
+            _ => {
+                restore_output_tokens_prompt(state, base_url, api_key, model, context_tokens);
+                state.status =
+                    "max output tokens must be a positive number (suffix k/m allowed, e.g. 16k or 32k), or Enter for default"
+                        .to_owned();
+                return;
+            }
         }
     };
-    if context_tokens == 0 {
-        restore_context_prompt(state, base_url, api_key, model);
-        state.status = "context tokens must be greater than zero".to_owned();
+
+    if max_output_tokens >= context_tokens {
+        restore_output_tokens_prompt(state, base_url, api_key, model, context_tokens);
+        state.status = format!(
+            "max output tokens ({max_output_tokens}) must be less than context tokens ({context_tokens})"
+        );
         return;
     }
 
@@ -144,6 +210,7 @@ async fn save_configuration(
         model: model.clone(),
         api_key,
         context_tokens,
+        max_output_tokens: Some(max_output_tokens),
     };
     match settings.build_provider().and_then(|provider| {
         store.save(&settings)?;
@@ -151,7 +218,10 @@ async fn save_configuration(
     }) {
         Ok(provider) => {
             slot.replace(Arc::new(provider), model.clone()).await;
-            state.push_line("model", format!("active model: {model}"));
+            state.push_line(
+                "model",
+                format!("active model: {model} (context: {context_tokens}, output max: {max_output_tokens})"),
+            );
             state.status = "model configuration saved".to_owned();
         }
         Err(error) => {
@@ -159,23 +229,6 @@ async fn save_configuration(
             state.status = "model configuration not changed".to_owned();
         }
     }
-}
-
-/// Parse a context-token count that may carry a `k`/`m` suffix
-/// (e.g. `128k`, `1m`). A bare integer is also accepted. Returns the value in
-/// tokens; `None` on any malformed input.
-fn parse_token_input(value: &str) -> Option<u64> {
-    let value = value.trim();
-    if value.is_empty() {
-        return None;
-    }
-    let (digits, multiplier) = match value.chars().next_back() {
-        Some('k' | 'K') => (&value[..value.len() - 1], 1024u64),
-        Some('m' | 'M') => (&value[..value.len() - 1], 1024u64 * 1024),
-        _ => (value, 1u64),
-    };
-    let number: u64 = digits.trim().parse().ok()?;
-    number.checked_mul(multiplier)
 }
 
 fn restore_context_prompt(state: &mut TuiState, base_url: String, api_key: String, model: String) {
@@ -186,45 +239,124 @@ fn restore_context_prompt(state: &mut TuiState, base_url: String, api_key: Strin
     });
 }
 
+fn restore_output_tokens_prompt(
+    state: &mut TuiState,
+    base_url: String,
+    api_key: String,
+    model: String,
+    context_tokens: u64,
+) {
+    state.model_setup = Some(ModelSetup::MaxOutputTokens {
+        base_url,
+        api_key,
+        model,
+        context_tokens,
+    });
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
 
-    #[test]
-    fn parses_plain_and_suffixed_tokens() {
-        assert_eq!(parse_token_input("128000"), Some(128_000));
-        assert_eq!(parse_token_input("128k"), Some(128 * 1024));
-        assert_eq!(parse_token_input("1m"), Some(1024 * 1024));
-        assert_eq!(parse_token_input("  1M "), Some(1024 * 1024));
-    }
-
-    #[test]
-    fn rejects_garbage_and_zero() {
-        assert_eq!(parse_token_input("1x"), None);
-        assert_eq!(parse_token_input("k"), None);
-        assert_eq!(parse_token_input(""), None);
-        assert_eq!(parse_token_input("0"), Some(0));
-        assert_eq!(parse_token_input("k1"), None);
-    }
-
     #[tokio::test]
-    async fn model_setup_accepts_suffixed_tokens() {
+    async fn model_setup_accepts_context_and_max_output_tokens() {
         let mut state = TuiState::new("goal");
         let slot = Arc::new(ProviderSlot::unconfigured(128_000));
         let directory = tempfile::tempdir().unwrap();
         let store = ProviderSettingsStore::new(directory.path());
-        // A 1m context budget is now accepted (previously rejected by a bare
-        // integer parse or the >= runtime_context_limit guard).
-        save_configuration(
+
+        accept_context_tokens(
             &mut state,
             "1m".to_owned(),
             "https://example.test/v1".to_owned(),
             "secret".to_owned(),
             "small-model".to_owned(),
+        );
+        assert!(matches!(
+            state.model_setup,
+            Some(ModelSetup::MaxOutputTokens {
+                context_tokens: 1_048_576,
+                ..
+            })
+        ));
+
+        save_configuration(
+            &mut state,
+            "32k".to_owned(),
+            "https://example.test/v1".to_owned(),
+            "secret".to_owned(),
+            "small-model".to_owned(),
+            1_048_576,
             &slot,
             &store,
         )
         .await;
-        assert!(slot.is_configured(), "model should be configured after 1m");
+
+        assert!(slot.is_configured(), "model should be configured");
+        let saved = store.load().unwrap().unwrap();
+        assert_eq!(saved.context_tokens, 1_048_576);
+        assert_eq!(saved.max_output_tokens, Some(32_768));
+    }
+
+    #[tokio::test]
+    async fn model_setup_defaults_tokens_on_empty_input() {
+        let mut state = TuiState::new("goal");
+        let slot = Arc::new(ProviderSlot::unconfigured(128_000));
+        let directory = tempfile::tempdir().unwrap();
+        let store = ProviderSettingsStore::new(directory.path());
+
+        accept_context_tokens(
+            &mut state,
+            "".to_owned(),
+            "https://example.test/v1".to_owned(),
+            "secret".to_owned(),
+            "small-model".to_owned(),
+        );
+        assert!(matches!(
+            state.model_setup,
+            Some(ModelSetup::MaxOutputTokens {
+                context_tokens: 128_000,
+                ..
+            })
+        ));
+
+        save_configuration(
+            &mut state,
+            "".to_owned(),
+            "https://example.test/v1".to_owned(),
+            "secret".to_owned(),
+            "small-model".to_owned(),
+            128_000,
+            &slot,
+            &store,
+        )
+        .await;
+
+        let saved = store.load().unwrap().unwrap();
+        assert_eq!(saved.context_tokens, 128_000);
+        assert_eq!(saved.max_output_tokens, Some(32_768));
+    }
+
+    #[tokio::test]
+    async fn model_setup_rejects_output_tokens_exceeding_context() {
+        let mut state = TuiState::new("goal");
+        let slot = Arc::new(ProviderSlot::unconfigured(128_000));
+        let directory = tempfile::tempdir().unwrap();
+        let store = ProviderSettingsStore::new(directory.path());
+
+        save_configuration(
+            &mut state,
+            "128k".to_owned(),
+            "https://example.test/v1".to_owned(),
+            "secret".to_owned(),
+            "small-model".to_owned(),
+            64_000,
+            &slot,
+            &store,
+        )
+        .await;
+
+        assert!(!slot.is_configured());
+        assert!(state.status.contains("must be less than context tokens"));
     }
 }

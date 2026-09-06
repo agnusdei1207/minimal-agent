@@ -127,6 +127,7 @@ async fn transient_http_failures_retry_inside_one_logical_provider_call() {
         api_key: "test-key".into(),
         model: "test-model".into(),
         context_tokens: 8_192,
+        max_output_tokens: None,
         timeout: Duration::from_secs(3),
         headers: HashMap::new(),
     })
@@ -267,6 +268,7 @@ async fn retries_share_one_logical_call_deadline() {
         api_key: "test-key".into(),
         model: "test-model".into(),
         context_tokens: 8_192,
+        max_output_tokens: None,
         timeout: Duration::from_millis(100),
         headers: HashMap::new(),
     })
@@ -288,6 +290,7 @@ fn test_provider(base_url: &str) -> OpenAiChatProvider {
         api_key: "test-key".into(),
         model: "test-model".into(),
         context_tokens: 8_192,
+        max_output_tokens: None,
         timeout: Duration::from_secs(3),
         headers: HashMap::new(),
     })

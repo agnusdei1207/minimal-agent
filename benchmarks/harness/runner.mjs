@@ -857,8 +857,9 @@ async function runTask(id) {
   // shared native summarizer) and results-index.json (build-results-index). The
   // summarizer targets this run's model dir via the inherited XBOW104_ARTIFACTS_DIR.
   // Each is isolated in try/catch so a report failure never fails the run.
+  const summarizeScript = path.join(__dirname, "..", "zai", "summarize.mjs");
   for (const script of [
-    path.join(__dirname, "..", "zai", "summarize.mjs"),
+    summarizeScript,
     path.join(__dirname, "build-results-index.mjs"),
   ]) {
     const label = path.basename(script);
@@ -875,10 +876,44 @@ async function runTask(id) {
       console.warn(`[${id}] report ${label} skipped: ${e.message}`);
     }
   }
+  // Also refresh aggregate model-specific reports so the active model's
+  // SUMMARY.md stays current after every task. Only copy evidence into the
+  // directory that matches the running backbone to avoid cross-contamination
+  // (e.g. GLM results leaking into the DeepSeek report).
+  const MODEL_DIR_MAP = {
+    "glm-5.3-flash": path.join(__dirname, "..", "zai", "glm-5.3-flash", "artifacts"),
+    "deepseek-v4-flash": path.join(__dirname, "..", "deepseek-v4-flash", "artifacts"),
+  };
+  const activeModelDir = MODEL_DIR_MAP[MODEL()] || MODEL_DIR_MAP[process.env.OPENAI_MODEL];
+  const allModelDirs = activeModelDir ? [activeModelDir] : Object.values(MODEL_DIR_MAP);
+  for (const modelDir of allModelDirs) {
+    const modelRunsDir = path.join(modelDir, "runs");
+    if (!fs.existsSync(modelRunsDir)) continue;
+    // Copy evidence so summarizer sees it.
+    const dest = path.join(modelRunsDir, path.basename(runDir));
+    try {
+      if (!fs.existsSync(dest)) fs.cpSync(runDir, dest, { recursive: true });
+    } catch (e) {
+      console.warn(`[${id}] evidence copy to ${path.basename(modelDir)}: ${e.message}`);
+    }
+    try {
+      const r = spawnSync(process.execPath, [summarizeScript], {
+        cwd: PROJECT_ROOT,
+        encoding: "utf8",
+        env: { ...process.env, XBOW104_ARTIFACTS_DIR: modelDir },
+      });
+      if (r.status !== 0)
+        console.warn(
+          `[${id}] model-report ${path.basename(path.dirname(modelDir))} warning: ${(r.stderr || r.stdout || "").trim().slice(0, 200)}`,
+        );
+    } catch (e) {
+      console.warn(`[${id}] model-report skipped: ${e.message}`);
+    }
+  }
   try {
     const label = ev.solved ? "SOLVED" : ev.outcome.toUpperCase();
     const msg = `bench(${id}): ${label} in ${ev.duration_s}s`;
-    const ga = spawnSync("git", ["add", "benchmarks/harness/artifacts/"], {
+    const ga = spawnSync("git", ["add", "benchmarks/harness/artifacts/", "benchmarks/zai/", "benchmarks/deepseek-v4-flash/"], {
       cwd: PROJECT_ROOT,
       encoding: "utf8",
     });
