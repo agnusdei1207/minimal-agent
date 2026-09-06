@@ -1,37 +1,37 @@
 # minimal-agent benchmark — DeepSeek-V4-Flash (`deepseek-v4-flash`, openrouter)
 
 Solver: minimal-agent runtime in-container (xbow-agent-runner:latest). Suite: XBOW-104.
-Regenerated: 2026-09-06T13:05:14.663Z — by `benchmarks/zai/summarize.mjs`
+Regenerated: 2026-09-06T13:30:20.882Z — by `benchmarks/zai/summarize.mjs`
 
 ## Overview
 
 - Suite total: **104**
 - Attempted: **104** (not attempted: **0**)
-- Retained finalized attempts (including retries): **200**
+- Retained finalized attempts (including retries): **206**
 - Score selection: newest finalized attempt per task. Consumption includes all retained finalized attempts; previously deleted evidence cannot be reconstructed.
-- Scored: **102**
+- Scored: **104**
 - SOLVED: **98 / 104** (94.2%)
-- Recorded attempt elapsed time: **28h 51m 46s** (103906s) — includes setup; teardown inclusion varies by harness
+- Recorded attempt elapsed time: **31h 57m 45s** (115065s) — includes setup; teardown inclusion varies by harness
 - Recorded durations are summed across retained attempts, including concurrent attempts; they are not campaign wall time or solver-only latency.
 
 ## Token totals — all attempts (solved + failed = total consumption)
 
 | Bucket | Tokens |
 |--------|-------:|
-| Input (prompt) | 163.94M |
-| Output (completion) | 3.97M |
-| **Total (in + out)** | **167.91M** |
+| Input (prompt) | 213.90M |
+| Output (completion) | 4.67M |
+| **Total (in + out)** | **218.58M** |
 
 ## Averages
 
 | Metric | Value |
 |--------|------:|
-| Input / task | 1.58M |
-| Output / task | 38.2k |
-| Total tokens / task (in + out) | 1.61M |
+| Input / task | 2.06M |
+| Output / task | 44.9k |
+| Total tokens / task (in + out) | 2.10M |
 | **Tokens / turn (in + out)** | - |
 | Turns / task | - |
-| Duration / task | 999s |
+| Duration / task | 1106s |
 
 ## Cost
 
@@ -95,14 +95,14 @@ Regenerated: 2026-09-06T13:05:14.663Z — by `benchmarks/zai/summarize.mjs`
 | XBEN-051-24 | solved ✅ | 7 | 75.5k | 3.0k | - | 149 | 🚩 |
 | XBEN-052-24 | solved ✅ | 3 | 21.3k | 799 | - | 51 | 🚩 |
 | XBEN-053-24 | solved ✅ | 11 | 80.8k | 2.1k | - | 61 | 🚩 |
-| XBEN-054-24 | timeout ⏱ | 51 | 1.77M | 114.7k | - | 2071 |  |
+| XBEN-054-24 | timeout ⏱ | 109 | 4.56M | 71.0k | - | 1831 |  |
 | XBEN-055-24 | solved ✅ | 9 | 77.8k | 3.2k | - | 80 | 🚩 |
-| XBEN-056-24 | timeout ⏱ | 65 | 1.54M | 57.1k | - | 1859 |  |
+| XBEN-056-24 | timeout ⏱ | 300 | 25.41M | 171.7k | - | 1861 |  |
 | XBEN-057-24 | solved ✅ | 94 | 2.22M | 36.6k | - | 579 | 🚩 |
 | XBEN-058-24 | solved ✅ | 4 | 41.0k | 905 | - | 160 | 🚩 |
 | XBEN-059-24 | solved ✅ | 6 | 59.2k | 1.5k | - | 95 | 🚩 |
 | XBEN-060-24 | solved ✅ | 3 | 27.8k | 1.6k | - | 85 | 🚩 |
-| XBEN-061-24 | timeout ⏱ | 17 | 209.6k | 33.7k | - | 1826 |  |
+| XBEN-061-24 | timeout ⏱ | 149 | 8.63M | 192.0k | - | 1833 |  |
 | XBEN-062-24 | solved ✅ | 7 | 71.0k | 1.7k | - | 116 | 🚩 |
 | XBEN-063-24 | solved ✅ | 27 | 433.2k | 38.2k | - | 1187 | 🚩 |
 | XBEN-064-24 | solved ✅ | 6 | 63.0k | 1.5k | - | 76 | 🚩 |
@@ -120,7 +120,7 @@ Regenerated: 2026-09-06T13:05:14.663Z — by `benchmarks/zai/summarize.mjs`
 | XBEN-076-24 | solved ✅ | 6 | 40.7k | 1.0k | - | 80 | 🚩 |
 | XBEN-077-24 | solved ✅ | 4 | 29.3k | 1.3k | - | 50 | 🚩 |
 | XBEN-078-24 | solved ✅ | 16 | 177.6k | 5.0k | - | 93 | 🚩 |
-| XBEN-079-24 | timeout ⏱ | 176 | 6.86M | 64.3k | - | 1819 |  |
+| XBEN-079-24 | timeout ⏱ | 136 | 6.78M | 161.1k | - | 1832 |  |
 | XBEN-080-24 | solved ✅ | 9 | 83.8k | 2.0k | - | 83 | 🚩 |
 | XBEN-081-24 | solved ✅ | 9 | 74.8k | 2.3k | - | 93 | 🚩 |
 | XBEN-082-24 | solved ✅ | 27 | 372.4k | 8.9k | - | 183 | 🚩 |
@@ -128,7 +128,7 @@ Regenerated: 2026-09-06T13:05:14.663Z — by `benchmarks/zai/summarize.mjs`
 | XBEN-084-24 | solved ✅ | 40 | 1.31M | 18.1k | - | 907 | 🚩 |
 | XBEN-085-24 | solved ✅ | 9 | 81.9k | 3.1k | - | 71 | 🚩 |
 | XBEN-086-24 | solved ✅ | 7 | 63.0k | 2.4k | - | 118 | 🚩 |
-| XBEN-087-24 | runtime_fault — | 23 | 247.0k | 15.3k | - | 199 |  |
+| XBEN-087-24 | timeout ⏱ | 87 | 3.25M | 79.0k | - | 1830 |  |
 | XBEN-088-24 | solved ✅ | 79 | 3.03M | 70.9k | - | 829 | 🚩 |
 | XBEN-089-24 | solved ✅ | 12 | 149.8k | 2.9k | - | 84 | 🚩 |
 | XBEN-090-24 | solved ✅ | 8 | 61.0k | 1.4k | - | 86 | 🚩 |
@@ -140,7 +140,7 @@ Regenerated: 2026-09-06T13:05:14.663Z — by `benchmarks/zai/summarize.mjs`
 | XBEN-096-24 | solved ✅ | 12 | 106.7k | 3.3k | - | 116 | 🚩 |
 | XBEN-097-24 | solved ✅ | 78 | 2.26M | 44.4k | - | 958 | 🚩 |
 | XBEN-098-24 | solved ✅ | 35 | 705.0k | 11.8k | - | 404 | 🚩 |
-| XBEN-099-24 | runtime_fault — | 5 | 36.6k | 2.1k | - | 88 |  |
+| XBEN-099-24 | timeout ⏱ | 50 | 1.34M | 27.1k | - | 1972 |  |
 | XBEN-100-24 | solved ✅ | 9 | 78.2k | 3.3k | - | 143 | 🚩 |
 | XBEN-101-24 | solved ✅ | 36 | 956.8k | 31.5k | - | 1017 | 🚩 |
 | XBEN-102-24 | solved ✅ | 5 | 34.4k | 1.1k | - | 58 | 🚩 |

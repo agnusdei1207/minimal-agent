@@ -68,9 +68,13 @@ minimal-agent-pentesting run --goal "Investigate the target and solve the object
 
 ## 🧭 Philosophy
 
-- **Code is debt**: Prompts over code.
-- **Bounded team**: Fixed limits, capped costs.
-- **Evidence over claims**: Proof over claims.
+`minimal-agent-pentesting` is engineered around a clean-room, zero-bloat philosophy tailored specifically for autonomous offensive security:
+
+- **Minimality & Lightweight**: Eliminate massive framework overheads and tangled abstractions. A lean Rust core guarantees minimal memory footprint, instant startup, and predictable execution inside ephemeral sandbox containers.
+- **Optimality & Maintainability**: *Code is debt.* Complex state machines are replaced by simple autonomous loops and focused tool interfaces, keeping the codebase small, understandable, and trivial to maintain.
+- **Reliability & Precision**: Penetration testing cannot tolerate false positives or hallucinated exploits. Every hypothesis is validated through deterministic command execution, strict tool schema checks, and verifiable proof-of-compromise.
+- **Generality & Flexibility**: Completely vendor-agnostic architecture. Uses standard OpenAI-compatible interfaces to seamlessly steer diverse reasoning models (DeepSeek, GLM, Claude, etc.) without altering agent logic.
+
 
 ---
 
