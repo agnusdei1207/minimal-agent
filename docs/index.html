@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>minimal-agent-pentesting</title>
+  <meta name="description" content="Autonomous penetration testing agent. 99/104 on XBOW-104 benchmark for $2.27.">
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    :root{--bg:#06080B;--card:#0C0F14;--border:#1A212B;--accent:#C8FF00;--accent2:#A8D600;--text:#E4E8EF;--muted:#7A889B;--mono:ui-monospace,'SF Mono',Menlo,Consolas,monospace}
+    body{background:var(--bg);color:var(--text);font-family:var(--mono);min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:3rem 1.5rem}
+    a{color:var(--accent);text-decoration:none}
+    a:hover{text-decoration:underline}
+
+    .hero{text-align:center;max-width:720px;margin-bottom:3rem}
+    .hero h1{font-size:1.6rem;letter-spacing:1px;margin-bottom:.5rem}
+    .hero .accent{color:var(--accent)}
+    .hero p{color:var(--muted);font-size:.85rem;line-height:1.6;margin-top:.75rem}
+
+    .score-row{display:flex;gap:2rem;justify-content:center;flex-wrap:wrap;margin:2rem 0}
+    .score-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:1.5rem 2rem;text-align:center;min-width:160px}
+    .score-card .val{font-size:2rem;font-weight:bold;color:var(--accent)}
+    .score-card .label{font-size:.7rem;color:var(--muted);margin-top:.25rem;text-transform:uppercase;letter-spacing:1px}
+
+    .bench{max-width:720px;width:100%;margin-bottom:2.5rem}
+    .bench h2{font-size:1rem;margin-bottom:1rem;letter-spacing:1px}
+    .bar-wrap{background:var(--card);border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:.75rem}
+    .bar-row{display:flex;align-items:center;padding:.75rem 1rem;gap:1rem}
+    .bar-row .model{flex:1;font-size:.8rem;font-weight:bold;white-space:nowrap}
+    .bar-row .pct{font-size:.85rem;font-weight:bold;min-width:52px;text-align:right}
+    .bar-row .count{font-size:.75rem;color:var(--muted);min-width:70px;text-align:right}
+    .bar-track{flex:3;height:14px;background:#12161C;border-radius:4px;overflow:hidden}
+    .bar-fill{height:100%;border-radius:4px}
+    .bar-fill.ds{background:linear-gradient(90deg,#C8FF00,#E2FF66);width:95.2%}
+    .bar-fill.glm{background:var(--accent2);opacity:.88;width:90.4%}
+
+    .section{max-width:720px;width:100%;margin-bottom:2.5rem}
+    .section h2{font-size:1rem;margin-bottom:1rem;letter-spacing:1px}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
+    @media(max-width:520px){.grid{grid-template-columns:1fr}}
+    .pill{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:1rem 1.2rem}
+    .pill .title{font-size:.8rem;font-weight:bold;margin-bottom:.3rem}
+    .pill .desc{font-size:.7rem;color:var(--muted);line-height:1.5}
+
+    .quick{max-width:720px;width:100%;margin-bottom:2.5rem}
+    .quick h2{font-size:1rem;margin-bottom:1rem;letter-spacing:1px}
+    pre{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:1rem 1.2rem;overflow-x:auto;font-size:.75rem;line-height:1.7;color:var(--text)}
+    pre .cmt{color:#555E6E}
+
+    footer{margin-top:auto;padding-top:3rem;text-align:center;font-size:.7rem;color:var(--muted)}
+    footer a{color:var(--muted)}
+  </style>
+</head>
+<body>
+
+  <div class="hero">
+    <h1><span class="accent">minimal-agent</span>-pentesting</h1>
+    <p>Autonomous penetration testing agent built on a lean Rust core.<br>
+       Zero-framework, vendor-agnostic, prompt-driven offensive security.</p>
+  </div>
+
+  <div class="score-row">
+    <div class="score-card">
+      <div class="val">99<span style="font-size:1rem;color:var(--muted)">/104</span></div>
+      <div class="label">XBOW-104 Solved</div>
+    </div>
+    <div class="score-card">
+      <div class="val">95.2%</div>
+      <div class="label">Solve Rate</div>
+    </div>
+    <div class="score-card">
+      <div class="val">$2.27</div>
+      <div class="label">Total Cost</div>
+    </div>
+    <div class="score-card">
+      <div class="val">16 min</div>
+      <div class="label">Avg / Task</div>
+    </div>
+  </div>
+
+  <div class="bench">
+    <h2>📊 Benchmark</h2>
+    <div class="bar-wrap">
+      <div class="bar-row">
+        <span class="model">DeepSeek-V4-Flash</span>
+        <div class="bar-track"><div class="bar-fill ds"></div></div>
+        <span class="pct" style="color:var(--accent)">95.2%</span>
+        <span class="count">99 / 104</span>
+      </div>
+      <div class="bar-row" style="border-top:1px solid var(--border)">
+        <span class="model">GLM-5.3-Flash</span>
+        <div class="bar-track"><div class="bar-fill glm"></div></div>
+        <span class="pct" style="color:var(--accent2)">90.4%</span>
+        <span class="count">94 / 104</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>🧭 Philosophy</h2>
+    <div class="grid">
+      <div class="pill">
+        <div class="title">Minimality</div>
+        <div class="desc">Lean Rust core. No framework bloat. Instant startup in ephemeral containers.</div>
+      </div>
+      <div class="pill">
+        <div class="title">Optimality</div>
+        <div class="desc">Code is debt. Simple autonomous loops replace complex state machines.</div>
+      </div>
+      <div class="pill">
+        <div class="title">Reliability</div>
+        <div class="desc">Every hypothesis validated through deterministic command execution.</div>
+      </div>
+      <div class="pill">
+        <div class="title">Flexibility</div>
+        <div class="desc">Vendor-agnostic. Any OpenAI-compatible model — DeepSeek, GLM, Claude.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="quick">
+    <h2>⚡ Quick Start</h2>
+    <pre><span class="cmt"># Interactive TUI</span>
+docker run --rm -it --init \
+  --cap-add=NET_RAW --cap-add=NET_ADMIN \
+  --env OPENAI_API_KEY="your-key" \
+  --env OPENAI_MODEL="your-model" \
+  agnusdei1207/minimal-agent-pentesting:latest
+
+<span class="cmt"># One-shot Goal</span>
+minimal-agent-pentesting run \
+  --goal "Investigate the target and solve the objective" \
+  --workspace .</pre>
+  </div>
+
+  <footer>
+    <a href="https://github.com/agnusdei1207/minimal-agent-pentesting">GitHub</a> · MIT License
+  </footer>
+
+</body>
+</html>
