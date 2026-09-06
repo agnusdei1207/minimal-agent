@@ -85,15 +85,16 @@ minimal-agent-pentesting run --goal "Investigate the target and solve the object
 
 ---
 
-## 🧭 Philosophy & Architecture
+## 🧭 Philosophy
 
-`minimal-agent-pentesting` is engineered around a clean-room, zero-bloat offensive security philosophy formalized in [`docs/design/`](docs/design/):
+`minimal-agent-pentesting` is engineered around a clean-room, zero-bloat offensive security architecture:
 
-- **Prompt-First over Code-Bloat (Code is Debt)**: Never write Rust code for what prompts and markdown skills can achieve. The lean Rust runtime (`crates/ma-runtime`, `crates/ma-core`) enforces only strict OS/IO invariants (sandboxing, 16KB output truncation, orphan cleanup). Domain tradecraft and reconnaissance hygiene live entirely in on-disk skill cards (`prompts/skills/`).
-- **Seams & Tracer Bullets**: Decomposes targets into architectural seams (protocols, auth layers, interpreters, internal container networks). Sends minimal, sharp tracer bullets to capture differential signals (500 errors, WAF blocks, byte deltas) at live seams while immediately backtracking from silent walls.
-- **4-D Orthogonal Bypass**: Eliminates the depth-first trap of repetitive syntax guessing by simultaneously varying across four orthogonal axes: context escaping, parser differentials/encodings, functional primitive equivalents, and ES5 universal bot compatibility.
-- **Single-Journal, Zero-DB Orchestration**: Eliminates external databases, vector RAG, and blackboard locks. A single append-only event log (`crates/ma-journal`) enables deterministic crash recovery and direct peer messaging within a bounded 1+9 star topology (`crates/ma-coordinator`).
-- **Autonomous Meta-Cognition**: Built-in self-audits (Loop, Evidence, Drift, Progress) run every few turns, ruthlessly killing low-probability rabbit holes (offline dictionary cracking, UI steganography) to converge directly on verifiable proof-of-compromise.
+- **Prompt-First over Code-Bloat**: Code is debt; Rust enforces strict OS/IO safety invariants, while all offensive tradecraft lives in lightweight prompts.
+- **Seams & Tracer Bullets**: Decomposes targets into architectural seams and fires minimal syntax probes to capture live differential signals.
+- **4-D Orthogonal Bypass**: Eliminates repetitive syntax guessing by varying across context escaping, parser encodings, functional equivalents, and ES5 compatibility.
+- **Single-Journal Orchestration**: Zero external databases or RAG overhead; a single append-only log enables deterministic recovery and bounded 1+9 team messaging.
+- **Autonomous Meta-Cognition**: Enforces periodic self-reflection audits to ruthlessly kill time sinks like blind brute-force and decorative UI steganography.
+- **Vendor-Agnostic Generality**: Seamlessly drives diverse reasoning models (DeepSeek, GLM, Claude) through unified OpenAI-compatible primitives.
 
 
 ---
