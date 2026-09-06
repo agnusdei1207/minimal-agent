@@ -22,13 +22,7 @@ Empirical evaluation on the XBOW-104 web exploitation suite (104 single-flag CTF
 
 <div align="center">
 
-![Outcome Mix](./assets/outcome_mix.png)
-
-</div>
-
-<div align="center">
-
-![Solve Rate by Level](./assets/solve_rate_by_level.png)
+![Benchmark Overview](./assets/benchmark_overview.png)
 
 </div>
 
