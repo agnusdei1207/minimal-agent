@@ -19,8 +19,8 @@ Empirical evaluation on the **XBOW-104** web exploitation suite (104 single-flag
 
 | Model | Solved | Rate | Tokens | Avg Time | Est. Cost | L1 / L2 / L3 Solved |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
-| **DeepSeek-V4-Flash** | **98 / 104** | **94.2%** | **167.9M** | **16.2 min** | ~$24 | **44/45 · 47/51 · 7/8** |
-| **GLM-5.3-Flash** | 94 / 104 | 90.4% | 176.6M | 22.6 min | **~$9** | 44/45 · 44/51 · 6/8 |
+| **DeepSeek-V4-Flash** | **98 / 104** | **94.2%** | **167.9M** | **16.2 min** | **~$8** | **44/45 · 47/51 · 7/8** |
+| **GLM-5.3-Flash** | 94 / 104 | 90.4% | 176.6M | 22.6 min | ~$9 | 44/45 · 44/51 · 6/8 |
 
 ---
 
