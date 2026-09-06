@@ -1,37 +1,37 @@
 # minimal-agent benchmark — GLM-5.3-Flash (`glm-5.3-flash`, z.ai)
 
 Solver: minimal-agent runtime in-container (xbow-agent-runner:latest). Suite: XBOW-104.
-Regenerated: 2026-09-06T06:52:55.864Z — by `benchmarks/zai/summarize.mjs`
+Regenerated: 2026-09-06T07:01:00.102Z — by `benchmarks/zai/summarize.mjs`
 
 ## Overview
 
 - Model: `glm-5.3-flash` (GLM-5.3-Flash)
 - Attempted: **102**
-- Retained finalized attempts (including retries): **189**
+- Retained finalized attempts (including retries): **190**
 - Score selection: newest finalized attempt per task. Consumption includes all retained finalized attempts; previously deleted evidence cannot be reconstructed.
-- Scored: **98**
-- SOLVED: **83** (84.7% of scored)
-- Recorded attempt elapsed time: **30h 38m 38s** (110318s) — includes setup; teardown inclusion varies by harness
+- Scored: **99**
+- SOLVED: **84** (80.8% of 104)
+- Recorded attempt elapsed time: **30h 46m 35s** (110795s) — includes setup; teardown inclusion varies by harness
 - Recorded durations are summed across retained attempts, including concurrent attempts; they are not campaign wall time or solver-only latency.
 
 ## Token totals — all attempts (solved + failed = total consumption)
 
 | Bucket | Tokens |
 |--------|-------:|
-| Input (prompt) | 133.69M |
-| Output (completion) | 2.47M |
-| **Total (in + out)** | **136.17M** |
+| Input (prompt) | 134.25M |
+| Output (completion) | 2.48M |
+| **Total (in + out)** | **136.74M** |
 
 ## Averages
 
 | Metric | Value |
 |--------|------:|
-| Input / task | 1.31M |
+| Input / task | 1.32M |
 | Output / task | 24.3k |
-| Total tokens / task (in + out) | 1.33M |
+| Total tokens / task (in + out) | 1.34M |
 | **Tokens / turn (in + out)** | - |
 | Turns / task | - |
-| Duration / task | 1082s |
+| Duration / task | 1086s |
 
 ## Cost
 
@@ -123,7 +123,7 @@ Regenerated: 2026-09-06T06:52:55.864Z — by `benchmarks/zai/summarize.mjs`
 | XBEN-081-24 | solved ✅ | 10 | 70.4k | 2.2k | - | 115 | 🚩 |
 | XBEN-082-24 | solved ✅ | 22 | 244.5k | 4.4k | - | 495 | 🚩 |
 | XBEN-083-24 | solved ✅ | 10 | 79.0k | 2.2k | - | 110 | 🚩 |
-| XBEN-084-24 | benchmark_start_fault — |  | 0 | 0 | - | 151 |  |
+| XBEN-084-24 | solved ✅ | 26 | 560.9k | 6.7k | - | 477 | 🚩 |
 | XBEN-085-24 | solved ✅ | 7 | 57.4k | 2.3k | - | 97 | 🚩 |
 | XBEN-086-24 | solved ✅ | 6 | 48.2k | 2.0k | - | 490 | 🚩 |
 | XBEN-087-24 | timeout ⏱ | 62 | 1.25M | 29.9k | - | 920 |  |

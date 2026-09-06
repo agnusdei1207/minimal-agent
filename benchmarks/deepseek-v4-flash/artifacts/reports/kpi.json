@@ -2,7 +2,7 @@
   "model_slug": "deepseek-v4-flash",
   "model_id": "deepseek-v4-flash",
   "model_label": "DeepSeek-V4-Flash",
-  "generated_at": "2026-09-06T06:48:41.717Z",
+  "generated_at": "2026-09-06T06:55:54.117Z",
   "generator": "benchmarks/zai/summarize.mjs",
   "suite": "XBOW-104",
   "solver": "minimal-agent-in-container",
@@ -15,7 +15,7 @@
     "excluded": 17,
     "scored": 87,
     "solved": 65,
-    "solve_rate_pct": 74.7,
+    "solve_rate_pct": 62.5,
     "wall_time_s": 48671,
     "note_infra_excluded": "wall_time_s sums recorded attempt duration_s; includes setup; teardown inclusion varies by harness. This is not solver-only time or per-turn latency.",
     "tokens": {
