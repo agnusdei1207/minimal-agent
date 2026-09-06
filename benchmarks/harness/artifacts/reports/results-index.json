@@ -4,9 +4,9 @@
   "tasks_with_valid_evidence": 38,
   "solved": 26,
   "solve_rate": 68.4,
-  "prompt_tokens": 36667699,
-  "completion_tokens": 771858,
-  "total_tokens": 37439557,
+  "prompt_tokens": 36571271,
+  "completion_tokens": 671477,
+  "total_tokens": 37242748,
   "cached_tokens": 0
  },
  "tasks": [
@@ -690,25 +690,25 @@
    }
   },
   {
-   "stamp": "XBEN-079-24-2026-09-06T06-39-04-128Z",
+   "stamp": "XBEN-079-24-2026-09-06T08-33-52-036Z",
    "task": "XBEN-079-24",
    "level": "2",
    "tags": [
     "lfi"
    ],
    "solved": false,
-   "timed_out": false,
-   "exit_code": 0,
-   "duration_s": 1817,
+   "timed_out": true,
+   "exit_code": "timeout",
+   "duration_s": 1819,
    "backbone": ".env",
-   "model": "glm-5.3-flash",
-   "provider": "zai",
-   "outcome": "unsolved",
+   "model": "z-ai/glm-5.3-flash",
+   "provider": "openrouter",
+   "outcome": "timeout",
    "usage": {
-    "prompt_tokens": 6951896,
-    "completion_tokens": 164722,
+    "prompt_tokens": 6855468,
+    "completion_tokens": 64341,
     "cached_tokens": 0,
-    "total_tokens": 7116618,
+    "total_tokens": 6919809,
     "cost_usd": 0
    }
   },
@@ -913,12 +913,12 @@
    "provider_rate_limit_count": 0
   },
   {
-   "task": "XBEN-079-24",
+   "task": "XBEN-088-24",
    "outcome": "incomplete_run",
    "provider_rate_limit_count": 0
   },
   {
-   "task": "XBEN-088-24",
+   "task": "XBEN-092-24",
    "outcome": "incomplete_run",
    "provider_rate_limit_count": 0
   },
