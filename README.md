@@ -70,16 +70,18 @@ docker run --rm -it --init \
 
 ### 3. Run via npm
 
+Current release: `0.110.0`.
+
 ```bash
 # Option A: Build and launch isolated Docker TUI
 npm run check
 
 # Option B: Global CLI — Interactive TUI
-npm install --global minimal-agent-pentesting
-minimal-agent-pentesting
+npm install --global minimal-agent@0.110.0
+minimal-agent
 
 # Option C: Global CLI — One-shot Goal
-minimal-agent-pentesting run --goal "Investigate the target and solve the objective" --workspace .
+minimal-agent run --goal "Investigate the target and solve the objective" --workspace .
 ```
 
 ---

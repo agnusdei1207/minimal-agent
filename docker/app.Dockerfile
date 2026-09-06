@@ -4,7 +4,6 @@ FROM rust:1.98-bookworm AS builder
 WORKDIR /source
 ENV CARGO_BUILD_JOBS=2
 COPY Cargo.toml Cargo.lock rust-toolchain.toml ./
-COPY crates ./crates
 COPY src ./src
 COPY prompts ./prompts
 RUN cargo build --locked --release --bin minimal-agent

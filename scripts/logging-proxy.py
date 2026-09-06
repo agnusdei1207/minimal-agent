@@ -16,7 +16,7 @@ Host wiring:
     key file outside the repo). NEVER commit a proxy key file. Main branch
     only.
 
-Minimal-agent request shape (see crates/ma-provider/src/provider.rs):
+Minimal-agent request shape (see src/provider.rs):
     POST {base}/chat/completions with Bearer auth and JSON body
     {model, messages, tools?, tool_choice?, stream:true,
      include_reasoning:true, max_completion_tokens, temperature?}.

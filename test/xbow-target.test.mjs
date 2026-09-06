@@ -60,7 +60,7 @@ function loadDiscovery(source, name, context) {
   return vm.runInNewContext(`(${declaration[1]})`, context);
 }
 
-for (const runner of ["harness/runner.mjs", "claude/run.mjs"]) {
+for (const runner of ["harness/runner.mjs"]) {
   test(`${runner} reports discovery faults as start faults without hiding runtime failures`, () => {
     const source = fs.readFileSync(new URL(`../benchmarks/${runner}`, import.meta.url), "utf8");
     // Execute the production task failure handler in isolation from Docker and
@@ -84,12 +84,8 @@ for (const runner of ["harness/runner.mjs", "claude/run.mjs"]) {
       composeFilesArgs: (files) => files.flatMap((file) => ["-f", file]),
       sh: async () => ({ ok: true, stdout: "internal-service\nssrf-demo-app\n" }),
     };
-    if (runner.startsWith("harness/")) {
-      context.parseComposePsRows = loadDiscovery(source, "parseComposePsRows", context);
-      context.resolveTargetDetails = loadDiscovery(source, "resolveTargetDetails", context);
-    } else {
-      context.parsePsRows = loadDiscovery(source, "parsePsRows", context);
-    }
+    context.parseComposePsRows = loadDiscovery(source, "parseComposePsRows", context);
+    context.resolveTargetDetails = loadDiscovery(source, "resolveTargetDetails", context);
     for (const stdout of [JSON.stringify([exposed, app]), [exposed, app].map((row) => JSON.stringify(row)).join("\n")]) {
       context.compose = async () => ({ ok: true, stdout });
       const pickTarget = loadDiscovery(source, "pickTarget", context);
@@ -104,10 +100,8 @@ for (const runner of ["harness/runner.mjs", "claude/run.mjs"]) {
   test(`${runner} honors TCP and internal exposed ports and rejects failed discovery`, async () => {
     const source = fs.readFileSync(new URL(`../benchmarks/${runner}`, import.meta.url), "utf8");
     const context = { ...targets, composeFilesArgs: (files) => files.flatMap((file) => ["-f", file]), sh: async () => ({ ok: true, stdout: "web\n" }) };
-    if (runner.startsWith("harness/")) {
-      context.parseComposePsRows = loadDiscovery(source, "parseComposePsRows", context);
-      context.resolveTargetDetails = loadDiscovery(source, "resolveTargetDetails", context);
-    } else context.parsePsRows = loadDiscovery(source, "parsePsRows", context);
+    context.parseComposePsRows = loadDiscovery(source, "parseComposePsRows", context);
+    context.resolveTargetDetails = loadDiscovery(source, "resolveTargetDetails", context);
     const pickTarget = loadDiscovery(source, "pickTarget", context);
     context.compose = async () => ({ ok: true, stdout: JSON.stringify([{ Service: "web", Publishers: [
       { Protocol: "udp", TargetPort: 53, PublishedPort: 53000 },

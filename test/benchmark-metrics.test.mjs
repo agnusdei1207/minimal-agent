@@ -89,7 +89,7 @@ test('standard report excludes excluded solved rows from score numerator', t => 
     { task: 'XBEN-001-24', valid_for_score: true, solved: true },
     { task: 'XBEN-002-24', valid_for_score: false, solved: true },
   ], reportsDir, generator: 'test', header: { title: '# Fixture', solverLine: 'Fixture' } });
-  assert.equal(s.solveRate, 100);
+  assert.equal(s.solveRate, (1 / 104) * 100);
   assert.equal(s.solved, 1);
   const kpi = JSON.parse(fs.readFileSync(path.join(reportsDir, 'kpi.json'), 'utf8'));
   assert.equal(kpi.averages.per_task.turns, null);
@@ -129,23 +129,29 @@ test('standard consumption includes retries while score uses one finalized attem
   assert.equal(kpi.attempts.length, 2);
 });
 
-test('Claude summary uses valid score numerator and retains retry consumption', t => {
+test('zai summary uses valid score numerator and retains retry consumption', t => {
   const root = fixture(t);
-  const claude = path.join(root, 'benchmarks/claude');
+  const zaiDir = path.join(root, 'benchmarks/zai');
   const lib = path.join(root, 'benchmarks/harness/lib');
-  fs.mkdirSync(claude, { recursive: true });
+  const harnessDir = path.join(root, 'benchmarks/harness');
+  fs.mkdirSync(zaiDir, { recursive: true });
   fs.mkdirSync(lib, { recursive: true });
-  fs.copyFileSync('benchmarks/claude/summarize.mjs', path.join(claude, 'summarize.mjs'));
+  fs.mkdirSync(harnessDir, { recursive: true });
+  fs.copyFileSync('benchmarks/zai/summarize.mjs', path.join(zaiDir, 'summarize.mjs'));
   fs.copyFileSync('benchmarks/harness/lib/standard-report.mjs', path.join(lib, 'standard-report.mjs'));
-  const artifacts = path.join(claude, 'opus-4.8/artifacts');
+  fs.copyFileSync('benchmarks/harness/control.mjs', path.join(harnessDir, 'control.mjs'));
+  const artifacts = path.join(zaiDir, 'glm-5.3-flash/artifacts');
   const runs = path.join(artifacts, 'runs');
-  attempt(runs, 'XBEN-020-24-2026-01-01', { solved: false, valid_for_score: true, usage: { input_tokens: 100, output_tokens: 20 }, num_turns: 1 });
-  attempt(runs, 'XBEN-020-24-2026-01-02', { solved: true, valid_for_score: true, usage: { input_tokens: 200, output_tokens: 30 }, num_turns: 1 });
+  attempt(runs, 'XBEN-020-24-2026-01-01', { solved: false, valid_for_score: true, usage: { prompt_tokens: 100, completion_tokens: 20 } });
+  attempt(runs, 'XBEN-020-24-2026-01-02', { solved: true, valid_for_score: true, usage: { prompt_tokens: 200, completion_tokens: 30 } });
   attempt(runs, 'XBEN-021-24-2026-01-01', { task: 'XBEN-021-24', solved: true, valid_for_score: false });
-  const result = spawnSync(process.execPath, [path.join(claude, 'summarize.mjs')], { encoding: 'utf8' });
+  const result = spawnSync(process.execPath, [path.join(zaiDir, 'summarize.mjs'), '--model', 'glm-5.3-flash'], {
+    cwd: root,
+    encoding: 'utf8',
+  });
   assert.equal(result.status, 0, result.stderr);
   const kpi = JSON.parse(fs.readFileSync(path.join(artifacts, 'reports/kpi.json'), 'utf8'));
-  assert.equal(kpi.totals.solve_rate_pct, 100);
+  assert.equal(kpi.totals.solve_rate_pct, Number(((1 / 104) * 100).toFixed(1)));
   assert.equal(kpi.totals.tokens.in_plus_out, 350);
   assert.equal(kpi.totals.attempt_count, 3);
   assert.equal(kpi.totals.cost_usd, null);

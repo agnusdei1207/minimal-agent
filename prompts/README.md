@@ -3,7 +3,7 @@
 The agent's system prompt is assembled from these files, so the wording lives here
 as the single source of truth rather than buried in Rust string literals. They are
 compiled in with `include_str!` (trimmed) and rebuilt into every agent's prompt by
-`build_system` in `crates/ma-runtime/src/runtime.rs`.
+`build_system` in `src/runtime.rs`.
 
 ## Always applied (every agent)
 

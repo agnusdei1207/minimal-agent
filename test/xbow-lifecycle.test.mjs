@@ -42,7 +42,7 @@ test("cancellation stops assigning queued benchmark tasks", async () => {
   assert.deepEqual(attempted, ["XBEN-001-24"]);
 });
 
-for (const options of [{ CONCURRENCY: 6 }, { TIMEOUT_S: 0 }, { TIMEOUT_S: NaN }, { TIMEOUT_S: Infinity }]) {
+for (const options of [{ CONCURRENCY: 13 }, { TIMEOUT_S: 0 }, { TIMEOUT_S: NaN }, { TIMEOUT_S: Infinity }]) {
   test(`invalid runner limits fail before starting tasks: ${JSON.stringify(options)}`, async () => {
     const { main, attempted } = mainFixture(options);
     await assert.rejects(main());
@@ -144,7 +144,7 @@ test("runner setup builds through the owned image pipeline and preserves no-cach
   });
   await setup();
   assert.deepEqual(calls, [{ command: "powershell", args: [
-    "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", "/fixture/scripts/dimage.ps1",
+    "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", path.join("/fixture", "scripts", "dimage.ps1"),
     "-Target", "runner", "-Tag", "xbow-agent-runner:fixture", "-NoCache",
   ] }]);
 });

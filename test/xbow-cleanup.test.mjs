@@ -41,7 +41,7 @@ for (const file of ["harness/runner.mjs"]) {
   });
 }
 
-for (const file of ["harness/runner.mjs", "claude/run.mjs"]) {
+for (const file of ["harness/runner.mjs"]) {
   test(`${file} removes only owned image tags without force or global prune`, async () => {
     const source = read(file);
     const calls = [];
@@ -55,13 +55,8 @@ for (const file of ["harness/runner.mjs", "claude/run.mjs"]) {
       KEEP_IMAGES: false, process: { env: {} }, PROJECT_ROOT: "/fixture", proj: "fixture",
       compose: async () => ({ ok: true }),
     };
-    if (file.startsWith("harness")) {
-      const block = source.match(/if \(process\.env\.XBOW104_KEEP_IMAGES !== "1"\) \{[^]*?^    \}/m)[0];
-      vm.runInNewContext(block, context);
-    } else {
-      const declaration = source.match(/async function teardown\([^]*?^\}/m)[0];
-      await vm.runInNewContext(`(${declaration})`, context)("fixture", []);
-    }
+    const block = source.match(/if \(process\.env\.XBOW104_KEEP_IMAGES !== "1"\) \{[^]*?^    \}/m)[0];
+    vm.runInNewContext(block, context);
     assert.deepEqual(calls, [
       ["images", "--filter", "reference=fixture-*", "--format", "{{.Repository}}:{{.Tag}}"],
       ["rmi", "fixture-web:latest", "fixture-other-web:latest"],
