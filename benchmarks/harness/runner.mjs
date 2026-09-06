@@ -842,6 +842,11 @@ async function runTask(id) {
     } catch {
       /* best effort */
     }
+    try {
+      cleanupTaskImages(proj, { cwd: PROJECT_ROOT });
+    } catch {
+      /* best effort */
+    }
   }
 
   finalize();

@@ -4,6 +4,8 @@
 /vendor/
 /*.tgz
 .env
+deepseek.env
+*.env
 *.log
 .cargo-home/
 

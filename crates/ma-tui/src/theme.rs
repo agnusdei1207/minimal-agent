@@ -3,11 +3,14 @@ use ratatui::style::{Color, Modifier, Style};
 /// Central palette constants for minimal-agent TUI.
 ///
 /// Designed for a calm, distraction-free monochrome aesthetic where structure
-/// is muted grey and color is reserved strictly for semantic meaning (success/failure).
+/// is muted grey and color is reserved strictly for semantic meaning
+/// (success/failure), plus one rare accent reserved for special moments only:
+/// the start banner program name and the user's own input (prompt, typed text,
+/// transcript echo). Nothing else may use the accent.
 pub mod palette {
     use super::*;
 
-    /// Structural elements: borders, bullet points, dimmed annotations, input prompt arrow.
+    /// Structural elements: borders, bullet points, dimmed annotations.
     pub const MUTED: Color = Color::DarkGray;
 
     /// Primary emphasis: active titles, selected items, highlighted spinner text.
@@ -30,6 +33,12 @@ pub mod palette {
 
     /// Hyperlinks.
     pub const LINK: Color = Color::Blue;
+
+    /// Rare accent for special moments only: the start banner program name and
+    /// the user's own input (prompt arrow, typed text, transcript echo).
+    /// Opaque `#C8FF00`: the reference image shows `#C8FF00E0`, but terminals
+    /// have no alpha channel, so the E0 alpha is not representable.
+    pub const ACCENT: Color = Color::Rgb(0xC8, 0xFF, 0x00);
 }
 
 pub mod styles {
@@ -56,8 +65,10 @@ pub mod styles {
         Style::default().fg(MUTED)
     }
 
-    pub fn prompt_arrow() -> Style {
-        Style::default().fg(MUTED)
+    /// Rare accent style: start banner program name + user input only.
+    /// Do NOT use for status, spinners, menus, modals, tool results, or faults.
+    pub fn accent() -> Style {
+        Style::default().fg(ACCENT)
     }
 
     pub fn selected_item() -> Style {

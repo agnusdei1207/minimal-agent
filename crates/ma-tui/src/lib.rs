@@ -36,7 +36,7 @@ use model_setup::{
 };
 pub use view::render;
 #[cfg(test)]
-use view::{display_lines, input_projection};
+use view::{display_lines, input_projection, tone_style};
 
 const MAX_INPUT_BYTES: usize = MAX_USER_INPUT_BYTES;
 const MAX_TRANSCRIPT_LINES: usize = 1_000;
@@ -60,6 +60,11 @@ pub(crate) enum LineTone {
     Message,
     /// A provider or tool fault.
     Fault,
+    /// The user's own input echo (speaker ❯ + text), rendered in the rare accent.
+    User,
+    /// The start banner line (`minimal-agent — ready · /help`), with the
+    /// program name in the rare accent and the rest muted.
+    Banner,
 }
 
 #[derive(Debug, Clone)]
@@ -173,7 +178,7 @@ pub struct TuiState {
 
 impl TuiState {
     pub fn new(goal: impl Into<String>) -> Self {
-        Self {
+        let mut state = Self {
             goal: goal.into(),
             transcript: VecDeque::new(),
             transcript_bytes: 0,
@@ -197,7 +202,16 @@ impl TuiState {
             input_tokens: 0,
             output_tokens: 0,
             turn_steps: 0,
-        }
+        };
+        // Start banner: the program name reads in the rare accent, the rest
+        // stays muted. It is the first transcript entry.
+        state.push_entry(
+            String::new(),
+            "minimal-agent — ready · /help".to_owned(),
+            LineTone::Banner,
+            None,
+        );
+        state
     }
 
     fn open_modal(&mut self, title: impl Into<String>, content: &str) {
@@ -918,7 +932,7 @@ pub async fn run_tui(
                                             state.push_entry(
                                                 "❯".to_owned(),
                                                 displayed,
-                                                LineTone::Agent,
+                                                LineTone::User,
                                                 Some("steering".to_owned()),
                                             );
                                             // Jump back to the newest content so the
@@ -934,7 +948,12 @@ pub async fn run_tui(
                                                 state.pending_submissions = state
                                                     .pending_submissions
                                                     .saturating_add(1);
-                                                state.push_line("❯", displayed);
+                                                state.push_entry(
+                                                    "❯".to_owned(),
+                                                    displayed,
+                                                    LineTone::User,
+                                                    None,
+                                                );
                                                 // Follow the newest content so the user
                                                 // sees their input and the response.
                                                 state.scroll_to_bottom();
@@ -1652,5 +1671,112 @@ mod tests {
         let mut state = TuiState::new("goal");
         enqueue_background(&mut state, &sender, Submission::Compact);
         assert_eq!(state.pending_submissions, 1);
+    }
+
+    #[test]
+    fn accent_constant_is_opaque_lime() {
+        use crate::theme::palette;
+        use ratatui::style::Color;
+        assert_eq!(palette::ACCENT, Color::Rgb(0xC8, 0xFF, 0x00));
+    }
+
+    #[test]
+    fn start_banner_shows_program_name_in_accent_and_rest_muted() {
+        use crate::theme::{palette, styles};
+        let state = TuiState::new("goal");
+        let first = state
+            .transcript
+            .front()
+            .expect("banner is the first transcript entry");
+        assert_eq!(first.tone, LineTone::Banner);
+        let lines = display_lines(&state);
+        let banner = lines
+            .iter()
+            .find(|line| line.to_string().contains("minimal-agent"))
+            .expect("banner line is rendered");
+        let spans: Vec<_> = banner.spans.iter().collect();
+        assert!(
+            spans.iter().any(
+                |span| span.content.contains("minimal-agent") && span.style == styles::accent()
+            ),
+            "program name uses accent: {banner:?}"
+        );
+        assert!(
+            spans.iter().any(|span| span.style == styles::muted()),
+            "banner remainder stays muted: {banner:?}"
+        );
+        let (_, banner_color) = tone_style(LineTone::Banner);
+        assert_eq!(banner_color, palette::ACCENT);
+    }
+
+    #[test]
+    fn user_echo_uses_accent_for_speaker_and_text() {
+        use crate::theme::{palette, styles};
+        let mut state = TuiState::new("goal");
+        state.push_entry(
+            "❯".to_owned(),
+            "hello agent".to_owned(),
+            LineTone::User,
+            None,
+        );
+        let lines = display_lines(&state);
+        let echo = lines
+            .iter()
+            .find(|line| line.to_string().contains("hello agent"))
+            .expect("user echo is rendered");
+        assert!(
+            echo.spans.iter().any(|span| span.style == styles::accent()),
+            "echo uses accent: {echo:?}"
+        );
+        let (_, user_color) = tone_style(LineTone::User);
+        assert_eq!(user_color, palette::ACCENT);
+    }
+
+    #[test]
+    fn input_row_renders_prompt_and_text_in_accent() {
+        use crate::theme::styles;
+        let mut state = TuiState::new("goal");
+        assert!(state.set_input("hi"));
+        let backend = ratatui::backend::TestBackend::new(80, 12);
+        let mut terminal = ratatui::Terminal::new(backend).unwrap();
+        terminal.draw(|frame| render(frame, &mut state)).unwrap();
+        // Input row is the last row (single-line input here).
+        let cell = &terminal.backend().buffer()[(0, 11)];
+        assert_eq!(cell.symbol(), "❯");
+        assert_eq!(cell.fg, styles::accent().fg.unwrap());
+        let text_cell = &terminal.backend().buffer()[(2, 11)];
+        assert_eq!(text_cell.symbol(), "h");
+        assert_eq!(text_cell.fg, styles::accent().fg.unwrap());
+    }
+
+    #[test]
+    fn non_user_tones_never_use_the_accent() {
+        use crate::theme::palette;
+        for tone in [
+            LineTone::Agent,
+            LineTone::Tool,
+            LineTone::ToolResult { success: true },
+            LineTone::ToolResult { success: false },
+            LineTone::Message,
+            LineTone::Fault,
+        ] {
+            let (_, color) = tone_style(tone);
+            assert_ne!(color, palette::ACCENT, "tone {tone:?} must stay monochrome");
+        }
+        // Agent echo text itself stays at the default weight (no accent).
+        let mut state = TuiState::new("goal");
+        state.push_line("main", "agent reply");
+        let lines = display_lines(&state);
+        let reply = lines
+            .iter()
+            .find(|line| line.to_string().contains("agent reply"))
+            .expect("agent line is rendered");
+        assert!(
+            reply
+                .spans
+                .iter()
+                .all(|span| span.style.fg != Some(palette::ACCENT)),
+            "agent reply must not use accent: {reply:?}"
+        );
     }
 }
