@@ -339,10 +339,7 @@ fn shimmer_spans(text: &str, phase: usize) -> Vec<Span<'static>> {
             // A bright accent sweep: the band is the primary accent colour, the
             // rest dims away so the shimmer pops against the status bar.
             let style = match distance {
-                0 | 1 => Style::default()
-                    .fg(palette::ACCENT)
-                    .add_modifier(Modifier::BOLD),
-                2 => Style::default().fg(palette::ACCENT),
+                0 | 1 | 2 => Style::default().fg(palette::ACCENT),
                 _ => styles::dim(),
             };
             Span::styled(character.to_string(), style)
@@ -422,12 +419,12 @@ fn render_entry(entry: Entry) -> Vec<Line<'static>> {
         let mut lines = Vec::new();
         lines.push(Line::from(vec![
             Span::styled("• ", styles::muted()),
-            Span::styled("commands", styles::bold_emphasis()),
+            Span::styled("commands", styles::emphasis()),
         ]));
         for line in text.lines() {
             if let Some((cmd, desc)) = line.split_once("  ") {
                 lines.push(Line::from(vec![
-                    Span::styled(format!("    {cmd:<18}"), styles::bold_emphasis()),
+                    Span::styled(format!("    {cmd:<18}"), styles::emphasis()),
                     Span::styled(desc.trim_start().to_owned(), styles::muted()),
                 ]));
             } else {

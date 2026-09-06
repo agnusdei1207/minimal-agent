@@ -81,9 +81,9 @@ impl Renderer {
 
     fn start(&mut self, tag: Tag<'_>) {
         match tag {
-            Tag::Heading { .. } => self.enter(styles::bold_emphasis()),
+            Tag::Heading { .. } => self.enter(styles::emphasis()),
             Tag::Emphasis => self.enter(Style::default().add_modifier(Modifier::ITALIC)),
-            Tag::Strong => self.enter(Style::default().add_modifier(Modifier::BOLD)),
+            Tag::Strong => self.enter(styles::emphasis()),
             Tag::Strikethrough => self.enter(Style::default().add_modifier(Modifier::CROSSED_OUT)),
             Tag::Link { .. } => self.enter(styles::link()),
             Tag::CodeBlock(_) => {

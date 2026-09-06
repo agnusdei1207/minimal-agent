@@ -58,7 +58,7 @@ pub mod styles {
     }
 
     pub fn bold_emphasis() -> Style {
-        Style::default().fg(EMPHASIS).add_modifier(Modifier::BOLD)
+        Style::default().fg(EMPHASIS)
     }
 
     pub fn border() -> Style {
@@ -72,14 +72,11 @@ pub mod styles {
     }
 
     pub fn selected_item() -> Style {
-        Style::default()
-            .fg(INVERTED)
-            .bg(EMPHASIS)
-            .add_modifier(Modifier::BOLD)
+        Style::default().fg(INVERTED).bg(EMPHASIS)
     }
 
     pub fn unselected_item() -> Style {
-        Style::default().add_modifier(Modifier::BOLD)
+        Style::default()
     }
 
     pub fn success() -> Style {
