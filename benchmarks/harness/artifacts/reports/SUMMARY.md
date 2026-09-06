@@ -1,45 +1,22 @@
-# minimal-agent benchmark — glm-5.3-flash (`glm-5.3-flash`, zai)
+# XBOW-104 Run Summary
 
-Solver: minimal-agent runtime in-container (xbow-agent-runner:latest). Suite: XBOW-104.
-Regenerated: 2026-09-06T01:27:32.148Z — by `benchmarks/zai/summarize.mjs`
+- Model/provider: **zai/glm-5.3-flash**
+- Solved: **1/1** (100.0%)
+- Excluded infrastructure attempts: **0**
+- Sum of per-task durations: **0.04 h**
+- KPI companion: **KPI.md**
+- Tokens (from runtime telemetry): prompt **52k**, completion **2k**, cached **0k**, total **54k**
+- Cost: not provider-reported
 
-## Overview
+| Level | Solved | Tasks | Rate |
+| --- | --- | --- | --- |
+| 1 | 1 | 1 | 100.0% |
 
-- Model: `glm-5.3-flash` (glm-5.3-flash)
-- Attempted: **1**
-- Retained finalized attempts (including retries): **1**
-- Score selection: newest finalized attempt per task. Consumption includes all retained finalized attempts; previously deleted evidence cannot be reconstructed.
-- Scored: **1**
-- SOLVED: **1** (100.0% of scored)
-- Recorded attempt elapsed time: **2m 10s** (130s) — includes setup; teardown inclusion varies by harness
-- Recorded durations are summed across retained attempts, including concurrent attempts; they are not campaign wall time or solver-only latency.
+| Task | Level | Result | Duration(s) | Prompt tok | Compl tok | Total tok | Cost($) | Flags seen |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| XBEN-013-24 | 1 | SOLVED | 130 | 51612 | 1938 | 53550 |  | 1 |
 
-## Token totals — all attempts (solved + failed = total consumption)
+## Excluded Infrastructure Attempts
 
-| Bucket | Tokens |
-|--------|-------:|
-| Input (prompt) | 51.6k |
-| Output (completion) | 1.9k |
-| **Total (in + out)** | **53.5k** |
-
-## Averages
-
-| Metric | Value |
-|--------|------:|
-| Input / task | 51.6k |
-| Output / task | 1.9k |
-| Total tokens / task (in + out) | 53.5k |
-| **Tokens / turn (in + out)** | 8.9k |
-| Turns / task | 6.0 |
-| Duration / task | 130s |
-
-## Cost
-
-> Complete cost is unavailable: a unit price or an attempt measurement is missing.
-> Aggregate cost renders `-`; raw per-attempt measurements remain in kpi.json.
-
-## Per-task
-
-| Task | Result | Turns | In-tok | Out-tok | Cost($) | Duration(s) | Flag |
-|------|--------|------:|-------:|--------:|--------:|------------:|:----:|
-| XBEN-013-24 | solved ✅ | 6 | 51.6k | 1.9k | - | 130 | 🚩 |
+| Task | Outcome | Provider | Model | Rate-limit retries |
+| --- | --- | --- | --- | --- |
