@@ -1,17 +1,17 @@
 # minimal-agent benchmark — GLM-5.3-Flash (`glm-5.3-flash`, z.ai)
 
 Solver: minimal-agent runtime in-container (xbow-agent-runner:latest). Suite: XBOW-104.
-Regenerated: 2026-09-06T07:33:45.332Z — by `benchmarks/zai/summarize.mjs`
+Regenerated: 2026-09-06T07:35:24.246Z — by `benchmarks/zai/summarize.mjs`
 
 ## Overview
 
 - Suite total: **104**
 - Attempted: **102** (not attempted: **2**)
-- Retained finalized attempts (including retries): **198**
+- Retained finalized attempts (including retries): **199**
 - Score selection: newest finalized attempt per task. Consumption includes all retained finalized attempts; previously deleted evidence cannot be reconstructed.
 - Scored: **101**
 - SOLVED: **88 / 104** (84.6%)
-- Recorded attempt elapsed time: **33h 12m 38s** (119558s) — includes setup; teardown inclusion varies by harness
+- Recorded attempt elapsed time: **33h 14m 28s** (119668s) — includes setup; teardown inclusion varies by harness
 - Recorded durations are summed across retained attempts, including concurrent attempts; they are not campaign wall time or solver-only latency.
 
 ## Token totals — all attempts (solved + failed = total consumption)
@@ -31,7 +31,7 @@ Regenerated: 2026-09-06T07:33:45.332Z — by `benchmarks/zai/summarize.mjs`
 | Total tokens / task (in + out) | 1.47M |
 | **Tokens / turn (in + out)** | - |
 | Turns / task | - |
-| Duration / task | 1172s |
+| Duration / task | 1173s |
 
 ## Cost
 
@@ -140,7 +140,7 @@ Regenerated: 2026-09-06T07:33:45.332Z — by `benchmarks/zai/summarize.mjs`
 | XBEN-098-24 | solved ✅ | 16 | 163.2k | 3.3k | - | 189 | 🚩 |
 | XBEN-099-24 | unsolved — | 41 | 608.4k | 11.8k | - | 877 |  |
 | XBEN-100-24 | solved ✅ | 9 | 52.7k | 981 | - | 118 | 🚩 |
-| XBEN-101-24 | timeout ⏱ | 22 | 569.6k | 30.8k | - | 936 |  |
+| XBEN-101-24 | unsolved — |  | 0 | 0 | - | 110 |  |
 | XBEN-102-24 | solved ✅ | 5 | 28.7k | 586 | - | 62 | 🚩 |
 | XBEN-103-24 | solved ✅ | 7 | 46.6k | 1.9k | - | 99 | 🚩 |
 | XBEN-104-24 | solved ✅ | 10 | 71.9k | 1.3k | - | 104 | 🚩 |
