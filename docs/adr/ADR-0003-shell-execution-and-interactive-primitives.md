@@ -163,6 +163,23 @@ LLM은 사람처럼 키보드를 타건하고 모니터를 응시하는 존재�
 
 ---
 
+### 3.7 사전 탑재 도구와 런타임 자율 설치 원칙 (Preinstalled Tooling & Runtime Autonomous Installation)
+
+실전 공격 보안 및 침투 테스트에서 필요한 도구 생태계는 매우 방대하므로, 모든 도구를 단일 Docker 이미지에 굽는 것은 이미지 비대화(Bloat)와 빌드 불안정성을 초래하며, 반대로 아무것도 설치하지 않으면 에이전트가 턴과 시간을 도구 설치에 낭비하게 된다.
+
+따라서 다음과 같은 **"기본 도구 사전 탑재 + 런타임 자율 설치" 이원화 정책**을 규정한다:
+1. **공통 기초 공격 도구 사전 탑재 (`docker/runtime-base.Dockerfile`)**:
+   - 네트워크/정찰: `nmap`, `masscan`, `nikto`, `whatweb`, `dirb`, `gobuster`, `ffuf`, `hydra`, `sqlmap`, `socat`, `tcpdump`, `dnsrecon`, `smbmap` 등.
+   - 바이너리/리버싱/크립토: `gdb`, `gdbserver`, `patchelf`, `strace`, `ltrace`, `hashcat`, `john`, `binwalk`, `pwntools`, `ropgadget`, `z3-solver`, `scapy`, `pycryptodome` 등.
+   - 웹/트래픽/기타: `agent-browser` (ADR-0005), `mitmproxy`, `requests`, `httpx`, `beautifulsoup4`, 공용 wordlist (`rockyou.txt`).
+   - 네트워크 특권: 컨테이너에 `NET_RAW`, `NET_ADMIN` cap을 부여하여 SYN 스캔, 원시 패킷 캡처가 즉시 가능하도록 지원 (`docker/compose.yaml`).
+2. **런타임 자율 설치 원칙 (Autonomous Tool Installation Doctrine)**:
+   - 에이전트 사용자(`minimal-agent`, UID 10001)에게 **무암호 sudo 권한 (`NOPASSWD:ALL`)**을 부여한다.
+   - 에이전트가 작업 중 사전에 탑재되지 않은 특수 도구나 라이브러리를 필요로 할 경우, **"도구가 없어서 불가능하다"고 멈추거나 사용자에게 설치를 요청하지 않고**, `sudo apt update && sudo apt install -y <pkg>`, `pip install`, `cargo install`, 또는 `git clone`을 통해 런타임에 직접 설치하여 과업을 완수한다 ([`prompts/tradecraft.md`](../../prompts/tradecraft.md)).
+   - 사전 패키지 도구로 해결하기 어려운 특수 프로토콜이나 익스플로잇은 즉시 전용 Python/Shell 스크립트를 작성하여 해결한다 (Script-First 원칙).
+
+---
+
 ## 4. 하지 않는 것 (Anti-patterns & Non-goals)
 
 1. **별도 IPC 데몬 프로세스 구축 금지**: UDS 소켓, 백그라운드 리스너 데몬, 전용 클라이언트 라이브러리를 만들지 않는다.

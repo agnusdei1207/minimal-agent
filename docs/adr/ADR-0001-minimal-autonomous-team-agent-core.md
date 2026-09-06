@@ -490,6 +490,14 @@ submission이 끝나기 전 종료하지 않는다.
 외부 주입 인터페이스와 공격 보안 doctrine은 이 제거 목록에 해당하지 않으며 ADR-0002가
 prompt 텍스트와 bounded 값으로 최소 확장한다. 새 권한/검증/승인 엔진은 여전히 두지 않는다.
 
+### 14.1 차세대 취약점 연구(VR) 로드맵과의 경계 (`docs/design/advanced-vulnerability-research-roadmap.md` 연계)
+
+현재 `minimal-agent`는 **Senior Penetration Tester 및 High-Tier CTF Specialist (Level 3)** 수준의 자율 침투 능력을 기준으로 설계 및 최적화되어 있다.
+
+향후 자율 제로데이(0-Day) 탐지 및 심층 취약점 분석(Level 4: Deep Security Analyst, Level 5: Elite Vulnerability Researcher)을 위한 아키텍처 로드맵([`docs/design/advanced-vulnerability-research-roadmap.md`](../design/advanced-vulnerability-research-roadmap.md))에서 다루는 4대 축(Code Property Graph, Headless Decompiler API, Coverage-guided Fuzzing/Triage, Shadow Sandbox Verifier)은 **현재 코어의 범위 밖(Out of Scope)**으로 엄격히 유지한다.
+
+이러한 고도화 기능들은 "미리 코어에 넣어두는 방식"으로 Rust 런타임을 비대화하지 않으며(§3 프롬프트 우선주의 공리), 향후 실제 0-day 연구 환경에서 최소한의 인터페이스로 실익이 입증될 때 별도의 독립 ADR을 통해 단계적으로 채택한다.
+
 ## 15. 알려진 trade-off
 
 - journal recovery는 최대 512 MiB run 전체를 검증하므로 큰 run의 restart 비용이 있다.

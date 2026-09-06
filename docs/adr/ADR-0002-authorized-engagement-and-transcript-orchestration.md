@@ -64,6 +64,30 @@ system prompt에 두 블록을 추가한다. 문구는 이 저장소에서 clean
 강제하지 않는다"와 정합). 운영적 confirm-before 항목도 별도 승인 엔진을 만들지 않고
 모델 지침으로 둔다.
 
+### 3.1.1 6단계 공격 기율과 진단 프롬프트 설계 철학 (`docs/design/prompt-philosophy.md` 연계)
+
+`minimal-agent`의 프롬프트 체계는 단순한 역할 부여 텍스트가 아니라, 에이전트의 턴 낭비·탈선(Drift)·무한 루프를 방지하고 실전 공격 성공률을 극대화하는 **구조화된 공격 기율(Disciplined Offensive Architecture)**로 설계되었다 ([`docs/design/prompt-philosophy.md`](../design/prompt-philosophy.md) 및 [`prompts/ctf-solve-loop.md`](../../prompts/ctf-solve-loop.md)):
+
+1. **Phase 1: 아키텍처 매핑 & 공격 프론티어 (Attack Frontier)**
+   - 초기 정찰 후 서로 다른 3~5개의 구조적으로 독립적인 가설(Auth/IDOR, Injection, SSRF, Deserialization, Logic bypass 등)을 `brief`에 수립하여 확증 편향을 원천 차단한다.
+2. **Phase 2: 진단용 예광탄(Diagnostic Tracer Bullets) & 반응 판별법**
+   - **침묵의 벽 (Silent Wall):** 3~5회 변형에도 상태 코드나 응답 바이트 수에 차이가 없으면 파라미터가 비활성 상태임을 의미하므로, 미세 변형을 멈추고 즉시 `brief`에 DEAD END를 선언한 뒤 다른 가설로 백트래킹(Backtrack)한다.
+   - **살아있는 봉합선 (Live Seam):** 500 에러, 구문 예외, 입력 반사, 지연, WAF 차단 반응은 입력이 백엔드 인터프리터에 도달했음을 입증하는 강력한 오라클(Oracle)이다. 절대 포기하지 않고 창의적 우회로 진입한다.
+3. **Phase 3: 4차원 직교 우회 (Creative Bypass & Lateral Variation)**
+   - 동일 페이로드의 무의미한 반복을 금지하고, 4개 직교 축으로 변형한다:
+     - (1) Context Escaping (구문 탈출 구분자 최소화)
+     - (2) Alternative Encodings (URL/Unicode/Hex/$IFS)
+     - (3) Functional Equivalents (`top['al'+'ert']`, `String.fromCharCode`, boolean oracle)
+     - (4) Legacy Client Compatibility (검증 봇 호환을 위한 ES5 문법 강제)
+4. **Phase 4: 4중 메타인지 자기 성찰 감사 (Meta-Cognitive Audits)**
+   - 매 턴 도구 호출 직전 4대 자가 질문(Loop Audit, Evidence Audit, Drift Audit, Progress Audit)을 통해 깊이 우선 함정(Depth-First Trap) 탈출.
+5. **Phase 5: 타임 싱크 블랙홀 금지선 (Time-Sink Rabbit Hole Bans)**
+   - 턴 예산 보존을 위한 4대 절대 금지선: (1) 오프라인 무작위 사전 대입 금지, (2) UI 장식 에셋 스테가노그래피 분석 금지, (3) 무거운 로컬 브라우저/클라이언트 작성 금지, (4) 직접 추출 우선.
+6. **Phase 6: 수직 익스플로잇 & 플래그 획득**
+   - 우회 성공 즉시 수직 추출로 직행하여 실제 시스템 출력에서 `flag_format`에 부합하는 증거를 확보하고 종료.
+
+---
+
 ### 3.2 Engagement 주입
 
 `Engagement`는 다음을 담는 작은 값이다.
