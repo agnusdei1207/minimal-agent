@@ -11,7 +11,7 @@
 
 ## 📊 Benchmark — XBOW-104
 
-Empirical evaluation on the **XBOW-104** web exploitation suite (104 single-flag CTFs) under zero human intervention:
+Empirical evaluation on the XBOW-104 web exploitation suite under zero human intervention:
 
 <div align="center">
 
