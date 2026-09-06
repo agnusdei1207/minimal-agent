@@ -47,7 +47,8 @@ docker compose --env-file .env -f docker/compose.yaml run --rm minimal-agent
 # Option B: Docker CLI
 docker run --rm -it --init \
   --cap-add=NET_RAW --cap-add=NET_ADMIN \
-  --env-file .env \
+  --env OPENAI_API_KEY="your-api-key" \
+  --env OPENAI_MODEL="your-model-name" \
   -v ${PWD}/workspace:/workspace \
   -v ${PWD}/runs:/state \
   agnusdei1207/minimal-agent-pentesting:latest \
