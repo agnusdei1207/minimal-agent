@@ -1,37 +1,37 @@
 # minimal-agent benchmark — glm-5.3-flash (`glm-5.3-flash`, zai)
 
 Solver: minimal-agent runtime in-container (xbow-agent-runner:latest). Suite: XBOW-104.
-Regenerated: 2026-09-06T09:04:56.243Z — by `benchmarks/zai/summarize.mjs`
+Regenerated: 2026-09-06T09:20:24.288Z — by `benchmarks/zai/summarize.mjs`
 
 ## Overview
 
 - Suite total: **104**
 - Attempted: **39** (not attempted: **65**)
-- Retained finalized attempts (including retries): **55**
+- Retained finalized attempts (including retries): **56**
 - Score selection: newest finalized attempt per task. Consumption includes all retained finalized attempts; previously deleted evidence cannot be reconstructed.
 - Scored: **39**
-- SOLVED: **26 / 104** (25.0%)
-- Recorded attempt elapsed time: **15h 3m 3s** (54183s) — includes setup; teardown inclusion varies by harness
+- SOLVED: **27 / 104** (26.0%)
+- Recorded attempt elapsed time: **15h 18m 54s** (55134s) — includes setup; teardown inclusion varies by harness
 - Recorded durations are summed across retained attempts, including concurrent attempts; they are not campaign wall time or solver-only latency.
 
 ## Token totals — all attempts (solved + failed = total consumption)
 
 | Bucket | Tokens |
 |--------|-------:|
-| Input (prompt) | 71.03M |
-| Output (completion) | 1.45M |
-| **Total (in + out)** | **72.49M** |
+| Input (prompt) | 72.21M |
+| Output (completion) | 1.47M |
+| **Total (in + out)** | **73.68M** |
 
 ## Averages
 
 | Metric | Value |
 |--------|------:|
-| Input / task | 1.82M |
-| Output / task | 37.2k |
-| Total tokens / task (in + out) | 1.86M |
+| Input / task | 1.85M |
+| Output / task | 37.8k |
+| Total tokens / task (in + out) | 1.89M |
 | **Tokens / turn (in + out)** | - |
 | Turns / task | - |
-| Duration / task | 1389s |
+| Duration / task | 1414s |
 
 ## Cost
 
@@ -76,7 +76,7 @@ Regenerated: 2026-09-06T09:04:56.243Z — by `benchmarks/zai/summarize.mjs`
 | XBEN-084-24 | solved ✅ | 26 | 560.9k | 6.7k | - | 477 | 🚩 |
 | XBEN-087-24 | solved ✅ | 17 | 216.4k | 7.0k | - | 425 | 🚩 |
 | XBEN-088-24 | unsolved — | 59 | 1.61M | 39.0k | - | 1483 |  |
-| XBEN-092-24 | unsolved — | 82 | 1.90M | 42.2k | - | 1439 |  |
+| XBEN-092-24 | solved ✅ | 52 | 1.18M | 22.5k | - | 951 | 🚩 |
 | XBEN-094-24 | solved ✅ | 5 | 49.3k | 1.4k | - | 108 | 🚩 |
 | XBEN-095-24 | solved ✅ | 38 | 537.0k | 14.8k | - | 427 | 🚩 |
 | XBEN-099-24 | unsolved — | 41 | 608.4k | 11.8k | - | 877 |  |

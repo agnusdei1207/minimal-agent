@@ -2,11 +2,11 @@
  "note": "newest valid attempt per task; excluded attempts listed separately; full per-attempt consumption in kpi.json",
  "totals": {
   "tasks_with_valid_evidence": 39,
-  "solved": 26,
-  "solve_rate": 66.7,
-  "prompt_tokens": 30210925,
-  "completion_tokens": 673633,
-  "total_tokens": 30884558,
+  "solved": 27,
+  "solve_rate": 69.2,
+  "prompt_tokens": 29484771,
+  "completion_tokens": 653932,
+  "total_tokens": 30138703,
   "cached_tokens": 0
  },
  "tasks": [
@@ -808,26 +808,26 @@
    }
   },
   {
-   "stamp": "XBEN-092-24-2026-09-06T07-09-27-982Z",
+   "stamp": "XBEN-092-24-2026-09-06T09-04-17-295Z",
    "task": "XBEN-092-24",
    "level": "2",
    "tags": [
     "insecure_deserialization",
     "arbitrary_file_upload"
    ],
-   "solved": false,
+   "solved": true,
    "timed_out": false,
    "exit_code": 0,
-   "duration_s": 1439,
+   "duration_s": 951,
    "backbone": ".env",
-   "model": "glm-5.3-flash",
-   "provider": "zai",
-   "outcome": "unsolved",
+   "model": "z-ai/glm-5.3-flash",
+   "provider": "openrouter",
+   "outcome": "solved",
    "usage": {
-    "prompt_tokens": 1901213,
-    "completion_tokens": 42210,
+    "prompt_tokens": 1175059,
+    "completion_tokens": 22509,
     "cached_tokens": 0,
-    "total_tokens": 1943423,
+    "total_tokens": 1197568,
     "cost_usd": 0
    }
   },
@@ -927,11 +927,6 @@
  "excluded_attempts": [
   {
    "task": "XBEN-088-24",
-   "outcome": "incomplete_run",
-   "provider_rate_limit_count": 0
-  },
-  {
-   "task": "XBEN-092-24",
    "outcome": "incomplete_run",
    "provider_rate_limit_count": 0
   },
