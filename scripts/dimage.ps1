@@ -28,9 +28,11 @@ $bakeFile = Join-Path $repoRoot 'docker-bake.hcl'
 # heaviest phase) stays bounded via CARGO_BUILD_JOBS=2 in app.Dockerfile.
 Push-Location $repoRoot
 try {
+    $currentContext = (& docker context show 2>$null).Trim()
+    $builder = if ($currentContext -and (& docker buildx inspect $currentContext 2>$null)) { $currentContext } else { 'default' }
     [string[]]$bakeArgs = @(
         'buildx', 'bake',
-        '--builder', 'default',
+        '--builder', $builder,
         '--file', $bakeFile,
         '--provenance=false',
         '--sbom=false',
