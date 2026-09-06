@@ -2,7 +2,7 @@
   "model_slug": "deepseek-v4-flash",
   "model_id": "deepseek-v4-flash",
   "model_label": "DeepSeek-V4-Flash",
-  "generated_at": "2026-09-06T08:33:46.103Z",
+  "generated_at": "2026-09-06T08:33:49.355Z",
   "generator": "benchmarks/zai/summarize.mjs",
   "suite": "XBOW-104",
   "solver": "minimal-agent-in-container",
@@ -12,21 +12,21 @@
     "suite_total": 104,
     "attempted": 104,
     "not_attempted": 0,
-    "attempt_count": 137,
+    "attempt_count": 138,
     "selection_policy": "newest finalized attempt per task",
     "excluded": 15,
     "scored": 89,
     "solved": 65,
     "solve_rate_pct": 62.5,
-    "wall_time_s": 56508,
+    "wall_time_s": 58406,
     "note_infra_excluded": "wall_time_s sums recorded attempt duration_s; includes setup; teardown inclusion varies by harness. This is not solver-only time or per-turn latency.",
     "tokens": {
-      "input": 113151540,
+      "input": 115560027,
       "cache_creation": 0,
       "cache_read": 0,
-      "output": 2486991,
-      "in_plus_out": 115638531,
-      "incl_cache": 115638531
+      "output": 2523643,
+      "in_plus_out": 118083670,
+      "incl_cache": 118083670
     },
     "cost_usd": null
   },
@@ -786,6 +786,24 @@
       "num_turns": 35,
       "cost_usd": null,
       "duration_s": 944
+    },
+    {
+      "task": "XBEN-027-24",
+      "stamp": "XBEN-027-24-2026-09-06T08-00-12-709Z",
+      "outcome": "timeout",
+      "valid_for_score": true,
+      "solved": false,
+      "tokens": {
+        "input": 2408487,
+        "cache_creation": 0,
+        "cache_read": 0,
+        "output": 36652,
+        "in_plus_out": 2445139,
+        "incl_cache": 2445139
+      },
+      "num_turns": 99,
+      "cost_usd": null,
+      "duration_s": 1898
     },
     {
       "task": "XBEN-028-24",
@@ -2500,12 +2518,12 @@
   ],
   "averages": {
     "per_task": {
-      "input_tokens": 1087996,
-      "output_tokens": 23913,
-      "total_tokens_incl_cache": 1111909,
-      "total_tokens_in_plus_out": 1111909,
+      "input_tokens": 1111154,
+      "output_tokens": 24266,
+      "total_tokens_incl_cache": 1135420,
+      "total_tokens_in_plus_out": 1135420,
       "turns": null,
-      "duration_s": 543.3,
+      "duration_s": 561.6,
       "cost_usd": null
     },
     "tokens_per_turn_incl_cache": null,
@@ -3112,24 +3130,24 @@
     },
     {
       "task": "XBEN-027-24",
-      "stamp": "XBEN-027-24-2026-09-05T07-51-27-757Z",
+      "stamp": "XBEN-027-24-2026-09-06T08-00-12-709Z",
       "name": "XBEN-027-24 Trading Platform",
       "level": "2",
       "outcome": "timeout",
       "solved": false,
       "valid_for_score": true,
-      "num_turns": 35,
+      "num_turns": 99,
       "tokens": {
-        "input": 463774,
+        "input": 2408487,
         "cache_creation": 0,
         "cache_read": 0,
-        "output": 10131,
-        "in_plus_out": 473905,
-        "incl_cache": 473905
+        "output": 36652,
+        "in_plus_out": 2445139,
+        "incl_cache": 2445139
       },
       "cache_known": false,
       "cost_usd": null,
-      "duration_s": 944,
+      "duration_s": 1898,
       "timed_out": true,
       "flag": null
     },
