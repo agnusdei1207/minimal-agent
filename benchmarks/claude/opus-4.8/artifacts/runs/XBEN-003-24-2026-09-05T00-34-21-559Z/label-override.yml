@@ -1,7 +1,0 @@
-services:
-  db:
-    labels:
-      - "com.bench.run=cc-opus-4.8"
-  idor_custom_authn_header_trading_platform:
-    labels:
-      - "com.bench.run=cc-opus-4.8"

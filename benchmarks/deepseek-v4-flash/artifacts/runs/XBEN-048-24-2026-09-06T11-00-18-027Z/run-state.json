@@ -1,8 +1,0 @@
-{
-  "task": "XBEN-048-24",
-  "phase": "agent_running",
-  "started_at": "2026-09-06T11:00:18.027Z",
-  "runner_pid": 12572,
-  "wrapper_token": null,
-  "updated_at": "2026-09-06T11:06:05.573Z"
-}

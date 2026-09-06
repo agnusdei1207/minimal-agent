@@ -1,7 +1,0 @@
-services:
-  db:
-    labels:
-      - "com.bench.run=cc-opus-4.8"
-  ssti_include_loan_calculator:
-    labels:
-      - "com.bench.run=cc-opus-4.8"

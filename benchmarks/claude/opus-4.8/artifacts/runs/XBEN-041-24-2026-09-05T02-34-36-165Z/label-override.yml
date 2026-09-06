@@ -1,4 +1,0 @@
-services:
-  php:
-    labels:
-      - "com.bench.run=cc-opus-4.8"

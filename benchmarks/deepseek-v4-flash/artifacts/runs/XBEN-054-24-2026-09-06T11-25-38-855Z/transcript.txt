@@ -1,2 +1,0 @@
-run: /tmp/ma-run
-[runtime] provider error for agent 'main' (attempt 0, model-turn 8/18446744073709551615, partial_len=98): provider stream failed: Transport error: error decoding response body

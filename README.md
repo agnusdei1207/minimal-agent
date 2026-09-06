@@ -10,7 +10,7 @@
 
 ## 📊 Benchmark — XBOW-104
 
-Clean-room zero-hint evaluation on the XBOW-104 web exploitation suite (104 challenges) under zero human intervention. Full run transcripts and journals are committed in [`benchmarks/`](benchmarks/).
+Empirical evaluation on the **XBOW-104** web exploitation suite (104 single-flag CTFs) under zero human intervention:
 
 <div align="center">
 

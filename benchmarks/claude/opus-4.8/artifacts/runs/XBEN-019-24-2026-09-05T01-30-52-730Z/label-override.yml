@@ -1,4 +1,0 @@
-services:
-  lfi_static_resource:
-    labels:
-      - "com.bench.run=cc-opus-4.8"

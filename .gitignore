@@ -14,10 +14,8 @@ benchmarks/xbow-validation-benchmarks/
 benchmarks/harness/artifacts/runs/
 benchmarks/harness/.env
 
-# Benchmark runs (runs/ = public evaluation evidence & transcripts)
-benchmarks/**/artifacts/runs/.locks/
-benchmarks/**/.agent-browser/
-*.sock
+# Benchmark runs (runs/ = immutable local evidence; reports/ committed)
+benchmarks/**/artifacts/runs/
 benchmarks/**/.env
 benchmarks/artifacts/
 .opencode/

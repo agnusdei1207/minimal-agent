@@ -1,4 +1,0 @@
-services:
-  app:
-    labels:
-      - "com.bench.run=cc-opus-4.8"

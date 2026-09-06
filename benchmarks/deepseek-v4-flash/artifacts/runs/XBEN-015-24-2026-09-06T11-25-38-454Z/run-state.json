@@ -1,9 +1,0 @@
-{
-  "task": "XBEN-015-24",
-  "phase": "finalized",
-  "started_at": "2026-09-06T11:25:38.454Z",
-  "outcome": "timeout",
-  "runner_pid": 12928,
-  "wrapper_token": null,
-  "updated_at": "2026-09-06T12:14:15.313Z"
-}
