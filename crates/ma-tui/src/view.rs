@@ -74,8 +74,8 @@ pub fn render(frame: &mut Frame<'_>, state: &mut TuiState) {
     let input_area = areas[2];
     frame.render_widget(
         Paragraph::new(Line::from(vec![
-            Span::styled("❯ ", styles::prompt_arrow()),
-            Span::raw(input_projection(state)),
+            Span::styled("❯ ", styles::accent()),
+            Span::styled(input_projection(state), styles::accent()),
         ]))
         .wrap(Wrap { trim: false }),
         input_area,
@@ -270,7 +270,7 @@ fn status_line(state: &TuiState) -> Line<'static> {
         // a plain busy indicator without agent names.
         spans.push(Span::styled(
             format!("{} ", spinner(state.spinner_frame)),
-            Style::default().fg(Color::White),
+            Style::default().fg(palette::ACCENT),
         ));
         // Show what main is actually doing (thinking / running <tool> / responding).
         // When only workers are busy the label is empty, so fall back to a plain
@@ -336,10 +336,13 @@ fn shimmer_spans(text: &str, phase: usize) -> Vec<Span<'static>> {
         .enumerate()
         .map(|(index, character)| {
             let distance = center.abs_diff(index);
-            // A gentle monochrome white sweep: the band is bright, the rest dim.
+            // A bright accent sweep: the band is the primary accent colour, the
+            // rest dims away so the shimmer pops against the status bar.
             let style = match distance {
-                0 | 1 => styles::emphasis(),
-                2 => Style::default(),
+                0 | 1 => Style::default()
+                    .fg(palette::ACCENT)
+                    .add_modifier(Modifier::BOLD),
+                2 => Style::default().fg(palette::ACCENT),
                 _ => styles::dim(),
             };
             Span::styled(character.to_string(), style)
@@ -392,8 +395,10 @@ pub(super) fn display_lines(state: &TuiState) -> Vec<Line<'static>> {
 }
 
 /// Calm palette: structure is muted grey; colour is reserved for meaning —
-/// green for a successful result, red for a failure or fault.
-fn tone_style(tone: LineTone) -> (&'static str, Color) {
+/// green for a successful result, red for a failure or fault. The rare accent
+/// (`palette::ACCENT`) is used only for the start banner and the user's own
+/// input echo (`LineTone::User` / `LineTone::Banner`).
+pub(super) fn tone_style(tone: LineTone) -> (&'static str, Color) {
     match tone {
         LineTone::Agent => ("", palette::TEXT),
         LineTone::Tool => ("•", palette::MUTED),
@@ -401,6 +406,8 @@ fn tone_style(tone: LineTone) -> (&'static str, Color) {
         LineTone::ToolResult { success: false } => ("↳", palette::ERROR),
         LineTone::Message => ("↳", palette::MUTED),
         LineTone::Fault => ("!", palette::ERROR),
+        LineTone::User => ("", palette::ACCENT),
+        LineTone::Banner => ("", palette::ACCENT),
     }
 }
 
@@ -431,6 +438,27 @@ fn render_entry(entry: Entry) -> Vec<Line<'static>> {
             }
         }
         return lines;
+    }
+    if tone == LineTone::Banner {
+        // Start banner: program name in the rare accent, the rest muted.
+        return vec![Line::from(vec![
+            Span::styled("minimal-agent", styles::accent()),
+            Span::styled(" — ready · /help", styles::muted()),
+        ])];
+    }
+    if tone == LineTone::User {
+        // User echo: speaker ❯ and text in the rare accent (full weight, no dim).
+        let mut header = Vec::new();
+        if !speaker.is_empty() {
+            header.push(Span::styled(speaker.clone(), styles::accent()));
+        }
+        if let Some(subtitle) = subtitle {
+            header.push(Span::styled(format!("  {subtitle}"), styles::dim()));
+        }
+        if !text.is_empty() && !speaker.is_empty() {
+            header.push(Span::raw("  "));
+        }
+        return markdown::render(&text, header, styles::accent());
     }
     let (glyph, color) = tone_style(tone);
 

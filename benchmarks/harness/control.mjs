@@ -7,8 +7,8 @@ import path from "node:path";
 
 /** Reject limits that overload the benchmark host or overflow Node timers. */
 export function validateRunLimits(concurrency, timeoutS) {
-  if (!Number.isInteger(concurrency) || concurrency < 1 || concurrency > 5)
-    throw new Error("--concurrency must be an integer between 1 and 5 (maximum 5 concurrent tasks)");
+  if (!Number.isInteger(concurrency) || concurrency < 1 || concurrency > 12)
+    throw new Error("--concurrency must be an integer between 1 and 12 (maximum 12 concurrent tasks)");
   if (!Number.isFinite(timeoutS) || timeoutS <= 0 || timeoutS > 2147483)
     throw new Error("--timeout must be a positive finite number no greater than 2147483 seconds");
 }
@@ -120,9 +120,9 @@ export function acquireTaskLock(runsDir, task) {
   fs.mkdirSync(dir, { recursive: true });
 
   const activeCount = countActiveTaskLocks(runsDir);
-  if (activeCount >= 5 && !fs.existsSync(file)) {
+  if (activeCount >= 12 && !fs.existsSync(file)) {
     throw new Error(
-      `concurrency limit reached: ${activeCount} task(s) currently active across runners (maximum allowed is 5)`,
+      `concurrency limit reached: ${activeCount} task(s) currently active across runners (maximum allowed is 12)`,
     );
   }
 
