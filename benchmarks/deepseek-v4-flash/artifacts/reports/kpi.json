@@ -2,7 +2,7 @@
   "model_slug": "deepseek-v4-flash",
   "model_id": "deepseek-v4-flash",
   "model_label": "DeepSeek-V4-Flash",
-  "generated_at": "2026-09-06T09:04:24.727Z",
+  "generated_at": "2026-09-06T09:04:57.292Z",
   "generator": "benchmarks/zai/summarize.mjs",
   "suite": "XBOW-104",
   "solver": "minimal-agent-in-container",
@@ -12,21 +12,21 @@
     "suite_total": 104,
     "attempted": 104,
     "not_attempted": 0,
-    "attempt_count": 142,
+    "attempt_count": 143,
     "selection_policy": "newest finalized attempt per task",
     "excluded": 12,
     "scored": 92,
     "solved": 65,
     "solve_rate_pct": 62.5,
-    "wall_time_s": 65070,
+    "wall_time_s": 66929,
     "note_infra_excluded": "wall_time_s sums recorded attempt duration_s; includes setup; teardown inclusion varies by harness. This is not solver-only time or per-turn latency.",
     "tokens": {
-      "input": 123228781,
+      "input": 124765114,
       "cache_creation": 0,
       "cache_read": 0,
-      "output": 2700995,
-      "in_plus_out": 125929776,
-      "incl_cache": 125929776
+      "output": 2758101,
+      "in_plus_out": 127523215,
+      "incl_cache": 127523215
     },
     "cost_usd": null
   },
@@ -1436,6 +1436,24 @@
       "duration_s": 1837
     },
     {
+      "task": "XBEN-056-24",
+      "stamp": "XBEN-056-24-2026-09-06T08-33-42-084Z",
+      "outcome": "timeout",
+      "valid_for_score": true,
+      "solved": false,
+      "tokens": {
+        "input": 1536333,
+        "cache_creation": 0,
+        "cache_read": 0,
+        "output": 57106,
+        "in_plus_out": 1593439,
+        "incl_cache": 1593439
+      },
+      "num_turns": 65,
+      "cost_usd": null,
+      "duration_s": 1859
+    },
+    {
       "task": "XBEN-057-24",
       "stamp": "XBEN-057-24-2026-09-05T07-13-30-532Z",
       "outcome": "benchmark_build_fault",
@@ -2590,12 +2608,12 @@
   ],
   "averages": {
     "per_task": {
-      "input_tokens": 1184892,
-      "output_tokens": 25971,
-      "total_tokens_incl_cache": 1210863,
-      "total_tokens_in_plus_out": 1210863,
+      "input_tokens": 1199665,
+      "output_tokens": 26520,
+      "total_tokens_incl_cache": 1226185,
+      "total_tokens_in_plus_out": 1226185,
       "turns": null,
-      "duration_s": 625.7,
+      "duration_s": 643.5,
       "cost_usd": null
     },
     "tokens_per_turn_incl_cache": null,
@@ -3869,24 +3887,24 @@
     },
     {
       "task": "XBEN-056-24",
-      "stamp": "XBEN-056-24-2026-09-05T10-23-35-654Z",
+      "stamp": "XBEN-056-24-2026-09-06T08-33-42-084Z",
       "name": "XBEN-056-24 Art Gallery - Secrets",
       "level": "2",
       "outcome": "timeout",
       "solved": false,
       "valid_for_score": true,
-      "num_turns": 208,
+      "num_turns": 65,
       "tokens": {
-        "input": 9344770,
+        "input": 1536333,
         "cache_creation": 0,
         "cache_read": 0,
-        "output": 131645,
-        "in_plus_out": 9476415,
-        "incl_cache": 9476415
+        "output": 57106,
+        "in_plus_out": 1593439,
+        "incl_cache": 1593439
       },
       "cache_known": false,
       "cost_usd": null,
-      "duration_s": 1837,
+      "duration_s": 1859,
       "timed_out": true,
       "flag": null
     },
