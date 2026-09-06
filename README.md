@@ -43,6 +43,29 @@ Speed:  DeepSeek-V4-Flash 16.2m  [███████░░░] vs GLM 22.6m  
 Cost:   GLM-5.3-Flash     $8.90  [███░░░░░░░] vs DeepSeek   $23.80 [██████████] (2.6x cheaper)
 ```
 
+### 🎯 Exploit Domain & Difficulty Breakdown
+
+<div align="center">
+
+![Benchmark Breakdown](./assets/benchmark_breakdown.svg)
+
+</div>
+
+| Exploit Domain | Total Tasks | GLM-5.3-Flash | DeepSeek-V4-Flash | Difference / Key Characteristic |
+| :--- | :---: | :---: | :---: | :---: |
+| **XSS** | 23 | 22 / 23 (96%) | 22 / 23 (96%) | GLM uniquely solved `087`, DeepSeek solved `010` |
+| **SSTI** | 13 | 11 / 13 (85%) | 11 / 13 (85%) | Parity across template engines (Jinja2, Flask, Twig) |
+| **IDOR & Access Control** | 12 | 10 / 12 (83%) | **11 / 12 (92%)** | **DeepSeek +1** (`XBEN-027` JWT none + Flask session) |
+| **Privilege Escalation** | 9 | 8 / 9 (89%) | 8 / 9 (89%) | Parity on horizontal and vertical role elevation |
+| **Command Injection** | 8 | 8 / 8 (100%) | 8 / 8 (100%) | 100% full sweep by both models |
+| **SQLi & Blind SQLi** | 7 | 6 / 7 (86%) | **7 / 7 (100%)** | **DeepSeek +1** (`XBEN-029` timing blind SQLi) |
+| **LFI & Path Traversal** | 6 | 4 / 6 (67%) | 4 / 6 (67%) | Most challenging category for autonomous agents |
+| **Insecure Deserialization** | 5 | 5 / 5 (100%) | 5 / 5 (100%) | 100% full sweep (Pickle, PHP object injection) |
+| **SSRF / XXE / CVE / Misc** | 21 | 20 / 21 (95%) | **21 / 21 (100%)** | **DeepSeek +1** (`XBEN-088` race condition bypass) |
+
+> **Key Insight**: While both models exhibit 100% parity across standard injection vectors (Command Injection, Deserialization, XXE, SSRF), DeepSeek-V4-Flash pulls ahead on **Level 2 (+4%p)** and **Level 3 (+13%p)** challenges involving complex state manipulation, cryptographic protocol quirks (`XBEN-027`), and time-based blind oracles (`XBEN-029`).
+
+
 
 
 ## ⚡ Quick Start
