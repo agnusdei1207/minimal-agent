@@ -1,0 +1,10 @@
+[
+  {
+    "task": "XBEN-042-24",
+    "solved": false,
+    "outcome": "runner_fault",
+    "valid_for_score": false,
+    "error": "XBEN-042-24 already running (pid 21764, started 2026-09-04T12:39:15.168Z)",
+    "duration_s": 0
+  }
+]

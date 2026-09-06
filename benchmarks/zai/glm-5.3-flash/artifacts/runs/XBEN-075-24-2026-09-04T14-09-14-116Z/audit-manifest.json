@@ -1,0 +1,137 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-09-04T14:18:52.003Z",
+  "complete": true,
+  "files": [
+    {
+      "path": "evidence.json",
+      "bytes": 1172,
+      "sha256": "f7e0771442cd38f9c91cdec2f8cde4a6f620f64bc126b04051bc6e641020b02e"
+    },
+    {
+      "path": "harness/agent-container-preclean.result.json",
+      "bytes": 30,
+      "sha256": "a8a9416f13278fa0eb2c43aa6ce036c1b65a30378c0bda93e67af869c12bc401"
+    },
+    {
+      "path": "harness/agent-container-preclean.stderr.log",
+      "bytes": 65,
+      "sha256": "b2b56a7b2e208d7cdde7a0886625d689b8a34aba17eff996985648a7182982b4"
+    },
+    {
+      "path": "harness/agent-container-preclean.stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "harness/agent-image-inspect.result.json",
+      "bytes": 30,
+      "sha256": "a8a9416f13278fa0eb2c43aa6ce036c1b65a30378c0bda93e67af869c12bc401"
+    },
+    {
+      "path": "harness/agent-image-inspect.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "harness/agent-image-inspect.stdout.log",
+      "bytes": 72,
+      "sha256": "aad6262ee98f04ba4a3ade3877975dd5877f37ff44a92fa898bd3a7009daead1"
+    },
+    {
+      "path": "harness/compose-build.result.json",
+      "bytes": 30,
+      "sha256": "a8a9416f13278fa0eb2c43aa6ce036c1b65a30378c0bda93e67af869c12bc401"
+    },
+    {
+      "path": "harness/compose-build.stderr.log",
+      "bytes": 117,
+      "sha256": "b8f56f5b5720f7f01db4b5204a2d344b1f9d9c3ed52d64bd805fdba5f3cf9d9f"
+    },
+    {
+      "path": "harness/compose-build.stdout.log",
+      "bytes": 2937,
+      "sha256": "f81ddb3a11ed13cb884f5e9c99c56b3a0334ff57691e1f54ad894229eddbb057"
+    },
+    {
+      "path": "harness/compose-config-services.result.json",
+      "bytes": 30,
+      "sha256": "a8a9416f13278fa0eb2c43aa6ce036c1b65a30378c0bda93e67af869c12bc401"
+    },
+    {
+      "path": "harness/compose-config-services.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "harness/compose-config-services.stdout.log",
+      "bytes": 31,
+      "sha256": "2d93d37112f49b90d1556930940d5abc5e78ae48e77bf2b1aef00c80428aa33e"
+    },
+    {
+      "path": "harness/compose-down.result.json",
+      "bytes": 30,
+      "sha256": "a8a9416f13278fa0eb2c43aa6ce036c1b65a30378c0bda93e67af869c12bc401"
+    },
+    {
+      "path": "harness/compose-down.stderr.log",
+      "bytes": 339,
+      "sha256": "3c120edf57e4012184a110e42621c8eb31e6e54747c0d094e9b0ce833d0749f2"
+    },
+    {
+      "path": "harness/compose-down.stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "harness/compose-ps.result.json",
+      "bytes": 30,
+      "sha256": "a8a9416f13278fa0eb2c43aa6ce036c1b65a30378c0bda93e67af869c12bc401"
+    },
+    {
+      "path": "harness/compose-ps.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "harness/compose-ps.stdout.log",
+      "bytes": 1532,
+      "sha256": "a16731e161fdfb909c76d5db33f4203b2a3d93fa991bae458ab17641cc3a27b4"
+    },
+    {
+      "path": "harness/compose-up.result.json",
+      "bytes": 30,
+      "sha256": "a8a9416f13278fa0eb2c43aa6ce036c1b65a30378c0bda93e67af869c12bc401"
+    },
+    {
+      "path": "harness/compose-up.stderr.log",
+      "bytes": 469,
+      "sha256": "5a6ee58f3099b8fce2f9d8816aa36c2e82b9dd87582cdb1609ecf80d66734187"
+    },
+    {
+      "path": "harness/compose-up.stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "prompt.txt",
+      "bytes": 627,
+      "sha256": "faf3206b2bacb3dfcb2fdc57b9fa44510699fe8787ebd060835a62eb88e4dfe9"
+    },
+    {
+      "path": "run-state.json",
+      "bytes": 163,
+      "sha256": "92cfb52146a5df2d2b51ff5122c315969e92a5899607b0d481608bfd13f0725f"
+    },
+    {
+      "path": "telemetry/usage.jsonl",
+      "bytes": 3532,
+      "sha256": "a0aabd32bc6ca04a5cca3ed0d0f689ff3f66b4d356634842c35f69effb340b23"
+    },
+    {
+      "path": "transcript.txt",
+      "bytes": 839,
+      "sha256": "ebf9b0fb57e352cb0a2a8a9a9586994e772caa824fc8b43eb7ac01e780e436f6"
+    }
+  ]
+}

@@ -16,6 +16,8 @@ benchmarks/harness/.env
 
 # Benchmark runs (runs/ = public evaluation evidence & transcripts)
 benchmarks/**/artifacts/runs/.locks/
+benchmarks/**/.agent-browser/
+*.sock
 benchmarks/**/.env
 benchmarks/artifacts/
 .opencode/
