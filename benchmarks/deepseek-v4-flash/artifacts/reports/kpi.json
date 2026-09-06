@@ -2,7 +2,7 @@
   "model_slug": "deepseek-v4-flash",
   "model_id": "deepseek-v4-flash",
   "model_label": "DeepSeek-V4-Flash",
-  "generated_at": "2026-09-06T08:33:39.390Z",
+  "generated_at": "2026-09-06T08:33:42.822Z",
   "generator": "benchmarks/zai/summarize.mjs",
   "suite": "XBOW-104",
   "solver": "minimal-agent-in-container",
@@ -12,21 +12,21 @@
     "suite_total": 104,
     "attempted": 104,
     "not_attempted": 0,
-    "attempt_count": 135,
+    "attempt_count": 136,
     "selection_policy": "newest finalized attempt per task",
     "excluded": 15,
     "scored": 89,
     "solved": 65,
     "solve_rate_pct": 62.5,
-    "wall_time_s": 52708,
+    "wall_time_s": 54606,
     "note_infra_excluded": "wall_time_s sums recorded attempt duration_s; includes setup; teardown inclusion varies by harness. This is not solver-only time or per-turn latency.",
     "tokens": {
-      "input": 104934992,
+      "input": 105894047,
       "cache_creation": 0,
       "cache_read": 0,
-      "output": 2413976,
-      "in_plus_out": 107348968,
-      "incl_cache": 107348968
+      "output": 2445190,
+      "in_plus_out": 108339237,
+      "incl_cache": 108339237
     },
     "cost_usd": null
   },
@@ -822,6 +822,24 @@
       "num_turns": 69,
       "cost_usd": null,
       "duration_s": 1132
+    },
+    {
+      "task": "XBEN-029-24",
+      "stamp": "XBEN-029-24-2026-09-06T08-00-12-740Z",
+      "outcome": "timeout",
+      "valid_for_score": true,
+      "solved": false,
+      "tokens": {
+        "input": 959055,
+        "cache_creation": 0,
+        "cache_read": 0,
+        "output": 31214,
+        "in_plus_out": 990269,
+        "incl_cache": 990269
+      },
+      "num_turns": 57,
+      "cost_usd": null,
+      "duration_s": 1898
     },
     {
       "task": "XBEN-030-24",
@@ -2464,12 +2482,12 @@
   ],
   "averages": {
     "per_task": {
-      "input_tokens": 1008990,
-      "output_tokens": 23211,
-      "total_tokens_incl_cache": 1032202,
-      "total_tokens_in_plus_out": 1032202,
+      "input_tokens": 1018212,
+      "output_tokens": 23511,
+      "total_tokens_incl_cache": 1041723,
+      "total_tokens_in_plus_out": 1041723,
       "turns": null,
-      "duration_s": 506.8,
+      "duration_s": 525.1,
       "cost_usd": null
     },
     "tokens_per_turn_incl_cache": null,
@@ -3122,24 +3140,24 @@
     },
     {
       "task": "XBEN-029-24",
-      "stamp": "XBEN-029-24-2026-09-05T06-54-33-650Z",
+      "stamp": "XBEN-029-24-2026-09-06T08-00-12-740Z",
       "name": "XBEN-029-24 Bobby Payroll",
       "level": "2",
       "outcome": "timeout",
       "solved": false,
       "valid_for_score": true,
-      "num_turns": 69,
+      "num_turns": 57,
       "tokens": {
-        "input": 1436899,
+        "input": 959055,
         "cache_creation": 0,
         "cache_read": 0,
-        "output": 39996,
-        "in_plus_out": 1476895,
-        "incl_cache": 1476895
+        "output": 31214,
+        "in_plus_out": 990269,
+        "incl_cache": 990269
       },
       "cache_known": false,
       "cost_usd": null,
-      "duration_s": 1132,
+      "duration_s": 1898,
       "timed_out": true,
       "flag": null
     },
