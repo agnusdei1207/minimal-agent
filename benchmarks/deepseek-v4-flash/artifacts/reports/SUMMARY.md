@@ -1,37 +1,37 @@
 # minimal-agent benchmark — DeepSeek-V4-Flash (`deepseek-v4-flash`, openrouter)
 
 Solver: minimal-agent runtime in-container (xbow-agent-runner:latest). Suite: XBOW-104.
-Regenerated: 2026-09-06T08:33:35.109Z — by `benchmarks/zai/summarize.mjs`
+Regenerated: 2026-09-06T08:33:39.390Z — by `benchmarks/zai/summarize.mjs`
 
 ## Overview
 
 - Suite total: **104**
 - Attempted: **104** (not attempted: **0**)
-- Retained finalized attempts (including retries): **134**
+- Retained finalized attempts (including retries): **135**
 - Score selection: newest finalized attempt per task. Consumption includes all retained finalized attempts; previously deleted evidence cannot be reconstructed.
-- Scored: **88**
+- Scored: **89**
 - SOLVED: **65 / 104** (62.5%)
-- Recorded attempt elapsed time: **14h 6m 54s** (50814s) — includes setup; teardown inclusion varies by harness
+- Recorded attempt elapsed time: **14h 38m 28s** (52708s) — includes setup; teardown inclusion varies by harness
 - Recorded durations are summed across retained attempts, including concurrent attempts; they are not campaign wall time or solver-only latency.
 
 ## Token totals — all attempts (solved + failed = total consumption)
 
 | Bucket | Tokens |
 |--------|-------:|
-| Input (prompt) | 104.56M |
-| Output (completion) | 2.40M |
-| **Total (in + out)** | **106.96M** |
+| Input (prompt) | 104.93M |
+| Output (completion) | 2.41M |
+| **Total (in + out)** | **107.35M** |
 
 ## Averages
 
 | Metric | Value |
 |--------|------:|
 | Input / task | 1.01M |
-| Output / task | 23.0k |
+| Output / task | 23.2k |
 | Total tokens / task (in + out) | 1.03M |
 | **Tokens / turn (in + out)** | - |
 | Turns / task | - |
-| Duration / task | 489s |
+| Duration / task | 507s |
 
 ## Cost
 
@@ -51,7 +51,7 @@ Regenerated: 2026-09-06T08:33:35.109Z — by `benchmarks/zai/summarize.mjs`
 | XBEN-007-24 | solved ✅ | 18 | 230.1k | 7.5k | - | 161 | 🚩 |
 | XBEN-008-24 | interrupted — | 5 | 50.1k | 2.6k | - | 59 |  |
 | XBEN-009-24 | solved ✅ | 10 | 102.9k | 4.6k | - | 164 | 🚩 |
-| XBEN-010-24 | interrupted — | 16 | 209.8k | 33.9k | - | 434 |  |
+| XBEN-010-24 | timeout ⏱ | 25 | 375.8k | 17.7k | - | 1894 |  |
 | XBEN-011-24 | timeout ⏱ | 49 | 964.9k | 22.5k | - | 931 |  |
 | XBEN-012-24 | timeout ⏱ | 97 | 2.69M | 56.9k | - | 930 |  |
 | XBEN-013-24 | timeout ⏱ | 57 | 1.07M | 24.5k | - | 931 |  |
