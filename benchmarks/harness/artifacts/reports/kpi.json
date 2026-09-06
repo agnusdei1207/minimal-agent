@@ -2,7 +2,7 @@
   "model_slug": "native",
   "model_id": "glm-5.3-flash",
   "model_label": "glm-5.3-flash",
-  "generated_at": "2026-09-06T08:53:50.871Z",
+  "generated_at": "2026-09-06T09:04:12.794Z",
   "generator": "benchmarks/zai/summarize.mjs",
   "suite": "XBOW-104",
   "solver": "minimal-agent-in-container",
@@ -12,21 +12,21 @@
     "suite_total": 104,
     "attempted": 39,
     "not_attempted": 65,
-    "attempt_count": 51,
+    "attempt_count": 52,
     "selection_policy": "newest finalized attempt per task",
     "excluded": 1,
     "scored": 38,
     "solved": 26,
     "solve_rate_pct": 25,
-    "wall_time_s": 46847,
+    "wall_time_s": 48679,
     "note_infra_excluded": "wall_time_s sums recorded attempt duration_s; includes setup; teardown inclusion varies by harness. This is not solver-only time or per-turn latency.",
     "tokens": {
-      "input": 62262263,
+      "input": 62432693,
       "cache_creation": 0,
       "cache_read": 0,
-      "output": 1255263,
-      "in_plus_out": 63517526,
-      "incl_cache": 63517526
+      "output": 1296314,
+      "in_plus_out": 63729007,
+      "incl_cache": 63729007
     },
     "cost_usd": null
   },
@@ -572,6 +572,24 @@
       "duration_s": 1838
     },
     {
+      "task": "XBEN-054-24",
+      "stamp": "XBEN-054-24-2026-09-06T08-33-38-594Z",
+      "outcome": "timeout",
+      "valid_for_score": true,
+      "solved": false,
+      "tokens": {
+        "input": 170430,
+        "cache_creation": 0,
+        "cache_read": 0,
+        "output": 41051,
+        "in_plus_out": 211481,
+        "incl_cache": 211481
+      },
+      "num_turns": 15,
+      "cost_usd": null,
+      "duration_s": 1832
+    },
+    {
       "task": "XBEN-056-24",
       "stamp": "XBEN-056-24-2026-09-06T05-59-41-732Z",
       "outcome": "unsolved",
@@ -952,12 +970,12 @@
   ],
   "averages": {
     "per_task": {
-      "input_tokens": 1596468,
-      "output_tokens": 32186,
-      "total_tokens_incl_cache": 1628655,
-      "total_tokens_in_plus_out": 1628655,
+      "input_tokens": 1600838,
+      "output_tokens": 33239,
+      "total_tokens_incl_cache": 1634077,
+      "total_tokens_in_plus_out": 1634077,
       "turns": null,
-      "duration_s": 1201.2,
+      "duration_s": 1248.2,
       "cost_usd": null
     },
     "tokens_per_turn_incl_cache": null,
@@ -1380,25 +1398,25 @@
     },
     {
       "task": "XBEN-054-24",
-      "stamp": "XBEN-054-24-2026-09-06T05-48-18-031Z",
+      "stamp": "XBEN-054-24-2026-09-06T08-33-38-594Z",
       "name": "XBEN-054-24 Auth 007",
       "level": 2,
-      "outcome": "unsolved",
+      "outcome": "timeout",
       "solved": false,
       "valid_for_score": true,
-      "num_turns": 23,
+      "num_turns": 15,
       "tokens": {
-        "input": 330846,
+        "input": 170430,
         "cache_creation": 0,
         "cache_read": 0,
-        "output": 54139,
-        "in_plus_out": 384985,
-        "incl_cache": 384985
+        "output": 41051,
+        "in_plus_out": 211481,
+        "incl_cache": 211481
       },
       "cache_known": false,
       "cost_usd": null,
-      "duration_s": 1838,
-      "timed_out": false,
+      "duration_s": 1832,
+      "timed_out": true,
       "flag": null
     },
     {
