@@ -20,6 +20,12 @@ async function requireText(path, fragments) {
   }
 }
 
+function hasInstruction(dockerfileContent, instruction) {
+  return dockerfileContent
+    .split(/\r?\n/)
+    .some((line) => !line.trim().startsWith("#") && line.includes(instruction));
+}
+
 requireEqual(manifest.name, "minimal-agent", "package name");
 requireEqual(manifest.engines?.node, ">=24 <25", "Node engine");
 if (!manifest.description?.includes("powered by Rust")) {
@@ -73,7 +79,7 @@ await requireText("docker/app.Dockerfile", [
   `ARG VERSION=${version}`,
   "USER 10001:10001",
 ]);
-if ((await read("docker/app.Dockerfile")).includes("apt-get")) {
+if (hasInstruction(await read("docker/app.Dockerfile"), "apt-get")) {
   throw new Error("docker/app.Dockerfile must not add an apt-get layer");
 }
 await requireText("docker/runtime-base.Dockerfile", [
@@ -83,7 +89,7 @@ await requireText("docker/runtime-base.Dockerfile", [
   "apt install -y --no-install-recommends",
   "docker/install-browser.sh",
 ]);
-if ((await read("docker/runtime-base.Dockerfile")).includes("apt-get")) {
+if (hasInstruction(await read("docker/runtime-base.Dockerfile"), "apt-get")) {
   throw new Error("docker/runtime-base.Dockerfile must use apt, not apt-get");
 }
 await requireText("docker/install-browser.sh", [

@@ -9,6 +9,10 @@ COPY src ./src
 COPY prompts ./prompts
 RUN cargo build --locked --release --bin minimal-agent
 
+# CRITICAL REPOSITORY INVARIANT:
+# Do not add package manager layers (apt or apt-get) to app.Dockerfile.
+# All system tools and runtime libraries belong exclusively in runtime-base.Dockerfile.
+# Any use of 'apt-get' in Dockerfiles is strictly rejected by scripts/verify-project.mjs.
 FROM runtime-base
 ARG VERSION=0.110.0
 LABEL org.opencontainers.image.title="minimal-agent" \

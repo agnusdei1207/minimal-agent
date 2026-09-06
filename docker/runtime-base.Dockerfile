@@ -12,6 +12,10 @@ ENV DEBIAN_FRONTEND=noninteractive \
     LANG=en_US.UTF-8 \
     LC_ALL=en_US.UTF-8
 
+# CRITICAL REPOSITORY INVARIANT:
+# ALWAYS use 'apt' (e.g. `apt update -qq`, `apt install -y`), NEVER 'apt-get'.
+# 'apt' provides modernized dependency resolution and cleaner output in Debian/Ubuntu containers.
+# Any use of 'apt-get' in Dockerfiles is strictly rejected by scripts/verify-project.mjs.
 RUN if [ -f /etc/apt/sources.list.d/ubuntu.sources ]; then \
       sed -i 's/Components: main/Components: main universe multiverse/g' /etc/apt/sources.list.d/ubuntu.sources; \
     fi \
@@ -83,6 +87,7 @@ RUN if [ -f /etc/apt/sources.list.d/ubuntu.sources ]; then \
 # install what they still need at runtime (they have passwordless sudo). A rockyou
 # fetch that flakes must not brick the base image, so it is best-effort — the agent can
 # always pull wordlists (e.g. SecLists) itself when needed.
+# NOTE: Use 'apt', NEVER 'apt-get'. Always chain update and install in the same RUN layer.
 RUN apt update -qq \
     && apt install -y --no-install-recommends \
       build-essential \
