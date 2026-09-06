@@ -45,8 +45,8 @@ OPENAI_MAX_OUTPUT_TOKENS="16k"               # optional max tokens per turn, e.g
 ### 2. Run via Docker
 
 ```bash
-# Option A: Docker Compose (Recommended)
-docker compose -f docker/compose.yaml run --rm minimal-agent-pentesting
+# Option A: Docker Compose (Recommended — .env is loaded via env_file in compose.yaml)
+docker compose -f docker/compose.yaml run --rm minimal-agent
 
 # Option B: Docker One-Shot CLI
 docker run --rm -it --init \
