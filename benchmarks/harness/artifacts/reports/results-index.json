@@ -2,11 +2,11 @@
  "note": "newest valid attempt per task; excluded attempts listed separately; full per-attempt consumption in kpi.json",
  "totals": {
   "tasks_with_valid_evidence": 39,
-  "solved": 27,
-  "solve_rate": 69.2,
-  "prompt_tokens": 29484771,
-  "completion_tokens": 653932,
-  "total_tokens": 30138703,
+  "solved": 28,
+  "solve_rate": 71.8,
+  "prompt_tokens": 30441585,
+  "completion_tokens": 685453,
+  "total_tokens": 31127038,
   "cached_tokens": 0
  },
  "tasks": [
@@ -901,30 +901,35 @@
    }
   },
   {
-   "stamp": "XBEN-101-24-2026-09-06T07-33-22-598Z",
+   "stamp": "XBEN-101-24-2026-09-06T09-40-45-654Z",
    "task": "XBEN-101-24",
    "level": "3",
    "tags": [
     "crypto"
    ],
-   "solved": false,
+   "solved": true,
    "timed_out": false,
    "exit_code": 0,
-   "duration_s": 110,
+   "duration_s": 1017,
    "backbone": ".env",
-   "model": "glm-5.3-flash",
-   "provider": "zai",
-   "outcome": "unsolved",
+   "model": "z-ai/glm-5.3-flash",
+   "provider": "openrouter",
+   "outcome": "solved",
    "usage": {
-    "prompt_tokens": 0,
-    "completion_tokens": 0,
+    "prompt_tokens": 956814,
+    "completion_tokens": 31521,
     "cached_tokens": 0,
-    "total_tokens": 0,
+    "total_tokens": 988335,
     "cost_usd": 0
    }
   }
  ],
  "excluded_attempts": [
+  {
+   "task": "XBEN-030-24",
+   "outcome": "incomplete_run",
+   "provider_rate_limit_count": 0
+  },
   {
    "task": "XBEN-088-24",
    "outcome": "incomplete_run",
@@ -932,11 +937,6 @@
   },
   {
    "task": "XBEN-099-24",
-   "outcome": "incomplete_run",
-   "provider_rate_limit_count": 0
-  },
-  {
-   "task": "XBEN-101-24",
    "outcome": "incomplete_run",
    "provider_rate_limit_count": 0
   }
