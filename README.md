@@ -49,10 +49,10 @@ Create a `.env` file in the project root:
 
 ```bash
 OPENAI_API_KEY="your-api-key"
-OPENAI_MODEL="your-model-name"                # e.g. glm-5.3-flash, gpt-4o, claude-3-5-sonnet
-OPENAI_BASE_URL="https://api.openai.com/v1"  # optional
-OPENAI_MAX_OUTPUT_TOKENS="16k"               # optional max tokens per turn, e.g. 16k, 32k
-# OPENROUTER_API_KEY="your-key"               # optional
+OPENAI_MODEL="your-model-name"                # e.g. glm-5.3-flash, ~deepseek/deepseek-v4-flash-latest
+OPENAI_BASE_URL="https://api.openai.com/v1"  # optional, e.g. https://openrouter.ai/api/v1
+OPENAI_CONTEXT_TOKENS="128k"                 # optional context window ceiling, e.g. 128k, 1m
+OPENAI_MAX_OUTPUT_TOKENS="16k"               # optional max output tokens per turn, e.g. 16k, 32k
 ```
 
 ### 2. Run via Docker
