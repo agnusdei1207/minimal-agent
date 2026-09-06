@@ -7,17 +7,12 @@
 
 ## 📊 Benchmark — XBOW-104
 
-Empirical evaluation on the XBOW-104 web exploitation suite (104 single-flag CTFs) with `glm-5.3-flash` (z.ai) under zero human intervention:
+Empirical evaluation on the **XBOW-104** web exploitation suite (104 single-flag CTFs) under zero human intervention across flash-tier models:
 
-| Metric | Value |
-| :--- | :--- |
-| **Suite Solve Rate** | **94 / 104 (90.4%)** |
-| **Avg Input Tokens / Task** | **1.67M tokens** |
-| **Avg Output Tokens / Task** | **31.6k tokens** |
-| **Avg Total Tokens / Task** | **1.70M tokens** |
-| **Total Tokens Consumed** | **176.58M tokens** (Input: 173.29M · Output: 3.28M) |
-| **Total Cost** | **~$8.90** (Input: 90% cached at $0.03/1M, 10% uncached at $0.15/1M · Output: $0.50/1M) |
-| **Avg Time / Task** | ~23 min / task (1,355s) |
+| Model | Solve Rate | Solved / Total | Input Tokens | Output Tokens | Total Tokens | Avg Time / Task | Est. Cost |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| **DeepSeek-V4-Flash** | **90.4%** `█████████░` | **94 / 104** | 159.43M | 3.83M | **163.26M** | **~16.1 min** (969s) | ~$23.40 |
+| **GLM-5.3-Flash** | **90.4%** `█████████░` | **94 / 104** | 173.29M | 3.28M | **176.58M** | **~22.6 min** (1,355s) | **~$8.90** |
 </div>
 
 <div align="center">
@@ -25,6 +20,47 @@ Empirical evaluation on the XBOW-104 web exploitation suite (104 single-flag CTF
 ![Benchmark Overview](./assets/benchmark_overview.png)
 
 </div>
+
+### 📈 Head-to-Head Comparison
+
+| Metric | GLM-5.3-Flash (z.ai) | DeepSeek-V4-Flash (OpenRouter) | Analysis / Advantage |
+| :--- | :---: | :---: | :---: |
+| **Suite Solve Rate** | **94 / 104 (90.4%)** | **94 / 104 (90.4%)** | **Parity** — Both achieve top-tier 90%+ autonomous CTF solve |
+| **Total Tokens Consumed** | 176.58M tokens | **163.26M tokens** | **DeepSeek-V4-Flash** (**-7.5%** fewer tokens consumed) |
+| **Input Tokens** | 173.29M tokens | **159.43M tokens** | **DeepSeek-V4-Flash** (**-8.0%** fewer input tokens) |
+| **Output / Reasoning Tokens** | **3.28M tokens** | 3.83M tokens | **GLM-5.3-Flash** (More concise response lengths) |
+| **Avg Tokens / Task** | ~1.70M tokens | **~1.57M tokens** | **DeepSeek-V4-Flash** (Higher per-turn token efficiency) |
+| **Total Execution Time** | 140,967s (~39.2h) | **100,828s (~28.0h)** | **DeepSeek-V4-Flash** (**28.5% faster** total wall time) |
+| **Avg Duration / Task** | ~22.6 min (1,355s) | **~16.1 min (969s)** | **DeepSeek-V4-Flash** (**6.5 minutes faster** per challenge) |
+| **Total Cost** | **~$8.90** | ~$23.40 | **GLM-5.3-Flash** (2.6× more cost-effective) |
+
+### 📊 Visual Comparison
+
+```text
+Solve Rate (Higher is better)
+────────────────────────────────────────────────────────────────────────
+DeepSeek-V4-Flash [██████████████████░░] 90.4% (94 / 104 solved)
+GLM-5.3-Flash     [██████████████████░░] 90.4% (94 / 104 solved)
+
+Token Efficiency (Total tokens consumed · Lower is better)
+────────────────────────────────────────────────────────────────────────
+DeepSeek-V4-Flash █ 163.26M tokens  [-7.5% tokens]
+GLM-5.3-Flash     ██ 176.58M tokens
+
+Average Time per Task (Wall clock time · Lower is faster)
+────────────────────────────────────────────────────────────────────────
+DeepSeek-V4-Flash █ 16.1 min (969s)   [-28.5% faster]
+GLM-5.3-Flash     ██ 22.6 min (1,355s)
+```
+
+```mermaid
+%%{init: {'theme': 'dark'}}%%
+xychart-beta
+    title "XBOW-104 Suite Solve Rate (%)"
+    x-axis ["GLM-5.3-Flash", "DeepSeek-V4-Flash"]
+    y-axis "Solve Rate (%)" 0 --> 100
+    bar [90.4, 90.4]
+```
 
 
 
@@ -83,7 +119,7 @@ minimal-agent-pentesting run --goal "Investigate the target and solve the object
 ---
 
 
-Raw audit manifests and per-task run logs are maintained in [`benchmarks/zai/`](benchmarks/zai/README.md).
+Raw audit manifests and per-task run logs are maintained in [`benchmarks/zai/`](benchmarks/zai/README.md) (GLM-5.3-Flash) and [`benchmarks/deepseek-v4-flash/`](benchmarks/deepseek-v4-flash/artifacts/reports/SUMMARY.md) (DeepSeek-V4-Flash).
 
 ---
 
