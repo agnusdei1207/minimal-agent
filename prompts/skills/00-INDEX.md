@@ -22,7 +22,7 @@ This folder holds principle-level direction cards for international CTF and adva
 | # | Card | Primary Domain / Triggers |
 |---|---|---|
 | 01 | [Recon & Enumeration](01-recon-and-enumeration.md) | Surface mapping, port/service scans, vhost/endpoint/DNS discovery |
-| 02 | [Web Application](02-web-application.md) | Injection (SQL/SSTI/Cmd), Prototype Pollution, Deserialization, SSRF, Auth |
+| 02 | [Web Application](02-web-application.md) | Headless Browser (agent-browser), Injection (SQL/SSTI/Cmd), Prototype Pollution, Deserialization, SSRF, Auth |
 | 03 | [Network Sniffing & MITM](03-network-sniffing-and-mitm.md) | Cleartext protocols, ARP/LLMNR/mDNS spoofing, traffic interception & relay |
 | 04 | [Password & Credential Attacks](04-password-and-credential-attacks.md) | Hash cracking (hashcat/john), Kerberoast/AS-REP, spraying, token reuse |
 | 05 | [Linux Privilege Escalation](05-linux-privilege-escalation.md) | SUID/capabilities, sudo misconfigs, cron/service hijacking, kernel & container breakout |

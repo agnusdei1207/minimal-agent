@@ -102,6 +102,22 @@ Rust 코어에 무거운 브라우저 바인딩이나 별도 함수 도구를 �
 - `benchmarks/harness/runner.mjs` 및 모든 에이전트 컨테이너 기동 명령에 Docker `--init` 플래그를 강제했다.
 - Docker 내장 경량 init(`tini`)이 PID 1을 맡아, 충돌하거나 비정상 종료된 브라우저/서브프로세스의 고아 프로세스를 0ms 내에 완전히 회수(reap)하여 `ps aux` 상의 `<defunct>` 좀비 착시 루프를 영구 제거했다.
 
+### 3.7 모델 사전학습 공백 극복을 위한 이중 주입 구조 (Dual Injection Architecture) [반영 완료]
+- **사전학습 가중치 공백 (Pre-training Gap):** `agent-browser`는 최근(2025/2026) 등장한 CLI 도구이므로, GLM-5.3, DeepSeek-v4, Llama 3 등 일반 LLM의 사전학습 가중치에는 해당 명령어 명칭이나 옵션 체계(`snapshot -i -c`, `@e1`, `click`, `fill`)가 학습되어 있지 않다.
+- **지연 로딩(Lazy Loading)의 한계와 해법:** 온디스크 스킬 파일(`/opt/minimal-agent/skills/02-web-application.md`)에만 사용법을 둘 경우, 에이전트가 자발적으로 해당 카드를 읽지 않는 한 도구의 존재 자체를 인지하지 못하고 과거 익숙한 `selenium`/`playwright`/`google-chrome --dump-dom` 스크립트를 작성하여 모달 프리징 함정에 빠지게 된다.
+- **상시 주입(시스템 프롬프트) + 지연 로딩(스킬 카드) 이원화:**
+  1. **상시 앵커링 (Core Anchor, ~40토큰):** 모든 에이전트에게 매 턴 기본 주입되는 `prompts/tradecraft.md`의 `BROWSER AUTOMATION` 섹션에 `agent-browser`의 존재, 기본 구문(`open`, `snapshot -i -c`, `click`, `fill`), 세션 격리(`--session`), 스킬 카드 참조 경로를 3줄로 명시하여 도구 발견성을 100% 보장.
+  2. **심층 프로토콜 (Deep Methodology):** 세부적인 SPA 로드 대기, DOM 정밀 검증, 다계층 텍스트 파이프라인(`w3m`/`html2text`)은 `/opt/minimal-agent/skills/02-web-application.md`에 배치하여 컨텍스트 낭비를 최소화.
+
+### 3.8 멀티 에이전트 팀 브라우저 세션 격리 (`--session <agent-id>`) [반영 완료]
+- `minimal-agent`는 단일 컨테이너 내부에서 최대 10명의 에이전트(Main, Workers)가 병렬로 작동한다(ADR-0004).
+- 별도의 세션 플래그 없이 `agent-browser open`을 호출하면 모든 에이전트가 기본 Chromium 인스턴스를 공유하게 되어, 한 에이전트가 다른 에이전트의 페이지를 덮어쓰고 DOM `@eN` 참조를 무효화하는 치명적인 상호 간섭(Race Condition)이 발생한다.
+- 따라서 모든 브라우저 호출 규약에 `--session <agent-id>` (예: `agent-browser --session "$AGENT_ID" open <url>`)를 의무화하여 독립된 브라우징 컨텍스트를 완벽히 격리했다.
+
+### 3.9 SPA 비동기 렌더링 안정화 및 세션 수명 관리 [반영 완료]
+- **비동기 렌더링 대기:** React, Vue 등 단일 페이지 애플리케이션(SPA)에서 페이지 이동 직후 DOM이 완성되기 전에 스냅샷을 찍어 빈 껍데기 화면을 관측하는 현상을 방지하기 위해 `agent-browser wait --load networkidle` 규약을 추가했다.
+- **유휴 세션 수명(3분):** 컨테이너 데몬의 `IDLE_TIMEOUT=180000`(3분 유휴 자동 종료) 메커니즘을 명시하여, 장시간 오프라인 작업 후 브라우저 세션이 초기화되는 함정에 빠지지 않도록 가이드를 수립했다.
+
 ---
 
 ## 4. 제거된 군더더기 및 안티패턴 (Eliminated Redundancies & Anti-Patterns)
@@ -130,6 +146,8 @@ Rust 코어에 무거운 브라우저 바인딩이나 별도 함수 도구를 �
 | **5. 모든 도구의 전면 백그라운드/비동기 호출 모델** | 인과성 파괴, 결과 확인을 위한 무의미한 폴링(`sleep`) 루프로 턴 수 3~4배 폭증, 백그라운드 프로세스 누적으로 인한 OOM 크래시. | "95% 동기식(`bash`) + 5% 명시적 비동기(`tmux`)" 이원화 모델 (ADR-0003 §3.5) |
 | **6. 쉘 전역 타임아웃 일괄 단축 (예: 30초 고정 제한)** | `nmap`, `ffuf`, `dirb` 등 정상적인 고지연 대용량 정찰 도구들의 정상 실행을 방해하여 분석 자체가 불가능해짐. | `bash` 도구에 `timeout_secs` 선택 파라미터 자율권을 부여하여 에이전트가 소요 시간을 직접 판단 (ADR-0003 §3.4) |
 | **7. 로컬 무거운 자동화 프레임워크 스크립트 작성 유도 (`playwright`, `puppeteer`, 원시 `google-chrome`)** | `alert()` 다이얼로그 모달 락업으로 인한 15분 타임아웃 프리징 및 `<defunct>` 좀비 착시 루프. 인스턴스당 300~700MB RAM 점유로 호스트 OOM 유발. | PATH 상의 원시 크롬 실행을 가드 래퍼로 차단하고, 다이얼로그 자동 수락 CLI(`agent-browser`) 강제 |
+| **8. 스킬 파일에만 브라우저 도구를 두고 시스템 프롬프트 안내를 생략하는 방식 (순수 지연 로딩 의존)** | 일반 LLM(GLM, DeepSeek 등)의 사전학습 가중치에 최신 도구인 `agent-browser`가 없어, 스킬을 열어보지 않으면 도구 존재를 인지하지 못하고 과거의 Selenium/크롬 작성 함정으로 회귀. | 시스템 프롬프트(`tradecraft.md`)에 ~40토큰 상시 앵커링 주입 + 스킬 카드에 심층 프로토콜을 배치하는 이중 주입 구조(Dual Injection) 채택 (§3.7) |
+| **9. 멀티에이전트 브라우저 단일 세션 공유 (세션 격리 플래그 생략)** | 최대 10명의 에이전트(Main, Workers)가 병렬로 웹 정찰 시 단일 브라우저 인스턴스를 공유하여 페이지 덮어쓰기 및 `@eN` 참조 파괴(Race Condition) 발생. | 모든 브라우저 호출 규약에 `--session <agent-id>`를 의무화하여 컨텍스트 독립 격리 (§3.8) |
 
 ---
 

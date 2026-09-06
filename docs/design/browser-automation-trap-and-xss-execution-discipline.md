@@ -92,6 +92,17 @@ In `crates/ma-runtime`:
 - Instead, long scans are instructed to run via `tmux` or background redirects (`nohup ... > scan.log &`), allowing the agent to poll incremental progress without blocking its reasoning turn.
 - Interactive CLI tools that require terminal input (like unhandled browser prompts) are killed cleanly on timeout with process group signals (`kill(-pid, SIGKILL)`).
 
+### Layer 4: Model Pre-training Gap & Dual Injection Architecture
+- **The Pre-training Blindness Risk:** `agent-browser` is a modern (2025/2026) CLI utility. Pre-trained weights of general LLMs (GLM-5.3, DeepSeek-v4, Llama 3) lack knowledge of this command. If the tool is documented only in on-disk skill files (`/opt/minimal-agent/skills/02-web-application.md`), an agent that does not proactively read the skill card remains completely blind to its existence and falls back to writing dangerous Selenium/Playwright scripts.
+- **Dual Injection Solution:**
+  1. **Core Prompt Anchor (`prompts/tradecraft.md`):** A ~40-token directive (`BROWSER AUTOMATION`) is permanently baked into every agent's system prompt, explaining `agent-browser open`, `snapshot -i -c` (accessibility tree), `@eN` refs, dialog auto-dismissal, and `--session`.
+  2. **Detailed Skill Card (`prompts/skills/02-web-application.md`):** Comprehensive instructions (DOM pinpoint queries, SPA `wait --load networkidle`, `w3m`/`html2text` text dumps) reside on disk, keeping the core prompt lean.
+
+### Layer 5: Multi-Agent Session Isolation (`--session <agent-id>`)
+- In multi-agent team engagements (Main Coordinator + Leaf Workers, ADR-0004), multiple agents execute commands within the same shared container filesystem.
+- Running bare `agent-browser open` shares a single default Chromium instance. Concurrent actions by teammates overwrite URLs, destroy page history, and invalidate active `@eN` accessibility references.
+- All agent interactions must specify `--session <agent-id>` (e.g. `agent-browser --session "$AGENT_ID" open <url>`), creating completely isolated browser daemon processes and preventing cross-agent race conditions.
+
 ---
 
 ## 5. Architectural Checklist for Future Tasks

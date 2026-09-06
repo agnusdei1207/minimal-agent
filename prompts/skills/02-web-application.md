@@ -44,18 +44,22 @@ Ways to establish a differential signal:
 Avoid dumping unconstrained raw HTML to stdout: the runtime caps output at 16KB (`MAX_TOOL_CONTEXT_BYTES`) and truncates the middle of large outputs (`[... bytes omitted ...]`), which strips forms, hidden tokens, and input parameters. Instead, observe web applications via structured, compact channels:
 
 1. **Dynamic / Interactive Pages (`agent-browser`):**
-   - **Navigate:** `agent-browser open <target-url>`
-   - **Compact Observation:** `agent-browser snapshot -i -c`
+   - **Multi-Agent Session Isolation:** In a multi-agent team (Main, Workers), all agents share the container. You MUST pass `--session <name>` (e.g. `--session "$AGENT_ID"` or `--session worker-1`) to isolate your Chromium context. Omitting `--session` causes concurrent teammates to hijack the default browser instance, invalidate each other's `@eN` references, and scramble page states.
+   - **Navigate:** `agent-browser --session "$AGENT_ID" open <target-url>`
+   - **SPA / Async Load Stabilization:** On dynamic single-page applications (React, Vue, Angular), wait for background fetch/XHR network activity to settle before taking a snapshot:
+     `agent-browser --session "$AGENT_ID" wait --load networkidle`
+   - **Compact Observation:** `agent-browser --session "$AGENT_ID" snapshot -i -c`
      Emits interactive elements as an accessibility tree (~150-300 tokens) with numeric refs (`@e1`, `@e2`), completely stripping away CSS classes, SVG paths, and decorative layout divs.
    - **Action via Refs:**
-     - `agent-browser click @e3`
-     - `agent-browser fill @e2 "payload"`
-     - `agent-browser press Enter`
-   - **Mutation Refresh:** Page navigations, dynamic modal opens, or DOM rerenders invalidate refs. Always re-run `agent-browser snapshot -i -c` after actions to obtain fresh element IDs.
+     - `agent-browser --session "$AGENT_ID" click @e3`
+     - `agent-browser --session "$AGENT_ID" fill @e2 "payload"`
+     - `agent-browser --session "$AGENT_ID" press Enter`
+   - **Mutation Refresh:** Page navigations, dynamic modal opens, or DOM rerenders invalidate refs. Always re-run `agent-browser --session "$AGENT_ID" snapshot -i -c` after actions to obtain fresh element IDs.
    - **Pinpoint DOM Verification:** When verifying reflected XSS payloads or specific input attributes, never dump full page HTML. Extract only the target node:
-     - `agent-browser get html @e2` (retrieves innerHTML of target element only)
-     - `agent-browser get attr @e2 <attribute>` (e.g. `href`, `action`, `value`)
-   - **Cleanup:** Run `agent-browser close` when the browser session concludes.
+     - `agent-browser --session "$AGENT_ID" get html @e2` (retrieves innerHTML of target element only)
+     - `agent-browser --session "$AGENT_ID" get attr @e2 <attribute>` (e.g. `href`, `action`, `value`)
+   - **Idle Session Lifespan:** Inactive browser sessions are automatically terminated by the daemon after 3 minutes of inactivity (`IDLE_TIMEOUT=180000`). If returning to browser work after a prolonged offline task, re-verify or re-open the session.
+   - **Cleanup:** Run `agent-browser --session "$AGENT_ID" close` when the browser session concludes.
 
 2. **Static HTTP & Fast Reconnaissance (`curl` / Python):**
    - Never print megabyte-scale HTML responses directly into stdout.
