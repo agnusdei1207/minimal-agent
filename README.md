@@ -33,7 +33,7 @@ Empirical evaluation on the **XBOW-104** web exploitation suite (104 single-flag
 # .env
 
 OPENAI_API_KEY="your-api-key"
-OPENAI_MODEL="your-model-name"                # e.g. glm-5.3-flash, ~deepseek/deepseek-v4-flash-latest
+OPENAI_MODEL="your-model-name"
 OPENAI_BASE_URL="https://api.openai.com/v1"  # optional, e.g. https://openrouter.ai/api/v1
 OPENAI_CONTEXT_TOKENS="128k"                 # optional context ceiling, e.g. 128k, 1m
 OPENAI_MAX_OUTPUT_TOKENS="16k"               # optional max output per turn, e.g. 16k, 32k
@@ -45,7 +45,16 @@ OPENAI_MAX_OUTPUT_TOKENS="16k"               # optional max output per turn, e.g
 # Option A: Docker Compose (Recommended)
 docker compose --env-file .env -f docker/compose.yaml run --rm minimal-agent
 
-# Option B: Docker CLI
+# Option B: Docker CLI — Interactive TUI
+docker run --rm -it --init \
+  --cap-add=NET_RAW --cap-add=NET_ADMIN \
+  --env OPENAI_API_KEY="your-api-key" \
+  --env OPENAI_MODEL="your-model-name" \
+  -v ${PWD}/workspace:/workspace \
+  -v ${PWD}/runs:/state \
+  agnusdei1207/minimal-agent-pentesting:latest
+
+# Option C: Docker CLI — One-shot Goal
 docker run --rm -it --init \
   --cap-add=NET_RAW --cap-add=NET_ADMIN \
   --env OPENAI_API_KEY="your-api-key" \
@@ -62,8 +71,11 @@ docker run --rm -it --init \
 # Option A: Build and launch isolated Docker TUI
 npm run check
 
-# Option B: Global CLI installation
+# Option B: Global CLI — Interactive TUI
 npm install --global minimal-agent-pentesting
+minimal-agent-pentesting
+
+# Option C: Global CLI — One-shot Goal
 minimal-agent-pentesting run --goal "Investigate the target and solve the objective" --workspace .
 ```
 
