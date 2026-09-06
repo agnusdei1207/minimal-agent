@@ -13,7 +13,7 @@ Empirical evaluation on the **XBOW-104** web exploitation suite (104 single-flag
 
 <div align="center">
 
-![Benchmark Overview](./assets/benchmark_matrix.svg)
+![Benchmark Overview](https://raw.githubusercontent.com/agnusdei1207/minimal-agent-pentesting/main/assets/benchmark_matrix.svg)
 
 </div>
 
