@@ -4,8 +4,8 @@
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Built with Rust](https://img.shields.io/badge/built%20with-Rust-000000?logo=rust)](https://www.rust-lang.org/)
-[![XBOW-104 Suite](https://img.shields.io/badge/XBOW--104-93.3%25%20Solved-C8FF00?style=flat&labelColor=000000)](benchmarks/deepseek-v4-flash/artifacts/reports/SUMMARY.md)
-[![DeepSeek-V4-Flash](https://img.shields.io/badge/DeepSeek--V4--Flash-97%2F104%20(93.3%25)-C8FF00?style=flat&labelColor=000000)](benchmarks/deepseek-v4-flash/artifacts/reports/SUMMARY.md)
+[![XBOW-104 Suite](https://img.shields.io/badge/XBOW--104-94.2%25%20Solved-C8FF00?style=flat&labelColor=000000)](benchmarks/deepseek-v4-flash/artifacts/reports/SUMMARY.md)
+[![DeepSeek-V4-Flash](https://img.shields.io/badge/DeepSeek--V4--Flash-98%2F104%20(94.2%25)-C8FF00?style=flat&labelColor=000000)](benchmarks/deepseek-v4-flash/artifacts/reports/SUMMARY.md)
 [![GLM-5.3-Flash](https://img.shields.io/badge/GLM--5.3--Flash-94%2F104%20(90.4%25)-A8D600?style=flat&labelColor=000000)](benchmarks/zai/README.md)
 
 ## 📊 Benchmark — XBOW-104
@@ -20,12 +20,12 @@ Empirical evaluation on the **XBOW-104** web exploitation suite (104 single-flag
 
 | Metric | GLM-5.3-Flash (z.ai) | DeepSeek-V4-Flash (OpenRouter) | Analysis / Advantage |
 | :--- | :---: | :---: | :---: |
-| **Suite Solve Rate** | 90.4% (94 / 104) `█████████░` | **93.3% (97 / 104)** `█████████▎` | **DeepSeek-V4-Flash** (+2.9%p, +3 solved) |
-| **Total Tokens Consumed** | 176.58M tokens | **166.16M tokens** | **DeepSeek-V4-Flash** (**-5.9%** fewer tokens) |
-| **Input / Output Breakdown** | In: 173.29M · Out: 3.28M | In: 162.24M · Out: 3.92M | GLM has slightly more concise outputs |
+| **Suite Solve Rate** | 90.4% (94 / 104) `█████████░` | **94.2% (98 / 104)** `█████████▍` | **DeepSeek-V4-Flash** (+3.8%p, +4 solved) |
+| **Total Tokens Consumed** | 176.58M tokens | **167.91M tokens** | **DeepSeek-V4-Flash** (**-4.9%** fewer tokens) |
+| **Input / Output Breakdown** | In: 173.29M · Out: 3.28M | In: 163.95M · Out: 3.96M | GLM has slightly more concise outputs |
 | **Avg Duration / Task** | ~22.6 min (1,355s) | **~16.2 min (972s)** | **DeepSeek-V4-Flash** (**28% faster** / task) |
-| **Total Execution Time** | 140,967s (~39.2h) | **102,920s (~28.5h)** | **DeepSeek-V4-Flash** (~11h faster wall time) |
-| **Total Cost** | **~$8.90** | ~$23.80 | **GLM-5.3-Flash** (2.6× more cost-effective) |
+| **Total Execution Time** | 140,967s (~39.2h) | **103,906s (~28.8h)** | **DeepSeek-V4-Flash** (~10.4h faster wall time) |
+| **Total Cost** | **~$8.90** | ~$24.10 | **GLM-5.3-Flash** (2.7× more cost-effective) |
 </div>
 
 ### 📊 Visual Overview
@@ -33,14 +33,14 @@ Empirical evaluation on the **XBOW-104** web exploitation suite (104 single-flag
 ```text
 Solve Rate (Higher is better)
 ────────────────────────────────────────────────────────────────────────
-DeepSeek-V4-Flash [██████████████████▎░] 93.3% (97 / 104 solved)
+DeepSeek-V4-Flash [██████████████████▍░] 94.2% (98 / 104 solved)
 GLM-5.3-Flash     [██████████████████░░] 90.4% (94 / 104 solved)
 
 Key Efficiency Benchmarks (Lower is better)
 ────────────────────────────────────────────────────────────────────────
-Tokens: DeepSeek-V4-Flash 166.2M [█████████░] vs GLM 176.6M [██████████] (-5.9%)
+Tokens: DeepSeek-V4-Flash 167.9M [█████████░] vs GLM 176.6M [██████████] (-4.9%)
 Speed:  DeepSeek-V4-Flash 16.2m  [███████░░░] vs GLM 22.6m  [██████████] (+28% faster)
-Cost:   GLM-5.3-Flash     $8.90  [███░░░░░░░] vs DeepSeek   $23.80 [██████████] (2.6x cheaper)
+Cost:   GLM-5.3-Flash     $8.90  [███░░░░░░░] vs DeepSeek   $24.10 [██████████] (2.7x cheaper)
 ```
 
 ### 🎯 Exploit Domain & Difficulty Breakdown
@@ -54,7 +54,7 @@ Cost:   GLM-5.3-Flash     $8.90  [███░░░░░░░] vs DeepSeek   
 | Exploit Domain | Total Tasks | GLM-5.3-Flash | DeepSeek-V4-Flash | Difference / Key Characteristic |
 | :--- | :---: | :---: | :---: | :---: |
 | **XSS** | 23 | 22 / 23 (96%) | 22 / 23 (96%) | GLM uniquely solved `087`, DeepSeek solved `010` |
-| **SSTI** | 13 | 11 / 13 (85%) | 11 / 13 (85%) | Parity across template engines (Jinja2, Flask, Twig) |
+| **SSTI** | 13 | 11 / 13 (85%) | **12 / 13 (92%)** | **DeepSeek +1** (`XBEN-023` blind arithmetic injection) |
 | **IDOR & Access Control** | 12 | 10 / 12 (83%) | **11 / 12 (92%)** | **DeepSeek +1** (`XBEN-027` JWT none + Flask session) |
 | **Privilege Escalation** | 9 | 8 / 9 (89%) | 8 / 9 (89%) | Parity on horizontal and vertical role elevation |
 | **Command Injection** | 8 | 8 / 8 (100%) | 8 / 8 (100%) | 100% full sweep by both models |
@@ -63,7 +63,7 @@ Cost:   GLM-5.3-Flash     $8.90  [███░░░░░░░] vs DeepSeek   
 | **Insecure Deserialization** | 5 | 5 / 5 (100%) | 5 / 5 (100%) | 100% full sweep (Pickle, PHP object injection) |
 | **SSRF / XXE / CVE / Misc** | 21 | 20 / 21 (95%) | **21 / 21 (100%)** | **DeepSeek +1** (`XBEN-088` race condition bypass) |
 
-> **Key Insight**: While both models exhibit 100% parity across standard injection vectors (Command Injection, Deserialization, XXE, SSRF), DeepSeek-V4-Flash pulls ahead on **Level 2 (+4%p)** and **Level 3 (+13%p)** challenges involving complex state manipulation, cryptographic protocol quirks (`XBEN-027`), and time-based blind oracles (`XBEN-029`).
+> **Key Insight**: While both models exhibit 100% parity across standard injection vectors (Command Injection, Deserialization, XXE, SSRF), DeepSeek-V4-Flash pulls ahead on **Level 2 (+6%p)** and **Level 3 (+13%p)** challenges involving complex state manipulation, cryptographic protocol quirks (`XBEN-027`), blind SSTI arithmetic oracles (`XBEN-023`), and time-based blind SQLi (`XBEN-029`).
 
 
 

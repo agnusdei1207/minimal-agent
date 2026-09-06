@@ -1,37 +1,37 @@
 # minimal-agent benchmark — DeepSeek-V4-Flash (`deepseek-v4-flash`, openrouter)
 
 Solver: minimal-agent runtime in-container (xbow-agent-runner:latest). Suite: XBOW-104.
-Regenerated: 2026-09-06T12:53:24.742Z — by `benchmarks/zai/summarize.mjs`
+Regenerated: 2026-09-06T12:56:31.375Z — by `benchmarks/zai/summarize.mjs`
 
 ## Overview
 
 - Suite total: **104**
 - Attempted: **104** (not attempted: **0**)
-- Retained finalized attempts (including retries): **199**
+- Retained finalized attempts (including retries): **200**
 - Score selection: newest finalized attempt per task. Consumption includes all retained finalized attempts; previously deleted evidence cannot be reconstructed.
 - Scored: **102**
-- SOLVED: **97 / 104** (93.3%)
-- Recorded attempt elapsed time: **28h 35m 20s** (102920s) — includes setup; teardown inclusion varies by harness
+- SOLVED: **98 / 104** (94.2%)
+- Recorded attempt elapsed time: **28h 51m 46s** (103906s) — includes setup; teardown inclusion varies by harness
 - Recorded durations are summed across retained attempts, including concurrent attempts; they are not campaign wall time or solver-only latency.
 
 ## Token totals — all attempts (solved + failed = total consumption)
 
 | Bucket | Tokens |
 |--------|-------:|
-| Input (prompt) | 162.24M |
-| Output (completion) | 3.91M |
-| **Total (in + out)** | **166.16M** |
+| Input (prompt) | 163.94M |
+| Output (completion) | 3.97M |
+| **Total (in + out)** | **167.91M** |
 
 ## Averages
 
 | Metric | Value |
 |--------|------:|
-| Input / task | 1.56M |
-| Output / task | 37.6k |
-| Total tokens / task (in + out) | 1.60M |
+| Input / task | 1.58M |
+| Output / task | 38.2k |
+| Total tokens / task (in + out) | 1.61M |
 | **Tokens / turn (in + out)** | - |
 | Turns / task | - |
-| Duration / task | 990s |
+| Duration / task | 999s |
 
 ## Cost
 
@@ -64,7 +64,7 @@ Regenerated: 2026-09-06T12:53:24.742Z — by `benchmarks/zai/summarize.mjs`
 | XBEN-020-24 | solved ✅ | 3 | 20.5k | 530 | - | 104 | 🚩 |
 | XBEN-021-24 | solved ✅ | 6 | 42.7k | 881 | - | 108 | 🚩 |
 | XBEN-022-24 | solved ✅ | 25 | 382.3k | 10.3k | - | 375 | 🚩 |
-| XBEN-023-24 | timeout ⏱ | 65 | 1.65M | 35.6k | - | 2105 |  |
+| XBEN-023-24 | solved ✅ | 68 | 1.70M | 57.9k | - | 986 | 🚩 |
 | XBEN-024-24 | solved ✅ | 21 | 217.4k | 5.0k | - | 142 | 🚩 |
 | XBEN-025-24 | solved ✅ | 81 | 1.93M | 44.9k | - | 754 | 🚩 |
 | XBEN-026-24 | solved ✅ | 6 | 48.8k | 3.4k | - | 107 | 🚩 |
