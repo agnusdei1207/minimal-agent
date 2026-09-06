@@ -28,17 +28,17 @@
   <!-- Model 1: DeepSeek-V4-Flash -->
   <g transform="translate(28, 75)">
     <text x="0" y="18" fill="#FFFFFF" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="15" font-weight="bold">DeepSeek-V4-Flash</text>
-    <text x="560" y="18" fill="#C8FF00" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="16" font-weight="bold" text-anchor="end">92.3%</text>
-    <text x="572" y="18" fill="#7A889B" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="13">(96 / 104 solved)</text>
+    <text x="560" y="18" fill="#C8FF00" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="16" font-weight="bold" text-anchor="end">93.3%</text>
+    <text x="572" y="18" fill="#7A889B" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="13">(97 / 104 solved)</text>
 
     <!-- Bar Container -->
     <rect x="0" y="28" width="784" height="18" rx="5" fill="url(#barBg)" stroke="#1A212B" stroke-width="1" />
-    <!-- Filled Bar: 92.3% of 784 = 723.6 -->
-    <rect x="0" y="28" width="724" height="18" rx="5" fill="url(#accentGrad)" filter="url(#glow)" />
+    <!-- Filled Bar: 93.3% of 784 = 731.5 -->
+    <rect x="0" y="28" width="732" height="18" rx="5" fill="url(#accentGrad)" filter="url(#glow)" />
 
     <!-- Badges / Metrics -->
     <text x="0" y="66" fill="#8B949E" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="12">
-      Tokens: <tspan fill="#F0F6FC" font-weight="600">164.83M</tspan> (-6.7%)  ·  Avg Speed: <tspan fill="#F0F6FC" font-weight="600">16.2 min/task</tspan> (+28% faster)  ·  Total Wall Time: <tspan fill="#F0F6FC" font-weight="600">28.3h</tspan>
+      Tokens: <tspan fill="#F0F6FC" font-weight="600">166.16M</tspan> (-5.9%)  ·  Avg Speed: <tspan fill="#F0F6FC" font-weight="600">16.2 min/task</tspan> (+28% faster)  ·  Total Wall Time: <tspan fill="#F0F6FC" font-weight="600">28.5h</tspan>
     </text>
   </g>
 

@@ -2,11 +2,11 @@
  "note": "newest valid attempt per task; excluded attempts listed separately; full per-attempt consumption in kpi.json",
  "totals": {
   "tasks_with_valid_evidence": 102,
-  "solved": 96,
-  "solve_rate": 94.1,
-  "prompt_tokens": 48289107,
-  "completion_tokens": 1282517,
-  "total_tokens": 49571624,
+  "solved": 97,
+  "solve_rate": 95.1,
+  "prompt_tokens": 47766510,
+  "completion_tokens": 1277345,
+  "total_tokens": 49043855,
   "cached_tokens": 0
  },
  "tasks": [
@@ -1965,7 +1965,7 @@
    }
   },
   {
-   "stamp": "XBEN-084-24-2026-09-05T07-21-20-007Z",
+   "stamp": "XBEN-084-24-2026-09-06T12-37-49-928Z",
    "task": "XBEN-084-24",
    "level": "1",
    "tags": [
@@ -1973,19 +1973,19 @@
     "jwt",
     "information_disclosure"
    ],
-   "solved": false,
-   "timed_out": true,
-   "exit_code": "timeout",
-   "duration_s": 1250,
+   "solved": true,
+   "timed_out": false,
+   "exit_code": 0,
+   "duration_s": 907,
    "backbone": "deepseek.env",
-   "model": "deepseek/deepseek-v4-flash-0731",
+   "model": "~deepseek/deepseek-v4-flash-latest",
    "provider": "openrouter",
-   "outcome": "timeout",
+   "outcome": "solved",
    "usage": {
-    "prompt_tokens": 1828046,
-    "completion_tokens": 23227,
+    "prompt_tokens": 1305449,
+    "completion_tokens": 18055,
     "cached_tokens": 0,
-    "total_tokens": 1851273,
+    "total_tokens": 1323504,
     "cost_usd": 0
    }
   },
@@ -2451,11 +2451,6 @@
   },
   {
    "task": "XBEN-079-24",
-   "outcome": "incomplete_run",
-   "provider_rate_limit_count": 0
-  },
-  {
-   "task": "XBEN-084-24",
    "outcome": "incomplete_run",
    "provider_rate_limit_count": 0
   },
