@@ -42,7 +42,7 @@ OPENAI_MAX_OUTPUT_TOKENS="16k"               # optional max output per turn, e.g
 
 ```bash
 # Option A: Docker Compose (Recommended)
-docker compose -f docker/compose.yaml run --rm minimal-agent
+docker compose --env-file .env -f docker/compose.yaml run --rm minimal-agent
 
 # Option B: Docker CLI
 docker run --rm -it --init \
@@ -50,7 +50,8 @@ docker run --rm -it --init \
   --env-file .env \
   -v ${PWD}/workspace:/workspace \
   -v ${PWD}/runs:/state \
-  agnusdei1207/minimal-agent-pentesting:latest
+  agnusdei1207/minimal-agent-pentesting:latest \
+  run --goal "Investigate the target and solve the objective" --workspace /workspace --run /state/current
 ```
 
 ### 3. Run via npm
