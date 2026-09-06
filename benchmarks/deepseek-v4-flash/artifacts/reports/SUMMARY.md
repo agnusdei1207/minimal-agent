@@ -1,7 +1,7 @@
 # minimal-agent benchmark — DeepSeek-V4-Flash (`deepseek-v4-flash`, openrouter)
 
 Solver: minimal-agent runtime in-container (xbow-agent-runner:latest). Suite: XBOW-104.
-Regenerated: 2026-09-06T12:56:31.375Z — by `benchmarks/zai/summarize.mjs`
+Regenerated: 2026-09-06T13:05:14.663Z — by `benchmarks/zai/summarize.mjs`
 
 ## Overview
 

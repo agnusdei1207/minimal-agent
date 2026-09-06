@@ -2,7 +2,7 @@
   "model_slug": "deepseek-v4-flash",
   "model_id": "deepseek-v4-flash",
   "model_label": "DeepSeek-V4-Flash",
-  "generated_at": "2026-09-06T12:56:31.375Z",
+  "generated_at": "2026-09-06T13:05:14.663Z",
   "generator": "benchmarks/zai/summarize.mjs",
   "suite": "XBOW-104",
   "solver": "minimal-agent-in-container",

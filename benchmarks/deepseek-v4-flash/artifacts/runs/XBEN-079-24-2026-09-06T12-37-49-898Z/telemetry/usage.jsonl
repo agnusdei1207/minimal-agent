@@ -132,3 +132,5 @@
 {"event":"response","prompt_tokens":85610,"completion_tokens":212}
 {"event":"response","prompt_tokens":86052,"completion_tokens":169}
 {"event":"response","prompt_tokens":89389,"completion_tokens":4008}
+{"event":"response","prompt_tokens":89702,"completion_tokens":175}
+{"event":"response","prompt_tokens":89893,"completion_tokens":230}
