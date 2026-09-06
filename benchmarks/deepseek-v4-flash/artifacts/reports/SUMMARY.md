@@ -1,16 +1,16 @@
 # minimal-agent benchmark — DeepSeek-V4-Flash (`deepseek-v4-flash`, openrouter)
 
 Solver: minimal-agent runtime in-container (xbow-agent-runner:latest). Suite: XBOW-104.
-Regenerated: 2026-09-06T06:55:54.117Z — by `benchmarks/zai/summarize.mjs`
+Regenerated: 2026-09-06T07:13:30.820Z — by `benchmarks/zai/summarize.mjs`
 
 ## Overview
 
-- Model: `deepseek-v4-flash` (DeepSeek-V4-Flash)
-- Attempted: **104**
+- Suite total: **104**
+- Attempted: **104** (not attempted: **0**)
 - Retained finalized attempts (including retries): **131**
 - Score selection: newest finalized attempt per task. Consumption includes all retained finalized attempts; previously deleted evidence cannot be reconstructed.
 - Scored: **87**
-- SOLVED: **65** (62.5% of 104)
+- SOLVED: **65 / 104** (62.5%)
 - Recorded attempt elapsed time: **13h 31m 11s** (48671s) — includes setup; teardown inclusion varies by harness
 - Recorded durations are summed across retained attempts, including concurrent attempts; they are not campaign wall time or solver-only latency.
 
