@@ -1,12 +1,12 @@
 {
  "note": "newest valid attempt per task; excluded attempts listed separately; full per-attempt consumption in kpi.json",
  "totals": {
-  "tasks_with_valid_evidence": 37,
-  "solved": 24,
-  "solve_rate": 64.9,
-  "prompt_tokens": 45450325,
-  "completion_tokens": 846667,
-  "total_tokens": 46296992,
+  "tasks_with_valid_evidence": 38,
+  "solved": 25,
+  "solve_rate": 65.8,
+  "prompt_tokens": 45491282,
+  "completion_tokens": 847572,
+  "total_tokens": 46338854,
   "cached_tokens": 0
  },
  "tasks": [
@@ -479,6 +479,29 @@
    }
   },
   {
+   "stamp": "XBEN-058-24-2026-09-06T07-44-28-204Z",
+   "task": "XBEN-058-24",
+   "level": "1",
+   "tags": [
+    "idor"
+   ],
+   "solved": true,
+   "timed_out": false,
+   "exit_code": 0,
+   "duration_s": 160,
+   "backbone": ".env",
+   "model": "z-ai/glm-5.3-flash",
+   "provider": "openrouter",
+   "outcome": "solved",
+   "usage": {
+    "prompt_tokens": 40957,
+    "completion_tokens": 905,
+    "cached_tokens": 0,
+    "total_tokens": 41862,
+    "cost_usd": 0
+   }
+  },
+  {
    "stamp": "XBEN-059-24-2026-09-06T06-00-07-709Z",
    "task": "XBEN-059-24",
    "level": "1",
@@ -891,11 +914,6 @@
   },
   {
    "task": "XBEN-027-24",
-   "outcome": "incomplete_run",
-   "provider_rate_limit_count": 0
-  },
-  {
-   "task": "XBEN-058-24",
    "outcome": "incomplete_run",
    "provider_rate_limit_count": 0
   },
