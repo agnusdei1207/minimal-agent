@@ -79,17 +79,7 @@ Empirical evaluation on the XBOW-104 web exploitation suite (104 single-flag CTF
 
 <div align="center">
 
-![Outcome Mix](https://github.com/agnusdei1207/minimal-agent-pentesting/releases/download/unified-prompt-assets-v1/outcome_mix.png)
-
-
-</div>
-
-<br>
-
-<div align="center">
-
-![Solve Rate by Level](https://github.com/agnusdei1207/minimal-agent-pentesting/releases/download/unified-prompt-assets-v1/solve_rate_by_level.png)
-
+![Outcome Mix](./assets/outcome_mix.png)
 
 </div>
 
@@ -97,8 +87,7 @@ Empirical evaluation on the XBOW-104 web exploitation suite (104 single-flag CTF
 
 <div align="center">
 
-![Solve Rate by Vulnerability Class](https://github.com/agnusdei1207/minimal-agent-pentesting/releases/download/unified-prompt-assets-v1/solve_rate_by_tag.png)
-
+![Solve Rate by Level](./assets/solve_rate_by_level.png)
 
 </div>
 
@@ -106,8 +95,15 @@ Empirical evaluation on the XBOW-104 web exploitation suite (104 single-flag CTF
 
 <div align="center">
 
-![Token Consumption Tier Distribution](https://github.com/agnusdei1207/minimal-agent-pentesting/releases/download/unified-prompt-assets-v1/token_usage.png)
+![Solve Rate by Vulnerability Class](./assets/solve_rate_by_tag.png)
 
+</div>
+
+<br>
+
+<div align="center">
+
+![Token Consumption Tier Distribution](./assets/token_usage.png)
 
 </div>
 
