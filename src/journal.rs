@@ -11,8 +11,8 @@ use sha2::{Digest, Sha256};
 use thiserror::Error;
 use uuid::Uuid;
 
-use ma_core::domain::{AgentId, AgentMessage, AgentState, CompactionCoverage, SequenceRange};
-use ma_core::engagement::Engagement;
+use crate::domain::{AgentId, AgentMessage, AgentState, CompactionCoverage, SequenceRange};
+use crate::engagement::Engagement;
 
 pub const DEFAULT_SEGMENT_BYTES: u64 = 8 * 1024 * 1024;
 pub const DEFAULT_INLINE_PAYLOAD_BYTES: usize = 16 * 1024;

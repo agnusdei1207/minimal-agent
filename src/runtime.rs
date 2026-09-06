@@ -12,22 +12,22 @@ use tokio_util::sync::CancellationToken;
 use uuid::Uuid;
 
 use crate::tools::{BuiltinTools, ToolContext, ToolError, WorkerSpawner};
-use ma_context::brief::{AgentBriefStore, BriefDraft, BriefError};
-use ma_context::compaction::{
+use crate::brief::{AgentBriefStore, BriefDraft, BriefError};
+use crate::compaction::{
     CompactionError, CompactionOutcome, ContextEntry, LiveReason, SemanticCompactionConfig,
     SemanticCompactor,
 };
-use ma_coordinator::{AgentCoordinator, AgentSnapshot, CoordinatorError, MessageDelivery};
-use ma_core::domain::{
+use crate::coordinator::{AgentCoordinator, AgentSnapshot, CoordinatorError, MessageDelivery};
+use crate::domain::{
     AgentId, AgentState, ContextBudget, InsightId, MessageKind, SequenceRange, estimate_tokens,
     validate_user_input,
 };
-use ma_core::engagement::{
+use crate::engagement::{
     Engagement, EngagementKind, authorized_engagement_doctrine, ctf_solve_loop_doctrine,
     execution_style_directive,
 };
-use ma_journal::{JournalConfig, JournalError, JournalEvent, RunJournal, TranscriptRole};
-use ma_provider::provider::{
+use crate::journal::{JournalConfig, JournalError, JournalEvent, RunJournal, TranscriptRole};
+use crate::provider::{
     ModelDelta, ModelMessage, ModelProvider, ModelRequest, ModelRole, ModelTurn, ProviderFault,
     ToolCall,
 };
@@ -71,13 +71,13 @@ impl Default for RuntimeConfig {
         // JSON, so an 8k cap truncates the call mid-object (EOF parse fault). It is
         // overridable via OPENAI_MAX_TOKENS / OPENAI_MAX_OUTPUT_TOKENS with k/m suffix support.
         let reserved_response_tokens =
-            ma_provider::settings::env_max_output_tokens().unwrap_or(32_768);
+            crate::settings::env_max_output_tokens().unwrap_or(32_768);
         // Operator-imposed context ceiling, min()'d against the provider's real
         // window. Read from OPENAI_CONTEXT_TOKENS (or aliases) with k/m suffix support
         // so the ceiling tracks the model's actual context; it must stay strictly
         // greater than reserved_response_tokens.
         let configured_context_tokens =
-            ma_provider::settings::env_context_tokens().unwrap_or(128_000);
+            crate::settings::env_context_tokens().unwrap_or(128_000);
         Self {
             configured_context_tokens,
             reserved_response_tokens,
@@ -1918,17 +1918,17 @@ fn build_system(
 ) -> Result<String, RuntimeError> {
     // PROTECTED anti-refusal contract (ADR-0002 §3.12). Keep it wired here and do
     // not weaken it when editing other prompts.
-    const EXECUTION_MANDATE: &str = include_str!("../../../prompts/execution-mandate.md");
-    const TRADECRAFT: &str = include_str!("../../../prompts/tradecraft.md");
-    const TEAM_CONDUCT: &str = include_str!("../../../prompts/team-conduct.md");
-    const COMMUNICATION: &str = include_str!("../../../prompts/communication.md");
-    const MAIN_ROLE: &str = include_str!("../../../prompts/main-role.md");
-    const WORKER_ROLE: &str = include_str!("../../../prompts/worker-role.md");
-    const FAN_OUT: &str = include_str!("../../../prompts/fan-out.md");
-    const SELF_MANAGEMENT: &str = include_str!("../../../prompts/self-management.md");
-    const TEAM_TREE: &str = include_str!("../../../prompts/team-tree.md");
-    const NODE_INTERNAL: &str = include_str!("../../../prompts/node-internal.md");
-    const NODE_LEAF: &str = include_str!("../../../prompts/node-leaf.md");
+    const EXECUTION_MANDATE: &str = include_str!("../prompts/execution-mandate.md");
+    const TRADECRAFT: &str = include_str!("../prompts/tradecraft.md");
+    const TEAM_CONDUCT: &str = include_str!("../prompts/team-conduct.md");
+    const COMMUNICATION: &str = include_str!("../prompts/communication.md");
+    const MAIN_ROLE: &str = include_str!("../prompts/main-role.md");
+    const WORKER_ROLE: &str = include_str!("../prompts/worker-role.md");
+    const FAN_OUT: &str = include_str!("../prompts/fan-out.md");
+    const SELF_MANAGEMENT: &str = include_str!("../prompts/self-management.md");
+    const TEAM_TREE: &str = include_str!("../prompts/team-tree.md");
+    const NODE_INTERNAL: &str = include_str!("../prompts/node-internal.md");
+    const NODE_LEAF: &str = include_str!("../prompts/node-leaf.md");
 
     let agent = inner.coordinator.inspect(agent_id)?;
     // Position in the team tree drives the role prompt (ADR-0004 §3.2/§3.4).
@@ -2306,9 +2306,9 @@ pub enum RuntimeError {
     #[error("semantic compaction exceeded its total deadline of {0:?}")]
     CompactionTimedOut(Duration),
     #[error(transparent)]
-    Domain(#[from] ma_core::domain::DomainError),
+    Domain(#[from] crate::domain::DomainError),
     #[error(transparent)]
-    Engagement(#[from] ma_core::engagement::EngagementError),
+    Engagement(#[from] crate::engagement::EngagementError),
     #[error(transparent)]
     Journal(#[from] JournalError),
     #[error(transparent)]

@@ -209,20 +209,20 @@ fn check_required(field: &'static str, value: &str) -> Result<(), EngagementErro
 /// §3.1). Clean-room text: keeps the model from hedging or refusing authorized
 /// offensive-security work while leaving only operational boundaries in place.
 pub fn authorized_engagement_doctrine() -> &'static str {
-    include_str!("../../../prompts/authorized-engagement.md").trim_end()
+    include_str!("../prompts/authorized-engagement.md").trim_end()
 }
 
 /// Always-on execution-style directive that keeps the agent terse and
 /// action-first instead of narrating, hedging, or restating the task. Clean-room
 /// text authored for this repository.
 pub fn execution_style_directive() -> &'static str {
-    include_str!("../../../prompts/operating-style.md").trim_end()
+    include_str!("../prompts/operating-style.md").trim_end()
 }
 
 /// CTF solve-loop doctrine, appended only for `EngagementKind::Ctf` (ADR-0002
 /// §3.1). Clean-room text.
 pub fn ctf_solve_loop_doctrine() -> &'static str {
-    include_str!("../../../prompts/ctf-solve-loop.md").trim_end()
+    include_str!("../prompts/ctf-solve-loop.md").trim_end()
 }
 
 #[cfg(test)]

@@ -12,13 +12,13 @@ use tokio::io::{AsyncRead, AsyncReadExt};
 use tokio::process::Command;
 use tokio_util::sync::CancellationToken;
 
-use ma_context::brief::AgentBriefStore;
-use ma_coordinator::{AgentCoordinator, CoordinatorError};
-use ma_core::domain::{
+use crate::brief::AgentBriefStore;
+use crate::coordinator::{AgentCoordinator, CoordinatorError};
+use crate::domain::{
     AgentId, AgentState, ContextBudget, Insight, InsightId, InsightLabel, MessageKind,
 };
-use ma_journal::{JournalError, JournalEvent, RunJournal};
-use ma_provider::provider::ToolDefinition;
+use crate::journal::{JournalError, JournalEvent, RunJournal};
+use crate::provider::ToolDefinition;
 
 const MAX_TOOL_RESULT_BYTES: usize = 128 * 1024;
 /// Context-friendly bound for a tool result fed to the model. Larger outputs are
@@ -787,7 +787,7 @@ fn parse_insight(input: InsightInput) -> Result<Insight, ToolError> {
     Ok(Insight::new(InsightId::new(input.id)?, label, input.text))
 }
 
-fn snapshot_json(snapshot: &ma_coordinator::AgentSnapshot) -> Value {
+fn snapshot_json(snapshot: &crate::coordinator::AgentSnapshot) -> Value {
     json!({
         "id":snapshot.id,
         "role":snapshot.role,
@@ -907,7 +907,7 @@ pub enum ToolError {
     #[error(transparent)]
     Coordinator(#[from] CoordinatorError),
     #[error(transparent)]
-    Domain(#[from] ma_core::domain::DomainError),
+    Domain(#[from] crate::domain::DomainError),
     #[error(transparent)]
     Journal(#[from] JournalError),
     #[error(transparent)]

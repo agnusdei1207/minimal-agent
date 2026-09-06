@@ -1,32 +1,33 @@
-[workspace]
-members = ["crates/*"]
-
-[workspace.package]
+[package]
+name = "minimal-agent"
+version = "0.110.0"
 edition = "2024"
 rust-version = "1.98"
+description = "A small autonomous team-agent runtime written in Rust"
 license = "MIT"
 repository = "https://github.com/agnusdei1207/minimal-agent"
 
-[workspace.dependencies]
-ma-core = { path = "crates/ma-core" }
-ma-provider = { path = "crates/ma-provider" }
-ma-journal = { path = "crates/ma-journal" }
-ma-coordinator = { path = "crates/ma-coordinator" }
-ma-context = { path = "crates/ma-context" }
-ma-runtime = { path = "crates/ma-runtime" }
-ma-tui = { path = "crates/ma-tui" }
+[lib]
+name = "minimal_agent"
+path = "src/lib.rs"
+
+[[bin]]
+name = "minimal-agent"
+path = "src/main.rs"
+
+[dependencies]
 anyhow = "1.0"
 async-trait = "0.1"
 chrono = { version = "0.4", features = ["serde"] }
 clap = { version = "4.6", features = ["derive", "env"] }
 crossterm = { version = "0.29", features = ["event-stream"] }
-fs2 = "0.4"
 eventsource-stream = "0.2"
+fs2 = "0.4"
 futures = "0.3"
 hex = "0.4"
 pulldown-cmark = { version = "0.13.4", default-features = false }
-regex = "1.11"
 ratatui = { version = "0.30", default-features = false, features = ["crossterm", "unstable-rendered-line-info"] }
+regex = "1.11"
 reqwest = { version = "0.12", default-features = false, features = ["json", "rustls-tls", "stream"] }
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
@@ -36,42 +37,9 @@ tokio = { version = "1.48", features = ["fs", "io-std", "io-util", "macros", "pr
 tokio-util = "0.7"
 url = "2.5"
 uuid = { version = "1.18", features = ["serde", "v4"] }
-tempfile = "3.20"
-
-[package]
-name = "minimal-agent"
-version = "0.110.0"
-edition.workspace = true
-rust-version.workspace = true
-description = "A small autonomous team-agent runtime written in Rust"
-license.workspace = true
-repository.workspace = true
-
-[lib]
-name = "minimal_agent"
-path = "src/lib.rs"
-
-[dependencies]
-ma-core.workspace = true
-ma-provider.workspace = true
-ma-journal.workspace = true
-ma-coordinator.workspace = true
-ma-context.workspace = true
-ma-runtime.workspace = true
-ma-tui.workspace = true
-anyhow.workspace = true
-chrono.workspace = true
-clap.workspace = true
-serde_json.workspace = true
-tokio.workspace = true
-uuid.workspace = true
 
 [dev-dependencies]
-ratatui.workspace = true
-async-trait.workspace = true
-hex.workspace = true
-sha2.workspace = true
-tempfile.workspace = true
+tempfile = "3.20"
 
 [profile.release]
 lto = "thin"

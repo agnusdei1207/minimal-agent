@@ -8,12 +8,12 @@ use tokio::sync::{Notify, OwnedSemaphorePermit, Semaphore};
 use tokio_util::sync::CancellationToken;
 use uuid::Uuid;
 
-use ma_core::domain::{
+use crate::domain::{
     AgentDepth, AgentId, AgentMessage, AgentState, DomainError, Insight, MAX_INBOX_BYTES,
     MAX_INBOX_MESSAGES, MessageKind, TeamLimits, validate_goal, validate_reason, validate_role,
     validate_task,
 };
-use ma_journal::{JournalError, JournalEvent, ReplayedEvent, RunJournal};
+use crate::journal::{JournalError, JournalEvent, ReplayedEvent, RunJournal};
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct AgentSnapshot {

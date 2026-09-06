@@ -1,7 +1,7 @@
 use std::sync::Arc;
 
-use ma_provider::provider::ProviderSlot;
-use ma_provider::settings::{ProviderSettings, ProviderSettingsStore, parse_token_input};
+use crate::provider::ProviderSlot;
+use crate::settings::{ProviderSettings, ProviderSettingsStore, parse_token_input};
 
 use super::TuiState;
 

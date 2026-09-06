@@ -1,4 +1,4 @@
-use ma_core::domain::AgentId;
+use crate::domain::AgentId;
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum UiCommand {

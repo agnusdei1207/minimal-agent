@@ -11,7 +11,7 @@
 
 ## 📊 Benchmark — XBOW-104
 
-Empirical evaluation on the XBOW-104 web exploitation suite under zero human intervention:
+Empirical evaluation on the XBOW-104 web exploitation suite with zero human intervention and zero hints:
 
 <div align="center">
 
@@ -21,10 +21,9 @@ Empirical evaluation on the XBOW-104 web exploitation suite under zero human int
 
 | Model | Solved | Rate | Tokens | Avg Time | Est. Cost | L1 / L2 / L3 Solved |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
-| **DeepSeek-V4-Flash** | **102 / 104** | **98.1%** | **257.0M** | **19.6 min** | **$2.62** | **44/45 · 51/51 · 7/8** |
-| **GLM-5.3-Flash** | 94 / 104 | 90.4% | 176.6M | 22.6 min | ~$9 | 44/45 · 44/51 · 6/8 |
+| DeepSeek-V4-Flash | 102 / 104 | 98.1% | 257.0M | 19.6 min | $2.62 | 44/45 · 51/51 · 7/8 |
+| GLM-5.3-Flash | 94 / 104 | 90.4% | 176.6M | 22.6 min | ~$9 | 44/45 · 44/51 · 6/8 |
 
-> 📄 **[Detailed Benchmark Report (SUMMARY.md)](benchmarks/deepseek-v4-flash/artifacts/reports/SUMMARY.md)** · 🌐 **[Web Dashboard](https://agnusdei1207.github.io/minimal-agent-pentesting/)**
 
 ---
 
@@ -87,14 +86,14 @@ minimal-agent-pentesting run --goal "Investigate the target and solve the object
 
 ## 🧭 Philosophy
 
-`minimal-agent-pentesting` is engineered around a clean-room, zero-bloat offensive security architecture:
+minimal-agent-pentesting is engineered around a clean-room, zero-bloat offensive security architecture:
 
-- **Prompt-First (Code is Debt)**: Minimal Rust core enforces OS/IO safety; all tactical offensive tradecraft lives in prompts.
-- **Seams & Tracer Bullets**: Probes architectural boundaries with minimal syntax triggers to capture live differential signals.
-- **4-D Orthogonal Bypass**: Defeats filters across context breaks, parser encodings, functional primitives, and ES5 compatibility.
-- **Single-Journal Orchestration**: Zero external DB or RAG bloat; an append-only event log powers recovery and bounded 1+9 messaging.
-- **Meta-Cognitive Audits**: Periodic self-reflection gates kill unproductive rabbit holes like blind brute-force and UI steganography.
-- **Vendor-Agnostic Engine**: Drives diverse reasoning models (DeepSeek, GLM, Claude) via standard OpenAI-compatible APIs.
+- Prompt-First over Code-Bloat: Minimal Rust core enforces OS and IO safety; all tactical offensive tradecraft lives in prompts.
+- Seams and Tracer Bullets: Probes architectural boundaries with minimal syntax triggers to capture live differential signals.
+- 4-D Orthogonal Bypass: Defeats filters across context breaks, parser encodings, functional primitives, and ES5 compatibility.
+- Single-Journal Orchestration: Zero external DB or RAG bloat; an append-only event log powers recovery and bounded 1+9 messaging.
+- Meta-Cognitive Audits: Periodic self-reflection gates kill unproductive rabbit holes like blind brute-force and UI steganography.
+- Vendor-Agnostic Engine: Drives diverse reasoning models such as DeepSeek, GLM, and Claude via standard OpenAI-compatible APIs.
 
 
 ---

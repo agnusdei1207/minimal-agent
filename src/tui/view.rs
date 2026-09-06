@@ -80,7 +80,7 @@ pub fn render(frame: &mut Frame<'_>, state: &mut TuiState) {
         .wrap(Wrap { trim: false }),
         input_area,
     );
-    let menu = crate::command::command_menu_matches(&state.input);
+    let menu = super::command::command_menu_matches(&state.input);
     if state.model_setup.is_none() && state.modal.is_none() && !menu.is_empty() {
         render_command_menu(frame, input_area, &menu, state.command_selection);
     }
@@ -213,7 +213,7 @@ fn queued_projection(state: &TuiState) -> String {
     let active_main_submission = usize::from(
         state
             .active_turns
-            .contains_key(&ma_core::domain::AgentId::main())
+            .contains_key(&crate::domain::AgentId::main())
             && state.pending_submissions > 0,
     );
     match state

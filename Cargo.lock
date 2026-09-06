@@ -1034,119 +1034,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "112b39cec0b298b6c1999fee3e31427f74f676e4cb9879ed1a121b43661a4154"
 
 [[package]]
-name = "ma-context"
-version = "0.110.0"
-dependencies = [
- "hex",
- "ma-coordinator",
- "ma-core",
- "ma-journal",
- "ma-provider",
- "serde",
- "serde_json",
- "sha2",
- "tempfile",
- "thiserror",
- "uuid",
-]
-
-[[package]]
-name = "ma-coordinator"
-version = "0.110.0"
-dependencies = [
- "ma-core",
- "ma-journal",
- "tempfile",
- "thiserror",
- "tokio",
- "tokio-util",
- "uuid",
-]
-
-[[package]]
-name = "ma-core"
-version = "0.110.0"
-dependencies = [
- "anyhow",
- "regex",
- "serde",
- "serde_json",
- "thiserror",
- "uuid",
-]
-
-[[package]]
-name = "ma-journal"
-version = "0.110.0"
-dependencies = [
- "chrono",
- "fs2",
- "hex",
- "ma-core",
- "serde",
- "serde_json",
- "sha2",
- "tempfile",
- "thiserror",
- "tokio",
- "uuid",
-]
-
-[[package]]
-name = "ma-provider"
-version = "0.110.0"
-dependencies = [
- "anyhow",
- "async-trait",
- "chrono",
- "eventsource-stream",
- "futures",
- "reqwest",
- "serde",
- "serde_json",
- "thiserror",
- "tokio",
- "url",
-]
-
-[[package]]
-name = "ma-runtime"
-version = "0.110.0"
-dependencies = [
- "async-trait",
- "ma-context",
- "ma-coordinator",
- "ma-core",
- "ma-journal",
- "ma-provider",
- "serde",
- "serde_json",
- "tempfile",
- "thiserror",
- "tokio",
- "tokio-util",
- "uuid",
-]
-
-[[package]]
-name = "ma-tui"
-version = "0.110.0"
-dependencies = [
- "anyhow",
- "crossterm",
- "futures",
- "ma-coordinator",
- "ma-core",
- "ma-provider",
- "ma-runtime",
- "pulldown-cmark",
- "ratatui",
- "tempfile",
- "tokio",
- "url",
-]
-
-[[package]]
 name = "memchr"
 version = "2.8.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1160,19 +1047,23 @@ dependencies = [
  "async-trait",
  "chrono",
  "clap",
+ "crossterm",
+ "eventsource-stream",
+ "fs2",
+ "futures",
  "hex",
- "ma-context",
- "ma-coordinator",
- "ma-core",
- "ma-journal",
- "ma-provider",
- "ma-runtime",
- "ma-tui",
+ "pulldown-cmark",
  "ratatui",
+ "regex",
+ "reqwest",
+ "serde",
  "serde_json",
  "sha2",
  "tempfile",
+ "thiserror",
  "tokio",
+ "tokio-util",
+ "url",
  "uuid",
 ]
 

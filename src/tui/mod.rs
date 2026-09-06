@@ -17,11 +17,11 @@ use ratatui::Terminal;
 use ratatui::backend::CrosstermBackend;
 use tokio::sync::mpsc;
 
-use ma_coordinator::AgentSnapshot;
-use ma_core::domain::{AgentId, AgentState, MAX_USER_INPUT_BYTES, MessageKind};
-use ma_provider::provider::{ModelDelta, ProviderSlot};
-use ma_provider::settings::ProviderSettingsStore;
-use ma_runtime::runtime::{RuntimeError, RuntimeEvent, TeamRuntime};
+use crate::coordinator::AgentSnapshot;
+use crate::domain::{AgentId, AgentState, MAX_USER_INPUT_BYTES, MessageKind};
+use crate::provider::{ModelDelta, ProviderSlot};
+use crate::settings::ProviderSettingsStore;
+use crate::runtime::{RuntimeError, RuntimeEvent, TeamRuntime};
 
 mod command;
 mod markdown;
@@ -1675,14 +1675,14 @@ mod tests {
 
     #[test]
     fn accent_constant_is_opaque_lime() {
-        use crate::theme::palette;
+        use super::theme::palette;
         use ratatui::style::Color;
         assert_eq!(palette::ACCENT, Color::Rgb(0xC8, 0xFF, 0x00));
     }
 
     #[test]
     fn start_banner_shows_program_name_in_accent_and_rest_muted() {
-        use crate::theme::{palette, styles};
+        use super::theme::{palette, styles};
         let state = TuiState::new("goal");
         let first = state
             .transcript
@@ -1711,7 +1711,7 @@ mod tests {
 
     #[test]
     fn user_echo_uses_accent_for_speaker_and_text() {
-        use crate::theme::{palette, styles};
+        use super::theme::{palette, styles};
         let mut state = TuiState::new("goal");
         state.push_entry(
             "❯".to_owned(),
@@ -1734,7 +1734,7 @@ mod tests {
 
     #[test]
     fn input_row_renders_prompt_and_text_in_accent() {
-        use crate::theme::styles;
+        use super::theme::styles;
         let mut state = TuiState::new("goal");
         assert!(state.set_input("hi"));
         let backend = ratatui::backend::TestBackend::new(80, 12);
@@ -1751,7 +1751,7 @@ mod tests {
 
     #[test]
     fn non_user_tones_never_use_the_accent() {
-        use crate::theme::palette;
+        use super::theme::palette;
         for tone in [
             LineTone::Agent,
             LineTone::Tool,

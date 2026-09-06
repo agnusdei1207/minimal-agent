@@ -6,11 +6,11 @@ use serde_json::json;
 use sha2::{Digest, Sha256};
 use thiserror::Error;
 
-use ma_core::domain::{
+use crate::domain::{
     AgentId, CompactionCoverage, ContextBudget, DomainError, InsightId, SequenceRange,
     estimate_tokens,
 };
-use ma_provider::provider::{ModelMessage, ModelProvider, ModelRequest, ModelRole, ProviderFault};
+use crate::provider::{ModelMessage, ModelProvider, ModelRequest, ModelRole, ProviderFault};
 
 const COMPACTION_SYSTEM_PROMPT: &str = r#"You curate one agent's current brief.
 Summarize meaning, never discard a supplied source range, and return JSON only.

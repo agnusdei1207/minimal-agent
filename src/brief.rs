@@ -8,12 +8,12 @@ use sha2::{Digest, Sha256};
 use thiserror::Error;
 use uuid::Uuid;
 
-use ma_coordinator::AgentSnapshot;
-use ma_core::domain::{
+use crate::coordinator::AgentSnapshot;
+use crate::domain::{
     AgentId, CompactionCoverage, ContextBudget, DomainError, InsightId, SequenceRange,
     estimate_tokens,
 };
-use ma_journal::{JournalError, JournalEvent, RunJournal};
+use crate::journal::{JournalError, JournalEvent, RunJournal};
 
 const RUNTIME_START: &str = "<!-- minimal-agent:runtime:start -->";
 const RUNTIME_END: &str = "<!-- minimal-agent:runtime:end -->";
@@ -498,14 +498,14 @@ fn validate_source_metadata(
     Ok(())
 }
 
-fn state_name(state: ma_core::domain::AgentState) -> &'static str {
+fn state_name(state: crate::domain::AgentState) -> &'static str {
     match state {
-        ma_core::domain::AgentState::Running => "RUNNING",
-        ma_core::domain::AgentState::Waiting => "WAITING",
-        ma_core::domain::AgentState::Recalling => "RECALLING",
-        ma_core::domain::AgentState::Finished => "FINISHED",
-        ma_core::domain::AgentState::Stopped => "STOPPED",
-        ma_core::domain::AgentState::Faulted => "FAULTED",
+        crate::domain::AgentState::Running => "RUNNING",
+        crate::domain::AgentState::Waiting => "WAITING",
+        crate::domain::AgentState::Recalling => "RECALLING",
+        crate::domain::AgentState::Finished => "FINISHED",
+        crate::domain::AgentState::Stopped => "STOPPED",
+        crate::domain::AgentState::Faulted => "FAULTED",
     }
 }
 
