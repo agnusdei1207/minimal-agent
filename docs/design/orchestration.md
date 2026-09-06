@@ -1,149 +1,140 @@
-# 자율 모의해킹을 위한 최소 팀-에이전트 오케스트레이션
+# Minimal Team-Agent Orchestration for Autonomous Penetration Testing
 
-본 문서는 `minimal-agent`의 오케스트레이션 설계를 논문·발표에 인용할 수 있는
-형태로 정리한다. 규범적 결정은 ADR-0001(코어)과 ADR-0002(교전 주입·transcript)에
-있으며, 본 문서는 그 설계를 하나의 서사로 잇는다.
+This document presents the orchestration architecture of `minimal-agent` in a format suitable for academic citation and technical presentations. Normative specifications reside in [ADR-0001](../adr/ADR-0001-minimal-autonomous-team-agent-core.md) (Core Runtime) and [ADR-0002](../adr/ADR-0002-engagement-injection-and-transcript-orchestration.md) (Engagement Injection & Transcript Orchestration); this document connects those architectural decisions into a cohesive narrative.
 
-## 1. 문제 정의
+---
 
-자율 모의해킹 에이전트는 세 압력을 동시에 견뎌야 한다.
+## 1. Problem Definition
 
-1. **협업**: 정찰·취약점 분석·익스플로잇이 병렬로 진행되며 서로의 발견을 실시간에
-   가깝게 공유해야 한다.
-2. **기억**: 장기 교전에서 문맥이 폭발한다. 원문을 잃지 않으면서 현재 의미만
-   유지해야 한다.
-3. **회복**: provider 장애·부분 실패에도 원문에서 다시 움직일 수 있어야 한다.
+Autonomous offensive security agents must withstand three simultaneous systemic pressures:
 
-기존 접근은 RAG·공유 게시판·권한 합성·승인 엔진·증거 그래프를 층층이 쌓아 이
-압력을 흡수한다. `minimal-agent`는 반대로 **개념 수를 최소화**하고, 각 경계가 포화·
-중단·재시작에서도 같은 규칙을 지키는지로 성공을 판단한다.
+1. **Concurrent Collaboration:** Reconnaissance, vulnerability identification, and exploit construction proceed in parallel and must share real-time discoveries without communication bottlenecks.
+2. **Context Retention (Memory Pressure):** In long-horizon engagements, conversation context windows explode. The agent must maintain current operational meaning without losing the immutable ground truth of prior actions.
+3. **Fault Recovery:** The runtime must remain recoverable from its original append-only journal across provider outages, rate limits, and partial worker crashes.
 
-## 2. 오케스트레이션 모델
+Conventional multi-agent frameworks attempt to absorb these pressures by layering external databases, RAG systems, blackboard architectures, complex permission engines, and shared memory stores. In contrast, `minimal-agent` **minimizes conceptual primitives**, evaluating its success solely on whether each operational boundary holds reliably under saturation, interruption, and restart.
 
-### 2.1 평평한 2-depth 팀
+---
+
+## 2. The Orchestration Model
+
+### 2.1 Bounded Team Topology
 
 ```text
-main (depth 0)  ── 목표 해석, 팀 구성, 종합
-├─ worker-01 (depth 1)  ── 정찰
-├─ worker-02 (depth 1)  ── 웹 취약점
-└─ ... 최대 9 worker     ── 익스플로잇/후속
+main (depth 0)  ── Goal interpretation, team formulation, strategic synthesis
+├─ worker-01 (depth 1)  ── Reconnaissance & network scanning
+├─ worker-02 (depth 1)  ── Web vulnerability probing
+└─ ... up to 9 workers   ── Lateral exploitation and privilege escalation
 ```
 
-- main만 worker를 create/assign/recall/stop 한다. worker는 하위 에이전트를 못 만든다.
-- 활성 팀 최대 10명(main 포함). 역할·업무는 실행 중 동적으로 정한다.
-- 깊이를 2로 고정해 오케스트레이션이 재귀적으로 팽창하지 않게 한다. 이는 "더 많은
-  계층"보다 조율 가능한 협업을 우선한 선택이다. (복합 과업을 위한 최대 3-Depth 한정 확장 및 직계 통신 불변식은 [`ADR-0004`](../adr/ADR-0004-bounded-three-depth-hierarchical-orchestration.md)와 [`docs/design/hierarchical-tree-orchestration-ideas.md`](hierarchical-tree-orchestration-ideas.md) 참조).
+- Only `main` creates, assigns, steers, and recalls workers. Workers cannot spawn arbitrary child subagents.
+- Maximum active team size is strictly capped at 10 (including `main`). Roles and assignments are determined dynamically at runtime.
+- Deep recursive sprawl is prevented by fixing team topology bounds. Rather than adding arbitrary hierarchical depth, `minimal-agent` prioritizes controllable, low-latency coordination. *(For bounded 3-depth extensions in complex operations, see [ADR-0004](../adr/ADR-0004-bounded-three-depth-hierarchical-orchestration.md) and [hierarchical-tree-orchestration-ideas.md](hierarchical-tree-orchestration-ideas.md)).*
 
-### 2.2 직접 통신, 단일 원장
+### 2.2 Direct Messaging over a Single Append-Only Journal
 
-에이전트는 별도 게시판이 아니라 하나의 내구성 journal을 통해 직접 메시지를 주고받는다.
+Agents do not coordinate through a shared message board; they exchange typed messages through a single durable journal:
 
-- 경로: `main→worker`, `worker→main`, `worker→worker`, 다중 recipient.
-- kind: `Progress`, `Insight`, `Request`, `Final`. `Insight`/`Final`은 main을
-  audience에 정확히 한 번 자동 포함한다 — worker가 통찰을 main에 따로 복제할 필요가
-  없다.
-- 메시지는 journal에 한 번 append되고 각 recipient의 in-memory Inbox로 투영된다.
-  재시작은 같은 journal을 fold해 미소비 Inbox를 복원한다.
+- **Routes:** `main → worker`, `worker → main`, `worker → worker`, and multiple recipients.
+- **Message Kinds:** `Progress`, `Insight`, `Request`, and `Final`. `Insight` and `Final` automatically include `main` as an implicit recipient, eliminating redundant duplicate broadcasts.
+- **Durable Projection:** Every message is appended once to the run journal and projected directly into the recipient's in-memory Inbox. A process restart folds the same journal to restore all unconsumed inbox messages.
 
-이 단일-원장 직접-통신이 오케스트레이션의 핵심이다. 통신·상태·회복이 모두 같은
-append-only 사실에서 파생되므로, 별도 관측 평면이나 검증 서비스가 필요 없다.
+This single-journal, direct-communication model is the core of the runtime. Communication, state tracking, and crash recovery all derive from the same append-only record of historical facts, removing the need for a secondary control or observation plane.
 
-### 2.3 소유권 있는 기억(brief)
+### 2.3 Owned Memory (`brief.md`)
 
-각 에이전트는 자기 소유 `brief.md` 하나를 갖는다. main은 살아 있는 팀의 역할·상태·
-통찰(Team/Battlefield)을, worker는 자기 시도·통찰만 유지한다. 누구도 남의 semantic
-brief를 직접 쓰지 않는다. 문맥이 80%에 닿은 **그 에이전트만** LLM semantic compaction을
-수행하고, 런타임은 source digest·coverage·감소량을 검증한다. 규칙 기반 head/tail
-자르기는 compaction으로 인정하지 않는다.
+Every agent maintains an individually owned battlefield note (`brief.md`):
+- `main` maintains the global picture, team composition, active attack frontiers, and curated technical insights.
+- Workers track only their specific hypotheses, attempted vectors, and exact technical findings.
+- No agent directly modifies another agent's semantic brief.
+- When an individual agent's context approaches its threshold (~80%), **only that specific agent** undergoes LLM semantic compaction. The runtime cryptographically validates source digests, event coverage, and reduction ratios; rule-based truncation is never recognized as semantic compaction.
 
-## 3. 교전(Engagement) 계층 — ADR-0002
+---
 
-오케스트레이션이 "무엇을, 어디까지" 공격하는지는 goal 문자열만으로는 부족하다.
-`Engagement`가 교전 맥락을 구조화한다.
+## 3. The Engagement Layer (ADR-0002)
+
+A bare goal string is insufficient to delineate the boundaries and constraints of an offensive engagement. The `Engagement` domain model formalizes this context:
 
 ```text
 Engagement { kind, title, scope, off_limits, flag_format, objective }
 ```
 
-### 3.1 주입 흐름
+### 3.1 Injection Pipeline
 
 ```text
-CLI 플래그 / --engagement JSON
-        └─ Engagement 값
+CLI Flags / --engagement JSON
+        └─ Engagement Struct
              └─ RuntimeConfig
-                  └─ build_system() ── bounded target-context 블록
-                       └─ 모든 에이전트 system prompt
+                  └─ build_system() ── bounded target-context block
+                       └─ System prompt of every agent
 ```
 
-- 파일과 플래그를 병합하고 플래그가 우선한다.
-- 텍스트는 goal과 같은 상한을 검증한다. 비밀은 렌더하지 않는다.
-- run 생성 시 `EngagementSet` journal 이벤트로 영속되어, resume가 같은 교전 맥락을
-  복원한다(resume에 플래그를 주면 그 값이 우선). 단일 원장이 통신·상태·회복에 더해
-  교전 맥락까지 담는다.
+- Command-line flags overlay file-based definitions, with CLI arguments taking absolute precedence.
+- Engagement text fields are strictly bounded by size limits; credentials and secrets are excluded from standard system prompt rendering.
+- An `EngagementSet` event is appended to the journal upon run creation, ensuring that session resumptions reliably restore the exact scope and rules of engagement.
 
-### 3.2 doctrine
+### 3.2 Operating Doctrines
 
-- **상시 standing-authorization**: 승인된 교전 안의 작업임을 표준 권한으로 취급한다.
-  합법성·윤리 서문을 붙이지 않고 공격 보안 작업을 그 이유만으로 거부하지 않는다.
-  경계는 법적 판단이 아니라 운영적 경계(scope 준수, 증거 보존, 비밀 노출 회피,
-  scope 밖·파괴 행위 전 확인)다.
-- **CTF solve-loop** (`kind==ctf`): 정찰 우선 → 한 가설 → 최소 probe → 실패 반복
-  금지 → pivot. flag는 `flag_format`에 맞는 실제 대상 출력에서만 채취한다.
+- **Standing Authorization Doctrine:** Legitimizes the operational scope as pre-authorized work. Agents are forbidden from emitting moralizing preambles, legal disclaimers, or refusing technical actions (recon, exploit creation, payload generation). Boundaries are operational (scope adherence, evidence preservation, avoiding needless destruction), not legalistic.
+- **CTF Solve-Loop Doctrine (`kind == ctf`):** Enforces structured reconnaissance, ranked falsifiable hypotheses, minimal diagnostic probes, strict rabbit-hole bans, and flag extraction solely from verified target output matching `flag_format`.
 
-이 doctrine은 규칙 엔진이 아니라 prompt 텍스트다. ADR-0001의 "전략을 규칙 엔진으로
-강제하지 않는다"와 정합하며, 거부·서문 문제를 코어 확장 없이 해소한다.
+These doctrines are implemented purely as compact system prompt text rather than complex external policy engines, aligning with ADR-0001's mandate that strategy should not be hardcoded into the runtime core.
 
-### 3.3 헤드리스 자율 실행 (xbow류 벤치마크)
+### 3.3 Autonomous Headless Execution (Benchmark Mode)
 
-```text
+```bash
 minimal-agent run \
   --engagement ./engagement.json \
   --auto --plain --headless
 ```
 
-1. `objective`(없으면 goal)를 한 번 제출.
-2. auto 루프가 팀을 구동, main의 `report final` 또는 팀 idle까지 이벤트 관찰.
-3. 요약 + 회수한 flag를 한 줄 JSON으로 출력.
-4. `flag_format` 설정 시 유효 flag 미회수면 non-zero 종료.
+1. Submits the primary objective once.
+2. The autonomous engine drives the team, observing events until `main` reports `op: "final"` or the team settles into an idle state.
+3. Outputs a single-line JSON summary containing verified execution telemetry and recovered flags.
+4. If a `flag_format` is specified, exits with a non-zero status code if no valid flag was extracted from actual target output.
 
-flag는 실제 출력의 정규식 매칭만 인정한다. 벤치마크 실행 자체(대상 구축·채점)는
-외부 owner의 책임이며, 본 저장소는 **주입·자율 실행·flag 회수 인터페이스**만 제공한다.
+Flag extraction strictly requires regex matching against genuine target standard output. The repository provides the injection, autonomous execution, and extraction interface; external harness owners manage target provisioning and scoring.
 
-## 4. Transcript 오케스트레이션 가시성 — ADR-0002
+---
 
-오케스트레이션이 관측 가능해야 논문에서 흐름을 보일 수 있다. transcript를 typed
-엔트리로 렌더한다.
+## 4. Transcript Orchestration Visibility (ADR-0002)
 
-| 엔트리 | 렌더 |
-|---|---|
-| 도구 호출 | `shell` + 흐린 `nmap -sV …`, 하위 라인에 결과 상태와 bounded output |
-| 부모–자식 메시지 | `main → worker-01` + `Insight` 라벨 + 본문 |
-| reasoning | rail 없는 dimmed 스트림 |
-| 오류 | 경고색 `ERROR:` 라벨 |
+To ensure full observability and reproducibility, transcripts render as structured typed entries:
 
-category별 단일 색 팔레트를 쓰고 assistant Markdown은 CommonMark event를 terminal
-span으로 변환한다. 이로써 어느 줄이 액션·결과·팀 통신·추론인지 한눈에 구분되고,
-병렬 worker의 진행이 읽힌다.
+| Entry Type | Terminal Representation |
+| :--- | :--- |
+| **Tool Calls** | `shell` prefix with dimmed command arguments, followed by execution status and bounded output |
+| **Team Messages** | `main → worker-01` with explicit message kind labels (`Insight`, `Progress`) and substantive payload |
+| **Model Reasoning** | Dimmed stream without artificial visual rails |
+| **Runtime Errors** | Highlighted `ERROR:` indicators with clear diagnostic messages |
 
-## 5. 회복과 안전 경계
+Consistent color palettes and CommonMark terminal rendering allow operators to instantly distinguish between execution, results, inter-agent messaging, and internal reasoning across concurrent workers.
 
-- 한 assistant tool turn과 모든 result는 같은 durable atomic group이며 compaction·
-  재시작에서 분리되지 않는다.
-- provider 최종 실패는 에이전트를 죽이지 않고 Waiting으로 두며, 메시지·재배정·
-  명시적 auto 재개가 다시 구동한다. 같은 실패 상태에서 새 활동 없이는 재호출하지
-  않는다(retry storm 금지).
-- storage 상한 도달 시 원문을 지우지 않고 write를 정지한다.
+---
 
-## 6. 의도적으로 두지 않은 것
+## 5. Fault Recovery and Safety Boundaries
 
-RAG·벡터 DB·공유 팀 Markdown·control/observation plane·권한 합성·승인 엔진·
-증거/검증 전용 엔진·자동 전략 분류. 현재 지식은 journal 원문과 에이전트 소유
-brief 두 층이면 충분하다는 가설을 유지하며, 측정된 recall 실패가 증명될 때만 새
-ADR로 재검토한다.
+- **Atomic Tool Turns:** A model tool invocation and its subsequent results form a single atomic group that cannot be separated across compaction or restart cycles.
+- **Provider Fault Handling:** Provider failures pause the affected worker in a `Waiting` state rather than killing it. Subsequent user steering, reassignment, or explicit resume calls awaken the worker without triggering unbounded retry storms.
+- **Storage Boundaries:** When storage quotas are reached, write operations halt gracefully without corrupting or deleting existing journal history.
 
-## 7. 논문에서의 주장 범위
+---
 
-- 본 저장소는 **성능 점수(벤치마크 solve rate)를 주장하지 않는다.** 오케스트레이션·
-  기억·회복을 최소 개념으로 설명하고 각 경계의 불변식을 증명하는 것이 목표다.
-- 벤치마크 수치는 외부 benchmark owner가 별도로 측정·보고한다.
-- 재현 가능한 근거는 Docker-only test/clippy/build exit code와 test count다.
+## 6. Intentionally Omitted Primitives
+
+`minimal-agent` deliberately omits several common framework abstractions:
+- Vector databases and external RAG pipelines
+- Global shared team scratchpads
+- Separate observation and telemetry microservices
+- Complex runtime policy and approval engines
+- Automated heuristic strategy classifiers
+
+The architectural thesis of this project is that an append-only journal paired with individually owned semantic briefs provides complete state representation. New primitives will only be evaluated via formal ADRs if empirical recall failures are demonstrated.
+
+---
+
+## 7. Scope of Claims
+
+- This codebase **makes no direct claims regarding benchmark solve rates.** Its primary objective is to prove the correctness, minimal conceptual footprint, and invariant safety of its orchestration, memory, and recovery boundaries.
+- Formal benchmark metrics are measured and published independently by external harness owners.
+- Verifiable proof is established through clean-room containerized builds, linting passes (`scripts/dbuild.ps1`), and deterministic contract test suites.

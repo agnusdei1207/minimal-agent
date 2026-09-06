@@ -116,6 +116,31 @@ async fn shell_runs_in_the_workspace_with_timeout_and_cancellation() {
 }
 
 #[tokio::test]
+async fn bash_honors_dynamic_timeout_secs_override() {
+    let (dir, journal, coordinator, tools) = setup();
+    let context = ToolContext::new(
+        AgentId::main(),
+        dir.path().join("workspace"),
+        coordinator,
+        journal,
+    )
+    .unwrap();
+
+    let res = tools
+        .execute(
+            "bash",
+            serde_json::json!({
+                "command": "sleep 3",
+                "timeout_secs": 1
+            }),
+            &context,
+        )
+        .await;
+
+    assert!(matches!(res, Err(ToolError::TimedOut(dur)) if dur == Duration::from_secs(1)));
+}
+
+#[tokio::test]
 async fn tmux_tool_is_registered_as_a_thin_args_passthrough_with_the_core_patterns() {
     let (_dir, _journal, _coordinator, tools) = setup();
     let definition = tools

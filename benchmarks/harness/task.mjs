@@ -12,7 +12,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { writeCommandArtifacts } from "./artifacts.mjs";
-import { acquireTaskLock, resolveArtifactLayout } from "./control.mjs";
+import { acquireTaskLock, cleanupTaskVolumes, resolveArtifactLayout } from "./control.mjs";
 import { finalizeInterruptedDirectory, findOwnedLatestRun } from "./interrupt.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -171,7 +171,7 @@ function cleanupInterruptedTaskSync() {
         stderr: r.stderr || r.error?.message || "",
       };
     };
-    const agentCleanup = cmd(["rm", "-f", `${project}-agent`]);
+    const agentCleanup = cmd(["rm", "-f", "-v", `${project}-agent`]);
     writeCommandArtifacts(runDir, "wrapper-interrupt-agent-cleanup", agentCleanup);
     const teardown = cmd([
       "compose",
@@ -181,8 +181,14 @@ function cleanupInterruptedTaskSync() {
       composeFile,
       "down",
       "-v",
+      "--remove-orphans",
     ]);
     writeCommandArtifacts(runDir, "wrapper-interrupt-compose-down", teardown);
+    try {
+      cleanupTaskVolumes(project, { cwd: projectRoot, command: spawnSync });
+    } catch {
+      /* best effort */
+    }
     finalizeInterruptedDirectory(runDir, id, interruptSignal || "signal", {
       teardownFailed: teardown.ok !== true,
     });

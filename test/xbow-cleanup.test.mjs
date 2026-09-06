@@ -68,3 +68,22 @@ for (const file of ["harness/runner.mjs", "claude/run.mjs"]) {
     ]);
   });
 }
+
+test("cleanupTaskVolumes removes only owned project volumes without global prune", () => {
+  const calls = [];
+  const spawnSync = (_cmd, args) => {
+    calls.push(Array.from(args));
+    return {
+      status: 0,
+      stdout:
+        args[0] === "volume" && args[1] === "ls"
+          ? "fixture_db_data\nfixture-storage\nfixture\nother_project_vol\n\n"
+          : "",
+    };
+  };
+  control.cleanupTaskVolumes("fixture", { command: spawnSync });
+  assert.deepEqual(calls, [
+    ["volume", "ls", "--filter", "name=fixture", "--format", "{{.Name}}"],
+    ["volume", "rm", "-f", "fixture_db_data", "fixture-storage", "fixture"],
+  ]);
+});

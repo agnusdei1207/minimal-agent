@@ -237,21 +237,16 @@ export function renderStandardReport(opts) {
       ]
     : [
         `| Input (prompt) | ${kfmt(tot.input)} |`,
-        `| Cache (rd+wr) | - |`,
         `| Output (completion) | ${kfmt(tot.output)} |`,
         `| **Total (in + out)** | **${kfmt(tot.in_plus_out)}** |`,
       ];
 
   const tokenNote = cacheKnown
     ? [
-        "> Fresh `input` is tiny because prompt caching routes almost all context through",
+        "> Fresh `input` is tiny because API prompt caching routes almost all context through",
         "> cache read/write; **Total incl. cache** is the true token throughput.",
       ]
-    : [
-        "> No provider-side prompt cache accounting for this solver: the agent re-sends the",
-        "> growing conversation each turn, so `Input (prompt)` already reflects cumulative",
-        "> context. Cache columns render `-`.",
-      ];
+    : [];
 
   const costSection = costKnown
     ? [
@@ -272,6 +267,32 @@ export function renderStandardReport(opts) {
         "> Aggregate cost renders `-`; raw per-attempt measurements remain in kpi.json.",
         "",
       ];
+
+  const perTaskHeader = cacheKnown
+    ? [
+        "| Task | Result | Turns | In-tok | Out-tok | Prompt Cache | Cost($) | Duration(s) | Flag |",
+        "|------|--------|------:|-------:|--------:|-------------:|--------:|------------:|:----:|",
+      ]
+    : [
+        "| Task | Result | Turns | In-tok | Out-tok | Cost($) | Duration(s) | Flag |",
+        "|------|--------|------:|-------:|--------:|--------:|------------:|:----:|",
+      ];
+
+  const perTaskRows = perTask.map(({ row: r, t }) => {
+    if (cacheKnown) {
+      return (
+        `| ${r.task} | ${r.outcome} ${resultIcon(r)} | ${r.num_turns ?? ""} | ` +
+        `${kfmt(t.input)} | ${kfmt(t.output)} | ${cacheCell(t)} | ` +
+        `${costCell(r)} | ${r.duration_s ?? ""} | ${flagCell(r)} |`
+      );
+    } else {
+      return (
+        `| ${r.task} | ${r.outcome} ${resultIcon(r)} | ${r.num_turns ?? ""} | ` +
+        `${kfmt(t.input)} | ${kfmt(t.output)} | ` +
+        `${costCell(r)} | ${r.duration_s ?? ""} | ${flagCell(r)} |`
+      );
+    }
+  });
 
   const lines = [
     header.title,
@@ -297,7 +318,7 @@ export function renderStandardReport(opts) {
     ...tokenTotalsRows,
     "",
     ...tokenNote,
-    "",
+    ...(tokenNote.length > 0 ? [""] : []),
     "## Averages",
     "",
     "| Metric | Value |",
@@ -312,15 +333,8 @@ export function renderStandardReport(opts) {
     ...costSection,
     "## Per-task",
     "",
-    "| Task | Result | Turns | In-tok | Out-tok | Cache (rd+wr) | Cost($) | Duration(s) | Flag |",
-    "|------|--------|------:|-------:|--------:|--------------:|--------:|------------:|:----:|",
-    ...perTask.map(({ row: r, t }) => {
-      return (
-        `| ${r.task} | ${r.outcome} ${resultIcon(r)} | ${r.num_turns ?? ""} | ` +
-        `${kfmt(t.input)} | ${kfmt(t.output)} | ${cacheCell(t)} | ` +
-        `${costCell(r)} | ${r.duration_s ?? ""} | ${flagCell(r)} |`
-      );
-    }),
+    ...perTaskHeader,
+    ...perTaskRows,
     "",
   ];
 

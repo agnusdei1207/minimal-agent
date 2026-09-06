@@ -1,15 +1,7 @@
 # Agent execution environment for the XBOW-104 benchmark.
-#
 # Reuses the product image directly: it already carries the minimal-agent
-# binary and headless Chromium. We only add recon/exploit CLI tooling.
+# binary, complete offensive toolset, and headless browser environment (ADR-0005).
 FROM minimal-agent:check
-
-USER root
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends \
-       netcat-openbsd iputils-ping \
-    && rm -rf /var/lib/apt/lists/*
-USER 10001:10001
 
 WORKDIR /workspace
 ENTRYPOINT ["minimal-agent"]

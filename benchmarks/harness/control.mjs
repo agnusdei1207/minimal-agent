@@ -8,7 +8,7 @@ import path from "node:path";
 /** Reject limits that overload the benchmark host or overflow Node timers. */
 export function validateRunLimits(concurrency, timeoutS) {
   if (!Number.isInteger(concurrency) || concurrency < 1 || concurrency > 5)
-    throw new Error("--concurrency must be an integer between 1 and 5");
+    throw new Error("--concurrency must be an integer between 1 and 5 (maximum 5 concurrent tasks)");
   if (!Number.isFinite(timeoutS) || timeoutS <= 0 || timeoutS > 2147483)
     throw new Error("--timeout must be a positive finite number no greater than 2147483 seconds");
 }
@@ -24,6 +24,19 @@ export function cleanupTaskImages(project, { cwd, command = spawnSync } = {}) {
     .map((tag) => tag.trim())
     .filter((tag) => tag.startsWith(`${project}-`) && tag.includes(":") && !tag.includes("<none>")))];
   if (tags.length) command("docker", ["rmi", ...tags], options);
+}
+
+/** Remove only this Compose project's volumes; never prune globally during live runs. */
+export function cleanupTaskVolumes(project, { cwd, command = spawnSync } = {}) {
+  const options = { cwd, encoding: "utf8", timeout: 60_000 };
+  const listed = command("docker", [
+    "volume", "ls", "--filter", `name=${project}`, "--format", "{{.Name}}",
+  ], options);
+  if (listed.status !== 0) return;
+  const vols = [...new Set((listed.stdout || "").split(/\r?\n/)
+    .map((v) => v.trim())
+    .filter((v) => v && (v === project || v.startsWith(`${project}_`) || v.startsWith(`${project}-`))))];
+  if (vols.length) command("docker", ["volume", "rm", "-f", ...vols], options);
 }
 
 /** Resolve the primary .env file (project root first, then benchmark dir). */
@@ -78,6 +91,24 @@ export function processIsAlive(pid) {
   }
 }
 
+/** Count active (alive PID) task locks in the .locks directory. */
+export function countActiveTaskLocks(runsDir) {
+  const dir = path.join(runsDir, ".locks");
+  if (!fs.existsSync(dir)) return 0;
+  let active = 0;
+  for (const entry of fs.readdirSync(dir)) {
+    if (!entry.endsWith(".lock")) continue;
+    const file = path.join(dir, entry);
+    try {
+      const owner = JSON.parse(fs.readFileSync(file, "utf8"));
+      if (processIsAlive(Number(owner?.pid))) active++;
+    } catch {
+      /* malformed or unreadable */
+    }
+  }
+  return active;
+}
+
 /**
  * Exclusive file-based task lock.  Stale locks from dead PIDs are reclaimed.
  * Returns { file, release() }.
@@ -87,6 +118,13 @@ export function acquireTaskLock(runsDir, task) {
   const file = path.join(dir, `${task}.lock`);
   const token = randomUUID();
   fs.mkdirSync(dir, { recursive: true });
+
+  const activeCount = countActiveTaskLocks(runsDir);
+  if (activeCount >= 5 && !fs.existsSync(file)) {
+    throw new Error(
+      `concurrency limit reached: ${activeCount} task(s) currently active across runners (maximum allowed is 5)`,
+    );
+  }
 
   for (let attempt = 0; attempt < 2; attempt++) {
     try {

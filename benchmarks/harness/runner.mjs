@@ -31,6 +31,7 @@ import {
 import {
   acquireTaskLock,
   cleanupTaskImages,
+  cleanupTaskVolumes,
   resolveArtifactLayout,
   resolveBackboneFiles,
   runWithProgress,
@@ -515,7 +516,13 @@ async function runTask(id) {
     await recordedCompose("compose-down-after-build-fault", [
       "down",
       "-v",
+      "--remove-orphans",
     ]).catch(() => null);
+    try {
+      cleanupTaskVolumes(proj, { cwd: PROJECT_ROOT });
+    } catch {
+      /* best effort */
+    }
     return finalize();
   }
 
@@ -532,9 +539,16 @@ async function runTask(id) {
   );
   if (runCancellation.signal) {
     markInterrupted();
-    await cleanupCompose("compose-down-after-interrupt", ["down", "-v"]).catch(
-      () => null,
-    );
+    await cleanupCompose("compose-down-after-interrupt", [
+      "down",
+      "-v",
+      "--remove-orphans",
+    ]).catch(() => null);
+    try {
+      cleanupTaskVolumes(proj, { cwd: PROJECT_ROOT });
+    } catch {
+      /* best effort */
+    }
     return finalize();
   }
   if (!up.ok) {
@@ -551,7 +565,13 @@ async function runTask(id) {
     await recordedCompose("compose-down-after-start-fault", [
       "down",
       "-v",
+      "--remove-orphans",
     ]).catch(() => null);
+    try {
+      cleanupTaskVolumes(proj, { cwd: PROJECT_ROOT });
+    } catch {
+      /* best effort */
+    }
     return finalize();
   }
 
@@ -618,6 +638,7 @@ async function runTask(id) {
     // --run points the ma-journal RunJournal at /tmp/ma-run, which is bind-mounted
     // to the per-run journalDir on the host (see above) so it survives teardown.
     args.push(
+      "--init",
       "-e",
       "MINIMAL_AGENT_TELEMETRY_FILE=/workspace/.minimal-agent/usage.jsonl",
       "--name",
@@ -803,18 +824,22 @@ async function runTask(id) {
       phase: "compose_down",
       started_at: startedAt,
     });
-    if (runCancellation.signal) {
-      await cleanupCommand(
-        "agent-container-interrupt-cleanup",
-        "docker",
-        ["rm", "-f", `${proj}-agent`],
-      ).catch(() => null);
-    }
+    await cleanupCommand(
+      "agent-container-cleanup",
+      "docker",
+      ["rm", "-f", "-v", `${proj}-agent`],
+    ).catch(() => null);
     const cleanup = await cleanupCompose("compose-down", [
       "down",
       "-v",
+      "--remove-orphans",
     ]).catch(() => null);
     ev.teardown_failed = cleanup?.ok !== true;
+    try {
+      cleanupTaskVolumes(proj, { cwd: PROJECT_ROOT });
+    } catch {
+      /* best effort */
+    }
   }
 
   finalize();
@@ -1000,6 +1025,29 @@ async function main() {
     path.join(OUT, `last-run-${stamp()}.json`),
     JSON.stringify(results, null, 2),
   );
+
+  // When the benchmark finishes, cleanly sweep any remaining benchmark volumes
+  try {
+    const volFilter = PROJECT_PREFIX ? `name=${PROJECT_PREFIX}xben` : "name=xben";
+    const listed = spawnSync("docker", [
+      "volume", "ls", "--filter", volFilter, "--format", "{{.Name}}",
+    ], { encoding: "utf8", timeout: 60_000 });
+    if (listed.status === 0) {
+      const remainingVols = (listed.stdout || "")
+        .split(/\r?\n/)
+        .map((v) => v.trim())
+        .filter((v) => v && (v.includes("xben-") || (PROJECT_PREFIX && v.includes(PROJECT_PREFIX))));
+      if (remainingVols.length) {
+        console.log(`[runner] cleaning up ${remainingVols.length} remaining benchmark volume(s)...`);
+        spawnSync("docker", ["volume", "rm", "-f", ...remainingVols], {
+          encoding: "utf8",
+          timeout: 60_000,
+        });
+      }
+    }
+  } catch {
+    /* best effort */
+  }
   if (runCancellation.signal) process.exitCode = 130;
   else if (results.some((r) => r.outcome === "runner_fault"))
     process.exitCode = 1;

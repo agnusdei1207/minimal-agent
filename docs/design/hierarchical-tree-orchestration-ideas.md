@@ -1,71 +1,71 @@
-# 계층적 트리 오케스트레이션 설계 탐색 노트 (Hierarchical Tree Exploration)
+# Hierarchical Tree Orchestration Design Exploration Notes
 
-본 문서는 `minimal-agent`의 현행 **스타형 단일 레벨 팀(1 Main + ≤9 Workers, Depth 1)** 구조를 넘어, **임의 깊이의 재귀적 트리(Unbounded Recursive Tree) 및 내부 노드(위임·요약 전용) / 리프 노드(도구 실행 전용) 분리 모델**에 대한 아키텍처적 가능성과 트레이드오프를 탐색·기록한다.
+This document explores the architectural possibilities, trade-offs, and failure modes of moving beyond `minimal-agent`'s original **star-topology single-level team (1 Main + ≤9 Workers, Depth 1)** toward **recursive trees of bounded depth with strict separation between supervisor (internal) nodes and worker (leaf) nodes**.
 
 ---
 
-## 1. 제안된 아키텍처 모델: "감독자-작업자 순수 계층 트리"
+## 1. The Proposed Architecture Model: "Supervisor-Worker Pure Hierarchy"
 
-### 1.1 핵심 규칙 정의
-1. **역할 분리 (Strict Internal vs. Leaf Separation):**
-   - **내부 노드 (Internal / Supervisor Node):** 자식 노드가 존재하는 에이전트. **직접 도구(`shell`, `workspace`)를 호출하지 않으며**, 오직 하위 자식 노드로 과업을 분할(Scatter/Delegate)하고, 자식들의 보고를 취합·요약(Synthesize/Reduce)하여 상위 부모 노드에 보고한다.
-   - **리프 노드 (Leaf / Worker Node):** 자식 노드가 없는 최하위 실행 에이전트. **실제 환경과 상호작용하는 유일한 주체**로서 도구를 실행하고, 그 기술적 결과를 직속 부모 노드에 보고한다. 하위 노드를 생성할 수 없다.
-2. **단방향 수직 통신 및 요약 전파:**
-   - 명령은 상위에서 하위로 흐르고, 결과와 통찰은 하위에서 상위로 요약되어 올라간다.
+### 1.1 Core Principles
+1. **Strict Role Separation (Internal vs. Leaf):**
+   - **Internal / Supervisor Nodes:** Agents that have children. They **never invoke environment tools (`shell`, `workspace`) directly**. Their sole responsibility is to partition and scatter tasks to child nodes, synthesize and reduce their progress/insights, and report concise status to their parent node.
+   - **Leaf / Worker Nodes:** Execution agents that have no children. They are the **sole entities interacting with the external environment** by running tools. They report technical evidence directly to their supervisor. They cannot spawn subagents.
+2. **Unidirectional Vertical Communication & Synthesis:**
+   - Instructions flow downward; findings, exact values, and synthesis bubble upward.
 
 ```text
-                  [ Root / Main ] (Depth 0: 총괄 전략 & 최종 보고)
+                  [ Root / Main ] (Depth 0: Overall Strategy & Final Reporting)
                    /             \
-       [ Track Lead A ]        [ Track Lead B ] (Depth 1: 과업 분할 & 요약)
+       [ Track Lead A ]        [ Track Lead B ] (Depth 1: Task Partitioning & Synthesis)
         /            \              |
-  [ Leaf W1 ]    [ Leaf W2 ]    [ Leaf W3 ] (Depth 2+: 실제 도구 실행)
+  [ Leaf W1 ]    [ Leaf W2 ]    [ Leaf W3 ] (Depth 2: Tool Execution)
   (tool: shell)  (tool: shell)  (tool: shell)
 ```
 
 ---
 
-## 2. 알고리즘적 분류 및 특성
+## 2. Algorithmic Classification & Properties
 
-| 관점 | 스타 구조 (현행 minimal-agent) | 순수 계층 트리 (탐색 모델) |
+| Dimension | Star Topology (Original minimal-agent) | Pure Hierarchical Tree (Exploratory Model) |
 | :--- | :--- | :--- |
-| **트리 형태** | $K_{1, n}$ (높이 1, 방사형 스타 그래프) | $N$-ary Tree (임의 높이 계층 트리) |
-| **알고리즘 패턴** | Single-Level MapReduce / Scatter-Gather | Multi-Stage Divide-and-Conquer / Actor Supervision Tree |
-| **도구 실행 주체** | Main(직접 실행 가능) + Worker(실행) | **오직 Leaf 노드만 실행** |
-| **중간 노드 역할** | 없음 (Main 1명이 직접 전원 지휘) | 분할(Partition) + 요약(Reduce) + 중계(Relay) |
-| **상한(Bounds)** | Active Team $\le 10$, Depth $= 1$ 고정 | Depth $\infty$ 또는 Bounded Depth $D$, Subtree Cap |
+| **Graph Topology** | $K_{1, n}$ (Depth 1, radial star graph) | $N$-ary Tree (Hierarchical tree structure) |
+| **Algorithmic Pattern** | Single-Level MapReduce / Scatter-Gather | Multi-Stage Divide-and-Conquer / Actor Supervision Tree |
+| **Tool Execution Rights** | Main (can execute) + Workers (execute) | **Strictly Leaf nodes only** |
+| **Intermediate Role** | None (Single lead directly orchestrates all) | Partitioning + Semantic Reduction + Relay |
+| **Bounds** | Active Team $\le 10$, Depth $= 1$ fixed | Bounded Depth $D \le 3$, Subtree and Team Caps |
 
 ---
 
-## 3. 기대되는 장점 (Pros)
+## 3. Expected Advantages (Pros)
 
-1. **역할의 극단적 명확성 및 컨텍스트 순도 유지:**
-   - 관리 노드가 도구 실행 결과(대용량 출력)로 인해 자신의 문맥을 오염시키지 않고, 오직 상위 전략과 요약된 통찰(`brief.md`)만 다루므로 환각과 방향 상실이 감소함.
-2. **초대형 복합 과업으로의 확장성:**
-   - 단일 에이전트가 10명 이상의 워커를 인지적으로 관리하기 어려운 한계(Cognitive Span of Control)를 극복하여, 서브 프로젝트별 리드에게 관리를 위임할 수 있음.
-3. **자연스러운 계층적 압축 (Hierarchical Compaction):**
-   - 최하위의 수백 줄 로그 $\to$ 중간 리드의 3줄 통찰 $\to$ 루트의 1줄 전장 상황으로 상향식 의미 압축이 자연스럽게 발생함.
-
----
-
-## 4. 치명적인 위험과 트레이드오프 (Cons & Challenges)
-
-1. **지연 시간(Latency) 및 턴 수의 지수적 폭발:**
-   - 리프 노드의 발견이 루트에 도달하려면 최소 $D$번의 순차적 LLM 턴(Leaf $\to$ Lead $\to$ Root)이 직렬로 발생함.
-   - 단순한 1줄 확인 작업(예: "포트 80 서비스 버전 확인")조차 생성 $\to$ 위임 $\to$ 실행 $\to$ 보고 $\to$ 요약으로 최소 4~6턴이 소모됨.
-2. **정보의 전화 게임 (Information Degradation / Loss of Precision):**
-   - 공격 보안(CTF/익스플로잇)에서는 **정확한 1바이트 릭(Leak) 값, 메모리 오프셋, Nonce 값**이 치명적인 핵심인데, 다단계 요약을 거치면서 "오프셋이 발견됨" 수준의 추상화된 문장으로 뭉개져 루트에서 올바른 판단을 내리지 못할 위험.
-3. **위임 핑퐁 및 스폰 폭주 (Spawn Storms & Infinite Delegation):**
-   - 모델이 어려운 문제에 직면했을 때 스스로 해결하지 않고 계속해서 하위 자식 노드를 스폰하는 회피성 위임 루프에 빠져 비용/토큰이 폭발할 위험.
-4. **장애 복구 및 원장(Journal) 관리 복잡도:**
-   - 중간 노드가 비정상 종료되거나 타임아웃되었을 때, 그 하위 서브트리 전체의 가비지 컬렉션, 세마포어 회수, 저널 리플레이 복원의 복잡도가 기하급수적으로 증가함.
+1. **Role Clarity and Context Purity:**
+   - Supervisory nodes are never polluted by voluminous raw tool outputs (e.g., massive scan dumps or build logs). They maintain clean strategic context in their `brief.md`, dramatically reducing hallucinations and goal drift.
+2. **Scalability for Large Complex Projects:**
+   - Overcomes the single coordinator's cognitive span-of-control limit (typically 5–10 concurrent agents), allowing subproject leads to independently manage specialized tracks (e.g., web frontend vs. backend auth vs. cloud infrastructure).
+3. **Natural Hierarchical Semantic Compaction:**
+   - Raw 1,000-line tool logs at the leaf tier compress into 3-line actionable insights at the lead tier, which distill into a 1-line tactical update at the root.
 
 ---
 
-## 5. 실전 CTF 및 모의해킹 관점에서의 평가 및 최종 결정
+## 4. Critical Risks and Trade-offs (Cons & Challenges)
 
-- **CTF의 실제 특성:** 대부분의 CTF 및 목표 지향적 침투는 **수평적 병렬성(Horizontal Breadth: 포트 5개 동시 정찰, 웹/바이너리/크립토 가설 동시 검증)**이 핵심이나, 복합 과업(서브넷 정찰 후 특정 취약점 집중 공략 등)에서는 1단계의 중첩 병렬화가 실질적인 가치를 제공함.
-- **최종 아키텍처 결정 (ADR-0004 채택):**
-  - 무한 재귀의 위험을 원천 차단하기 위해 **최대 3-Depth (Root $\to$ Intermediate Lead $\to$ Leaf Worker)**로 상한을 명확히 고정.
-  - 정보 왜곡(전화 게임)을 막기 위해 **핵심 원시 값(Exact Distinguishing Values) 보존 프로토콜**을 프롬프트에 강제.
-  - 통신 범위를 **직계 부모-자식 및 직계 형제 간으로 엄격히 한정**하여 메시지 버스의 복잡도 통제.
-  - 상세 아키텍처 사양은 [`docs/adr/ADR-0004-bounded-three-depth-hierarchical-orchestration.md`](../adr/ADR-0004-bounded-three-depth-hierarchical-orchestration.md) 참조.
+1. **Exponential Latency and Turn Explosion:**
+   - For a leaf discovery to reach the root requires at least $D$ sequential LLM turns (Leaf $\to$ Lead $\to$ Root) in serial.
+   - Even a simple 1-line verification task (e.g., "Check port 80 banner") consumes 4–6 LLM turns across the tree before the root can act on it.
+2. **Information Degradation (The "Telephone Game"):**
+   - In offensive security and CTF tasks, **exact distinguishing values** (e.g., memory leak offsets, cryptographic nonces, specific HTTP query strings) are critical. Multi-hop summarization risks abstracting these details away (e.g., "an offset was discovered"), paralyzing decision-making at the root.
+3. **Spawn Storms and Infinite Evasion:**
+   - When faced with an ambiguous or challenging problem, LLMs tend to procrastinate by recursively spawning subagents rather than solving the issue, causing catastrophic token and budget exhaustion.
+4. **Crash Recovery and Journal Replay Complexity:**
+   - When an intermediate node crashes or encounters a provider fault, garbage-collecting its entire subtree, recovering active permits, and deterministically replaying the journal becomes orders of magnitude more complex.
+
+---
+
+## 5. Practical CTF/Pentest Evaluation & Final Architectural Decision
+
+- **CTF Operational Reality:** Most CTF and target-oriented penetration tests require **horizontal concurrency** (e.g., probing 5 distinct ports or testing 3 orthogonal vulnerabilities concurrently) rather than deep recursive delegation. However, complex multi-stage objectives (e.g., internal network pivoting) benefit substantially from bounded sub-leads.
+- **Adopted Architecture (ADR-0004):**
+  - **Bounded 3-Depth Cap:** The tree depth is strictly clamped to a maximum of 3 (`Root (0) -> Lead (1) -> Leaf (2)`), permanently preventing spawn storms.
+  - **Exact Value Preservation Protocol:** System prompts strictly mandate that intermediate leads preserve raw technical values (endpoints, credentials, payloads) verbatim when relaying insights upward.
+  - **Restricted Messaging Topology:** Inter-agent communication is bounded to direct parents, direct children, and same-parent siblings, keeping message bus complexity deterministic.
+  - *Full normative specifications are codified in [ADR-0004](../adr/ADR-0004-bounded-three-depth-hierarchical-orchestration.md).*

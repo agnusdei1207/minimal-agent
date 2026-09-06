@@ -39,10 +39,19 @@ MINIMAL_AGENT_PROVIDER_TIMEOUT=300                  # 응답 타임아웃 (초)
 ```
 - 1차 실행 시 패치 건수가 출력되고, 즉시 재실행 시 **모든 항목이 0건(멱등성)**이어야 합니다.
 
-### Step 4. 에이전트 러너 이미지 빌드
-에이전트 런타임 이미지를 최신 로컬 워킹트리 소스 기반으로 빌드합니다:
+### Step 3.5 Docker 자원 사전 정리 (Clean Slate)
+이전 실행의 잔여 컨테이너, 미사용 브리지 네트워크, 볼륨 및 고아 락 파일이 남아 포트 충돌이나 캐시 오염을 일으키지 않도록 사전에 정리합니다:
 ```powershell
-powershell -ExecutionPolicy Bypass -File scripts/dimage.ps1 -Target runner -Tag xbow-agent-runner:latest
+docker rm -f $(docker ps -aq --filter "name=xben")
+docker network prune -f
+docker volume prune -f
+Get-ChildItem -Path benchmarks/harness/.locks -Filter *.lock -ErrorAction SilentlyContinue | Remove-Item -Force
+```
+
+### Step 4. 에이전트 러너 이미지 클린 빌드
+이전 빌드 캐시나 설정이 남지 않도록 `-NoCache` 플래그를 사용하여 처음부터 완전히 깨끗한 상태로 빌드합니다:
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts/dimage.ps1 -Target runner -Tag xbow-agent-runner:latest -NoCache
 ```
 
 ---
@@ -102,6 +111,10 @@ $env:XBOW104_PROJECT_PREFIX = "dsv4-"
    - Rust 빌드/테스트는 `scripts/dbuild.ps1`을 사용하며, 호스트 Cargo는 절대 직접 실행하지 않습니다.
 4. **상시 런 모니터링**:
    - 장시간 실행은 5분 간격 모니터링 서브에이전트로 위임하고, 새로운 장애·이슈 발생 시에만 보고합니다.
+5. **클린 상태 빌드 및 도커 자원 사전/사후 정리**:
+   - 이전 캐시나 설정이 남아 오작동을 유발하지 않도록 벤치마크 시작 전 도커 자원(컨테이너, 네트워크, 볼륨, 락)을 정리하고, `-NoCache`로 클린 빌드하여 수행합니다.
+   - 벤치마크 실행 중 및 종료 시: 과제별로 `compose down -v --remove-orphans`, 에이전트 익명 볼륨 회수(`docker rm -f -v`), `cleanupTaskVolumes`가 즉시 수행되며, 런 완료 시 잔여 벤치마크 볼륨(`xben-*`)을 일괄 스윕하여 볼륨까지 깨끗하게 정리합니다.
+   - 보고서의 `캐시` 항목은 API 토큰 프롬프트 캐시(`cached_tokens`)를 뜻하며(디스크/IO 캐시 아님), 미지원 프로바이더는 보고서에서 자동 제외됩니다.
 
 ---
 
@@ -158,3 +171,5 @@ node benchmarks/zai/summarize.mjs --model deepseek-v4-flash
 | **기동 실패 (`benchmark_start_fault`)** | 이전 실행 잔여 컨테이너가 포트를 점유 (`port is already allocated`) | 잔여 컨테이너 일괄 정리:<br>`docker rm -f $(docker ps -aq --filter name=xben)` |
 | **긴급 중단 (Cancel)** | 런 도중 즉시 중단이 필요한 경우 | 터미널에서 `Ctrl+C` 입력 후 잔여 스택 정리:<br>`docker rm -f $(docker ps -aq --filter name=xben)` |
 | **Docker 빌더 에러** | Docker 빌더 컨텍스트가 `default`가 아님 | 기본 빌더 컨텍스트로 전환:<br>`docker --context=default buildx use default` |
+| **고아 락으로 인한 대기 (`task locked`)** | 이전 비정상 종료로 락 파일 잔존 | 잔여 락 파일 일괄 삭제:<br>`Get-ChildItem -Path benchmarks/harness/.locks -Filter *.lock | Remove-Item -Force` |
+| **빌드 캐시 오염 / 이전 설정 잔류** | 이전 레이어 캐시 충돌 또는 패치 미반영 | `-NoCache` 플래그로 클린 재빌드:<br>`powershell -ExecutionPolicy Bypass -File scripts/dimage.ps1 -Target runner -NoCache` |

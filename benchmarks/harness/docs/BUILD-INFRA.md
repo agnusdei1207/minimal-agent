@@ -103,3 +103,36 @@
 3. **동시성(Concurrency) 한도 준수**:
    - `concurrency`는 5 이하를 엄수하여 Docker 브리지 네트워크 및 호스트 시스템 자원 고갈을 방지한다.
    - 단일 과제 디버깅 시에는 `--no-commit`을 사용하여 불필요한 자동 커밋 생성을 방지한다.
+
+4. **Docker 자원 정리 및 클린 빌드 표준 절차 (Clean State Policy)**:
+   이전 실행 잔여 컨테이너, 볼륨, 네트워크, 빌드 레이어 캐시나 고아 락(`.locks/`)이 남아 있을 경우 포트 충돌(`Bind for ... failed: port is already allocated`), 디스크 용량 고갈, 이전 설정과의 비호환 문제가 발생할 수 있다. 벤치마크 시작 전 반드시 환경을 깨끗이 정리하고 클린 빌드를 수행한다.
+
+   - **사전 자원 정리 (Pre-run Teardown)**:
+     ```powershell
+     # 1) 잔여 벤치마크 컨테이너 강제 정리
+     docker rm -f $(docker ps -aq --filter "name=xben")
+     # 2) 잔여 브리지 네트워크 일괄 정리
+     docker network prune -f
+     # 3) 잔여 볼륨 일괄 정리
+     docker volume prune -f
+     # 4) 이전 비정상 종료로 남은 고아 락 파일 제거
+     Get-ChildItem -Path benchmarks/harness/.locks -Filter *.lock -ErrorAction SilentlyContinue | Remove-Item -Force
+     ```
+
+   - **처음부터 깨끗한 상태로 이미지 빌드 (Clean-state Build)**:
+     기존 빌드 캐시의 오염이나 이전 런타임 레이어 잔류를 방지하기 위해 `-NoCache` 옵션으로 처음부터 완전히 다시 빌드한다:
+     ```powershell
+     powershell -ExecutionPolicy Bypass -File scripts/dimage.ps1 -Target runner -Tag xbow-agent-runner:latest -NoCache
+     ```
+
+   - **과제별 및 벤치마크 종료 시 볼륨 완전 정리 (Volume Teardown)**:
+     - **과제별 종료 (Per-task)**: 러너(`runner.mjs`)는 각 태스크가 완료/실패/중단될 때마다 에이전트 컨테이너(`${proj}-agent`)를 `docker rm -f -v`로 삭제해 익명 볼륨을 회수하고, 타깃 Compose 스택을 `compose down -v --remove-orphans`로 내려 선언된 볼륨과 고아 컨테이너를 완전 정리한다.
+     - **프로젝트 볼륨 명시적 회수 (`cleanupTaskVolumes`)**: `down -v` 누락이나 비정상 상태로 남을 수 있는 해당 과제 전용 볼륨(`${proj}_*`, `${proj}-*`)을 `cleanupTaskVolumes`를 통해 과제 종료 즉시 강제 삭제한다.
+     - **과제별 이미지 정리 (`cleanupTaskImages`)**: 타깃 과제 빌드 이미지 태그 역시 태스크 직후 즉시 삭제되어 디스크 용량 오염을 방지한다(`XBOW104_KEEP_IMAGES=1` 미설정 시).
+     - **벤치마크 런 완료 시 전수 스윕 (Run Completion Sweep)**: 러너의 전체 과제 실행이 끝나면 남아 있는 모든 벤치마크 잔여 볼륨(`xben-*` / `${PROJECT_PREFIX}xben-*`)을 일괄 스윕하여 완전 삭제한다.
+
+5. **XSS 채점기(서버 PhantomJS) vs 에이전트 브라우저(Chromium) 이원성 및 `--init` 좀비 방지**:
+   - **서버 측 채점기(PhantomJS)**: 타깃 챌린지 컨테이너 내부에서 공격자의 `alert('XSS')` 발생 여부를 감지하고 플래그를 지급하는 '채점관'. `patch-suite.mjs`의 `QT_QPA_PLATFORM=phantom` 패치가 필수적이다.
+   - **에이전트 측 브라우저(Chromium)**: 에이전트 컨테이너에 탑재되어 있으나, XSS 챌린지 검증 시 로컬에서 실행하면 안 된다 (`alert()` 동기 모달 창으로 인해 헤드리스 렌더러가 무한 블로킹됨).
+   - **`--init` 플래그를 통한 좀비 프로세스(`<defunct>`) 자동 수거**: 러너(`runner.mjs`)가 에이전트 컨테이너를 실행할 때 Docker 내장 `tini` init(`--init`)을 적용하여, 백그라운드 프로세스 종료 시 남는 고아 좀비 프로세스를 0ms 만에 즉시 수거(reap)함으로써 에이전트가 `ps aux`의 `<defunct>` 프로세스를 보고 무한 대기(`sleep`) 루프에 빠지는 인지 오류를 원천 차단한다.
+   - **상세 설계 문서**: [`docs/design/browser-automation-trap-and-xss-execution-discipline.md`](../../../docs/design/browser-automation-trap-and-xss-execution-discipline.md) 참조.

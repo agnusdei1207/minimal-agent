@@ -29,7 +29,9 @@ git clone https://github.com/xbow-engineering/validation-benchmarks benchmarks/x
 # 공유 suite를 사용하는 실행·빌드가 모두 끝난 뒤 준비
 & ./scripts/nverify.ps1 -HostNode -NodeArguments @('benchmarks/harness/patch-suite.mjs')
 & ./scripts/nverify.ps1 -HostNode -NodeArguments @('benchmarks/harness/doctor.mjs')
-& ./scripts/dimage.ps1 -Target runner -Tag xbow-agent-runner:latest
+# 사전 정리 및 클린 빌드 (기존 캐시/설정 잔류 방지)
+docker rm -f $(docker ps -aq --filter "name=xben") 2>$null; docker network prune -f; docker volume prune -f
+& ./scripts/dimage.ps1 -Target runner -Tag xbow-agent-runner:latest -NoCache
 
 # 단일 과제
 & ./scripts/nverify.ps1 -HostNode -NodeArguments @('benchmarks/harness/task.mjs', '42', '--no-commit')

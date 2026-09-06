@@ -433,6 +433,10 @@ impl OpenAiChatProvider {
             }
         }
         if !stream_completed && accumulator.finish_reason.is_none() {
+            eprintln!(
+                "[provider] stream ended before completion marker: output_bytes={}, finish_reason={:?}",
+                output_bytes, accumulator.finish_reason
+            );
             return Err(ProviderAttemptFault {
                 fault: ProviderFault::Stream {
                     message: "provider stream ended before a completion marker".to_owned(),
@@ -441,7 +445,10 @@ impl OpenAiChatProvider {
                 output_started,
             });
         }
-        accumulator.finish().map_err(ProviderAttemptFault::terminal)
+        accumulator.finish().map_err(|fault| {
+            eprintln!("[provider] accumulator finish failed: {fault}");
+            ProviderAttemptFault::terminal(fault)
+        })
     }
 }
 
@@ -649,23 +656,58 @@ impl ModelAccumulator {
         let mut tool_call_ids = HashSet::new();
         for (index, call) in self.tool_calls {
             if call.id.is_empty() || call.name.is_empty() {
+                eprintln!(
+                    "[provider] malformed tool call {index}: missing id or name (id='{}', name='{}')",
+                    call.id, call.name
+                );
                 return Err(ProviderFault::MalformedToolCall {
                     index,
                     message: "tool call is missing an id or name".to_owned(),
                 });
             }
             if !tool_call_ids.insert(call.id.clone()) {
+                eprintln!(
+                    "[provider] malformed tool call {index}: duplicate id '{}'",
+                    call.id
+                );
                 return Err(ProviderFault::MalformedToolCall {
                     index,
                     message: format!("tool call id {} is duplicated", call.id),
                 });
             }
-            let arguments = serde_json::from_str(&call.arguments).map_err(|error| {
-                ProviderFault::MalformedToolCall {
-                    index,
-                    message: error.to_string(),
+            let trimmed_args = call.arguments.trim();
+            let arguments = if trimmed_args.is_empty() {
+                serde_json::Value::Object(Default::default())
+            } else {
+                match serde_json::from_str(&call.arguments) {
+                    Ok(parsed) => parsed,
+                    Err(error) => {
+                        let arg_preview = if call.arguments.len() <= 200 {
+                            call.arguments.clone()
+                        } else {
+                            format!(
+                                "{}... [len={}]",
+                                &call.arguments[..200],
+                                call.arguments.len()
+                            )
+                        };
+                        eprintln!(
+                            "[provider] malformed tool call: index={}, id='{}', name='{}', finish_reason={:?}, args_len={}, raw_args='{}', error={}",
+                            index,
+                            call.id,
+                            call.name,
+                            self.finish_reason,
+                            call.arguments.len(),
+                            arg_preview,
+                            error
+                        );
+                        return Err(ProviderFault::MalformedToolCall {
+                            index,
+                            message: format!("{error} (raw args: '{arg_preview}')"),
+                        });
+                    }
                 }
-            })?;
+            };
             tool_calls.push(ToolCall {
                 id: call.id,
                 name: call.name,
@@ -678,6 +720,14 @@ impl ModelAccumulator {
                 // without emitting content or tool_calls, preserve the thoughts as text rather than crashing.
                 self.text = self.reasoning;
             } else {
+                eprintln!(
+                    "[provider] empty completion: finish_reason={:?}, text_len={}, reasoning_len={}, tool_calls_count={}, usage={:?}",
+                    self.finish_reason,
+                    self.text.len(),
+                    self.reasoning.len(),
+                    tool_calls.len(),
+                    self.usage
+                );
                 return Err(ProviderFault::EmptyCompletion);
             }
         }
@@ -843,7 +893,10 @@ impl OpenAiChunk {
             if let Some(content) = choice.delta.content
                 && !content.is_empty()
             {
-                output.push(ModelDelta::Text(content));
+                let sanitized = sanitize_model_content(&content);
+                if !sanitized.is_empty() {
+                    output.push(ModelDelta::Text(sanitized));
+                }
             }
             for call in choice.delta.tool_calls {
                 output.push(ModelDelta::ToolCall(ToolCallDelta {
@@ -871,6 +924,31 @@ impl OpenAiChunk {
         }
         output
     }
+}
+
+fn sanitize_model_content(text: &str) -> String {
+    if !text.contains("<｜") && !text.contains("<|") {
+        return text.to_owned();
+    }
+    let mut cleaned = text.to_owned();
+    for token in [
+        "<｜DSML｜tool_calls",
+        "<｜DSML｜",
+        "｜call>",
+        "<｜tool_calls｜",
+        "<｜tool call begin｜",
+        "<｜tool call end｜",
+        "<｜begin of sentence｜>",
+        "<｜end of sentence｜>",
+        "<|im_start|>",
+        "<|im_end|>",
+    ] {
+        if cleaned.contains(token) {
+            eprintln!("[provider] stripping leaked control token from content: {token}");
+            cleaned = cleaned.replace(token, "");
+        }
+    }
+    cleaned
 }
 
 #[derive(Deserialize)]

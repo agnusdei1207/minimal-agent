@@ -121,6 +121,7 @@ RUN apt update -qq \
       sshpass \
       proxychains4 \
       wget \
+      xz-utils \
     && rm -rf /var/lib/apt/lists/* \
     && gem install --no-document zsteg \
     && pip3 install --no-cache-dir --break-system-packages \
@@ -142,6 +143,17 @@ RUN apt update -qq \
     && (curl -fsSL -o /usr/share/wordlists/rockyou.txt \
          https://github.com/brannondorsey/naive-hashcat/releases/download/data/rockyou.txt \
          || echo "[warn] rockyou fetch failed at build; agent fetches wordlists at runtime")
+
+# Node.js LTS and agent-browser CLI for modal-immune accessibility-tree web automation (ADR-0005).
+ARG NODE_VERSION=22.14.0
+RUN curl -fsSL "https://nodejs.org/dist/v${NODE_VERSION}/node-v${NODE_VERSION}-linux-x64.tar.xz" \
+      | tar -xJ -C /usr/local --strip-components=1 \
+    && npm install -g agent-browser@0.26.0 \
+    && npm cache clean --force
+
+ENV AGENT_BROWSER_EXECUTABLE_PATH=/usr/local/bin/minimal-agent-browser \
+    AGENT_BROWSER_IDLE_TIMEOUT_MS=180000 \
+    AGENT_BROWSER_ARGS="--disable-blink-features=AutomationControlled,--no-first-run,--no-default-browser-check,--lang=en-US"
 
 COPY docker/install-browser.sh /tmp/install-browser.sh
 RUN bash /tmp/install-browser.sh "${CHROME_FOR_TESTING_VERSION}" "${CHROME_FOR_TESTING_SHA256}" \

@@ -17,3 +17,4 @@ benchmarks/**/artifacts/runs/
 benchmarks/**/.env
 benchmarks/artifacts/
 .opencode/
+.claude/

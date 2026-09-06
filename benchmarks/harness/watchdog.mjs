@@ -77,7 +77,7 @@ function cleanupOrphan() {
       task,
       "docker-compose.yml",
     );
-    command(runDir, "watchdog-agent-cleanup", ["rm", "-f", `${project}-agent`]);
+    command(runDir, "watchdog-agent-cleanup", ["rm", "-f", "-v", `${project}-agent`]);
     const teardown = command(runDir, "watchdog-compose-down", [
       "compose",
       "-p",
@@ -86,6 +86,7 @@ function cleanupOrphan() {
       composeFile,
       "down",
       "-v",
+      "--remove-orphans",
     ]);
     finalizeInterruptedDirectory(runDir, task, "parent_exit", {
       teardownFailed: !teardown.ok,

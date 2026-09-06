@@ -1314,6 +1314,11 @@ async fn run_agent_turn_inner(
         let turn = match response {
             Ok(turn) => turn,
             Err(error) => {
+                let partial_len = partial.len();
+                eprintln!(
+                    "[runtime] provider error for agent '{}' (attempt {attempt}, model-turn {turn_idx}/{max_turns}, partial_len={}): {error}",
+                    agent_id, partial_len
+                );
                 if !partial.is_empty() {
                     let ack = inner.journal.append_sync(JournalEvent::Transcript {
                         agent_id: agent_id.clone(),
@@ -1322,14 +1327,25 @@ async fn run_agent_turn_inner(
                         complete: false,
                         atomic_group: None,
                     })?;
-                    session.records.push(SessionRecord {
-                        message: ModelMessage::new(ModelRole::Assistant, partial.clone()),
-                        context: ContextEntry::completed(
-                            SequenceRange::new(ack.sequence, ack.sequence)?,
-                            partial,
-                        )
-                        .protect(LiveReason::PartialOutput),
-                    });
+                    let has_corrupted_tokens = partial.contains("<｜") || partial.contains("<|");
+                    let is_malformed_or_empty = matches!(
+                        error,
+                        ProviderFault::MalformedToolCall { .. } | ProviderFault::EmptyCompletion
+                    );
+                    if !has_corrupted_tokens && !is_malformed_or_empty {
+                        session.records.push(SessionRecord {
+                            message: ModelMessage::new(ModelRole::Assistant, partial.clone()),
+                            context: ContextEntry::completed(
+                                SequenceRange::new(ack.sequence, ack.sequence)?,
+                                partial,
+                            )
+                            .protect(LiveReason::PartialOutput),
+                        });
+                    } else {
+                        eprintln!(
+                            "[runtime] omitted corrupted/partial assistant output from session records to protect retry context"
+                        );
+                    }
                 }
                 let _ = inner.events.send(RuntimeEvent::Fault {
                     agent_id: agent_id.clone(),
@@ -2070,6 +2086,9 @@ fn recover_sessions(journal: &RunJournal) -> Result<HashMap<AgentId, AgentSessio
                     .unwrap_or(&[]),
             ) =>
             {
+                if !complete && (content.contains("<｜") || content.contains("<|")) {
+                    continue;
+                }
                 let mut message = ModelMessage::new(model_role(role), content.clone());
                 if role == TranscriptRole::Assistant
                     && let Ok(calls) = serde_json::from_str::<Vec<ToolCall>>(&content)

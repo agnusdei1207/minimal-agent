@@ -113,8 +113,19 @@ impl BuiltinTools {
         vec![
             definition(
                 "bash",
-                "Run one bash command in the workspace (bash -lc; the box is Linux with the full offensive toolset).",
-                json!({"type":"object","properties":{"command":{"type":"string"}},"required":["command"]}),
+                "Run one bash command in the workspace (bash -lc; the box is Linux with the full offensive toolset). Optional timeout_secs overrides the default 300s limit.",
+                json!({
+                    "type": "object",
+                    "properties": {
+                        "command": { "type": "string" },
+                        "timeout_secs": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "description": "Max seconds to wait before timing out (default: 300). Use 5-30s for quick probes or curl, 120-600s for heavy scans or compilation."
+                        }
+                    },
+                    "required": ["command"]
+                }),
             ),
             definition(
                 "tmux",
@@ -212,7 +223,11 @@ note each call, so send the full current picture, not a fragment.",
 
     async fn bash(&self, arguments: Value, context: &ToolContext) -> Result<ToolOutput, ToolError> {
         let input: BashInput = serde_json::from_value(arguments)?;
-        self.run_shell(input.command, context).await
+        let timeout = input
+            .timeout_secs
+            .map(Duration::from_secs)
+            .unwrap_or(self.timeout);
+        self.run_shell(input.command, context, timeout).await
     }
 
     /// Drive OS-native tmux with the same one-shot shell mechanism as `bash`.
@@ -226,7 +241,7 @@ note each call, so send the full current picture, not a fragment.",
                 "tmux args cannot be empty".to_owned(),
             ));
         }
-        self.run_shell(format!("tmux {}", input.args), context)
+        self.run_shell(format!("tmux {}", input.args), context, self.timeout)
             .await
     }
 
@@ -237,6 +252,7 @@ note each call, so send the full current picture, not a fragment.",
         &self,
         command: String,
         context: &ToolContext,
+        timeout: Duration,
     ) -> Result<ToolOutput, ToolError> {
         if command.trim().is_empty() {
             return Err(ToolError::InvalidArguments(
@@ -262,7 +278,7 @@ note each call, so send the full current picture, not a fragment.",
             .stderr
             .take()
             .ok_or_else(|| ToolError::Process("shell stderr was not piped".to_owned()))?;
-        let deadline = tokio::time::Instant::now() + self.timeout;
+        let deadline = tokio::time::Instant::now() + timeout;
         let streams = tokio::select! {
             _ = context.cancellation.cancelled() => {
                 stop_child(&mut child).await;
@@ -281,7 +297,7 @@ note each call, so send the full current picture, not a fragment.",
                 }
                 Err(_) => {
                     stop_child(&mut child).await;
-                    return Err(ToolError::TimedOut(self.timeout));
+                    return Err(ToolError::TimedOut(timeout));
                 }
             }
         };
@@ -294,7 +310,7 @@ note each call, so send the full current picture, not a fragment.",
                 Ok(status) => status?,
                 Err(_) => {
                     stop_child(&mut child).await;
-                    return Err(ToolError::TimedOut(self.timeout));
+                    return Err(ToolError::TimedOut(timeout));
                 }
             }
         };
@@ -786,6 +802,8 @@ fn snapshot_json(snapshot: &ma_coordinator::AgentSnapshot) -> Value {
 #[derive(Deserialize)]
 struct BashInput {
     command: String,
+    #[serde(default)]
+    timeout_secs: Option<u64>,
 }
 
 #[derive(Deserialize)]

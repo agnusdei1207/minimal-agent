@@ -473,16 +473,35 @@ async fn observe_headless(
             _ = tokio::time::sleep_until(deadline) => break,
             turn = &mut submission, if !submitted => {
                 submitted = true;
-                idle_deadline = tokio::time::Instant::now() + idle_window;
                 match turn {
                     Ok(turn) if !turn.text.trim().is_empty() => observation.summary = turn.text.trim().to_owned(),
                     Ok(_) => {},
-                    Err(error) => eprintln!("runtime error: {error}"),
+                    Err(error) => {
+                        eprintln!("[headless] submission turn error: {error}");
+                        if auto
+                            && retry_count < 3
+                            && runtime
+                                .coordinator()
+                                .inspect(&AgentId::main())
+                                .is_ok_and(|agent| agent.state == AgentState::Waiting)
+                        {
+                            retry_count += 1;
+                            eprintln!("[headless] retrying waiting main agent ({retry_count}/3)...");
+                            tokio::time::sleep(Duration::from_secs(2)).await;
+                            let _ = runtime
+                                .submit_user("Continue the goal from the latest brief and team inbox.")
+                                .await;
+                        }
+                    }
                 }
+                idle_deadline = tokio::time::Instant::now() + idle_window;
             }
             event = events.recv() => {
                 idle_deadline = tokio::time::Instant::now() + idle_window;
                 match event {
+                    Ok(RuntimeEvent::TurnFinished { success: true, .. }) => {
+                        retry_count = 0;
+                    }
                     Ok(event) => observation.apply(event),
                     Err(tokio::sync::broadcast::error::RecvError::Lagged(_)) => {},
                     Err(tokio::sync::broadcast::error::RecvError::Closed) => break,
@@ -501,6 +520,7 @@ async fn observe_headless(
                                 .is_ok_and(|agent| agent.state == AgentState::Waiting)
                         {
                             retry_count += 1;
+                            eprintln!("[headless] main agent is waiting; retrying ({retry_count}/3)...");
                             tokio::time::sleep(Duration::from_secs(2)).await;
                             let _ = runtime
                                 .submit_user("Continue the goal from the latest brief and team inbox.")

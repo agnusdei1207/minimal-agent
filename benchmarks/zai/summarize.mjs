@@ -103,9 +103,10 @@ if (modelArg && MODELS[modelArg]) {
   meta = deriveMeta(defRuns, "native");
 }
 
-// benchmark=benchmarkDir; when XBOW104_ARTIFACTS_DIR is set it overrides.
+// benchmark=benchmarkDir; when XBOW104_ARTIFACTS_DIR is set it overrides unless --model was explicit.
 const { runsDir: RUNS_DIR, reportsDir: REPORTS_DIR } = resolveArtifactLayout({
   benchmark: benchmarkDir,
+  env: modelArg ? {} : process.env,
 });
 
 const rows = loadMinimalAgentRows(RUNS_DIR);
