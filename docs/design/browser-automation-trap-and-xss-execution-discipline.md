@@ -41,24 +41,34 @@ A frequent source of engineering confusion is conflating the **server-side verif
 
 ---
 
-## 3. Comparison with External Architectures (`../strix`)
+## 3. Comparison with Monolithic Embedded Architectures (코드 내장형 아키텍처와의 비교 및 독자적 설계)
 
-An investigation into how other offensive frameworks handle this revealed two distinct approaches:
+An architectural comparison between conventional monolithic security agent frameworks and `minimal-agent` highlights two fundamentally opposing design paradigms:
 
-### 3.1 The Strix Approach (Heavyweight CDP Wrapper)
-`strix` (in `strix/skills/tooling/agent_browser.md`) avoids the modal freeze by wrapping Chromium in a custom Playwright/CDP daemon called `agent-browser`:
-```markdown
-### Dialogs
-`alert` and `beforeunload` are auto-accepted so agents never block.
-```
-- **Mechanism:** CDP listens to `Page.javascriptDialogOpening` and immediately fires `Page.handleJavaScriptDialog(accept: true)`.
-- **Cost:** Requires maintaining thousands of lines of Node.js/Python CDP automation, IPC sockets, session states, and daemon health checks (`doctor`).
+### 3.1 The Monolithic Embedded Approach: In-Memory Daemons & Function Tool Sprawl
+Conventional autonomous security agents attempt to manage browser automation and HTTP interception by embedding heavy in-memory daemons directly into their runtime:
+1. **Dedicated Function Tool Proliferation (Schema Tax):** They register 15–30 dedicated function tools (`browser_open`, `browser_click`, `browser_type`, `proxy_intercept`, `html_to_text`). Every single turn, 3,000–6,000 tokens are permanently consumed merely transmitting tool schemas in the system prompt.
+2. **Loss of Shell Pipeline Composability:** When tools are isolated into distinct Python/Node functions, the agent loses the power of native UNIX pipelines (`curl ... | grep -i form | cut ... | xargs`). Every intermediate transformation requires an extra LLM turn, multiplying turn counts and costs by 3x–4x.
+3. **Always-On Proxy Hallucination Trap:** Enforcing a full-time forced proxy (`ALL_PROXY`) means that if the target container experiences a temporary restart or latency blip, the proxy daemon's own `502 Bad Gateway` error page is returned and hallucinated by the agent as the real application response, permanently derailing the attack trajectory.
+4. **Daemon Fragility & Memory Bloat:** Maintaining custom Playwright/CDP daemons, session states, and IPC sockets incurs thousands of lines of maintenance debt and causes OOM crashes (300–700MB per Chromium instance).
 
-### 3.2 The Minimal-Agent Philosophy (Anti-Bloat & Lean MVP)
-According to `docs/adr/ADR-0001` and `../memory` methodology:
-> "AI에게 개발을 맡기면 무한대로 복잡도가 늘어나고 쓰레기 코드가 양산된다. 핵심 기능(MVP)을 최소 간결하게 유지하고, 불필요한 브라우저 프레임워크를 덧붙여 복잡도를 배가시키지 말아야 한다."
+### 3.2 The Minimal-Agent Philosophy: OS-Native CLI, Multi-Tier Text Pipeline & Lean Core
+According to `docs/adr/ADR-0001`, `ADR-0005`, and the Lean Core methodology:
+> "AI에게 개발을 맡기면 무한대로 복잡도가 늘어나고 쓰레기 코드가 양산된다. 프롬프트와 기존 OS 도구로 해결 가능한 문제를 코드로 구현하여 영구적인 부채를 지지 않는다."
 
-In CTF/eval suites, **99% of challenges are solved via HTTP/socket/CLI primitives**. Introducing a heavyweight browser daemon inside the Rust core to solve a problem that should not exist in the first place violates the repository contract. The clean solution is **prevention, prompt discipline, and OS-level safety nets**.
+`minimal-agent` solves web interaction and traffic interception through a clean, multi-tier architecture requiring **0 lines of Rust core bloat**:
+1. **Single Unified Interface (`bash`):** The agent controls all external capabilities through the standard `bash` tool. Zero schema tax, full pipeline composability.
+2. **Multi-Tier Text Rendering Pipeline:**
+   - *Dynamic/Interactive Web:* `agent-browser snapshot -i -c` extracts the Accessibility Tree (A11y, ~150–300 tokens) with simple `@eN` references, auto-dismissing `alert()` modals.
+   - *Pinpoint Inspection:* `agent-browser get html @eN` retrieves only the specific innerHTML of the target node (sub-hundred bytes).
+   - *Static Text/CMS Dumps:* `w3m -dump -cols 120 <url>` and `curl -s <url> | python3 -m html2text` convert web pages into clean markdown/text without CSS/SVG noise.
+   - *Structured Parsing:* Lightweight BeautifulSoup one-liners extract exact form actions, hidden CSRF inputs, and HTML developer comments.
+3. **On-Demand Proxy & Raw Network Tap:**
+   - Discards always-on proxying to prevent 502 error hallucinations; activates `export http_proxy=...` only when deep packet inspection is explicitly required.
+   - Employs Docker `NET_RAW` and `NET_ADMIN` capabilities for direct packet capture and manipulation via `tcpdump` and `scapy`.
+4. **Hierarchical Context Isolation (ADR-0004):**
+   - The Root Main agent (Planner) is protected from massive web terminal noise.
+   - Specialized Leaf Worker agents execute raw scraping/browsing, distilling technical discoveries into exact values via structured `team send --kind insight` messages.
 
 ---
 

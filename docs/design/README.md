@@ -14,7 +14,7 @@ This directory contains the core architecture, design philosophies, and technica
 | [**hierarchical-tree-orchestration-ideas.md**](hierarchical-tree-orchestration-ideas.md) | **Hierarchical Team Tree Architecture** | 3-depth bounded team topology (main -> leads -> workers), neighbor-only communication, and faithful upward synthesis. |
 | [**interactive-shell-ideas.md**](interactive-shell-ideas.md) | **Interactive Shell & Session Desks** | PTY, tmux shared named sessions ("public desk"), and reverse shell persistence. |
 | [**advanced-vulnerability-research-roadmap.md**](advanced-vulnerability-research-roadmap.md) | **Advanced VR & Zero-Day Roadmap** | Transitioning from Senior Pentester to Elite Vulnerability Research Team: CPG/AST analysis, headless decompiler APIs, autonomous fuzzing/triage, SMT solvers, and shadow sandbox verifiers. |
-| [**browser-automation-trap-and-xss-execution-discipline.md**](browser-automation-trap-and-xss-execution-discipline.md) | **Browser Trap & XSS Execution Discipline** | Dual-browser dichotomy (server verifier vs. agent browser), headless Chromium alert() modal freeze, `--init` zombie reaping, and HTTP-first XSS tradecraft. |
+| [**browser-automation-trap-and-xss-execution-discipline.md**](browser-automation-trap-and-xss-execution-discipline.md) | **Browser Trap & XSS Execution Discipline** | Dual-browser dichotomy, headless Chromium modal freeze, multi-tier text rendering pipeline (A11y tree, w3m, html2text), on-demand proxying, and multi-agent context isolation. |
 
 ---
 
