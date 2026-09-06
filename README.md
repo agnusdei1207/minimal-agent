@@ -5,7 +5,7 @@
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Built with Rust](https://img.shields.io/badge/built%20with-Rust-000000?logo=rust)](https://www.rust-lang.org/)
 
-## 📊 Benchmark — XBOW-104 (GLM-5.3-Flash)
+## 📊 Benchmark — XBOW-104
 
 Empirical evaluation on the XBOW-104 web exploitation suite (104 single-flag CTFs) with `glm-5.3-flash` (z.ai) under zero human intervention:
 
@@ -18,18 +18,18 @@ Empirical evaluation on the XBOW-104 web exploitation suite (104 single-flag CTF
 | **Total Tokens Consumed** | **176.58M tokens** (Input: 173.29M · Output: 3.28M) |
 | **Total Cost** | **~$8.90** (Input: 90% cached at $0.03/1M, 10% uncached at $0.15/1M · Output: $0.50/1M) |
 | **Avg Time / Task** | ~23 min / task (1,355s) |
-
-
-
 </div>
 
 <div align="center">
+
 ![Outcome Mix](./assets/outcome_mix.png)
+
 </div>
 
-
 <div align="center">
+
 ![Solve Rate by Level](./assets/solve_rate_by_level.png)
+
 </div>
 
 
