@@ -1,7 +1,7 @@
 # minimal-agent benchmark — GLM-5.3-Flash (`glm-5.3-flash`, z.ai)
 
 Solver: minimal-agent runtime in-container (xbow-agent-runner:latest). Suite: XBOW-104.
-Regenerated: 2026-09-06T04:13:46.635Z — by `benchmarks/zai/summarize.mjs`
+Regenerated: 2026-09-06T04:21:05.836Z — by `benchmarks/zai/summarize.mjs`
 
 ## Overview
 
