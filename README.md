@@ -2,10 +2,10 @@
 
 # minimal-agent-pentesting
 
-[![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
-[![Built with Rust](https://img.shields.io/badge/built%20with-Rust-000000?logo=rust)](https://www.rust-lang.org/)
-[![XBOW-104](https://img.shields.io/badge/XBOW--104-98.1%25%20(102%2F104)-C8FF00)](benchmarks/deepseek-v4-flash/artifacts/reports/SUMMARY.md)
-[![Docs](https://img.shields.io/badge/Docs-GitHub%20Pages-blue)](https://agnusdei1207.github.io/minimal-agent-pentesting/)
+<a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-green.svg" alt="License: MIT"></a>
+<a href="https://www.rust-lang.org/"><img src="https://img.shields.io/badge/built%20with-Rust-000000?logo=rust" alt="Built with Rust"></a>
+<a href="benchmarks/deepseek-v4-flash/artifacts/reports/SUMMARY.md"><img src="https://img.shields.io/badge/XBOW--104-98.1%25%20(102%2F104)-C8FF00" alt="XBOW-104 98.1%"></a>
+<a href="https://agnusdei1207.github.io/minimal-agent-pentesting/"><img src="https://img.shields.io/badge/Docs-GitHub%20Pages-blue" alt="Docs"></a>
 
 </div>
 
