@@ -13,8 +13,6 @@
 
 `pentesting` is an autonomous security agent built for offensive security learning, CTF competitions, and real-world penetration testing workflows.
 
-Despite rapid advancements in AI, high-difficulty exploitation such as complex business logic bypasses and deep multi-stage penetration remains a formidable open challenge. This project strips away marketing hype and heavy frameworks, confronting that frontier with the leanest, most deterministic tool verified through real execution.
-
 ---
 
 ## 📊 Benchmark — XBOW-104
@@ -95,37 +93,6 @@ pentesting run --goal "Investigate the target and solve the objective" --workspa
 
 ---
 
-## 🎯 Design Philosophy
-
-`pentesting` is built on a single core principle: **eliminate unnecessary complexity and achieve maximum leverage with essential simplicity.**
-
-### 1. Simplicity and Intuitiveness
-
-- **Code is stronger when it is concise and intuitive. The best documentation is code itself.**
-- Having scaled agent systems to their limits through experiments with SPLADE semantic search, multi-stage RAG, RRF reranking, and massive multi-agent graphs, the conclusion was unmistakable: complexity does not guarantee performance. Only the essential structures proven in practice remain.
-
-### 2. Data-Driven Iteration
-
-- **Every architectural improvement must be grounded in empirical runtime data.**
-- We look past vanity metrics like GitHub star manipulation and marketing hype. Only changes validated by actual execution traces, rigorous benchmark success rates, and system efficiency make it into the codebase.
-
-### 3. Minimum Cost, Maximum Leverage
-
-- **Achieve the highest leverage with the leanest code.**
-- By eliminating context waste, missions are completed at minimal cost. We prioritize lightweight design, extensibility, and standard compatibility without vendor lock-in.
-
-### 4. Autonomy and Real-World Verification
-
-- **Preserve reasoning autonomy while enforcing strict behavioral boundaries through prompt doctrine.**
-- Models hallucinate smoothly and report false successes convincingly. We reject subjective claims and rely solely on real shell execution evidence, keeping human-in-the-loop validation for critical decisions.
-
-### 5. Quality and Craftsmanship
-
-- **Pursue relentless refinement without settling for good enough.**
-- We enforce strict domain-driven separation of concerns and maintain a craftsman-like commitment to seeing every micro-flow through to a deterministic, safe conclusion.
-
----
-
 ## 🤝 Contributing
 
 Anyone interested in offensive security and autonomous agent engineering is warmly welcome. From simple typo fixes and domain tradecraft insights to bug reports and pull requests, every contribution is appreciated.
@@ -139,17 +106,6 @@ Feel free to open an issue or submit a pull request. We look forward to building
 
 ---
 
-## ✍️ Developer's Note
-
-In recent times, it is often said that "code is no longer a moat." That statement is half right and half wrong.
-
-Just because we can admire a masterpiece does not mean anyone can create one. Most people merely observe the final product and attempt to fathom the creator's intense thought and intent. Yet some code conveys its author's philosophy, contemplation, and vision so vividly the moment you read it. That, I believe, is the true essence of code.
-
-Mass-produced, soulless AI-generated code holds no moat. But the hard-won experience forged through countless trials and failures is undeniably a moat.
-
-I do not claim this project itself is a moat. What I do believe is that the experience gained while building it — navigating numerous architectural designs, enduring painful failures, and relentlessly refining every detail — that process of tempering is the real moat. Even now, in the midst of ongoing trials and exploration, that journey continues to be the most enduring substance behind this software.
-
----
 
 ## 📄 License
 
