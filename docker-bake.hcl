@@ -11,9 +11,6 @@ target "base" {
 target "app" {
   context    = "."
   dockerfile = "docker/app.Dockerfile"
-  contexts = {
-    runtime-base = "target:base"
-  }
   args = {
     VERSION = "0.110.0"
   }

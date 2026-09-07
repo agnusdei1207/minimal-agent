@@ -89,7 +89,7 @@ pub(crate) fn command_menu_matches(input: &str) -> Vec<(&'static str, &'static s
         ("/agent", "List agents"),
         ("/compact", "Compact the main context now"),
         ("/model", "Configure provider, model, or endpoint"),
-        ("/resume", "Show the resume path"),
+        ("/resume", "Browse & resume saved sessions (modal)"),
         ("/new", "Start a new conversation"),
         ("/update", "Show the update command"),
         ("/exit", "Save and quit"),
@@ -113,10 +113,10 @@ pub fn command_help() -> &'static str {
 /auto             Pause or resume autonomous loop\n\
 /agent            List agents (/agent-<id> for details)\n\
 /compact          Compact main context into brief now\n\
-/model [query]    Configure API key, model, endpoint\n\
-/resume           Show saved-run resume command\n\
-/new              Start a new conversation (/clear)\n\
-/update           Show npm update command\n\
-/exit             Save and quit\n\
+/model [query]    Configure provider, model, or custom endpoint\n\
+/resume           Browse saved sessions & resume instructions\n\
+/new              Start a new durable run\n\
+/update           Update minimal-agent to the latest release\n\
+/exit             Save session, restore terminal, and quit\n\
 !<cmd>            Run shell command in workspace"
 }

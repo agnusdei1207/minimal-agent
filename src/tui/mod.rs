@@ -20,8 +20,8 @@ use tokio::sync::mpsc;
 use crate::coordinator::AgentSnapshot;
 use crate::domain::{AgentId, AgentState, MAX_USER_INPUT_BYTES, MessageKind};
 use crate::provider::{ModelDelta, ProviderSlot};
-use crate::settings::ProviderSettingsStore;
 use crate::runtime::{RuntimeError, RuntimeEvent, TeamRuntime};
+use crate::settings::ProviderSettingsStore;
 
 mod command;
 mod markdown;
@@ -1137,13 +1137,77 @@ async fn handle_command(
             "start a new durable run by exiting and launching `minimal-agent run --goal ...`",
         ),
         UiCommand::Goal(goal) => enqueue_background(state, submissions, Submission::Goal(goal)),
-        UiCommand::Resume => state.push_line(
-            "resume",
-            format!(
-                "minimal-agent run --resume {}",
-                runtime.coordinator().journal().root().display()
-            ),
-        ),
+        UiCommand::Resume => {
+            let current_root = runtime.coordinator().journal().root().to_path_buf();
+            let mut entries: Vec<std::path::PathBuf> = Vec::new();
+
+            if let Some(parent) = current_root.parent()
+                && let Ok(read_dir) = std::fs::read_dir(parent)
+            {
+                for entry in read_dir.flatten() {
+                    let path = entry.path();
+                    if path.is_dir()
+                        && (path.join("journal").exists() || path.join("journal.jsonl").exists())
+                    {
+                        entries.push(path);
+                    }
+                }
+            }
+
+            entries.sort_by(|a, b| {
+                let time_a = std::fs::metadata(a).and_then(|m| m.modified()).ok();
+                let time_b = std::fs::metadata(b).and_then(|m| m.modified()).ok();
+                time_b.cmp(&time_a)
+            });
+
+            let mut body = String::new();
+            body.push_str("Saved Sessions in Workspace:\n\n");
+
+            if entries.is_empty() {
+                body.push_str("  No prior sessions found in this workspace.\n\n");
+            } else {
+                for path in entries.iter().take(8) {
+                    let name = path
+                        .file_name()
+                        .and_then(|n| n.to_str())
+                        .unwrap_or("unknown");
+                    let is_current = path == &current_root;
+                    let marker = if is_current { "  ◀ CURRENT" } else { "" };
+                    body.push_str(&format!("• {name}{marker}\n"));
+                    body.push_str(&format!("  Path: {}\n", path.display()));
+
+                    if let Ok(journal) = crate::journal::RunJournal::open(
+                        path,
+                        crate::journal::JournalConfig::default(),
+                    ) {
+                        let journal_ref = std::sync::Arc::new(journal);
+                        if let Ok(coordinator) =
+                            crate::coordinator::AgentCoordinator::recover(journal_ref)
+                            && let Ok(main_snapshot) =
+                                coordinator.inspect(&crate::domain::AgentId::main())
+                        {
+                            let task = main_snapshot.task.trim();
+                            if !task.is_empty() {
+                                body.push_str(&format!("  Goal: {task}\n"));
+                            }
+                        }
+                    }
+                    body.push('\n');
+                }
+            }
+
+            body.push_str("──────────────────────────────────────────────────\n");
+            body.push_str("To resume a session, exit (/exit) and launch with:\n");
+            body.push_str("  minimal-agent run --resume <path>\n\n");
+            body.push_str("Current session resume command:\n");
+            body.push_str(&format!(
+                "  minimal-agent run --resume {}\n\n",
+                current_root.display()
+            ));
+            body.push_str("Press Esc or x to close this modal.");
+
+            state.open_modal("Resume Saved Sessions", &body);
+        }
         UiCommand::Model(query) => begin_model_setup(state, query),
         UiCommand::Update => state.push_line("update", "npm install -g minimal-agent@latest"),
         UiCommand::Bash(command) => {
@@ -1710,7 +1774,7 @@ mod tests {
     }
 
     #[test]
-    fn user_echo_uses_accent_for_speaker_and_text() {
+    fn user_echo_uses_accent_for_speaker_only() {
         use super::theme::{palette, styles};
         let mut state = TuiState::new("goal");
         state.push_entry(
@@ -1725,15 +1789,24 @@ mod tests {
             .find(|line| line.to_string().contains("hello agent"))
             .expect("user echo is rendered");
         assert!(
-            echo.spans.iter().any(|span| span.style == styles::accent()),
-            "echo uses accent: {echo:?}"
+            echo.spans
+                .iter()
+                .any(|span| span.content == "❯" && span.style == styles::accent()),
+            "speaker uses accent: {echo:?}"
+        );
+        assert!(
+            echo.spans
+                .iter()
+                .all(|span| !span.content.contains("hello agent")
+                    || span.style.fg != Some(palette::ACCENT)),
+            "echo text does not use accent: {echo:?}"
         );
         let (_, user_color) = tone_style(LineTone::User);
         assert_eq!(user_color, palette::ACCENT);
     }
 
     #[test]
-    fn input_row_renders_prompt_and_text_in_accent() {
+    fn input_row_renders_prompt_in_accent_and_text_in_default() {
         use super::theme::styles;
         let mut state = TuiState::new("goal");
         assert!(state.set_input("hi"));
@@ -1746,7 +1819,7 @@ mod tests {
         assert_eq!(cell.fg, styles::accent().fg.unwrap());
         let text_cell = &terminal.backend().buffer()[(2, 11)];
         assert_eq!(text_cell.symbol(), "h");
-        assert_eq!(text_cell.fg, styles::accent().fg.unwrap());
+        assert_ne!(text_cell.fg, styles::accent().fg.unwrap());
     }
 
     #[test]

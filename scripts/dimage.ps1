@@ -2,6 +2,8 @@ param(
     [ValidateSet('base', 'app', 'all', 'runner')]
     [string] $Target = 'all',
     [string] $Tag = 'minimal-agent:0.110.0',
+    [string] $BaseTag = 'agnusdei1207/minimal-agent-runtime-base:latest',
+    [switch] $Push,
     [switch] $NoCache
 )
 
@@ -20,17 +22,29 @@ $bakeFile = Join-Path $repoRoot 'docker-bake.hcl'
     'runner' { @('runner') }
 }
 
-# Build with the default (docker) builder rather than a memory-capped
-# docker-container builder. The docker driver writes straight into the local
-# image store, so there is NO OCI export + tarball + re-import step — which is
-# exactly what ran the capped BuildKit container out of memory and killed large
-# image builds intermittently (graceful_stop / EOF). Compile parallelism (the
-# heaviest phase) stays bounded via CARGO_BUILD_JOBS=2 in app.Dockerfile.
+# Build with the daemon's local docker builder rather than a memory-capped
+# docker-container builder. Select the appropriate builder name matching
+# the active context ('desktop-linux' for Docker Desktop, 'default' otherwise).
+$builder = 'default'
+if ($env:DOCKER_BUILDER) {
+    $builder = $env:DOCKER_BUILDER
+} else {
+    $dockerCfg = Join-Path $env:USERPROFILE '.docker\config.json'
+    if (Test-Path $dockerCfg) {
+        try {
+            $cfg = Get-Content $dockerCfg -Raw -ErrorAction SilentlyContinue | ConvertFrom-Json -ErrorAction SilentlyContinue
+            if ($cfg.currentContext -eq 'desktop-linux') {
+                $builder = 'desktop-linux'
+            }
+        } catch { }
+    }
+}
+
 Push-Location $repoRoot
 try {
     [string[]]$bakeArgs = @(
         'buildx', 'bake',
-        '--builder', 'default',
+        '--builder', $builder,
         '--file', $bakeFile,
         '--provenance=false',
         '--sbom=false',
@@ -48,6 +62,16 @@ try {
     & docker @bakeArgs
     if ($LASTEXITCODE -ne 0) {
         exit $LASTEXITCODE
+    }
+
+    # Push to registry when requested (e.g. npm run docker:base)
+    if ($Push) {
+        $pushTarget = if ($Target -eq 'base') { $BaseTag } else { $Tag }
+        Write-Host "Pushing $pushTarget to registry..."
+        & docker push $pushTarget
+        if ($LASTEXITCODE -ne 0) {
+            exit $LASTEXITCODE
+        }
     }
 }
 finally {

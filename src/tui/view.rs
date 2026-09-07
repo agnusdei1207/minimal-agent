@@ -75,7 +75,7 @@ pub fn render(frame: &mut Frame<'_>, state: &mut TuiState) {
     frame.render_widget(
         Paragraph::new(Line::from(vec![
             Span::styled("❯ ", styles::accent()),
-            Span::styled(input_projection(state), styles::accent()),
+            Span::raw(input_projection(state)),
         ]))
         .wrap(Wrap { trim: false }),
         input_area,
@@ -339,7 +339,7 @@ fn shimmer_spans(text: &str, phase: usize) -> Vec<Span<'static>> {
             // A bright accent sweep: the band is the primary accent colour, the
             // rest dims away so the shimmer pops against the status bar.
             let style = match distance {
-                0 | 1 | 2 => Style::default().fg(palette::ACCENT),
+                0..=2 => Style::default().fg(palette::ACCENT),
                 _ => styles::dim(),
             };
             Span::styled(character.to_string(), style)
@@ -444,7 +444,7 @@ fn render_entry(entry: Entry) -> Vec<Line<'static>> {
         ])];
     }
     if tone == LineTone::User {
-        // User echo: speaker ❯ and text in the rare accent (full weight, no dim).
+        // User echo: speaker ❯ in the rare accent, text in standard weight.
         let mut header = Vec::new();
         if !speaker.is_empty() {
             header.push(Span::styled(speaker.clone(), styles::accent()));
@@ -455,7 +455,7 @@ fn render_entry(entry: Entry) -> Vec<Line<'static>> {
         if !text.is_empty() && !speaker.is_empty() {
             header.push(Span::raw("  "));
         }
-        return markdown::render(&text, header, styles::accent());
+        return markdown::render(&text, header, Style::default());
     }
     let (glyph, color) = tone_style(tone);
 

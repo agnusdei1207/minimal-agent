@@ -11,7 +11,6 @@ use tokio::task::JoinHandle;
 use tokio_util::sync::CancellationToken;
 use uuid::Uuid;
 
-use crate::tools::{BuiltinTools, ToolContext, ToolError, WorkerSpawner};
 use crate::brief::{AgentBriefStore, BriefDraft, BriefError};
 use crate::compaction::{
     CompactionError, CompactionOutcome, ContextEntry, LiveReason, SemanticCompactionConfig,
@@ -31,6 +30,7 @@ use crate::provider::{
     ModelDelta, ModelMessage, ModelProvider, ModelRequest, ModelRole, ModelTurn, ProviderFault,
     ToolCall,
 };
+use crate::tools::{BuiltinTools, ToolContext, ToolError, WorkerSpawner};
 
 #[derive(Debug, Clone)]
 pub struct RuntimeConfig {
@@ -70,14 +70,12 @@ impl Default for RuntimeConfig {
         // spend several thousand tokens thinking before emitting the tool-call
         // JSON, so an 8k cap truncates the call mid-object (EOF parse fault). It is
         // overridable via OPENAI_MAX_TOKENS / OPENAI_MAX_OUTPUT_TOKENS with k/m suffix support.
-        let reserved_response_tokens =
-            crate::settings::env_max_output_tokens().unwrap_or(32_768);
+        let reserved_response_tokens = crate::settings::env_max_output_tokens().unwrap_or(32_768);
         // Operator-imposed context ceiling, min()'d against the provider's real
         // window. Read from OPENAI_CONTEXT_TOKENS (or aliases) with k/m suffix support
         // so the ceiling tracks the model's actual context; it must stay strictly
         // greater than reserved_response_tokens.
-        let configured_context_tokens =
-            crate::settings::env_context_tokens().unwrap_or(128_000);
+        let configured_context_tokens = crate::settings::env_context_tokens().unwrap_or(128_000);
         Self {
             configured_context_tokens,
             reserved_response_tokens,

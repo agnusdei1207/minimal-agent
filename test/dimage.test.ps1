@@ -26,8 +26,8 @@ try {
     if (($baseBuild -join ' ') -notmatch '^buildx bake .*--load .* base$') {
         throw "base target did not invoke buildx bake with --load: $($baseBuild -join ' ')"
     }
-    if (($baseBuild -join ' ') -notmatch '--builder default(?: |$)') {
-        throw 'build must explicitly select the default builder regardless of the active buildx selection'
+    if (($baseBuild -join ' ') -notmatch '--builder (default|desktop-linux)(?: |$)') {
+        throw 'build must explicitly select the local daemon builder regardless of the active buildx selection'
     }
 
     $global:dimageCalls.Clear()

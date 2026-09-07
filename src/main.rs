@@ -210,9 +210,8 @@ async fn run(args: RunArgs) -> anyhow::Result<()> {
     }
     let settings_root = provider_settings_root(run.as_deref(), resume.as_deref(), &workspace);
     let settings_store = ProviderSettingsStore::new(settings_root);
-    let settings = settings_store
-        .load()?
-        .or(ProviderSettings::from_standard_env()?);
+    let settings = ProviderSettings::from_standard_env()?
+        .or(settings_store.load()?);
     let provider = load_provider_slot(&settings_store).await?;
     let max_model_turns = match max_turns.as_deref() {
         Some(val) => {
@@ -267,12 +266,26 @@ async fn run(args: RunArgs) -> anyhow::Result<()> {
 
     let use_tui = !plain && std::io::stdin().is_terminal() && std::io::stdout().is_terminal();
     if use_tui {
+        let session_root = runtime.coordinator().journal().root().to_path_buf();
         let result = run_tui(runtime.clone(), displayed_goal, provider, settings_store).await;
         runtime.shutdown().await;
+        print_session_exit_banner(&session_root);
         result
     } else {
         run_plain(runtime, auto).await
     }
+}
+
+fn print_session_exit_banner(run_root: &Path) {
+    println!();
+    println!("  \x1b[38;2;200;255;0mminimal-agent\x1b[0m — session saved");
+    println!("  Run root: {}", run_root.display());
+    println!("  To resume this session:");
+    println!(
+        "    \x1b[1mminimal-agent run --resume {}\x1b[0m",
+        run_root.display()
+    );
+    println!();
 }
 
 fn provider_settings_root(run: Option<&Path>, resume: Option<&Path>, workspace: &Path) -> PathBuf {
@@ -283,7 +296,7 @@ fn provider_settings_root(run: Option<&Path>, resume: Option<&Path>, workspace: 
 }
 
 async fn load_provider_slot(store: &ProviderSettingsStore) -> anyhow::Result<Arc<ProviderSlot>> {
-    let settings = store.load()?.or(ProviderSettings::from_standard_env()?);
+    let settings = ProviderSettings::from_standard_env()?.or(store.load()?);
     let context_limit = settings
         .as_ref()
         .map_or(128_000, |settings| settings.context_tokens);
