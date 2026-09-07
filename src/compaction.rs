@@ -30,7 +30,6 @@ superseded_insight_ids. Tools are unavailable during compaction."#;
 #[serde(rename_all = "snake_case")]
 pub enum LiveReason {
     UnreadInbox,
-    CurrentTurn,
     IncompleteTool,
     PartialOutput,
     RecentExchange,

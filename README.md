@@ -59,6 +59,8 @@ docker run --rm -it --init \
   --cap-add=NET_RAW --cap-add=NET_ADMIN \
   --env OPENAI_API_KEY="your-api-key" \
   --env OPENAI_MODEL="your-model-name" \
+  --env OPENAI_CONTEXT_TOKENS="128k" \
+  --env OPENAI_MAX_OUTPUT_TOKENS="16k" \
   -v ${PWD}/workspace:/workspace \
   -v ${PWD}/runs:/state \
   agnusdei1207/pentesting:latest
@@ -68,6 +70,8 @@ docker run --rm -it --init \
   --cap-add=NET_RAW --cap-add=NET_ADMIN \
   --env OPENAI_API_KEY="your-api-key" \
   --env OPENAI_MODEL="your-model-name" \
+  --env OPENAI_CONTEXT_TOKENS="128k" \
+  --env OPENAI_MAX_OUTPUT_TOKENS="16k" \
   -v ${PWD}/workspace:/workspace \
   -v ${PWD}/runs:/state \
   agnusdei1207/pentesting:latest \

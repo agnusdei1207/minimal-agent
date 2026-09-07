@@ -2,12 +2,9 @@ use std::fs::{self, OpenOptions};
 use std::io::{self, Write};
 use std::path::{Path, PathBuf};
 
-use futures::StreamExt;
 use serde::{Deserialize, Serialize};
 
 use crate::provider::{OpenAiChatProvider, OpenAiConfig};
-
-const MAX_MODELS_RESPONSE_BYTES: usize = 4 * 1024 * 1024;
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct ProviderSettings {
@@ -130,49 +127,6 @@ impl ProviderSettings {
             headers: Default::default(),
         })?)
     }
-}
-
-pub async fn fetch_model_ids(base_url: &str, api_key: &str) -> anyhow::Result<Vec<String>> {
-    let endpoint = format!("{}/models", base_url.trim_end_matches('/'));
-    let response = reqwest::Client::builder()
-        .timeout(std::time::Duration::from_secs(20))
-        .build()?
-        .get(endpoint)
-        .bearer_auth(api_key)
-        .send()
-        .await?
-        .error_for_status()?;
-    if response
-        .content_length()
-        .is_some_and(|length| length > MAX_MODELS_RESPONSE_BYTES as u64)
-    {
-        anyhow::bail!("model catalog response is too large");
-    }
-    let mut bytes = Vec::new();
-    let mut stream = response.bytes_stream();
-    while let Some(chunk) = stream.next().await.transpose()? {
-        if bytes.len().saturating_add(chunk.len()) > MAX_MODELS_RESPONSE_BYTES {
-            anyhow::bail!("model catalog response is too large");
-        }
-        bytes.extend_from_slice(&chunk);
-    }
-    #[derive(Deserialize)]
-    struct Catalog {
-        data: Vec<CatalogModel>,
-    }
-    #[derive(Deserialize)]
-    struct CatalogModel {
-        id: String,
-    }
-    let mut models = serde_json::from_slice::<Catalog>(&bytes)?
-        .data
-        .into_iter()
-        .map(|model| model.id)
-        .filter(|model| !model.trim().is_empty())
-        .collect::<Vec<_>>();
-    models.sort();
-    models.dedup();
-    Ok(models)
 }
 
 #[derive(Debug, Clone)]

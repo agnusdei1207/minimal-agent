@@ -132,6 +132,8 @@ docker run --rm -it --init \
   --cap-add=NET_RAW --cap-add=NET_ADMIN \
   --env OPENAI_API_KEY="your-key" \
   --env OPENAI_MODEL="your-model" \
+  --env OPENAI_CONTEXT_TOKENS="128k" \
+  --env OPENAI_MAX_OUTPUT_TOKENS="16k" \
   agnusdei1207/pentesting:latest
 
 <span class="cmt"># One-shot Goal</span>
