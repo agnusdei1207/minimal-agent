@@ -76,14 +76,13 @@ docker run --rm -it --init \
 
 ### 3. Run via npm
 
-Current release: `0.200.0`.
 
 ```bash
 # Option A: Build and launch isolated Docker TUI
 npm run check
 
 # Option B: Global CLI — Interactive TUI
-npm install --global pentesting@0.200.0
+npm install --global pentesting
 pentesting
 
 # Option C: Global CLI — One-shot Goal
@@ -142,9 +141,9 @@ In recent times, it is often said that "code is no longer a moat." That statemen
 
 Just because we can admire a masterpiece does not mean anyone can create one. Most people merely observe the final product and attempt to fathom the creator's intense thought and intent. Yet some code conveys its author's philosophy, contemplation, and vision so vividly the moment you read it. That, I believe, is the true essence of code.
 
-Mass-produced, soulless AI-generated code holds no moat. But a core refined through countless trials and failures is undeniably a moat.
+Mass-produced, soulless AI-generated code holds no moat. But the hard-won experience forged through countless trials and failures is undeniably a moat.
 
-I believe this project is such a moat. It is the product of an individual navigating numerous architectural designs and painful failures. Even now, in the midst of ongoing trials and exploration, that relentless process of tempering remains the most enduring substance of this software.
+I do not claim this project itself is a moat. What I do believe is that the experience gained while building it — navigating numerous architectural designs, enduring painful failures, and relentlessly refining every detail — that process of tempering is the real moat. Even now, in the midst of ongoing trials and exploration, that journey continues to be the most enduring substance behind this software.
 
 ---
 
