@@ -1,17 +1,18 @@
 {
-  "name": "minimal-agent",
-  "version": "0.110.0",
+  "name": "pentesting",
+  "version": "0.200.0",
   "description": "A small autonomous team-agent runtime powered by Rust",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/agnusdei1207/minimal-agent.git"
+    "url": "git+https://github.com/agnusdei1207/pentesting.git"
   },
-  "homepage": "https://github.com/agnusdei1207/minimal-agent#readme",
-  "bugs": "https://github.com/agnusdei1207/minimal-agent/issues",
+  "homepage": "https://github.com/agnusdei1207/pentesting#readme",
+  "bugs": "https://github.com/agnusdei1207/pentesting/issues",
   "type": "module",
   "bin": {
-    "minimal-agent": "bin/minimal-agent.js"
+    "pentesting": "bin/pentesting.js",
+    "minimal-agent": "bin/pentesting.js"
   },
   "files": [
     "bin/",
@@ -25,8 +26,9 @@
     "test": "node --test test/*.test.mjs",
     "check": "npm run check:docker",
     "check:docker": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/check.ps1",
+    "release": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/release.ps1",
     "docker:base": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/dimage.ps1 -Target base -Push",
-    "docker:build": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/dimage.ps1 -Target all -Tag minimal-agent:check",
+    "docker:build": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/dimage.ps1 -Target all -Tag pentesting:check",
     "xbow": "node benchmarks/harness/task.mjs",
     "xbow:run": "node benchmarks/harness/runner.mjs --all --concurrency 1",
     "xbow:setup": "node benchmarks/harness/runner.mjs --setup",

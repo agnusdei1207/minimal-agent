@@ -24,6 +24,7 @@ $arguments = @(
     '--cpus', '1', '--pids-limit', '128',
     '--volume', "${repoRoot}:/workspace",
     '--workdir', '/workspace',
+    '--env', 'PENTESTING_SKIP_DOWNLOAD=1',
     '--env', 'MINIMAL_AGENT_SKIP_DOWNLOAD=1',
     'node:24-bookworm-slim'
 )

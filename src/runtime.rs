@@ -50,7 +50,8 @@ pub struct RuntimeConfig {
 
 impl Default for RuntimeConfig {
     fn default() -> Self {
-        let max_model_turns = std::env::var("MINIMAL_AGENT_MAX_MODEL_TURNS")
+        let max_model_turns = std::env::var("PENTESTING_MAX_MODEL_TURNS")
+            .or_else(|_| std::env::var("MINIMAL_AGENT_MAX_MODEL_TURNS"))
             .ok()
             .and_then(|val| {
                 let trimmed = val.trim();
@@ -1442,13 +1443,17 @@ fn record_usage_telemetry(delta: &ModelDelta) {
     let ModelDelta::Usage(usage) = delta else {
         return;
     };
-    if std::env::var_os("MINIMAL_AGENT_DEBUG").is_some() {
+    if std::env::var_os("PENTESTING_DEBUG").is_some()
+        || std::env::var_os("MINIMAL_AGENT_DEBUG").is_some()
+    {
         eprintln!(
             "[debug] [telemetry] Model tokens: prompt={}, completion={}",
             usage.input_tokens, usage.output_tokens
         );
     }
-    let Ok(path) = std::env::var("MINIMAL_AGENT_TELEMETRY_FILE") else {
+    let Ok(path) = std::env::var("PENTESTING_TELEMETRY_FILE")
+        .or_else(|_| std::env::var("MINIMAL_AGENT_TELEMETRY_FILE"))
+    else {
         return;
     };
     let line = format!(

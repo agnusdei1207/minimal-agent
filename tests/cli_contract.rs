@@ -8,12 +8,12 @@ use tempfile::tempdir;
 
 #[test]
 fn help_and_version_expose_the_small_public_surface() {
-    let binary = env!("CARGO_BIN_EXE_minimal-agent");
+    let binary = env!("CARGO_BIN_EXE_pentesting");
     let version = Command::new(binary).arg("--version").output().unwrap();
     assert!(version.status.success());
     assert_eq!(
         String::from_utf8(version.stdout).unwrap().trim(),
-        "minimal-agent 0.110.0"
+        "pentesting 0.200.0"
     );
 
     let help = Command::new(binary).arg("--help").output().unwrap();
@@ -31,7 +31,7 @@ fn inspect_reads_a_durable_run_without_a_provider() {
     AgentCoordinator::new(journal.clone(), "durable goal").unwrap();
     drop(journal);
 
-    let output = Command::new(env!("CARGO_BIN_EXE_minimal-agent"))
+    let output = Command::new(env!("CARGO_BIN_EXE_pentesting"))
         .args(["inspect", "--run"])
         .arg(&run_root)
         .output()
@@ -49,13 +49,15 @@ fn inspect_reads_a_durable_run_without_a_provider() {
 #[test]
 fn run_opens_without_provider_environment_so_model_can_be_selected_in_process() {
     let dir = tempdir().unwrap();
-    let mut child = Command::new(env!("CARGO_BIN_EXE_minimal-agent"))
+    let mut child = Command::new(env!("CARGO_BIN_EXE_pentesting"))
         .args(["run", "--plain", "--goal", "configure later", "--run"])
         .arg(dir.path().join("run"))
         .arg("--workspace")
         .arg(dir.path())
         .env_remove("OPENAI_API_KEY")
         .env_remove("OPENAI_MODEL")
+        .env_remove("PENTESTING_API_KEY")
+        .env_remove("PENTESTING_MODEL")
         .env_remove("MINIMAL_AGENT_API_KEY")
         .env_remove("MINIMAL_AGENT_MODEL")
         .stdin(Stdio::piped())

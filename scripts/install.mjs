@@ -5,15 +5,15 @@ import { dirname, join, resolve } from "node:path";
 
 import { readResponseBounded } from "./bounded-download.mjs";
 
-if (process.env.MINIMAL_AGENT_SKIP_DOWNLOAD === "1") {
+if (process.env.PENTESTING_SKIP_DOWNLOAD === "1" || process.env.MINIMAL_AGENT_SKIP_DOWNLOAD === "1") {
   process.exit(0);
 }
 
 const packageRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const manifest = JSON.parse(await readFile(join(packageRoot, "package.json"), "utf8"));
-const executableName = process.platform === "win32" ? "minimal-agent.exe" : "minimal-agent";
-const asset = `minimal-agent-${process.platform}-${process.arch}${process.platform === "win32" ? ".exe" : ""}`;
-const releaseRoot = `https://github.com/agnusdei1207/minimal-agent/releases/download/v${manifest.version}`;
+const executableName = process.platform === "win32" ? "pentesting.exe" : "pentesting";
+const asset = `pentesting-${process.platform}-${process.arch}${process.platform === "win32" ? ".exe" : ""}`;
+const releaseRoot = `https://github.com/agnusdei1207/pentesting/releases/download/v${manifest.version}`;
 const targetDirectory = join(packageRoot, "vendor", `${process.platform}-${process.arch}`);
 const target = join(targetDirectory, executableName);
 const temporary = `${target}.download`;

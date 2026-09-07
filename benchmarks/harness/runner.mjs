@@ -611,6 +611,8 @@ async function runTask(id) {
       "--network",
       net,
       "-v",
+      `${telemetryDir}:/workspace/.pentesting`,
+      "-v",
       `${telemetryDir}:/workspace/.minimal-agent`,
       "-v",
       `${journalDir}:/tmp/ma-run`,
@@ -625,8 +627,8 @@ async function runTask(id) {
         "-e",
         `OPENAI_MAX_TOKENS=${MAX_TOKENS}`,
       );
-    if (process.env.MINIMAL_AGENT_DEBUG || arg("debug", false))
-      args.push("-e", "MINIMAL_AGENT_DEBUG=1");
+    if (process.env.PENTESTING_DEBUG || process.env.MINIMAL_AGENT_DEBUG || arg("debug", false))
+      args.push("-e", "PENTESTING_DEBUG=1", "-e", "MINIMAL_AGENT_DEBUG=1");
 
     const agentName = `${proj}-agent`;
     await recordedCommand("agent-container-preclean", "docker", [
@@ -634,15 +636,17 @@ async function runTask(id) {
       "-f",
       agentName,
     ]);
-    // minimal-agent native CLI: headless autonomous run against the target, with
+    // pentesting native CLI: headless autonomous run against the target, with
     // the CTF flag format so the runtime extracts and prints the flag. Token usage
     // is emitted as JSONL to the mounted telemetry dir (env-gated in the runtime).
-    // --run points the ma-journal RunJournal at /tmp/ma-run, which is bind-mounted
+    // --run points the RunJournal at /tmp/ma-run, which is bind-mounted
     // to the per-run journalDir on the host (see above) so it survives teardown.
     args.push(
       "--init",
       "-e",
-      "MINIMAL_AGENT_TELEMETRY_FILE=/workspace/.minimal-agent/usage.jsonl",
+      "PENTESTING_TELEMETRY_FILE=/workspace/.pentesting/usage.jsonl",
+      "-e",
+      "MINIMAL_AGENT_TELEMETRY_FILE=/workspace/.pentesting/usage.jsonl",
       "--name",
       agentName,
       AGENT_IMAGE,

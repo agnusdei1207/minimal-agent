@@ -26,7 +26,7 @@ function hasInstruction(dockerfileContent, instruction) {
     .some((line) => !line.trim().startsWith("#") && line.includes(instruction));
 }
 
-requireEqual(manifest.name, "minimal-agent", "package name");
+requireEqual(manifest.name, "pentesting", "package name");
 requireEqual(manifest.engines?.node, ">=24 <25", "Node engine");
 if (!manifest.description?.includes("powered by Rust")) {
   throw new Error("package description must contain 'powered by Rust'");
@@ -49,12 +49,12 @@ await requireText("scripts/check.ps1", [
   "'--memory-swap', '2g'",
   "'--cpus', '2'",
   "'--pids-limit', '512'",
-  "minimal-agent-workspace:/workspace",
-  "minimal-agent-state:/state",
+  "pentesting-workspace:/workspace",
+  "pentesting-state:/state",
   "OPENAI_API_KEY",
   "OPENAI_MODEL",
   "OPENROUTER_API_KEY",
-  "minimal-agent:check",
+  "pentesting:check",
   "--run",
   "/state/check-",
 ]);
@@ -69,7 +69,7 @@ await requireText("Cargo.toml", [
   `name = "${manifest.name}"`,
   `version = "${version}"`,
   'rust-version = "1.98"',
-  'repository = "https://github.com/agnusdei1207/minimal-agent"',
+  'repository = "https://github.com/agnusdei1207/pentesting"',
 ]);
 await requireText("rust-toolchain.toml", ['channel = "1.98.0"']);
 requireEqual((await read(".nvmrc")).trim(), "24", ".nvmrc");
@@ -98,14 +98,13 @@ await requireText("docker/install-browser.sh", [
   "sha256sum --check",
 ]);
 const compose = await read("docker/compose.yaml");
-if (!compose.includes(`image: agnusdei1207/minimal-agent:${version}`)) {
+if (!compose.includes(`image: agnusdei1207/pentesting:${version}`)) {
   throw new Error("docker/compose.yaml must use the versioned prebuilt image");
 }
 if (compose.includes("build:") || compose.includes("dockerfile:")) {
   throw new Error("docker/compose.yaml must not bypass scripts/dimage.ps1");
 }
-await requireText("README.md", [`\`${version}\``, `minimal-agent@${version}`]);
-await requireText("docs/adr/ADR-0001-minimal-autonomous-team-agent-core.md", [
+await requireText("README.md", [`\`${version}\``, `pentesting@${version}`]);
+await requireText("docs/adr/ADR-0006-pentesting-successor-and-unified-release-pipeline.md", [
   `Version target: ${version}`,
-  `minimal-agent:qa-${version}`,
 ]);

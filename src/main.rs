@@ -22,7 +22,7 @@ use uuid::Uuid;
 
 #[derive(Parser)]
 #[command(
-    name = "minimal-agent",
+    name = "pentesting",
     version,
     about = "A small autonomous team-agent runtime"
 )]
@@ -210,8 +210,7 @@ async fn run(args: RunArgs) -> anyhow::Result<()> {
     }
     let settings_root = provider_settings_root(run.as_deref(), resume.as_deref(), &workspace);
     let settings_store = ProviderSettingsStore::new(settings_root);
-    let settings = ProviderSettings::from_standard_env()?
-        .or(settings_store.load()?);
+    let settings = ProviderSettings::from_standard_env()?.or(settings_store.load()?);
     let provider = load_provider_slot(&settings_store).await?;
     let max_model_turns = match max_turns.as_deref() {
         Some(val) => {
@@ -278,21 +277,29 @@ async fn run(args: RunArgs) -> anyhow::Result<()> {
 
 fn print_session_exit_banner(run_root: &Path) {
     println!();
-    println!("  \x1b[38;2;200;255;0mminimal-agent\x1b[0m — session saved");
+    println!("  \x1b[38;2;200;255;0mpentesting\x1b[0m — session saved");
     println!("  Run root: {}", run_root.display());
     println!("  To resume this session:");
     println!(
-        "    \x1b[1mminimal-agent run --resume {}\x1b[0m",
+        "    \x1b[1mpentesting run --resume {}\x1b[0m",
         run_root.display()
     );
     println!();
 }
 
 fn provider_settings_root(run: Option<&Path>, resume: Option<&Path>, workspace: &Path) -> PathBuf {
-    run.or(resume)
-        .and_then(Path::parent)
-        .map(Path::to_path_buf)
-        .unwrap_or_else(|| workspace.join(".minimal-agent"))
+    if let Some(parent) = run.or(resume).and_then(Path::parent) {
+        return parent.to_path_buf();
+    }
+    let pentesting_dir = workspace.join(".pentesting");
+    if pentesting_dir.exists() {
+        return pentesting_dir;
+    }
+    let legacy_dir = workspace.join(".minimal-agent");
+    if legacy_dir.exists() {
+        return legacy_dir;
+    }
+    pentesting_dir
 }
 
 async fn load_provider_slot(store: &ProviderSettingsStore) -> anyhow::Result<Arc<ProviderSlot>> {
@@ -316,14 +323,18 @@ fn provider_from_settings(settings: &ProviderSettings) -> anyhow::Result<OpenAiC
 fn default_run_root(workspace: &Path) -> PathBuf {
     let timestamp = Utc::now().format("%Y%m%dT%H%M%SZ");
     let suffix = Uuid::new_v4().simple().to_string();
-    workspace
-        .join(".minimal-agent")
-        .join("runs")
+    let root =
+        if workspace.join(".minimal-agent").exists() && !workspace.join(".pentesting").exists() {
+            workspace.join(".minimal-agent")
+        } else {
+            workspace.join(".pentesting")
+        };
+    root.join("runs")
         .join(format!("{timestamp}-{}", &suffix[..8]))
 }
 
 async fn run_plain(runtime: TeamRuntime, mut auto_enabled: bool) -> anyhow::Result<()> {
-    println!("minimal-agent plain mode; /help for commands");
+    println!("pentesting plain mode; /help for commands");
     let mut input = BufReader::new(tokio::io::stdin());
     loop {
         tokio::select! {
@@ -385,7 +396,7 @@ async fn run_plain(runtime: TeamRuntime, mut auto_enabled: bool) -> anyhow::Resu
                         println!("{output}");
                     }
                     Ok(Some(UiCommand::Resume)) => println!(
-                        "minimal-agent run --resume {}",
+                        "pentesting run --resume {}",
                         runtime.coordinator().journal().root().display()
                     ),
                     Ok(Some(UiCommand::Model(query))) => println!(
@@ -395,9 +406,9 @@ async fn run_plain(runtime: TeamRuntime, mut auto_enabled: bool) -> anyhow::Resu
                             |query| format!("interactive model filter requested: {query}; rerun without --plain"),
                         )
                     ),
-                    Ok(Some(UiCommand::Update)) => println!("npm install -g minimal-agent@latest"),
+                    Ok(Some(UiCommand::Update)) => println!("npm install -g pentesting@latest"),
                     Ok(Some(UiCommand::New)) => println!(
-                        "start a new durable run with `minimal-agent run --goal ...`"
+                        "start a new durable run with `pentesting run --goal ...`"
                     ),
                     Ok(Some(UiCommand::Target(scope))) => match runtime.set_engagement_scope(scope.clone()) {
                         Ok(()) => println!(
@@ -536,7 +547,9 @@ async fn observe_headless(
                 idle_deadline = tokio::time::Instant::now() + idle_window;
                 match event {
                     Ok(event) => {
-                        if std::env::var_os("MINIMAL_AGENT_DEBUG").is_some() {
+                        if std::env::var_os("PENTESTING_DEBUG").is_some()
+                            || std::env::var_os("MINIMAL_AGENT_DEBUG").is_some()
+                        {
                             log_debug_event(&event);
                         }
                         if matches!(event, RuntimeEvent::TurnFinished { success: true, .. }) {
@@ -545,7 +558,9 @@ async fn observe_headless(
                         observation.apply(event);
                     }
                     Err(tokio::sync::broadcast::error::RecvError::Lagged(n)) => {
-                        if std::env::var_os("MINIMAL_AGENT_DEBUG").is_some() {
+                        if std::env::var_os("PENTESTING_DEBUG").is_some()
+                            || std::env::var_os("MINIMAL_AGENT_DEBUG").is_some()
+                        {
                             eprintln!("[debug] broadcast lagged: {n} messages dropped");
                         }
                     }

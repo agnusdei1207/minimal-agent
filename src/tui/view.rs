@@ -439,7 +439,7 @@ fn render_entry(entry: Entry) -> Vec<Line<'static>> {
     if tone == LineTone::Banner {
         // Start banner: program name in the rare accent, the rest muted.
         return vec![Line::from(vec![
-            Span::styled("minimal-agent", styles::accent()),
+            Span::styled("pentesting", styles::accent()),
             Span::styled(" — ready · /help", styles::muted()),
         ])];
     }

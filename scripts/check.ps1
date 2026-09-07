@@ -1,6 +1,6 @@
 $ErrorActionPreference = 'Stop'
 $repoRoot = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path
-$image = 'minimal-agent:check'
+$image = 'pentesting:check'
 
 & (Join-Path $PSScriptRoot 'dimage.ps1') -Target all -Tag $image
 if ($LASTEXITCODE -ne 0) {
@@ -33,8 +33,8 @@ $arguments = @(
     'run', '-it', '--rm',
     '--memory', '2g', '--memory-swap', '2g',
     '--cpus', '2', '--pids-limit', '512',
-    '--volume', 'minimal-agent-workspace:/workspace',
-    '--volume', 'minimal-agent-state:/state'
+    '--volume', 'pentesting-workspace:/workspace',
+    '--volume', 'pentesting-state:/state'
 ) + $envArgs + @(
     $image,
     'run', '--workspace', '/workspace',

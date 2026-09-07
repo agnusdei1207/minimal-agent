@@ -116,7 +116,7 @@ pub fn command_help() -> &'static str {
 /model [query]    Configure provider, model, or custom endpoint\n\
 /resume           Browse saved sessions & resume instructions\n\
 /new              Start a new durable run\n\
-/update           Update minimal-agent to the latest release\n\
+/update           Update pentesting to the latest release\n\
 /exit             Save session, restore terminal, and quit\n\
 !<cmd>            Run shell command in workspace"
 }

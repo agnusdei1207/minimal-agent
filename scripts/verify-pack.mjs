@@ -4,6 +4,7 @@ const expectedFiles = [
   "LICENSE",
   "README.md",
   "bin/minimal-agent.js",
+  "bin/pentesting.js",
   "package.json",
   "scripts/bounded-download.mjs",
   "scripts/install.mjs",

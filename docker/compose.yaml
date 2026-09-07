@@ -1,6 +1,6 @@
 services:
-  minimal-agent:
-    image: agnusdei1207/minimal-agent:0.110.0
+  pentesting:
+    image: agnusdei1207/pentesting:0.200.0
     stdin_open: true
     tty: true
     # Raw sockets for SYN scans, masscan, and packet capture (ADR-0003 §3.7).
@@ -16,7 +16,28 @@ services:
     command:
       - run
       - --goal
-      - ${MINIMAL_AGENT_GOAL:-Help complete the requested task}
+      - ${PENTESTING_GOAL:-${MINIMAL_AGENT_GOAL:-Help complete the requested task}}
+      - --workspace
+      - /workspace
+      - --run
+      - /state/current
+
+  minimal-agent:
+    image: agnusdei1207/pentesting:0.200.0
+    stdin_open: true
+    tty: true
+    cap_add:
+      - NET_RAW
+      - NET_ADMIN
+    env_file:
+      - ../.env
+    volumes:
+      - ../workspace:/workspace
+      - ../runs:/state
+    command:
+      - run
+      - --goal
+      - ${PENTESTING_GOAL:-${MINIMAL_AGENT_GOAL:-Help complete the requested task}}
       - --workspace
       - /workspace
       - --run

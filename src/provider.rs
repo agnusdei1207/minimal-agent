@@ -261,7 +261,8 @@ pub(crate) fn parse_context_tokens(value: Option<&str>) -> Result<u64, ProviderF
 }
 
 fn parse_provider_timeout() -> Duration {
-    std::env::var("MINIMAL_AGENT_PROVIDER_TIMEOUT")
+    std::env::var("PENTESTING_PROVIDER_TIMEOUT")
+        .or_else(|_| std::env::var("MINIMAL_AGENT_PROVIDER_TIMEOUT"))
         .or_else(|_| std::env::var("OPENAI_TIMEOUT"))
         .ok()
         .and_then(|v| v.parse::<u64>().ok())
@@ -307,7 +308,7 @@ impl OpenAiChatProvider {
         let client = reqwest::Client::builder()
             .timeout(config.timeout)
             .default_headers(headers)
-            .user_agent(concat!("minimal-agent/", env!("CARGO_PKG_VERSION")))
+            .user_agent(concat!("pentesting/", env!("CARGO_PKG_VERSION")))
             .build()
             .map_err(|error| ProviderFault::Transport {
                 message: error.to_string(),

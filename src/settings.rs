@@ -43,9 +43,11 @@ pub fn parse_token_input(value: &str) -> Option<u64> {
 pub fn env_context_tokens() -> Option<u64> {
     const KEYS: &[&str] = &[
         "OPENAI_CONTEXT_TOKENS",
+        "PENTESTING_CONTEXT_TOKENS",
+        "PENTESTING_MAX_CONTEXT_TOKENS",
         "MINIMAL_AGENT_CONTEXT_TOKENS",
-        "OPENAI_MAX_CONTEXT_TOKENS",
         "MINIMAL_AGENT_MAX_CONTEXT_TOKENS",
+        "OPENAI_MAX_CONTEXT_TOKENS",
         "CONTEXT_TOKENS",
         "MAX_CONTEXT_TOKENS",
     ];
@@ -65,6 +67,9 @@ pub fn env_max_output_tokens() -> Option<u64> {
         "OPENAI_MAX_OUTPUT_TOKENS",
         "OPENAI_OUTPUT_MAX_TOKENS",
         "OPENAI_MAX_COMPLETION_TOKENS",
+        "PENTESTING_MAX_TOKENS",
+        "PENTESTING_MAX_OUTPUT_TOKENS",
+        "PENTESTING_OUTPUT_MAX_TOKENS",
         "MINIMAL_AGENT_MAX_TOKENS",
         "MINIMAL_AGENT_MAX_OUTPUT_TOKENS",
         "MINIMAL_AGENT_OUTPUT_MAX_TOKENS",
@@ -114,7 +119,8 @@ impl ProviderSettings {
             model: self.model.clone(),
             context_tokens: self.context_tokens,
             max_output_tokens: self.max_output_tokens,
-            timeout: std::env::var("MINIMAL_AGENT_PROVIDER_TIMEOUT")
+            timeout: std::env::var("PENTESTING_PROVIDER_TIMEOUT")
+                .or_else(|_| std::env::var("MINIMAL_AGENT_PROVIDER_TIMEOUT"))
                 .or_else(|_| std::env::var("OPENAI_TIMEOUT"))
                 .ok()
                 .and_then(|v| v.parse::<u64>().ok())

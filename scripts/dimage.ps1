@@ -1,8 +1,8 @@
 param(
     [ValidateSet('base', 'app', 'all', 'runner')]
     [string] $Target = 'all',
-    [string] $Tag = 'minimal-agent:0.110.0',
-    [string] $BaseTag = 'agnusdei1207/minimal-agent-runtime-base:latest',
+    [string] $Tag = 'pentesting:0.200.0',
+    [string] $BaseTag = 'agnusdei1207/pentesting-runtime-base:latest',
     [switch] $Push,
     [switch] $NoCache
 )

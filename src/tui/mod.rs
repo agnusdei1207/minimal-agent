@@ -207,7 +207,7 @@ impl TuiState {
         // stays muted. It is the first transcript entry.
         state.push_entry(
             String::new(),
-            "minimal-agent — ready · /help".to_owned(),
+            "pentesting — ready · /help".to_owned(),
             LineTone::Banner,
             None,
         );
@@ -1134,7 +1134,7 @@ async fn handle_command(
         UiCommand::Compact => enqueue_background(state, submissions, Submission::Compact),
         UiCommand::New => state.push_line(
             "new",
-            "start a new durable run by exiting and launching `minimal-agent run --goal ...`",
+            "start a new durable run by exiting and launching `pentesting run --goal ...`",
         ),
         UiCommand::Goal(goal) => enqueue_background(state, submissions, Submission::Goal(goal)),
         UiCommand::Resume => {
@@ -1198,10 +1198,10 @@ async fn handle_command(
 
             body.push_str("──────────────────────────────────────────────────\n");
             body.push_str("To resume a session, exit (/exit) and launch with:\n");
-            body.push_str("  minimal-agent run --resume <path>\n\n");
+            body.push_str("  pentesting run --resume <path>\n\n");
             body.push_str("Current session resume command:\n");
             body.push_str(&format!(
-                "  minimal-agent run --resume {}\n\n",
+                "  pentesting run --resume {}\n\n",
                 current_root.display()
             ));
             body.push_str("Press Esc or x to close this modal.");
@@ -1209,7 +1209,7 @@ async fn handle_command(
             state.open_modal("Resume Saved Sessions", &body);
         }
         UiCommand::Model(query) => begin_model_setup(state, query),
-        UiCommand::Update => state.push_line("update", "npm install -g minimal-agent@latest"),
+        UiCommand::Update => state.push_line("update", "npm install -g pentesting@latest"),
         UiCommand::Bash(command) => {
             enqueue_background(state, submissions, Submission::Bash(command))
         }
@@ -1756,13 +1756,13 @@ mod tests {
         let lines = display_lines(&state);
         let banner = lines
             .iter()
-            .find(|line| line.to_string().contains("minimal-agent"))
+            .find(|line| line.to_string().contains("pentesting"))
             .expect("banner line is rendered");
         let spans: Vec<_> = banner.spans.iter().collect();
         assert!(
-            spans.iter().any(
-                |span| span.content.contains("minimal-agent") && span.style == styles::accent()
-            ),
+            spans
+                .iter()
+                .any(|span| span.content.contains("pentesting") && span.style == styles::accent()),
             "program name uses accent: {banner:?}"
         );
         assert!(
