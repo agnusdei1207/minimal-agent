@@ -47,10 +47,6 @@ struct RetainingDeltaProvider {
 
 #[async_trait]
 impl ModelProvider for RetainingDeltaProvider {
-    fn model_id(&self) -> &str {
-        "retaining-delta-provider"
-    }
-
     fn context_limit(&self) -> u64 {
         20_000
     }
@@ -72,10 +68,6 @@ impl ModelProvider for RetainingDeltaProvider {
 
 #[async_trait]
 impl ModelProvider for HangingCompactionProvider {
-    fn model_id(&self) -> &str {
-        "hanging-compactor"
-    }
-
     fn context_limit(&self) -> u64 {
         20_000
     }
@@ -95,10 +87,6 @@ impl ModelProvider for HangingCompactionProvider {
 
 #[async_trait]
 impl ModelProvider for SuccessfulMainCompactionProvider {
-    fn model_id(&self) -> &str {
-        "successful-compactor"
-    }
-
     fn context_limit(&self) -> u64 {
         20_000
     }
@@ -171,10 +159,6 @@ impl ScriptedProvider {
 
 #[async_trait]
 impl ModelProvider for ScriptedProvider {
-    fn model_id(&self) -> &str {
-        "scripted"
-    }
-
     fn context_limit(&self) -> u64 {
         20_000
     }

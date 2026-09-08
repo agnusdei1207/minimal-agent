@@ -6,7 +6,7 @@
 
 ## 🏆 통합 정본 논문 (Master Paper)
 
-- 👉 **[국문 정본 (UNIFIED_PROMPT_ENGINEERING_STUDY.md)](UNIFIED_PROMPT_ENGINEERING_STUDY.md)** · **[영문판 (UNIFIED_PROMPT_ENGINEERING_STUDY.en.md)](UNIFIED_PROMPT_ENGINEERING_STUDY.en.md)** · **[영문 PDF](UNIFIED_PROMPT_ENGINEERING_STUDY.en.pdf)**
+- 👉 **[국문 정본 (UNIFIED_PROMPT_ENGINEERING_STUDY.md)](UNIFIED_PROMPT_ENGINEERING_STUDY.md)**
   - 저자: 박상우 (Sang Woo Park), agnusdei1207@gmail.com
   - 3편의 미니 논문(정보 유실 완화, 구분자 구문·위치 편향, 마크다운 볼드 절제)을 단일 체계로 통합한 234회 정량 실측 정본 논문. 국문 정본과 영문판은 동일 구조로 단방향 동기화하며, OSF preprints 투고용 영문 PDF를 함께 둔다.
   - 에이전트 통신 3대 원칙(제어/데이터 평면 분리, Markdown `###` 단독 채택, 본문 볼드 `**` 전면 배제)과 복사 가능한 최적 프롬프트 설계안 수립.

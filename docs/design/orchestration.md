@@ -1,6 +1,6 @@
 # Minimal Team-Agent Orchestration for Autonomous Penetration Testing
 
-This document presents the orchestration architecture of `minimal-agent` in a format suitable for academic citation and technical presentations. Normative specifications reside in [ADR-0001](../adr/ADR-0001-minimal-autonomous-team-agent-core.md) (Core Runtime) and [ADR-0002](../adr/ADR-0002-engagement-injection-and-transcript-orchestration.md) (Engagement Injection & Transcript Orchestration); this document connects those architectural decisions into a cohesive narrative.
+This document presents the orchestration architecture of `minimal-agent` in a format suitable for academic citation and technical presentations. Normative specifications reside in [ADR-0001](../adr/ADR-0001-minimal-autonomous-team-agent-core.md) (Core Runtime) and [ADR-0002](../adr/ADR-0002-authorized-engagement-and-transcript-orchestration.md) (Engagement Injection & Transcript Orchestration); this document connects those architectural decisions into a cohesive narrative.
 
 ---
 

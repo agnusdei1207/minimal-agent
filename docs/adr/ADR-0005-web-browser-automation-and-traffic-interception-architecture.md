@@ -2,7 +2,7 @@
 
 - Status: Accepted (반영 완료 · 스킬 프롬프트 주도 아키텍처)
 - Created: 2026-09-06 +09:00
-- Version target: 0.111.0
+- Version target: 0.200.0 (통합 릴리스 · ADR-0006 참조)
 - Repository: `agnusdei1207/minimal-agent`
 - Relation: ADR-0001 (Clean-Room Core), ADR-0002 (Authorized Engagement), ADR-0003 (Shell Primitives), ADR-0004 (Bounded Three-Depth Hierarchy).
 - 상태 주석:

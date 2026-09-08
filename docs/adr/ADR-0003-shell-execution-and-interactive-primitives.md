@@ -3,7 +3,7 @@
 - Status: Accepted
 - Created: 2026-08-31 +09:00
 - Updated: 2026-09-06 +09:00
-- Version target: 0.112.0
+- Version target: 0.200.0 (통합 릴리스 · ADR-0006 참조)
 - Repository: `agnusdei1207/minimal-agent`
 - Relation: ADR-0001의 최소 코어 철학과 ADR-0002의 승인된 교전 환경을 잇는다. 대화형 작업(`sudo`, `nc`, `gdb`, REPL) 및 장기 실행 작업(스캔, 리스너)을 처리하기 위한 쉘 실행 계층의 구조적 설계를 규정한다.
 - 통합·대체: 이 ADR은 기존 `ADR-0003-interactive-shell-model-and-methodology-library.md`(Proposed) 초안을 통합·대체한다. 그 초안이 검토했던 대안·배경 중 유의미한 부분은 본 문서 §2와 §5(Considered / Rejected alternatives)에 흡수했다.

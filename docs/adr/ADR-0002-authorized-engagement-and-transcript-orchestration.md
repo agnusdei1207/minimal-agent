@@ -1,8 +1,8 @@
 # ADR-0002: Authorized Engagement Injection and Transcript Orchestration
 
-- Status: Proposed
+- Status: Accepted, implemented and verified
 - Created: 2026-08-31 +09:00
-- Version target: 0.111.0
+- Version target: 0.200.0 (통합 릴리스 · ADR-0006 참조)
 - Repository: `agnusdei1207/minimal-agent`
 - Relation: ADR-0001을 대체하지 않고 확장한다. ADR-0001의 팀 topology,
   journal/brief 소유권, compaction, provider 불변식은 그대로 유지한다. 본 ADR은

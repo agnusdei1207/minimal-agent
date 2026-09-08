@@ -113,7 +113,6 @@ impl ModelRequest {
 
 #[async_trait]
 pub trait ModelProvider: Send + Sync {
-    fn model_id(&self) -> &str;
     fn context_limit(&self) -> u64;
 
     async fn complete(
@@ -165,10 +164,6 @@ impl ProviderSlot {
 
 #[async_trait]
 impl ModelProvider for ProviderSlot {
-    fn model_id(&self) -> &str {
-        "runtime-selected"
-    }
-
     fn context_limit(&self) -> u64 {
         self.context_limit.load(Ordering::Acquire)
     }
@@ -202,37 +197,6 @@ pub struct OpenAiConfig {
 }
 
 impl OpenAiConfig {
-    pub fn from_env() -> Result<Self, ProviderFault> {
-        let api_key =
-            std::env::var("OPENAI_API_KEY").map_err(|_| ProviderFault::Configuration {
-                message: "set OPENAI_API_KEY or run /model".to_owned(),
-            })?;
-        let model = std::env::var("OPENAI_MODEL").map_err(|_| ProviderFault::Configuration {
-            message: "set OPENAI_MODEL or run /model".to_owned(),
-        })?;
-        let base_url = std::env::var("OPENAI_BASE_URL")
-            .unwrap_or_else(|_| "https://api.openai.com/v1".to_owned())
-            .parse::<Url>()
-            .map_err(|error| ProviderFault::Configuration {
-                message: format!("invalid provider base URL: {error}"),
-            })?;
-        let context_tokens = match std::env::var("OPENAI_CONTEXT_TOKENS").ok() {
-            Some(val) => parse_context_tokens(Some(&val))?,
-            None => crate::settings::env_context_tokens().unwrap_or(128_000),
-        };
-        let max_output_tokens = crate::settings::env_max_output_tokens();
-        let timeout = parse_provider_timeout();
-        Ok(Self {
-            base_url,
-            api_key,
-            model,
-            context_tokens,
-            max_output_tokens,
-            timeout,
-            headers: HashMap::new(),
-        })
-    }
-
     fn endpoint(&self) -> Result<Url, ProviderFault> {
         let base = self.base_url.as_str().trim_end_matches('/');
         let endpoint = if base.ends_with("/chat/completions") {
@@ -246,29 +210,6 @@ impl OpenAiConfig {
                 message: format!("invalid chat endpoint: {error}"),
             })
     }
-}
-
-pub(crate) fn parse_context_tokens(value: Option<&str>) -> Result<u64, ProviderFault> {
-    let Some(value) = value else {
-        return Ok(128_000);
-    };
-    crate::settings::parse_token_input(value)
-        .filter(|tokens| *tokens > 0)
-        .ok_or_else(|| ProviderFault::Configuration {
-            message: "OPENAI_CONTEXT_TOKENS must be a positive integer (suffix k/m allowed)"
-                .to_owned(),
-        })
-}
-
-fn parse_provider_timeout() -> Duration {
-    std::env::var("PENTESTING_PROVIDER_TIMEOUT")
-        .or_else(|_| std::env::var("MINIMAL_AGENT_PROVIDER_TIMEOUT"))
-        .or_else(|_| std::env::var("OPENAI_TIMEOUT"))
-        .ok()
-        .and_then(|v| v.parse::<u64>().ok())
-        .filter(|secs| *secs > 0)
-        .map(Duration::from_secs)
-        .unwrap_or(Duration::from_secs(300))
 }
 
 pub struct OpenAiChatProvider {
@@ -498,10 +439,6 @@ async fn bounded_error_body(response: reqwest::Response) -> String {
 
 #[async_trait]
 impl ModelProvider for OpenAiChatProvider {
-    fn model_id(&self) -> &str {
-        &self.config.model
-    }
-
     fn context_limit(&self) -> u64 {
         self.config.context_tokens
     }
@@ -1087,20 +1024,6 @@ mod tests {
 
         assert!(slot.is_configured());
         assert_eq!(slot.active_model().await.as_deref(), Some("model-a"));
-    }
-
-    #[test]
-    fn explicit_context_limit_is_never_silently_defaulted() {
-        assert_eq!(parse_context_tokens(None).unwrap(), 128_000);
-        assert_eq!(parse_context_tokens(Some("8192")).unwrap(), 8_192);
-        assert!(matches!(
-            parse_context_tokens(Some("not-a-number")),
-            Err(ProviderFault::Configuration { .. })
-        ));
-        assert!(matches!(
-            parse_context_tokens(Some("0")),
-            Err(ProviderFault::Configuration { .. })
-        ));
     }
 
     #[test]

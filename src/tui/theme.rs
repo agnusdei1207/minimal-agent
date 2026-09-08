@@ -57,10 +57,6 @@ pub mod styles {
         Style::default().fg(EMPHASIS)
     }
 
-    pub fn bold_emphasis() -> Style {
-        Style::default().fg(EMPHASIS)
-    }
-
     pub fn border() -> Style {
         Style::default().fg(MUTED)
     }

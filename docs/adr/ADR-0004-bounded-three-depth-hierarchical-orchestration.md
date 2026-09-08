@@ -2,8 +2,7 @@
 
 - Status: Implemented (후속 코어 수정 및 검증 상태는 benchmarks/harness/docs/STATUS.md 참조)
 - Created: 2026-09-01 +09:00
-- Version target: 0.111.0 (ADR-0002/0003과 함께 릴리스). Docker 게이트가 초록이고 사용자가
-  요청하기 전까지 crate 버전은 0.110.0으로 유지한다(ADR-0002 버전 홀드 규율).
+- Version target: 0.200.0 (통합 릴리스 · ADR-0006 참조)
 - Repository: `agnusdei1207/minimal-agent`
 - Relation: ADR-0001(코어 토폴로지)과 ADR-0002(교전 주입), ADR-0003(도구 모델)을 확장한다. ADR-0001의 단일 Journal 원장, 단일 소유자 Brief, Semantic Compaction 및 활성 팀 최대 10명 상한은 엄격히 유지하되, **토폴로지 깊이를 최대 3단계(Depth 0~2)로 확장하고 노드 역할 분리 및 직계 통신 불변식**을 규정한다.
 

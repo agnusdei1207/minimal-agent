@@ -6,7 +6,7 @@
 
 ## 🏆 통합 정본 논문 (Master Paper)
 
-👉 **[통합 실증 연구 논문 전문 (docs/research/UNIFIED_PROMPT_ENGINEERING_STUDY.md)](../docs/research/UNIFIED_PROMPT_ENGINEERING_STUDY.md)**
+👉 **[통합 실증 연구 논문 전문 (docs/research/UNIFIED_PROMPT_ENGINEERING_STUDY.md)](../research/UNIFIED_PROMPT_ENGINEERING_STUDY.md)**
 
 ---
 

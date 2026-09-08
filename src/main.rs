@@ -892,9 +892,6 @@ mod tests {
 
     #[async_trait]
     impl ModelProvider for HeadlessFixtureProvider {
-        fn model_id(&self) -> &str {
-            "headless-fixture"
-        }
         fn context_limit(&self) -> u64 {
             128_000
         }

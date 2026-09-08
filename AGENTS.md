@@ -5,8 +5,7 @@ Use `scripts/dbuild.ps1` for every Rust build, test, format, and lint command.
 Never run host Cargo. Keep the implementation aligned with
 `docs/adr/ADR-0001-minimal-autonomous-team-agent-core.md` and use test-first
 changes. This is a public clean-room repository: never copy private source or
-secrets from `../pentesting`. Commit and push only when explicitly requested,
-using `agnusdei1207` as the Git identity.
+secrets from `../pentesting`. Commit and push only when explicitly requested.
 
 Use Node 24 LTS only through `scripts/nverify.ps1`. Build application images
 only through `scripts/dimage.ps1`. It builds with the default docker builder

@@ -651,7 +651,6 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts/dimage.ps1 -Target a
 ## 19. 배포와 변경 통제
 
 - 모든 작업은 `main`에서 한다. branch, worktree, PR을 만들지 않는다.
-- commit/push identity는 `agnusdei1207 <agnusdei1207@gmail.com>`만 사용한다.
 - 이 저장소는 public clean-room이다. private pentesting source, prompt, secret, artifact를
   복사하지 않는다.
 - benchmark 디렉터리와 외부 benchmark **실행·채점**은 이 구현 범위에서 제외한다.

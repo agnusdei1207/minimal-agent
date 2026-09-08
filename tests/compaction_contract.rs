@@ -44,10 +44,6 @@ impl CoveringProvider {
 
 #[async_trait]
 impl ModelProvider for CoveringProvider {
-    fn model_id(&self) -> &str {
-        "fake-model"
-    }
-
     fn context_limit(&self) -> u64 {
         20_000
     }
