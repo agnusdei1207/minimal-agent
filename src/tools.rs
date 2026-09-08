@@ -23,7 +23,7 @@ use crate::provider::ToolDefinition;
 const MAX_TOOL_RESULT_BYTES: usize = 128 * 1024;
 /// Context-friendly bound for a tool result fed to the model. Larger outputs are
 /// truncated to a head + tail with an elision marker so one big output cannot
-/// bloat the context (ADR-0002 §3.15). Well below `MAX_TOOL_RESULT_BYTES`.
+/// bloat the context (INTENT-0002 §3.15). Well below `MAX_TOOL_RESULT_BYTES`.
 const MAX_TOOL_CONTEXT_BYTES: usize = 16 * 1024;
 const MAX_TOOL_ARGUMENT_BYTES: usize = MAX_TOOL_RESULT_BYTES;
 const MAX_BASH_STREAM_BYTES: usize = MAX_TOOL_RESULT_BYTES;
@@ -215,7 +215,7 @@ note each call, so send the full current picture, not a fragment.",
             return Err(ToolError::OutputLimit(MAX_TOOL_RESULT_BYTES));
         }
         // Bound the result for the model context so one large output cannot bloat
-        // it (ADR-0002 §3.15). The full output is not retained; the agent re-runs
+        // it (INTENT-0002 §3.15). The full output is not retained; the agent re-runs
         // with head/tail/grep or a file redirect when it needs more.
         output.content = truncate_tool_content(output.content);
         Ok(output)
@@ -233,7 +233,7 @@ note each call, so send the full current picture, not a fragment.",
     /// Drive OS-native tmux with the same one-shot shell mechanism as `bash`.
     /// The agent's string is executed verbatim as `tmux <args>`, so tmux itself
     /// owns the PTY, session state, and lifecycle — the Rust core stays a thin
-    /// passthrough and never re-implements a terminal emulator or IPC (ADR-0003).
+    /// passthrough and never re-implements a terminal emulator or IPC (INTENT-0003).
     async fn tmux(&self, arguments: Value, context: &ToolContext) -> Result<ToolOutput, ToolError> {
         let input: TmuxInput = serde_json::from_value(arguments)?;
         if input.args.trim().is_empty() {
@@ -474,7 +474,7 @@ note each call, so send the full current picture, not a fragment.",
                 }
                 let input: FinishInput = serde_json::from_value(arguments)?;
                 // A worker's final result bubbles up to its direct parent, which
-                // synthesizes it upward (ADR-0004 §3.4). Non-main agents always
+                // synthesizes it upward (INTENT-0004 §3.4). Non-main agents always
                 // have a parent.
                 let parent = context
                     .coordinator
@@ -626,7 +626,7 @@ fn enforce_argument_limit(arguments: &Value) -> Result<(), ToolError> {
 }
 
 /// Truncate a large tool result to a head + tail with an elision marker so a
-/// single big output cannot bloat the model context (ADR-0002 §3.15). The head
+/// single big output cannot bloat the model context (INTENT-0002 §3.15). The head
 /// keeps the start (errors, setup) and the tail keeps the end (results, flags).
 fn truncate_tool_content(content: String) -> String {
     if content.len() <= MAX_TOOL_CONTEXT_BYTES {
@@ -697,7 +697,7 @@ fn definition(name: &str, description: &str, parameters: Value) -> ToolDefinitio
 #[cfg(unix)]
 fn platform_shell(command: &str) -> Command {
     // bash explicitly (not `sh`, which is dash on the runtime image) — the base
-    // image ships bash and the agent's tooling assumes bash features (ADR-0002 §3.16).
+    // image ships bash and the agent's tooling assumes bash features (INTENT-0002 §3.16).
     let mut process = Command::new("bash");
     process.arg("-lc").arg(command);
     process

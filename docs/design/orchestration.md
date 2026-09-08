@@ -1,6 +1,6 @@
 # Minimal Team-Agent Orchestration for Autonomous Penetration Testing
 
-This document presents the orchestration architecture of `minimal-agent` in a format suitable for academic citation and technical presentations. Normative specifications reside in [ADR-0001](../adr/ADR-0001-minimal-autonomous-team-agent-core.md) (Core Runtime) and [ADR-0002](../adr/ADR-0002-authorized-engagement-and-transcript-orchestration.md) (Engagement Injection & Transcript Orchestration); this document connects those architectural decisions into a cohesive narrative.
+This document presents the orchestration architecture of `minimal-agent` in a format suitable for academic citation and technical presentations. Normative specifications reside in [INTENT-0001](../intents/0001-minimal-autonomous-team-agent-core.md) (Core Runtime) and [INTENT-0002](../intents/0002-authorized-engagement-and-transcript-orchestration.md) (Engagement Injection & Transcript Orchestration); this document connects those architectural decisions into a cohesive narrative.
 
 ---
 
@@ -29,7 +29,7 @@ main (depth 0)  ── Goal interpretation, team formulation, strategic synthesi
 
 - Only `main` creates, assigns, steers, and recalls workers. Workers cannot spawn arbitrary child subagents.
 - Maximum active team size is strictly capped at 10 (including `main`). Roles and assignments are determined dynamically at runtime.
-- Deep recursive sprawl is prevented by fixing team topology bounds. Rather than adding arbitrary hierarchical depth, `minimal-agent` prioritizes controllable, low-latency coordination. Bounded 3-depth extensions in complex operations are detailed in Section 2.5 and [ADR-0004](../adr/ADR-0004-bounded-three-depth-hierarchical-orchestration.md).
+- Deep recursive sprawl is prevented by fixing team topology bounds. Rather than adding arbitrary hierarchical depth, `minimal-agent` prioritizes controllable, low-latency coordination. Bounded 3-depth extensions in complex operations are detailed in Section 2.5 and [INTENT-0004](../intents/0004-bounded-three-depth-hierarchical-orchestration.md).
 
 ### 2.2 Direct Messaging over a Single Append-Only Journal
 
@@ -78,11 +78,11 @@ At the LLM API layer, inter-agent communication is an append operation to the re
 | **Strengths** | Minimum latency, zero multi-hop summarization loss | High context purity for supervisors; scales beyond 10 agents |
 | **Risks** | Coordinator span-of-control saturation at >10 agents | Value degradation across hops, turn latency explosion, spawn storms |
 
-For focused web penetration testing and CTFs (e.g., XBOW-104), Star Topology ($K_{1, n}$) minimizes latency and preserves exact exploit artifacts. Bounded tree structures (ADR-0004) are reserved for large-scale multi-track operations.
+For focused web penetration testing and CTFs (e.g., XBOW-104), Star Topology ($K_{1, n}$) minimizes latency and preserves exact exploit artifacts. Bounded tree structures (INTENT-0004) are reserved for large-scale multi-track operations.
 
 ---
 
-## 3. The Engagement Layer (ADR-0002)
+## 3. The Engagement Layer (INTENT-0002)
 
 A bare goal string is insufficient to delineate the boundaries and constraints of an offensive engagement. The `Engagement` domain model formalizes this context:
 
@@ -109,7 +109,7 @@ CLI Flags / --engagement JSON
 - **Standing Authorization Doctrine:** Legitimizes the operational scope as pre-authorized work. Agents are forbidden from emitting moralizing preambles, legal disclaimers, or refusing technical actions (recon, exploit creation, payload generation). Boundaries are operational (scope adherence, evidence preservation, avoiding needless destruction), not legalistic.
 - **CTF Solve-Loop Doctrine (`kind == ctf`):** Enforces structured reconnaissance, ranked falsifiable hypotheses, minimal diagnostic probes, strict rabbit-hole bans, and flag extraction solely from verified target output matching `flag_format`.
 
-These doctrines are implemented purely as compact system prompt text rather than complex external policy engines, aligning with ADR-0001's mandate that strategy should not be hardcoded into the runtime core.
+These doctrines are implemented purely as compact system prompt text rather than complex external policy engines, aligning with INTENT-0001's mandate that strategy should not be hardcoded into the runtime core.
 
 ### 3.3 Autonomous Headless Execution (Benchmark Mode)
 
@@ -128,7 +128,7 @@ Flag extraction strictly requires regex matching against genuine target standard
 
 ---
 
-## 4. Transcript Orchestration Visibility (ADR-0002)
+## 4. Transcript Orchestration Visibility (INTENT-0002)
 
 To ensure full observability and reproducibility, transcripts render as structured typed entries:
 
@@ -159,8 +159,8 @@ Consistent color palettes and CommonMark terminal rendering allow operators to i
 - Separate observation and telemetry microservices
 - Complex runtime policy and approval engines
 - Automated heuristic strategy classifiers
-- In-core PTY daemons: delegated to OS tmux; see [ADR-0003](../adr/ADR-0003-shell-execution-and-interactive-primitives.md)
-- Embedded browser engines: delegated to CLI and accessibility trees; see [ADR-0005](../adr/ADR-0005-web-browser-automation-and-traffic-interception-architecture.md)
+- In-core PTY daemons: delegated to OS tmux; see [INTENT-0003](../intents/0003-shell-execution-and-interactive-primitives.md)
+- Embedded browser engines: delegated to CLI and accessibility trees; see [INTENT-0005](../intents/0005-web-browser-automation-and-traffic-interception.md)
 
 The architectural thesis of this project is that an append-only journal paired with individually owned semantic briefs provides complete state representation. New primitives will only be evaluated via formal ADRs if empirical recall failures are demonstrated.
 

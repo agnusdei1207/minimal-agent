@@ -43,7 +43,7 @@ pub struct RuntimeConfig {
     pub auto: bool,
     pub journal: JournalConfig,
     pub compaction: SemanticCompactionConfig,
-    /// Optional authorized-engagement context injected from outside (ADR-0002).
+    /// Optional authorized-engagement context injected from outside (INTENT-0002).
     /// Rendered into every agent's system prompt; never persisted to the journal.
     pub engagement: Option<Engagement>,
 }
@@ -255,7 +255,7 @@ impl TeamRuntime {
         let journal = Arc::new(RunJournal::open(run_root.as_ref(), config.journal)?);
         let coordinator = AgentCoordinator::new(journal.clone(), goal)?;
         // Persist the engagement right after main creation so a resumed run
-        // recovers the same target/scope/flag doctrine (ADR-0002 §4).
+        // recovers the same target/scope/flag doctrine (INTENT-0002 §4).
         if let Some(engagement) = &config.engagement {
             journal.append_sync(JournalEvent::EngagementSet {
                 engagement: engagement.clone(),
@@ -1435,7 +1435,7 @@ fn record_model_delta(
     });
 }
 
-/// Benchmark-only, env-gated token telemetry (ADR-0002 §3.13). When
+/// Benchmark-only, env-gated token telemetry (INTENT-0002 §3.13). When
 /// `MINIMAL_AGENT_TELEMETRY_FILE` names a file, append one JSONL record per model
 /// response so an external benchmark harness can total tokens; a no-op otherwise.
 /// This is removable benchmark support — delete this fn and its one call site.
@@ -1870,7 +1870,7 @@ fn build_request(
 
 /// Renders the agent's POSITION block from the live team and reports whether it
 /// has children, so the caller can pick the internal- vs leaf-node doctrine
-/// (ADR-0004 §3.2/§3.4).
+/// (INTENT-0004 §3.2/§3.4).
 fn render_position(
     agent_id: &AgentId,
     agent: &AgentSnapshot,
@@ -1919,7 +1919,7 @@ fn build_system(
     agent_id: &AgentId,
     brief: &str,
 ) -> Result<String, RuntimeError> {
-    // PROTECTED anti-refusal contract (ADR-0002 §3.12). Keep it wired here and do
+    // PROTECTED anti-refusal contract (INTENT-0002 §3.12). Keep it wired here and do
     // not weaken it when editing other prompts.
     const EXECUTION_MANDATE: &str = include_str!("../prompts/execution-mandate.md");
     const TRADECRAFT: &str = include_str!("../prompts/tradecraft.md");
@@ -1934,7 +1934,7 @@ fn build_system(
     const NODE_LEAF: &str = include_str!("../prompts/node-leaf.md");
 
     let agent = inner.coordinator.inspect(agent_id)?;
-    // Position in the team tree drives the role prompt (ADR-0004 §3.2/§3.4).
+    // Position in the team tree drives the role prompt (INTENT-0004 §3.2/§3.4).
     let team = inner.coordinator.live_team()?;
     let (has_children, position_block) = render_position(agent_id, &agent, &team);
     let engagement = inner
@@ -1971,7 +1971,7 @@ fn build_system(
     } else {
         sections.push(WORKER_ROLE.trim_end().to_owned());
         // A non-main node behaves as an internal node while it has children,
-        // otherwise as a leaf (ADR-0004 §3.2).
+        // otherwise as a leaf (INTENT-0004 §3.2).
         sections.push(
             if has_children {
                 NODE_INTERNAL
@@ -1983,7 +1983,7 @@ fn build_system(
         );
     }
     // Every node maintains its own battlefield note via the `brief` tool
-    // (ADR-0001 §9.1), so the self-management doctrine is always on.
+    // (INTENT-0001 §9.1), so the self-management doctrine is always on.
     sections.push(SELF_MANAGEMENT.trim_end().to_owned());
     sections.push(position_block);
     sections.push(format!("CURRENT BRIEF\n{brief}"));
@@ -2012,7 +2012,7 @@ fn inbox_record(delivery: &MessageDelivery) -> Result<SessionRecord, RuntimeErro
     })
 }
 
-/// Recover the latest engagement recorded for a run, if any (ADR-0002 §4).
+/// Recover the latest engagement recorded for a run, if any (INTENT-0002 §4).
 fn recover_engagement(journal: &RunJournal) -> Result<Option<Engagement>, RuntimeError> {
     let mut engagement = None;
     for entry in journal.replay()? {

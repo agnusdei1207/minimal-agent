@@ -118,7 +118,7 @@ pub enum CompactionOutcome {
     /// these context ranges (the protected live tail — the same kept-set the
     /// semantic path uses, so tool-call/result atomic groups are never split) and
     /// drop the rest from context. The brief is unchanged and the run journal still
-    /// holds every dropped entry (ADR-0001 §9 ledger). Prevents a fail-closed
+    /// holds every dropped entry (INTENT-0001 §9 ledger). Prevents a fail-closed
     /// compaction from stalling the agent forever.
     MechanicallyTrimmed {
         kept_ranges: Vec<SequenceRange>,
@@ -208,7 +208,7 @@ impl SemanticCompactor {
                     Err(AttemptError::Invalid(_second)) => {
                         // Both semantic attempts produced unusable output (common with
                         // weak models). Do not block forever — fall back to a bounded
-                        // mechanical trim (ADR-0001 §9; risk-management pre-mortem).
+                        // mechanical trim (INTENT-0001 §9; risk-management pre-mortem).
                         return Ok(mechanical_trim(&live_tail));
                     }
                 }
@@ -376,7 +376,7 @@ fn extract_json_object(text: &str) -> &str {
 /// protected live tail plus the newest eligible entries that fit under target and
 /// drop the older ones from context. The brief is untouched and the run journal
 /// still holds every dropped entry, bounding working memory without losing the
-/// durable record (ADR-0001 §9; risk-management pre-mortem: a fail-closed block
+/// durable record (INTENT-0001 §9; risk-management pre-mortem: a fail-closed block
 /// must have a bounded fallback).
 fn mechanical_trim(live_tail: &[ContextEntry]) -> CompactionOutcome {
     // Keep EXACTLY the protected live tail — the same set the semantic path keeps —

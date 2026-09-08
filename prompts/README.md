@@ -15,11 +15,11 @@ compiled in with `include_str!` (trimmed) and rebuilt into every agent's prompt 
 | `tradecraft.md` | Points to the on-disk attack-methodology library (`/opt/minimal-agent/skills`) for autonomous consultation, and the shared-session ("public desk") rules for live/interactive terminals. |
 | `team-conduct.md` | Team conduct: act with tools, continue until done, curate the brief. |
 | `communication.md` | How agents talk: the four message kinds (Progress/Insight/Request/Final), substance-only, `team send`/`team finish` vs. plain text. |
-| `team-tree.md` | The bounded 3-depth team tree (ADR-0004): neighbor-only communication, faithful verbatim upward reporting (no telephone game), core-note hygiene, and restart behavior. |
+| `team-tree.md` | The bounded 3-depth team tree (INTENT-0004): neighbor-only communication, faithful verbatim upward reporting (no telephone game), core-note hygiene, and restart behavior. |
 
 ## Role-specific
 
-Assembled from the agent's **position** in the team tree (ADR-0004). main keeps its
+Assembled from the agent's **position** in the team tree (INTENT-0004). main keeps its
 three role files; every other agent gets `worker-role.md` plus an internal- or
 leaf-node file chosen by whether it currently has children.
 

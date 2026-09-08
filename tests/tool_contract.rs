@@ -381,7 +381,7 @@ async fn one_team_tool_creates_and_connects_sibling_agents() {
         .await
         .unwrap();
     assert_eq!(coordinator.inbox(&worker_b).unwrap().len(), 1);
-    // ADR-0004: a sibling insight is delivered only to the addressed sibling, not
+    // INTENT-0004: a sibling insight is delivered only to the addressed sibling, not
     // auto-copied to main; main learns of it through the parent's synthesis.
     assert_eq!(coordinator.inbox(&AgentId::main()).unwrap().len(), 0);
 }

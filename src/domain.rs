@@ -7,7 +7,7 @@ use uuid::Uuid;
 pub const MAIN_AGENT_ID: &str = "main";
 pub const MAX_TEAM_SIZE: usize = 10;
 /// Maximum agent depth in the bounded team tree: 0 = main, 1 = child,
-/// 2 = grandchild (leaf). No agent may be created deeper than this (ADR-0004).
+/// 2 = grandchild (leaf). No agent may be created deeper than this (INTENT-0004).
 pub const MAX_DEPTH: u8 = 2;
 pub const COMPACTION_TRIGGER_PERCENT: u64 = 80;
 pub const COMPACTION_TARGET_PERCENT: u64 = 50;
@@ -126,7 +126,7 @@ impl std::fmt::Display for AgentId {
 }
 
 /// Position of an agent in the bounded team tree: 0 = main, 1 = child,
-/// 2 = grandchild (a leaf). See ADR-0004. Depths above `MAX_DEPTH` are rejected.
+/// 2 = grandchild (a leaf). See INTENT-0004. Depths above `MAX_DEPTH` are rejected.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
 pub struct AgentDepth(u8);
 
@@ -342,7 +342,7 @@ impl AgentMessage {
         let body = body.into();
         // Neighbor routing (parent/children/siblings) is enforced by the
         // coordinator, which holds the tree; the domain keeps only shape limits
-        // (non-empty, deduplicated, bounded). See ADR-0004 §3.4.
+        // (non-empty, deduplicated, bounded). See INTENT-0004 §3.4.
         let mut seen = HashSet::new();
         audience.retain(|recipient| seen.insert(recipient.clone()));
         let message = Self {

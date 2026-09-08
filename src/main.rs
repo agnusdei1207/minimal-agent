@@ -440,7 +440,7 @@ async fn run_plain(runtime: TeamRuntime, mut auto_enabled: bool) -> anyhow::Resu
 }
 
 /// Non-interactive autonomous run for external injection (xbow-style benchmarks,
-/// ADR-0002 §3.3). Submits the objective once, waits for the team to settle,
+/// INTENT-0002 §3.3). Submits the objective once, waits for the team to settle,
 /// prints a one-line JSON result, and exits non-zero when a flag was required
 /// but never captured from real output.
 async fn run_headless(

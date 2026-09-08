@@ -19,7 +19,7 @@ use crate::journal::{JournalError, JournalEvent, ReplayedEvent, RunJournal};
 pub struct AgentSnapshot {
     pub id: AgentId,
     pub depth: AgentDepth,
-    /// The direct parent in the team tree; `None` only for main (ADR-0004).
+    /// The direct parent in the team tree; `None` only for main (INTENT-0004).
     pub parent: Option<AgentId>,
     pub role: String,
     pub task: String,
@@ -130,12 +130,12 @@ impl AgentCoordinator {
             return Err(CoordinatorError::MissingMain);
         }
 
-        // Restart restores the live team from the journal (ADR-0001 durable
+        // Restart restores the live team from the journal (INTENT-0001 durable
         // resume). Deep grandchild structure is NOT reconstructed — recovered
         // non-main agents fold back as direct children of main (fold_replay), which
         // keeps recovery light without a tree-reconstruction machine. Whether a
-        // restart should instead revive ONLY the root (ADR-0004 §6 recovery
-        // method A) is a pending decision that conflicts with this ADR-0001 resume.
+        // restart should instead revive ONLY the root (INTENT-0004 §6 recovery
+        // method A) is a pending decision that conflicts with this INTENT-0001 resume.
         let active_worker_ids: Vec<_> = state
             .agents
             .values()
@@ -386,7 +386,7 @@ impl AgentCoordinator {
         agent.cancellation.cancel();
         let target_wake = agent.wake.clone();
         // Recalling an internal node recalls its whole subtree so descendants stop
-        // promptly rather than running on until the parent tears down (ADR-0004 §7).
+        // promptly rather than running on until the parent tears down (INTENT-0004 §7).
         let cascade_wakes = self.cascade_subtree(
             &mut state,
             target,
@@ -441,7 +441,7 @@ impl AgentCoordinator {
             }
             agent.wake.clone()
         };
-        // Cascade (ADR-0004 §7): terminating a node terminates its whole subtree so
+        // Cascade (INTENT-0004 §7): terminating a node terminates its whole subtree so
         // no grandchild is orphaned. This also reclaims the subtree of a node that
         // died unexpectedly (a faulted node reaches here with a terminal state).
         let cascade_wakes = self.cascade_subtree(
@@ -467,7 +467,7 @@ impl AgentCoordinator {
     /// journaled, its work cancelled, and its permit released when `to` is
     /// terminal. Descendants already terminal, or already at `to`, are skipped.
     /// Returns their wake handles so the caller can notify after unlocking the
-    /// state (ADR-0004 §7 subtree teardown).
+    /// state (INTENT-0004 §7 subtree teardown).
     fn cascade_subtree(
         &self,
         state: &mut TeamState,
@@ -522,7 +522,7 @@ impl AgentCoordinator {
         if sender_record.state.is_terminal() {
             return Err(CoordinatorError::InactiveAgent(sender));
         }
-        // Neighbor-only routing (ADR-0004 §3.4): a sender may address only its
+        // Neighbor-only routing (INTENT-0004 §3.4): a sender may address only its
         // direct parent, its direct children, and its siblings (same parent).
         let sender_parent = sender_record.parent.clone();
         for recipient in &message.audience {
@@ -807,7 +807,7 @@ fn new_record(
 }
 
 /// All transitive descendants of `root` in the team tree, found by following
-/// parent pointers. Used to cascade a teardown down a subtree (ADR-0004 §7).
+/// parent pointers. Used to cascade a teardown down a subtree (INTENT-0004 §7).
 fn collect_descendants(state: &TeamState, root: &AgentId) -> Vec<AgentId> {
     let mut result = Vec::new();
     let mut frontier = vec![root.clone()];
@@ -866,7 +866,7 @@ fn fold_replay(state: &mut TeamState, replay: &[ReplayedEvent]) -> Result<(), Co
                 } else {
                     validate_task(task)?;
                 }
-                // The journal does not record depth/parent (ADR-0004 §6: recovery
+                // The journal does not record depth/parent (INTENT-0004 §6: recovery
                 // stays lightweight). A recovered non-main agent is folded back as
                 // a direct child of main; deep-subtree structure is not
                 // reconstructed — the root re-delegates what remains.

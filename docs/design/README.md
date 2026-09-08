@@ -17,4 +17,4 @@ This directory contains the core architecture, design philosophies, and technica
 ## Related References
 
 - [**prompts/README.md**](../../prompts/README.md): System prompt source-of-truth files, roles, and compile-time assembly order.
-- [**docs/adr/**](../adr/): Architectural Decision Records (ADR-0001 through ADR-0006).
+- [**docs/intents/**](../intents/): 작업 인텐트 — 결정·제약의 단일 정본 (INTENT-0001 through INTENT-0006).

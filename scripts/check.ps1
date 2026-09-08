@@ -11,7 +11,7 @@ if ($LASTEXITCODE -ne 0) {
 # earlier run replays accumulated state (goal, transcript, brief) into a new
 # session; with a weak model that state drifts and reads as broken. Each
 # `npm run check` is therefore a clean session in its own run root. (User
-# decision 2026-09-02; ADR-0002 §3.21.)
+# decision 2026-09-02; INTENT-0002 §3.21.)
 $runRoot = '/state/check-' + [guid]::NewGuid().ToString('N')
 
 # Provider credentials: prefer the gitignored .env (fixed local config), and

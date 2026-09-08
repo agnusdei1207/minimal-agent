@@ -221,7 +221,7 @@ impl AgentBriefStore {
 
     /// Record the agent's own battlefield note. Unlike `commit`, this carries no
     /// coverage proof and imposes no template structure, so a weak model can
-    /// always keep its strategy current (the `brief` tool, ADR-0001 §9.1). Only
+    /// always keep its strategy current (the `brief` tool, INTENT-0001 §9.1). Only
     /// the owning agent may write its own note; size is bounded, last write wins.
     pub fn write_note(
         &self,

@@ -60,7 +60,7 @@ fn rejects_invalid_agent_state_transitions() {
 
 #[test]
 fn messages_keep_the_given_audience_without_auto_including_main() {
-    // ADR-0004: neighbor routing is enforced by the coordinator, so the domain
+    // INTENT-0004: neighbor routing is enforced by the coordinator, so the domain
     // no longer auto-adds main to insight/final messages.
     let worker_a = AgentId::new("worker-a").unwrap();
     let worker_b = AgentId::new("worker-b").unwrap();

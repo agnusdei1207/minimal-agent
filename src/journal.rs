@@ -112,7 +112,7 @@ pub enum JournalEvent {
     },
     /// A battlefield note the agent authored directly via the `brief` tool,
     /// decoupled from coverage-proven compaction so a weak model can always keep
-    /// its strategy current (ADR-0001 §9.1). Last write wins.
+    /// its strategy current (INTENT-0001 §9.1). Last write wins.
     BriefNote {
         agent_id: AgentId,
         markdown: String,
@@ -132,7 +132,7 @@ pub enum JournalEvent {
         message: String,
     },
     /// Durable authorized-engagement context so a resumed run recovers the same
-    /// target/scope/flag doctrine it was created with (ADR-0002 §4).
+    /// target/scope/flag doctrine it was created with (INTENT-0002 §4).
     EngagementSet {
         engagement: Engagement,
     },

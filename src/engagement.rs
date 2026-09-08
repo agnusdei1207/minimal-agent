@@ -1,6 +1,6 @@
 //! Authorized-engagement context injected from outside the process — a JSON
 //! file and/or CLI flags — and rendered into every agent's system prompt. See
-//! ADR-0002. All doctrine text here is authored clean-room for this repository.
+//! INTENT-0002. All doctrine text here is authored clean-room for this repository.
 
 use std::path::Path;
 
@@ -205,7 +205,7 @@ fn check_required(field: &'static str, value: &str) -> Result<(), EngagementErro
     Ok(())
 }
 
-/// Standing authorization doctrine appended to every system prompt (ADR-0002
+/// Standing authorization doctrine appended to every system prompt (INTENT-0002
 /// §3.1). Clean-room text: keeps the model from hedging or refusing authorized
 /// offensive-security work while leaving only operational boundaries in place.
 pub fn authorized_engagement_doctrine() -> &'static str {
@@ -219,7 +219,7 @@ pub fn execution_style_directive() -> &'static str {
     include_str!("../prompts/operating-style.md").trim_end()
 }
 
-/// CTF solve-loop doctrine, appended only for `EngagementKind::Ctf` (ADR-0002
+/// CTF solve-loop doctrine, appended only for `EngagementKind::Ctf` (INTENT-0002
 /// §3.1). Clean-room text.
 pub fn ctf_solve_loop_doctrine() -> &'static str {
     include_str!("../prompts/ctf-solve-loop.md").trim_end()

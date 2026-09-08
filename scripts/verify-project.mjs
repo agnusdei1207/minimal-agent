@@ -105,6 +105,6 @@ if (compose.includes("build:") || compose.includes("dockerfile:")) {
   throw new Error("docker/compose.yaml must not bypass scripts/dimage.ps1");
 }
 await requireText("README.md", ["npm install --global pentesting"]);
-await requireText("docs/adr/ADR-0006-pentesting-successor-and-unified-release-pipeline.md", [
+await requireText("docs/intents/0006-pentesting-successor-and-unified-release.md", [
   `Version target: ${version}`,
 ]);

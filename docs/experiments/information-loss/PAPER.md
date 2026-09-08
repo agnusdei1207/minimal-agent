@@ -84,7 +84,7 @@ graph TD
    - 1단계로 본문 내 모든 리터럴 상수를 추출하고, 2단계로 1줄 요약 아래에 원본 상수를 무수정 부착.
 5. **P5 (잡음 제거 필터, Noise-Stripper / Fact-Only)**:
    - 대화형 서두, 서술적 설명, 실패 로그를 털어내고 오직 검증된 기술적 팩트와 파라미터 원문만 마크다운으로 출력.
-6. **P6 (파일 아티팩트 포인터, Artifact Pointer Protocol - ADR-0003)**:
+6. **P6 (파일 아티팩트 포인터, Artifact Pointer Protocol - INTENT-0003)**:
    - 상세 기술 팩트는 `workspace/loot/*.json` 파일에 격리 저장하고, 팀 메시지 버스로는 1줄 요약과 파일 포인터 경로만 전달.
 
 ---
@@ -158,8 +158,8 @@ graph TD
 graph TD
     subgraph Rule ["결정론적 3계층 통신 프로토콜 (Golden Protocol)"]
         D1["지휘·상태·다음 행동 (Control Plane)"] -->|"P3/P5 형식의 경량 메시지"| D1_Out["3줄 상태 요약 및 진행률"]
-        D2["식별 가능한 원시 파라미터 (Identifiers)"] -->|"ADR-0004 Exact-Value 강제"| D2_Out["IP, 포트, 오프셋, 짧은 플래그"]
-        D3["대용량/정밀 기술 아티팩트 (Data Plane)"] -->|"ADR-0003 Artifact Pointer"| D3_Out["workspace/loot/*.json (100% 무손실)"]
+        D2["식별 가능한 원시 파라미터 (Identifiers)"] -->|"INTENT-0004 Exact-Value 강제"| D2_Out["IP, 포트, 오프셋, 짧은 플래그"]
+        D3["대용량/정밀 기술 아티팩트 (Data Plane)"] -->|"INTENT-0003 Artifact Pointer"| D3_Out["workspace/loot/*.json (100% 무손실)"]
     end
 ```
 

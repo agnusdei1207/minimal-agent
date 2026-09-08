@@ -363,7 +363,7 @@ impl TuiState {
                 self.partial.remove(&agent_id);
                 if agent_id.is_main() {
                     // Honest state: before any token streams we are WAITING for the
-                    // model, not "thinking" (UX, ADR-0002 §3.18). It becomes
+                    // model, not "thinking" (UX, INTENT-0002 §3.18). It becomes
                     // "thinking" on the first reasoning token, "responding" on text.
                     self.activity = "waiting for model".to_owned();
                     self.turn_steps = 0;
@@ -432,7 +432,7 @@ impl TuiState {
                     // after it in chronological order, not pinned below it.
                     self.flush_live_output(&agent_id);
                     // Live feedback: show which tool is running and advance the step
-                    // counter so a long turn visibly progresses (UX, ADR-0002 §3.18).
+                    // counter so a long turn visibly progresses (UX, INTENT-0002 §3.18).
                     self.activity = format!("running {name}");
                     self.turn_steps = self.turn_steps.saturating_add(1);
                     self.push_entry(name, String::new(), LineTone::Tool, summary);

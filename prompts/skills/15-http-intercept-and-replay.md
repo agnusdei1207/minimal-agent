@@ -8,7 +8,7 @@ Web browsers and standard HTTP libraries abstract and sanitize request structure
 ## Attack arc
 - Direct Scripting vs. Intercept Proxy:
   - *Direct Scripting (Python `httpx`, `requests`, raw sockets):* Use when the request schema is known and exact byte manipulation (e.g. malformed newlines `\r\n`) or concurrency is needed.
-  - *Intercept Proxy (`mitmproxy`, `caido`, custom proxy):* Run a persistent interceptor inside a shared tmux session to capture complex browser/API flows, inspect anti-CSRF tokens, and record session states. To capture `agent-browser` traffic on demand (ADR-0005): launch `tmux new-session -d -s proxy "mitmdump -p 8080 --save-stream-file /tmp/traffic.flow"`, set `export http_proxy=http://127.0.0.1:8080`, and drive `agent-browser open <url>` (browser traffic routes through the proxy while local CDP is excluded).
+  - *Intercept Proxy (`mitmproxy`, `caido`, custom proxy):* Run a persistent interceptor inside a shared tmux session to capture complex browser/API flows, inspect anti-CSRF tokens, and record session states. To capture `agent-browser` traffic on demand (INTENT-0005): launch `tmux new-session -d -s proxy "mitmdump -p 8080 --save-stream-file /tmp/traffic.flow"`, set `export http_proxy=http://127.0.0.1:8080`, and drive `agent-browser open <url>` (browser traffic routes through the proxy while local CDP is excluded).
 - HTTP Request Smuggling (HRS):
   - Exploit discrepancies between frontend reverse proxies and backend servers when determining request boundaries:
     - CL.TE: Frontend uses `Content-Length`, Backend uses `Transfer-Encoding: chunked`.

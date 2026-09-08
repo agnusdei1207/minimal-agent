@@ -20,7 +20,7 @@ fn coordinator() -> (tempfile::TempDir, Arc<RunJournal>, AgentCoordinator) {
 fn workers_spawn_within_depth_limit_and_the_total_is_capped() {
     let (_dir, _journal, coordinator) = coordinator();
     let main = AgentId::main();
-    // A depth-1 child may spawn a grandchild (ADR-0004: 3-depth tree)...
+    // A depth-1 child may spawn a grandchild (INTENT-0004: 3-depth tree)...
     let child = coordinator
         .create_worker(&main, "recon", "map the service")
         .unwrap();
@@ -59,7 +59,7 @@ fn terminating_or_recalling_an_internal_node_cascades_to_its_whole_subtree() {
     assert_eq!(coordinator.active_team_size(), 3);
 
     // Terminating the internal child tears down the whole subtree so no grandchild
-    // is orphaned (ADR-0004 §7). The grandchild's permit is also freed.
+    // is orphaned (INTENT-0004 §7). The grandchild's permit is also freed.
     coordinator
         .mark_terminal(&main, &child, AgentState::Stopped, "branch abandoned")
         .unwrap();
@@ -187,7 +187,7 @@ fn direct_messages_flow_between_main_workers_and_siblings() {
 
     assert_eq!(coordinator.inbox(&worker_a).unwrap().len(), 1);
     assert_eq!(coordinator.inbox(&worker_b).unwrap().len(), 1);
-    // ADR-0004: a sibling insight is NOT auto-copied to main; it reaches only the
+    // INTENT-0004: a sibling insight is NOT auto-copied to main; it reaches only the
     // addressed sibling. Main learns of it later via the parent's synthesis.
     assert_eq!(
         coordinator
