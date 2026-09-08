@@ -56,6 +56,13 @@ pub fn env_context_tokens() -> Option<u64> {
     })
 }
 
+/// Whether verbose debug logging is enabled via `PENTESTING_DEBUG` (or the legacy
+/// `MINIMAL_AGENT_DEBUG`). Single source of truth for every debug gate.
+pub fn debug_enabled() -> bool {
+    std::env::var_os("PENTESTING_DEBUG").is_some()
+        || std::env::var_os("MINIMAL_AGENT_DEBUG").is_some()
+}
+
 /// Resolve the maximum output/completion tokens from standard environment variables.
 /// Accepts k/m suffixes (e.g. `16k`, `32k`).
 pub fn env_max_output_tokens() -> Option<u64> {

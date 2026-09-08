@@ -265,6 +265,20 @@ pub enum MessageKind {
     Final,
 }
 
+impl MessageKind {
+    /// Parse a message kind (case-folded; callers trim if they need to). Single
+    /// source of truth for the `team send` tool and the runtime event mapper.
+    pub fn parse(value: &str) -> Option<Self> {
+        match value.to_ascii_lowercase().as_str() {
+            "progress" => Some(Self::Progress),
+            "insight" => Some(Self::Insight),
+            "request" => Some(Self::Request),
+            "final" => Some(Self::Final),
+            _ => None,
+        }
+    }
+}
+
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum InsightLabel {
@@ -274,6 +288,34 @@ pub enum InsightLabel {
     Success,
     DeadEnd,
     Blocker,
+}
+
+impl InsightLabel {
+    /// Canonical `SCREAMING_SNAKE_CASE` label token. Single source of truth for
+    /// the `team send` tool and the brief-knowledge validator.
+    pub fn as_str(self) -> &'static str {
+        match self {
+            Self::Fact => "FACT",
+            Self::Hypothesis => "HYPOTHESIS",
+            Self::Direction => "DIRECTION",
+            Self::Success => "SUCCESS",
+            Self::DeadEnd => "DEAD_END",
+            Self::Blocker => "BLOCKER",
+        }
+    }
+
+    /// Parse a label token (case-folded; callers trim if they need to).
+    pub fn parse(value: &str) -> Option<Self> {
+        match value.to_ascii_uppercase().as_str() {
+            "FACT" => Some(Self::Fact),
+            "HYPOTHESIS" => Some(Self::Hypothesis),
+            "DIRECTION" => Some(Self::Direction),
+            "SUCCESS" => Some(Self::Success),
+            "DEAD_END" => Some(Self::DeadEnd),
+            "BLOCKER" => Some(Self::Blocker),
+            _ => None,
+        }
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize)]

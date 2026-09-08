@@ -16,21 +16,26 @@ use crate::compaction::{
     CompactionError, CompactionOutcome, ContextEntry, LiveReason, SemanticCompactionConfig,
     SemanticCompactor,
 };
-use crate::coordinator::{AgentCoordinator, AgentSnapshot, CoordinatorError, MessageDelivery};
+use crate::coordinator::{AgentCoordinator, CoordinatorError, MessageDelivery};
 use crate::domain::{
     AgentId, AgentState, ContextBudget, InsightId, MessageKind, SequenceRange, estimate_tokens,
     validate_user_input,
 };
-use crate::engagement::{
-    Engagement, EngagementKind, authorized_engagement_doctrine, ctf_solve_loop_doctrine,
-    execution_style_directive,
-};
+use crate::engagement::Engagement;
 use crate::journal::{JournalConfig, JournalError, JournalEvent, RunJournal, TranscriptRole};
 use crate::provider::{
     ModelDelta, ModelMessage, ModelProvider, ModelRequest, ModelRole, ModelTurn, ProviderFault,
     ToolCall,
 };
-use crate::tools::{BuiltinTools, ToolContext, ToolError, WorkerSpawner};
+use crate::tools::{BuiltinTools, ToolContext, ToolError, WorkerSpawner, names as tool_names};
+
+const ACTIVITY_WAIT: Duration = Duration::from_secs(3600);
+const MAIN_COMMAND_CAPACITY: usize = 64;
+const EVENT_CHANNEL_CAPACITY: usize = 1_024;
+const IDLE_STABLE_SAMPLES: usize = 3;
+const IDLE_POLL_INTERVAL: Duration = Duration::from_millis(20);
+const AUTONOMOUS_RETRY_BACKOFF: Duration = Duration::from_secs(2);
+const SHUTDOWN_JOIN_DEADLINE: Duration = Duration::from_secs(2);
 
 #[derive(Debug, Clone)]
 pub struct RuntimeConfig {
@@ -342,8 +347,8 @@ impl TeamRuntime {
         budget: ContextBudget,
         config: RuntimeConfig,
     ) -> (Self, mpsc::Receiver<MainCommand>) {
-        let (main_tx, main_rx) = mpsc::channel(64);
-        let (events, _) = broadcast::channel(1_024);
+        let (main_tx, main_rx) = mpsc::channel(MAIN_COMMAND_CAPACITY);
+        let (events, _) = broadcast::channel(EVENT_CHANNEL_CAPACITY);
 
         let inner = Arc::new_cyclic(|weak| RuntimeInner {
             workspace,
@@ -557,7 +562,7 @@ impl TeamRuntime {
         loop {
             if self.inner.active_turns.load(Ordering::Acquire) == 0 {
                 stable_samples += 1;
-                if stable_samples >= 3 {
+                if stable_samples >= IDLE_STABLE_SAMPLES {
                     return Ok(());
                 }
             } else {
@@ -566,7 +571,7 @@ impl TeamRuntime {
             if tokio::time::Instant::now() >= deadline {
                 return Err(RuntimeError::IdleTimedOut);
             }
-            tokio::time::sleep(Duration::from_millis(20)).await;
+            tokio::time::sleep(IDLE_POLL_INTERVAL).await;
         }
     }
 
@@ -580,7 +585,7 @@ impl TeamRuntime {
             .ok()
             .map(|mut tasks| tasks.drain().map(|(_, task)| task).collect::<Vec<_>>())
             .unwrap_or_default();
-        let deadline = tokio::time::Instant::now() + Duration::from_secs(2);
+        let deadline = tokio::time::Instant::now() + SHUTDOWN_JOIN_DEADLINE;
         for mut task in tasks {
             if tokio::time::timeout_at(deadline, &mut task).await.is_err() {
                 task.abort();
@@ -810,7 +815,7 @@ async fn main_driver(
                     auto_pending = keep_going && auto_enabled;
                     if retrying {
                         tokio::select! {
-                            _ = tokio::time::sleep(Duration::from_secs(2)) => {}
+                            _ = tokio::time::sleep(AUTONOMOUS_RETRY_BACKOFF) => {}
                             _ = inner.shutdown.cancelled() => auto_pending = false,
                         }
                     }
@@ -846,7 +851,7 @@ async fn main_driver(
                     auto_pending = true;
                 }
             },
-            activity = inner.coordinator.wait_for_activity_after(&main_id, observed_activity, Duration::from_secs(3600)) => {
+            activity = inner.coordinator.wait_for_activity_after(&main_id, observed_activity, ACTIVITY_WAIT) => {
                 if let Ok(revision) = activity {
                     observed_activity = revision;
                     let projection = inner.sync_main_brief();
@@ -920,7 +925,7 @@ async fn worker_driver(
                         }
                         continue;
                     },
-                    activity = inner.coordinator.wait_for_activity_after(&id, observed_activity, Duration::from_secs(3600)) => {
+                    activity = inner.coordinator.wait_for_activity_after(&id, observed_activity, ACTIVITY_WAIT) => {
                         match activity {
                             Ok(_) => {}
                             Err(CoordinatorError::WaitTimedOut) => continue,
@@ -1443,9 +1448,7 @@ fn record_usage_telemetry(delta: &ModelDelta) {
     let ModelDelta::Usage(usage) = delta else {
         return;
     };
-    if std::env::var_os("PENTESTING_DEBUG").is_some()
-        || std::env::var_os("MINIMAL_AGENT_DEBUG").is_some()
-    {
+    if crate::settings::debug_enabled() {
         eprintln!(
             "[debug] [telemetry] Model tokens: prompt={}, completion={}",
             usage.input_tokens, usage.output_tokens
@@ -1503,7 +1506,7 @@ fn record_assistant_turn(
     Ok(tool_group)
 }
 
-fn legacy_tool_turn_group(sequence: u64) -> String {
+fn fallback_tool_group(sequence: u64) -> String {
     format!("model-turn-{sequence}")
 }
 
@@ -1537,7 +1540,7 @@ async fn execute_tool_call(
     let _ = inner.events.send(RuntimeEvent::ToolStarted {
         agent_id: agent_id.clone(),
         name: call.name.clone(),
-        summary: tool_call_summary(&call.name, &call.arguments),
+        summary: crate::prompt::tool_call_summary(&call.name, &call.arguments),
     });
     let call_ack = inner.journal.append_sync(JournalEvent::ToolCall {
         agent_id: agent_id.clone(),
@@ -1616,7 +1619,7 @@ fn team_message_event(sender: &AgentId, arguments: &serde_json::Value) -> Option
             let kind = arguments
                 .get("kind")
                 .and_then(serde_json::Value::as_str)
-                .and_then(message_kind_from_str)
+                .and_then(MessageKind::parse)
                 .unwrap_or(MessageKind::Progress);
             (recipients, kind)
         }
@@ -1631,59 +1634,6 @@ fn team_message_event(sender: &AgentId, arguments: &serde_json::Value) -> Option
     })
 }
 
-fn message_kind_from_str(value: &str) -> Option<MessageKind> {
-    match value.trim().to_ascii_lowercase().as_str() {
-        "progress" => Some(MessageKind::Progress),
-        "insight" => Some(MessageKind::Insight),
-        "request" => Some(MessageKind::Request),
-        "final" => Some(MessageKind::Final),
-        _ => None,
-    }
-}
-
-/// Short, bounded summary of a tool call's target for transcript rendering.
-/// Never includes secret material and is capped so a large argument cannot
-/// inflate a transcript line.
-fn tool_call_summary(name: &str, arguments: &serde_json::Value) -> Option<String> {
-    const MAX_SUMMARY_CHARS: usize = 160;
-    let raw = match name {
-        "bash" => arguments.get("command")?.as_str()?.to_owned(),
-        "tmux" => arguments.get("args")?.as_str()?.to_owned(),
-        "workspace" => {
-            let op = arguments.get("op").and_then(serde_json::Value::as_str)?;
-            let path = arguments.get("path").and_then(serde_json::Value::as_str)?;
-            format!("{op} {path}")
-        }
-        "journal" => {
-            let start = arguments.get("start").and_then(serde_json::Value::as_i64)?;
-            let end = arguments.get("end").and_then(serde_json::Value::as_i64)?;
-            format!("{start}..{end}")
-        }
-        "team" | "report" => arguments
-            .get("op")
-            .and_then(serde_json::Value::as_str)?
-            .to_owned(),
-        _ => return None,
-    };
-    let summary = raw.trim();
-    if summary.is_empty() {
-        return None;
-    }
-    let condensed = summary.split_whitespace().collect::<Vec<_>>().join(" ");
-    Some(truncate_chars(&condensed, MAX_SUMMARY_CHARS))
-}
-
-fn truncate_chars(value: &str, max: usize) -> String {
-    if value.chars().count() <= max {
-        return value.to_owned();
-    }
-    let truncated = value
-        .chars()
-        .take(max.saturating_sub(1))
-        .collect::<String>();
-    format!("{truncated}…")
-}
-
 async fn run_direct_bash(
     inner: &Arc<RuntimeInner>,
     session: &mut AgentSession,
@@ -1692,7 +1642,7 @@ async fn run_direct_bash(
 ) -> Result<String, RuntimeError> {
     let call = ToolCall {
         id: format!("ui-bash-{}", Uuid::new_v4().simple()),
-        name: "bash".to_owned(),
+        name: tool_names::BASH.to_owned(),
         arguments: json!({"command": command}),
     };
     let tool_group = record_assistant_turn(
@@ -1868,126 +1818,26 @@ fn build_request(
     })
 }
 
-/// Renders the agent's POSITION block from the live team and reports whether it
-/// has children, so the caller can pick the internal- vs leaf-node doctrine
-/// (INTENT-0004 §3.2/§3.4).
-fn render_position(
-    agent_id: &AgentId,
-    agent: &AgentSnapshot,
-    team: &[AgentSnapshot],
-) -> (bool, String) {
-    let children: Vec<String> = team
-        .iter()
-        .filter(|snapshot| snapshot.parent.as_ref() == Some(agent_id))
-        .map(|snapshot| snapshot.id.to_string())
-        .collect();
-    let siblings: Vec<String> = team
-        .iter()
-        .filter(|snapshot| &snapshot.id != agent_id && snapshot.parent == agent.parent)
-        .map(|snapshot| snapshot.id.to_string())
-        .collect();
-    let has_children = !children.is_empty();
-    let node_kind = if has_children {
-        "internal (you have children — decompose, delegate, and aggregate faithfully)"
-    } else {
-        "leaf (no children — execute directly and report exact values to your parent)"
-    };
-    let parent = agent
-        .parent
-        .as_ref()
-        .map_or_else(|| "none (you are the root)".to_owned(), ToString::to_string);
-    let join_ids = |items: Vec<String>| {
-        if items.is_empty() {
-            "none".to_owned()
-        } else {
-            items.join(", ")
-        }
-    };
-    let block = format!(
-        "POSITION\ndepth: {}\nnode: {}\nparent: {}\nchildren: {}\nsiblings: {}",
-        agent.depth.value(),
-        node_kind,
-        parent,
-        join_ids(children),
-        join_ids(siblings),
-    );
-    (has_children, block)
-}
-
+/// Gather the live team and engagement, then delegate the full system-prompt
+/// assembly to `crate::prompt` (INTENT-0004 §3.2/§3.4).
 fn build_system(
     inner: &RuntimeInner,
     agent_id: &AgentId,
     brief: &str,
 ) -> Result<String, RuntimeError> {
-    // PROTECTED anti-refusal contract (INTENT-0002 §3.12). Keep it wired here and do
-    // not weaken it when editing other prompts.
-    const EXECUTION_MANDATE: &str = include_str!("../prompts/execution-mandate.md");
-    const TRADECRAFT: &str = include_str!("../prompts/tradecraft.md");
-    const TEAM_CONDUCT: &str = include_str!("../prompts/team-conduct.md");
-    const COMMUNICATION: &str = include_str!("../prompts/communication.md");
-    const MAIN_ROLE: &str = include_str!("../prompts/main-role.md");
-    const WORKER_ROLE: &str = include_str!("../prompts/worker-role.md");
-    const FAN_OUT: &str = include_str!("../prompts/fan-out.md");
-    const SELF_MANAGEMENT: &str = include_str!("../prompts/self-management.md");
-    const TEAM_TREE: &str = include_str!("../prompts/team-tree.md");
-    const NODE_INTERNAL: &str = include_str!("../prompts/node-internal.md");
-    const NODE_LEAF: &str = include_str!("../prompts/node-leaf.md");
-
     let agent = inner.coordinator.inspect(agent_id)?;
-    // Position in the team tree drives the role prompt (INTENT-0004 §3.2/§3.4).
     let team = inner.coordinator.live_team()?;
-    let (has_children, position_block) = render_position(agent_id, &agent, &team);
     let engagement = inner
         .engagement
         .lock()
         .unwrap_or_else(std::sync::PoisonError::into_inner)
         .clone();
-
-    // Assemble the prompt from focused sections joined by a blank line: identity,
-    // always-on doctrine, the engagement target block and CTF loop when present,
-    // team conduct and communication, the role-specific prompt, then the brief.
-    let mut sections = vec![
-        format!(
-            "agent_id: {}\nrole: {}\nassignment: {}",
-            agent.id, agent.role, agent.task
-        ),
-        authorized_engagement_doctrine().to_owned(),
-        EXECUTION_MANDATE.trim_end().to_owned(),
-        execution_style_directive().to_owned(),
-        TRADECRAFT.trim_end().to_owned(),
-    ];
-    if let Some(engagement) = &engagement {
-        sections.push(engagement.render_context().trim_end().to_owned());
-        if engagement.kind == EngagementKind::Ctf {
-            sections.push(ctf_solve_loop_doctrine().to_owned());
-        }
-    }
-    sections.push(TEAM_CONDUCT.trim_end().to_owned());
-    sections.push(COMMUNICATION.trim_end().to_owned());
-    sections.push(TEAM_TREE.trim_end().to_owned());
-    if agent_id.is_main() {
-        sections.push(MAIN_ROLE.trim_end().to_owned());
-        sections.push(FAN_OUT.trim_end().to_owned());
-    } else {
-        sections.push(WORKER_ROLE.trim_end().to_owned());
-        // A non-main node behaves as an internal node while it has children,
-        // otherwise as a leaf (INTENT-0004 §3.2).
-        sections.push(
-            if has_children {
-                NODE_INTERNAL
-            } else {
-                NODE_LEAF
-            }
-            .trim_end()
-            .to_owned(),
-        );
-    }
-    // Every node maintains its own battlefield note via the `brief` tool
-    // (INTENT-0001 §9.1), so the self-management doctrine is always on.
-    sections.push(SELF_MANAGEMENT.trim_end().to_owned());
-    sections.push(position_block);
-    sections.push(format!("CURRENT BRIEF\n{brief}"));
-    Ok(sections.join("\n\n"))
+    Ok(crate::prompt::build_system(
+        &agent,
+        &team,
+        engagement.as_ref(),
+        brief,
+    ))
 }
 
 fn inbox_record(delivery: &MessageDelivery) -> Result<SessionRecord, RuntimeError> {
@@ -2086,7 +1936,7 @@ fn recover_sessions(journal: &RunJournal) -> Result<HashMap<AgentId, AgentSessio
                     .unwrap_or(&[]),
             ) =>
             {
-                if !complete && (content.contains("<｜") || content.contains("<|")) {
+                if !complete && crate::provider::has_control_token(&content) {
                     continue;
                 }
                 let mut message = ModelMessage::new(model_role(role), content.clone());
@@ -2149,10 +1999,10 @@ fn recover_sessions(journal: &RunJournal) -> Result<HashMap<AgentId, AgentSessio
                     record
                         .context
                         .atomic_group
-                        .get_or_insert_with(|| legacy_tool_turn_group(record.context.range.start))
+                        .get_or_insert_with(|| fallback_tool_group(record.context.range.start))
                         .clone()
                 } else {
-                    let group = legacy_tool_turn_group(entry.sequence);
+                    let group = fallback_tool_group(entry.sequence);
                     let mut message = ModelMessage::new(ModelRole::Assistant, "");
                     message.tool_calls.push(call.clone());
                     session.records.push(SessionRecord {

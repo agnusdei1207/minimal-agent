@@ -17,7 +17,7 @@
 
 ## 📊 Benchmark — XBOW-104
 
-Empirical evaluation on the XBOW-104 web exploitation suite with zero human intervention and zero hints:
+zero human intervention and zero hints
 
 <div align="center">
 

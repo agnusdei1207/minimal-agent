@@ -881,8 +881,15 @@ impl OpenAiChunk {
     }
 }
 
+/// Whether text carries a leaked provider control token (DeepSeek `<｜…｜>` or
+/// ChatML `<|…|>`). Shared by the stream sanitizer and the runtime's partial-
+/// output guard so the detection lives in one place.
+pub(crate) fn has_control_token(text: &str) -> bool {
+    text.contains("<｜") || text.contains("<|")
+}
+
 fn sanitize_model_content(text: &str) -> String {
-    if !text.contains("<｜") && !text.contains("<|") {
+    if !has_control_token(text) {
         return text.to_owned();
     }
     let mut cleaned = text.to_owned();

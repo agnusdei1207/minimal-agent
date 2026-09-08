@@ -31,6 +31,20 @@ const MAX_WORKSPACE_READ_BYTES: u64 = MAX_TOOL_RESULT_BYTES as u64;
 const MAX_WORKSPACE_LIST_ENTRIES: usize = 10_000;
 const MAX_JOURNAL_REPLAY_BYTES: usize = MAX_TOOL_RESULT_BYTES;
 
+pub mod names {
+    pub const BASH: &str = "bash";
+    pub const TMUX: &str = "tmux";
+    pub const WORKSPACE: &str = "workspace";
+    pub const TEAM: &str = "team";
+    pub const JOURNAL: &str = "journal";
+    pub const REPORT: &str = "report";
+    pub const BRIEF: &str = "brief";
+
+    pub const OP_SEND: &str = "send";
+    pub const OP_FINISH: &str = "finish";
+    pub const OP_FINAL: &str = "final";
+}
+
 #[async_trait]
 pub trait WorkerSpawner: Send + Sync {
     async fn spawn(
@@ -112,7 +126,7 @@ impl BuiltinTools {
     pub fn definitions(&self) -> Vec<ToolDefinition> {
         vec![
             definition(
-                "bash",
+                names::BASH,
                 "Run one bash command in the workspace (bash -lc; the box is Linux with the full offensive toolset). Optional timeout_secs overrides the default 300s limit.",
                 json!({
                     "type": "object",
@@ -128,7 +142,7 @@ impl BuiltinTools {
                 }),
             ),
             definition(
-                "tmux",
+                names::TMUX,
                 "Drive OS-native tmux for interactive or long-lived work a one-shot `bash` \
 command cannot hold — a real PTY (sudo/ssh/gdb prompts), a background listener \
 (`nc -lvnp`), or a REPL you feed input to across turns. Your `args` string is run \
@@ -143,12 +157,12 @@ Sessions persist across calls: name them, capture to read output, and kill them 
                 json!({"type":"object","properties":{"args":{"type":"string"}},"required":["args"]}),
             ),
             definition(
-                "workspace",
+                names::WORKSPACE,
                 "Read, write, or list files inside the workspace.",
                 json!({"type":"object","properties":{"op":{"enum":["read","write","list"]},"path":{"type":"string"},"content":{"type":"string"}},"required":["op","path"]}),
             ),
             definition(
-                "team",
+                names::TEAM,
                 "Manage the team. Required fields per op: create={role,task}; \
 assign={agent_id,role,task}; send={to:[agent_id],kind:progress|insight|request|final,body} \
 (insight/final also take an optional insight); wait={} (optional timeout_ms); \
@@ -171,17 +185,17 @@ inspect={} (optional agent_id); recall={agent_id,reason}; finish={body}.",
                 }),
             ),
             definition(
-                "journal",
+                names::JOURNAL,
                 "Explicitly inspect a bounded inclusive journal sequence range.",
                 json!({"type":"object","properties":{"start":{"type":"integer","minimum":1},"end":{"type":"integer","minimum":1}},"required":["start","end"]}),
             ),
             definition(
-                "report",
+                names::REPORT,
                 "Record a finding; main may also record the final answer.",
                 json!({"type":"object","properties":{"op":{"enum":["finding","final"]},"title":{"type":"string"},"body":{"type":"string"}},"required":["op","body"]}),
             ),
             definition(
-                "brief",
+                names::BRIEF,
                 "Overwrite your battlefield note: the compact, categorized memory of \
 this engagement that survives context compaction and is re-read every turn. \
 Maintain it proactively as you work — group attempts by domain/vector, mark each \
@@ -202,13 +216,13 @@ note each call, so send the full current picture, not a fragment.",
     ) -> Result<ToolOutput, ToolError> {
         enforce_argument_limit(&arguments)?;
         let mut output = match name {
-            "bash" => self.bash(arguments, context).await,
-            "tmux" => self.tmux(arguments, context).await,
-            "workspace" => self.workspace(arguments, context).await,
-            "team" => self.team(arguments, context).await,
-            "journal" => self.journal(arguments, context),
-            "report" => self.report(arguments, context),
-            "brief" => self.record_brief(arguments, context),
+            names::BASH => self.bash(arguments, context).await,
+            names::TMUX => self.tmux(arguments, context).await,
+            names::WORKSPACE => self.workspace(arguments, context).await,
+            names::TEAM => self.team(arguments, context).await,
+            names::JOURNAL => self.journal(arguments, context),
+            names::REPORT => self.report(arguments, context),
+            names::BRIEF => self.record_brief(arguments, context),
             other => Err(ToolError::UnknownTool(other.to_owned())),
         }?;
         if output.content.len() > MAX_TOOL_RESULT_BYTES {
@@ -414,7 +428,7 @@ note each call, so send the full current picture, not a fragment.",
                     .reassign(&context.agent_id, &target, input.role, input.task)?;
                 json!({"agent_id":target,"assigned":true})
             }
-            "send" => {
+            names::OP_SEND => {
                 let input: SendInput = serde_json::from_value(arguments)?;
                 let audience = input
                     .to
@@ -466,7 +480,7 @@ note each call, so send the full current picture, not a fragment.",
                     .recall(&context.agent_id, &target, input.reason)?;
                 json!({"agent_id":target,"recalling":true})
             }
-            "finish" => {
+            names::OP_FINISH => {
                 if context.agent_id.is_main() {
                     return Err(ToolError::InvalidArguments(
                         "main records its final answer with report".to_owned(),
@@ -542,11 +556,11 @@ note each call, so send the full current picture, not a fragment.",
                 title: input.title.unwrap_or_else(|| "Finding".to_owned()),
                 body: input.body,
             },
-            "final" if context.agent_id.is_main() => JournalEvent::Final {
+            names::OP_FINAL if context.agent_id.is_main() => JournalEvent::Final {
                 agent_id: context.agent_id.clone(),
                 body: input.body,
             },
-            "final" => {
+            names::OP_FINAL => {
                 return Err(ToolError::InvalidArguments(
                     "workers deliver final summaries with team finish".to_owned(),
                 ));
@@ -647,17 +661,17 @@ fn truncate_tool_content(content: String) -> String {
     )
 }
 
-fn floor_char_boundary(s: &str, mut index: usize) -> usize {
-    index = index.min(s.len());
-    while index > 0 && !s.is_char_boundary(index) {
+fn floor_char_boundary(text: &str, mut index: usize) -> usize {
+    index = index.min(text.len());
+    while index > 0 && !text.is_char_boundary(index) {
         index -= 1;
     }
     index
 }
 
-fn ceil_char_boundary(s: &str, mut index: usize) -> usize {
-    index = index.min(s.len());
-    while index < s.len() && !s.is_char_boundary(index) {
+fn ceil_char_boundary(text: &str, mut index: usize) -> usize {
+    index = index.min(text.len());
+    while index < text.len() && !text.is_char_boundary(index) {
         index += 1;
     }
     index
@@ -758,32 +772,14 @@ fn resolve_for_write(root: &Path, input: &str) -> Result<PathBuf, ToolError> {
 }
 
 fn parse_message_kind(value: &str) -> Result<MessageKind, ToolError> {
-    match value.to_ascii_lowercase().as_str() {
-        "progress" => Ok(MessageKind::Progress),
-        "insight" => Ok(MessageKind::Insight),
-        "request" => Ok(MessageKind::Request),
-        "final" => Ok(MessageKind::Final),
-        _ => Err(ToolError::InvalidArguments(format!(
-            "unknown message kind: {value}"
-        ))),
-    }
+    MessageKind::parse(value)
+        .ok_or_else(|| ToolError::InvalidArguments(format!("unknown message kind: {value}")))
 }
 
 fn parse_insight(input: InsightInput) -> Result<Insight, ToolError> {
-    let label = match input.label.to_ascii_uppercase().as_str() {
-        "FACT" => InsightLabel::Fact,
-        "HYPOTHESIS" => InsightLabel::Hypothesis,
-        "DIRECTION" => InsightLabel::Direction,
-        "SUCCESS" => InsightLabel::Success,
-        "DEAD_END" => InsightLabel::DeadEnd,
-        "BLOCKER" => InsightLabel::Blocker,
-        _ => {
-            return Err(ToolError::InvalidArguments(format!(
-                "unknown insight label: {}",
-                input.label
-            )));
-        }
-    };
+    let label = InsightLabel::parse(&input.label).ok_or_else(|| {
+        ToolError::InvalidArguments(format!("unknown insight label: {}", input.label))
+    })?;
     Ok(Insight::new(InsightId::new(input.id)?, label, input.text))
 }
 

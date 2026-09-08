@@ -10,8 +10,8 @@ use uuid::Uuid;
 
 use crate::coordinator::AgentSnapshot;
 use crate::domain::{
-    AgentId, CompactionCoverage, ContextBudget, DomainError, InsightId, SequenceRange,
-    estimate_tokens,
+    AgentId, CompactionCoverage, ContextBudget, DomainError, InsightId, InsightLabel,
+    SequenceRange, estimate_tokens,
 };
 use crate::journal::{JournalError, JournalEvent, RunJournal};
 
@@ -470,16 +470,19 @@ fn validate_knowledge(markdown: &str) -> Result<(), BriefError> {
             .find(']')
             .ok_or_else(|| BriefError::InvalidKnowledge(line.to_owned()))?;
         let label = &trimmed[3..label_end];
-        let valid_label = matches!(
-            label,
-            "FACT" | "HYPOTHESIS" | "DIRECTION" | "SUCCESS" | "DEAD_END" | "BLOCKER"
-        );
-        if !valid_label
-            || (section.contains("Hypotheses") && matches!(label, "FACT" | "SUCCESS"))
-            || (section.contains("Facts") && matches!(label, "HYPOTHESIS" | "DIRECTION"))
-            || (matches!(label, "FACT" | "SUCCESS") && !trimmed.contains("journal:"))
-            || (label == "DEAD_END" && !trimmed.contains("reason:"))
-        {
+        // Only the canonical SCREAMING_SNAKE_CASE token is accepted (parse is
+        // case-insensitive, so re-check the exact form).
+        let Some(kind) = InsightLabel::parse(label).filter(|kind| kind.as_str() == label) else {
+            return Err(BriefError::InvalidKnowledge(line.to_owned()));
+        };
+        let misfiled = (section.contains("Hypotheses")
+            && matches!(kind, InsightLabel::Fact | InsightLabel::Success))
+            || (section.contains("Facts")
+                && matches!(kind, InsightLabel::Hypothesis | InsightLabel::Direction));
+        let missing_provenance = matches!(kind, InsightLabel::Fact | InsightLabel::Success)
+            && !trimmed.contains("journal:");
+        let missing_reason = kind == InsightLabel::DeadEnd && !trimmed.contains("reason:");
+        if misfiled || missing_provenance || missing_reason {
             return Err(BriefError::InvalidKnowledge(line.to_owned()));
         }
     }

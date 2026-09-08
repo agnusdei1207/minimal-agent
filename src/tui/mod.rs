@@ -46,6 +46,9 @@ const MAX_DISPLAY_ENTRY_BYTES: usize = 128 * 1_024;
 const MAX_DISPLAY_ENTRY_LINES: usize = 1_000;
 const MAX_PARTIAL_BYTES: usize = 128 * 1_024;
 const MAX_PENDING_SUBMISSIONS: usize = 8;
+const MAX_RESUME_SESSIONS: usize = 8;
+const ANIMATION_INTERVAL: Duration = Duration::from_millis(80);
+const SUBMISSION_JOIN_DEADLINE: Duration = Duration::from_secs(2);
 const DISPLAY_CLIPPED: &str = "\n[display clipped; durable journal intact]";
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -451,7 +454,10 @@ impl TuiState {
                     // Orchestration tools (team/journal) return bookkeeping JSON
                     // that the lifecycle and comms lines already convey; show only
                     // their status so the transcript stays about the actual work.
-                    let bookkeeping = matches!(name.as_str(), "team" | "journal");
+                    let bookkeeping = matches!(
+                        name.as_str(),
+                        crate::tools::names::TEAM | crate::tools::names::JOURNAL
+                    );
                     let text = if output.is_empty() || bookkeeping {
                         status.to_owned()
                     } else {
@@ -757,7 +763,7 @@ pub async fn run_tui(
     state.set_team(runtime.coordinator().live_team()?);
     let mut events = runtime.subscribe();
     let mut input_events = EventStream::new();
-    let mut animation = tokio::time::interval(Duration::from_millis(80));
+    let mut animation = tokio::time::interval(ANIMATION_INTERVAL);
     animation.set_missed_tick_behavior(tokio::time::MissedTickBehavior::Skip);
     let (submission_tx, mut submission_rx) = submission_channel();
     let (result_tx, mut result_rx) = mpsc::channel(MAX_PENDING_SUBMISSIONS + 1);
@@ -1045,7 +1051,7 @@ pub async fn run_tui(
     }
     drop(submission_tx);
     runtime.shutdown().await;
-    if tokio::time::timeout(Duration::from_secs(2), &mut submission_driver)
+    if tokio::time::timeout(SUBMISSION_JOIN_DEADLINE, &mut submission_driver)
         .await
         .is_err()
     {
@@ -1139,73 +1145,7 @@ async fn handle_command(
         UiCommand::Goal(goal) => enqueue_background(state, submissions, Submission::Goal(goal)),
         UiCommand::Resume => {
             let current_root = runtime.coordinator().journal().root().to_path_buf();
-            let mut entries: Vec<std::path::PathBuf> = Vec::new();
-
-            if let Some(parent) = current_root.parent()
-                && let Ok(read_dir) = std::fs::read_dir(parent)
-            {
-                for entry in read_dir.flatten() {
-                    let path = entry.path();
-                    if path.is_dir()
-                        && (path.join("journal").exists() || path.join("journal.jsonl").exists())
-                    {
-                        entries.push(path);
-                    }
-                }
-            }
-
-            entries.sort_by(|a, b| {
-                let time_a = std::fs::metadata(a).and_then(|m| m.modified()).ok();
-                let time_b = std::fs::metadata(b).and_then(|m| m.modified()).ok();
-                time_b.cmp(&time_a)
-            });
-
-            let mut body = String::new();
-            body.push_str("Saved Sessions in Workspace:\n\n");
-
-            if entries.is_empty() {
-                body.push_str("  No prior sessions found in this workspace.\n\n");
-            } else {
-                for path in entries.iter().take(8) {
-                    let name = path
-                        .file_name()
-                        .and_then(|n| n.to_str())
-                        .unwrap_or("unknown");
-                    let is_current = path == &current_root;
-                    let marker = if is_current { "  ◀ CURRENT" } else { "" };
-                    body.push_str(&format!("• {name}{marker}\n"));
-                    body.push_str(&format!("  Path: {}\n", path.display()));
-
-                    if let Ok(journal) = crate::journal::RunJournal::open(
-                        path,
-                        crate::journal::JournalConfig::default(),
-                    ) {
-                        let journal_ref = std::sync::Arc::new(journal);
-                        if let Ok(coordinator) =
-                            crate::coordinator::AgentCoordinator::recover(journal_ref)
-                            && let Ok(main_snapshot) =
-                                coordinator.inspect(&crate::domain::AgentId::main())
-                        {
-                            let task = main_snapshot.task.trim();
-                            if !task.is_empty() {
-                                body.push_str(&format!("  Goal: {task}\n"));
-                            }
-                        }
-                    }
-                    body.push('\n');
-                }
-            }
-
-            body.push_str("──────────────────────────────────────────────────\n");
-            body.push_str("To resume a session, exit (/exit) and launch with:\n");
-            body.push_str("  pentesting run --resume <path>\n\n");
-            body.push_str("Current session resume command:\n");
-            body.push_str(&format!(
-                "  pentesting run --resume {}\n\n",
-                current_root.display()
-            ));
-            body.push_str("Press Esc or x to close this modal.");
-
+            let body = build_resume_modal(&current_root);
             state.open_modal("Resume Saved Sessions", &body);
         }
         UiCommand::Model(query) => begin_model_setup(state, query),
@@ -1225,6 +1165,74 @@ async fn handle_command(
         },
     }
     Ok(false)
+}
+
+/// Build the `/resume` modal body: the saved sessions under this workspace
+/// (newest first, each with its goal) and the resume command reminder.
+fn build_resume_modal(current_root: &std::path::Path) -> String {
+    let mut entries: Vec<std::path::PathBuf> = Vec::new();
+    if let Some(parent) = current_root.parent()
+        && let Ok(read_dir) = std::fs::read_dir(parent)
+    {
+        for entry in read_dir.flatten() {
+            let path = entry.path();
+            if path.is_dir()
+                && (path.join("journal").exists() || path.join("journal.jsonl").exists())
+            {
+                entries.push(path);
+            }
+        }
+    }
+
+    entries.sort_by(|a, b| {
+        let time_a = std::fs::metadata(a).and_then(|m| m.modified()).ok();
+        let time_b = std::fs::metadata(b).and_then(|m| m.modified()).ok();
+        time_b.cmp(&time_a)
+    });
+
+    let mut body = String::new();
+    body.push_str("Saved Sessions in Workspace:\n\n");
+
+    if entries.is_empty() {
+        body.push_str("  No prior sessions found in this workspace.\n\n");
+    } else {
+        for path in entries.iter().take(MAX_RESUME_SESSIONS) {
+            let name = path
+                .file_name()
+                .and_then(|n| n.to_str())
+                .unwrap_or("unknown");
+            let is_current = path == current_root;
+            let marker = if is_current { "  ◀ CURRENT" } else { "" };
+            body.push_str(&format!("• {name}{marker}\n"));
+            body.push_str(&format!("  Path: {}\n", path.display()));
+
+            if let Ok(journal) =
+                crate::journal::RunJournal::open(path, crate::journal::JournalConfig::default())
+            {
+                let journal_ref = std::sync::Arc::new(journal);
+                if let Ok(coordinator) = crate::coordinator::AgentCoordinator::recover(journal_ref)
+                    && let Ok(main_snapshot) = coordinator.inspect(&crate::domain::AgentId::main())
+                {
+                    let task = main_snapshot.task.trim();
+                    if !task.is_empty() {
+                        body.push_str(&format!("  Goal: {task}\n"));
+                    }
+                }
+            }
+            body.push('\n');
+        }
+    }
+
+    body.push_str("──────────────────────────────────────────────────\n");
+    body.push_str("To resume a session, exit (/exit) and launch with:\n");
+    body.push_str("  pentesting run --resume <path>\n\n");
+    body.push_str("Current session resume command:\n");
+    body.push_str(&format!(
+        "  pentesting run --resume {}\n\n",
+        current_root.display()
+    ));
+    body.push_str("Press Esc or x to close this modal.");
+    body
 }
 
 fn enqueue_background(

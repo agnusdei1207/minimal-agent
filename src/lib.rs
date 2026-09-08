@@ -6,6 +6,7 @@ pub mod coordinator;
 pub mod domain;
 pub mod engagement;
 pub mod journal;
+pub mod prompt;
 pub mod provider;
 pub mod runtime;
 pub mod settings;
