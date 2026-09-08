@@ -64,8 +64,13 @@ if ($Push) {
 
     if (-not $SkipNpm) {
         Write-Host "`n[5/5] Publishing package to npm..." -ForegroundColor Green
-        npm publish --access public
-        if ($LASTEXITCODE -ne 0) { throw "npm publish failed with code $LASTEXITCODE" }
+        $published = (npm view "pentesting@$Version" version 2>$null)
+        if ($published -eq $Version) {
+            Write-Host "pentesting@$Version is already published on npm. Skipping duplicate publish." -ForegroundColor Yellow
+        } else {
+            npm publish --access public
+            if ($LASTEXITCODE -ne 0) { throw "npm publish failed with code $LASTEXITCODE" }
+        }
     }
 
     Write-Host "`n================================================================" -ForegroundColor Cyan
