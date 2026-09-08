@@ -1,6 +1,6 @@
 services:
   pentesting:
-    image: agnusdei1207/pentesting:0.200.0
+    image: agnusdei1207/pentesting:0.200.1
     stdin_open: true
     tty: true
     # Raw sockets for SYN scans, masscan, and packet capture (ADR-0003 §3.7).
@@ -23,7 +23,7 @@ services:
       - /state/current
 
   minimal-agent:
-    image: agnusdei1207/pentesting:0.200.0
+    image: agnusdei1207/pentesting:0.200.1
     stdin_open: true
     tty: true
     cap_add:

@@ -1161,7 +1161,7 @@ dependencies = [
 
 [[package]]
 name = "pentesting"
-version = "0.200.0"
+version = "0.200.1"
 dependencies = [
  "anyhow",
  "async-trait",

@@ -1,6 +1,6 @@
 {
   "name": "pentesting",
-  "version": "0.200.0",
+  "version": "0.200.1",
   "description": "A small autonomous team-agent runtime powered by Rust",
   "license": "MIT",
   "repository": {

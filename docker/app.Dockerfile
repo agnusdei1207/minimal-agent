@@ -13,7 +13,7 @@ RUN cargo build --locked --release --bin pentesting
 # All system tools and runtime libraries belong exclusively in runtime-base.Dockerfile.
 FROM agnusdei1207/pentesting-runtime-base:latest AS runtime-base
 FROM runtime-base
-ARG VERSION=0.200.0
+ARG VERSION=0.200.1
 LABEL org.opencontainers.image.title="pentesting" \
       org.opencontainers.image.description="A small autonomous team-agent runtime powered by Rust" \
       org.opencontainers.image.version="${VERSION}" \

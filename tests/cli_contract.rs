@@ -13,7 +13,7 @@ fn help_and_version_expose_the_small_public_surface() {
     assert!(version.status.success());
     assert_eq!(
         String::from_utf8(version.stdout).unwrap().trim(),
-        "pentesting 0.200.0"
+        "pentesting 0.200.1"
     );
 
     let help = Command::new(binary).arg("--help").output().unwrap();

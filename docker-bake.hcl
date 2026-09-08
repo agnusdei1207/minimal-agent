@@ -1,5 +1,5 @@
 variable "APP_TAG" {
-  default = "pentesting:0.200.0"
+  default = "pentesting:0.200.1"
 }
 
 target "base" {
@@ -15,7 +15,7 @@ target "app" {
   context    = "."
   dockerfile = "docker/app.Dockerfile"
   args = {
-    VERSION = "0.200.0"
+    VERSION = "0.200.1"
   }
   tags = [APP_TAG]
 }

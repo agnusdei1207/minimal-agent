@@ -1,0 +1,20 @@
+pub const BASH: &str = "bash";
+pub const TMUX: &str = "tmux";
+pub const WORKSPACE: &str = "workspace";
+pub const TEAM: &str = "team";
+pub const JOURNAL: &str = "journal";
+pub const REPORT: &str = "report";
+pub const BRIEF: &str = "brief";
+
+pub const OP_SEND: &str = "send";
+pub const OP_FINISH: &str = "finish";
+pub const OP_FINAL: &str = "final";
+pub const OP_CREATE: &str = "create";
+pub const OP_ASSIGN: &str = "assign";
+pub const OP_WAIT: &str = "wait";
+pub const OP_INSPECT: &str = "inspect";
+pub const OP_RECALL: &str = "recall";
+pub const OP_READ: &str = "read";
+pub const OP_WRITE: &str = "write";
+pub const OP_LIST: &str = "list";
+pub const OP_FINDING: &str = "finding";

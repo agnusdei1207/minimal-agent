@@ -1,7 +1,7 @@
 param(
     [ValidateSet('base', 'app', 'all', 'runner')]
     [string] $Target = 'all',
-    [string] $Tag = 'pentesting:0.200.0',
+    [string] $Tag = 'pentesting:0.200.1',
     [string] $BaseTag = 'agnusdei1207/pentesting-runtime-base:latest',
     [switch] $Push,
     [switch] $NoCache

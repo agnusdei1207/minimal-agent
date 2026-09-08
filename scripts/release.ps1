@@ -1,5 +1,5 @@
 param(
-    [string] $Version = '0.200.0',
+    [string] $Version = '0.200.1',
     [switch] $Push,
     [switch] $DryRun,
     [switch] $SkipDocker,
