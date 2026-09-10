@@ -2,10 +2,10 @@ use std::sync::Arc;
 use std::time::Duration;
 
 use async_trait::async_trait;
-use minimal_agent::coordinator::AgentCoordinator;
-use minimal_agent::domain::AgentId;
-use minimal_agent::journal::{JournalConfig, RunJournal};
-use minimal_agent::tools::{BuiltinTools, ToolContext, ToolError, WorkerSpawner};
+use pentesting::coordinator::AgentCoordinator;
+use pentesting::domain::AgentId;
+use pentesting::journal::{JournalConfig, RunJournal};
+use pentesting::tools::{BuiltinTools, ToolContext, ToolError, WorkerSpawner};
 use tempfile::tempdir;
 
 struct DirectSpawner {
@@ -440,10 +440,13 @@ async fn workers_cannot_bypass_team_delivery_with_report_final() {
             .await,
         Err(ToolError::InvalidArguments(_))
     ));
-    assert!(!journal.replay().unwrap().iter().any(|entry| matches!(
-        entry.event,
-        minimal_agent::journal::JournalEvent::Final { .. }
-    )));
+    assert!(
+        !journal
+            .replay()
+            .unwrap()
+            .iter()
+            .any(|entry| matches!(entry.event, pentesting::journal::JournalEvent::Final { .. }))
+    );
 }
 
 #[tokio::test]
@@ -492,8 +495,8 @@ async fn brief_replacement_is_not_a_tool_side_door_around_semantic_compaction() 
 #[tokio::test]
 async fn brief_tool_persists_agent_battlefield_note_for_injection() {
     let (dir, journal, coordinator, tools) = setup();
-    let budget = minimal_agent::domain::ContextBudget::new(128_000, 128_000, 8_000).unwrap();
-    let briefs = minimal_agent::brief::AgentBriefStore::new(
+    let budget = pentesting::domain::ContextBudget::new(128_000, 128_000, 8_000).unwrap();
+    let briefs = pentesting::brief::AgentBriefStore::new(
         dir.path().join("run-briefs"),
         journal.clone(),
         budget,

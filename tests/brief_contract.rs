@@ -1,10 +1,10 @@
 use std::fs;
 use std::sync::Arc;
 
-use minimal_agent::brief::{AgentBriefStore, BriefDraft, BriefError};
-use minimal_agent::coordinator::AgentCoordinator;
-use minimal_agent::domain::{AgentId, CompactionCoverage, ContextBudget, InsightId, SequenceRange};
-use minimal_agent::journal::{JournalConfig, RunJournal};
+use pentesting::brief::{AgentBriefStore, BriefDraft, BriefError};
+use pentesting::coordinator::AgentCoordinator;
+use pentesting::domain::{AgentId, CompactionCoverage, ContextBudget, InsightId, SequenceRange};
+use pentesting::journal::{JournalConfig, RunJournal};
 use tempfile::tempdir;
 
 fn valid_worker_markdown() -> String {

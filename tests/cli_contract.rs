@@ -2,8 +2,8 @@ use std::process::Command;
 use std::process::Stdio;
 use std::sync::Arc;
 
-use minimal_agent::coordinator::AgentCoordinator;
-use minimal_agent::journal::{JournalConfig, RunJournal};
+use pentesting::coordinator::AgentCoordinator;
+use pentesting::journal::{JournalConfig, RunJournal};
 use tempfile::tempdir;
 
 #[test]

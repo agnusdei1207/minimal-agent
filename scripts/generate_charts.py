@@ -4,7 +4,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 # Load data
-kpi_path = r'C:\workspace\minimal-agent\benchmarks\zai\glm-5.3-flash\artifacts\reports\kpi.json'
+base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+kpi_path = os.path.join(base_dir, 'benchmarks', 'zai', 'glm-5.3-flash', 'artifacts', 'reports', 'kpi.json')
 with open(kpi_path, 'r', encoding='utf-8') as f:
     kpi = json.load(f)
 
@@ -12,7 +13,7 @@ tasks = kpi.get('tasks', [])
 solved_tasks = [t for t in tasks if t.get('outcome') == 'solved']
 failed_tasks = [t for t in tasks if t.get('outcome') != 'solved']
 
-out_dir = r'C:\workspace\minimal-agent\assets'
+out_dir = os.path.join(base_dir, 'assets')
 os.makedirs(out_dir, exist_ok=True)
 
 # Common style

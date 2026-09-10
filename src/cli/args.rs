@@ -1,7 +1,7 @@
 use clap::{Parser, Subcommand};
 use std::path::{Path, PathBuf};
 
-use minimal_agent::engagement::{Engagement, EngagementKind};
+use pentesting::engagement::{Engagement, EngagementKind};
 
 #[derive(Parser)]
 #[command(

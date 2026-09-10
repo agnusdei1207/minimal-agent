@@ -1,4 +1,4 @@
-use minimal_agent::domain::{
+use pentesting::domain::{
     AgentDepth, AgentId, AgentMessage, AgentState, CompactionCoverage, ContextBudget, DomainError,
     Insight, InsightId, InsightLabel, MessageKind, SequenceRange, TeamLimits, estimate_tokens,
 };

@@ -3,9 +3,9 @@ use std::future::Future;
 use std::io;
 use tokio::io::{AsyncBufRead, AsyncBufReadExt, BufReader};
 
-use minimal_agent::domain::{AgentId, MAX_USER_INPUT_BYTES};
-use minimal_agent::runtime::TeamRuntime;
-use minimal_agent::tui::{UiCommand, command_help, parse_command};
+use pentesting::domain::{AgentId, MAX_USER_INPUT_BYTES};
+use pentesting::runtime::TeamRuntime;
+use pentesting::tui::{UiCommand, command_help, parse_command};
 
 use super::inspect::agent_json;
 

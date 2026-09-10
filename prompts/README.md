@@ -12,7 +12,7 @@ compiled in with `include_str!` (trimmed) and rebuilt into every agent's prompt 
 | `authorized-engagement.md` | Establishes the authorized offensive-security operator role. |
 | `execution-mandate.md` | **PROTECTED anti-refusal contract** — the one file that stops the model refusing, deflecting, asking the user to paste the problem, or second-guessing the target. Keep it short and forceful; **do NOT weaken or touch it when editing other prompts** (churn here re-triggers weak-model refusals). |
 | `operating-style.md` | Terse, action-first execution: no preamble, narration, deliberation, or emoji/decoration. |
-| `tradecraft.md` | Points to the on-disk attack-methodology library (`/opt/minimal-agent/skills`) for autonomous consultation, and the shared-session ("public desk") rules for live/interactive terminals. |
+| `tradecraft.md` | Points to the on-disk attack-methodology library (`/opt/pentesting/skills`) for autonomous consultation, and the shared-session ("public desk") rules for live/interactive terminals. |
 | `team-conduct.md` | Team conduct: act with tools, continue until done, curate the brief. |
 | `communication.md` | How agents talk: the four message kinds (Progress/Insight/Request/Final), substance-only, `team send`/`team finish` vs. plain text. |
 | `team-tree.md` | The bounded 3-depth team tree (INTENT-0004): neighbor-only communication, faithful verbatim upward reporting (no telephone game), core-note hygiene, and restart behavior. |

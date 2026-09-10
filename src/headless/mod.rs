@@ -9,13 +9,13 @@ mod tests {
     use super::observation::{HeadlessObservation, headless_journal_evidence};
     use super::runner::observe_headless;
     use async_trait::async_trait;
-    use minimal_agent::domain::AgentId;
-    use minimal_agent::engagement::Engagement;
-    use minimal_agent::journal::{JournalConfig, JournalEvent, RunJournal};
-    use minimal_agent::provider::{
+    use pentesting::domain::AgentId;
+    use pentesting::engagement::Engagement;
+    use pentesting::journal::{JournalConfig, JournalEvent, RunJournal};
+    use pentesting::provider::{
         ModelDelta, ModelProvider, ModelRequest, ModelTurn, ProviderFault, ToolCall,
     };
-    use minimal_agent::runtime::{RuntimeConfig, RuntimeEvent, TeamRuntime};
+    use pentesting::runtime::{RuntimeConfig, RuntimeEvent, TeamRuntime};
     use serde_json::json;
     use std::path::Path;
     use std::sync::Arc;
@@ -177,7 +177,7 @@ mod tests {
             journal
                 .append_sync(JournalEvent::Transcript {
                     agent_id: AgentId::main(),
-                    role: minimal_agent::journal::TranscriptRole::Assistant,
+                    role: pentesting::journal::TranscriptRole::Assistant,
                     content: "flag{invented}".to_owned(),
                     complete: true,
                     atomic_group: None,
@@ -212,7 +212,7 @@ mod tests {
             journal
                 .append_sync(JournalEvent::Transcript {
                     agent_id: AgentId::main(),
-                    role: minimal_agent::journal::TranscriptRole::Assistant,
+                    role: pentesting::journal::TranscriptRole::Assistant,
                     content: "x".repeat(5 * 1024 * 1024),
                     complete: true,
                     atomic_group: None,
@@ -246,7 +246,7 @@ mod tests {
         journal
             .append_sync(JournalEvent::Transcript {
                 agent_id: AgentId::main(),
-                role: minimal_agent::journal::TranscriptRole::Assistant,
+                role: pentesting::journal::TranscriptRole::Assistant,
                 content: "x".repeat(9 * 1024 * 1024),
                 complete: true,
                 atomic_group: None,

@@ -61,7 +61,7 @@ mod tests {
     use std::io;
     use tokio::io::BufReader;
 
-    use minimal_agent::settings::ProviderSettingsStore;
+    use pentesting::settings::ProviderSettingsStore;
 
     use super::plain::{read_bounded_line, select_operation_or_shutdown};
     use super::runner::load_provider_slot;
@@ -111,7 +111,7 @@ mod tests {
         let directory = tempfile::tempdir().unwrap();
         let store = ProviderSettingsStore::new(directory.path());
         store
-            .save(&minimal_agent::settings::ProviderSettings {
+            .save(&pentesting::settings::ProviderSettings {
                 provider: "openai-compatible".to_owned(),
                 base_url: "https://example.test/v1".to_owned(),
                 model: "small-model".to_owned(),

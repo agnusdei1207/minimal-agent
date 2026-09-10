@@ -2,12 +2,12 @@ use std::sync::atomic::{AtomicUsize, Ordering};
 use std::sync::{Arc, Mutex};
 
 use async_trait::async_trait;
-use minimal_agent::compaction::{
+use pentesting::compaction::{
     CompactionError, CompactionOutcome, ContextEntry, LiveReason, SemanticCompactionConfig,
     SemanticCompactor,
 };
-use minimal_agent::domain::{AgentId, ContextBudget, InsightId, SequenceRange, estimate_tokens};
-use minimal_agent::provider::{ModelProvider, ModelRequest, ModelTurn, ProviderFault, TokenUsage};
+use pentesting::domain::{AgentId, ContextBudget, InsightId, SequenceRange, estimate_tokens};
+use pentesting::provider::{ModelProvider, ModelRequest, ModelTurn, ProviderFault, TokenUsage};
 
 #[derive(Clone)]
 enum FakeMode {
@@ -51,7 +51,7 @@ impl ModelProvider for CoveringProvider {
     async fn complete(
         &self,
         request: ModelRequest,
-        _deltas: Option<tokio::sync::mpsc::UnboundedSender<minimal_agent::provider::ModelDelta>>,
+        _deltas: Option<tokio::sync::mpsc::UnboundedSender<pentesting::provider::ModelDelta>>,
     ) -> Result<ModelTurn, ProviderFault> {
         let call = self.calls.fetch_add(1, Ordering::AcqRel);
         self.requests.lock().unwrap().push(request.clone());

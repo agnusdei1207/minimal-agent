@@ -4,14 +4,14 @@ use std::sync::{Arc, Mutex};
 use std::time::Duration;
 
 use async_trait::async_trait;
-use minimal_agent::domain::{
+use pentesting::domain::{
     AgentId, AgentState, DomainError, Insight, InsightId, InsightLabel, MAX_USER_INPUT_BYTES,
     MessageKind,
 };
-use minimal_agent::engagement::{Engagement, EngagementKind};
-use minimal_agent::journal::JournalEvent;
-use minimal_agent::provider::{ModelProvider, ModelRequest, ModelTurn, ProviderFault, ToolCall};
-use minimal_agent::runtime::{RuntimeConfig, RuntimeError, RuntimeEvent, TeamRuntime};
+use pentesting::engagement::{Engagement, EngagementKind};
+use pentesting::journal::JournalEvent;
+use pentesting::provider::{ModelProvider, ModelRequest, ModelTurn, ProviderFault, ToolCall};
+use pentesting::runtime::{RuntimeConfig, RuntimeError, RuntimeEvent, TeamRuntime};
 use sha2::{Digest, Sha256};
 use tempfile::tempdir;
 use tokio::sync::Notify;
@@ -42,7 +42,7 @@ struct SuccessfulMainCompactionProvider;
 
 #[derive(Default)]
 struct RetainingDeltaProvider {
-    senders: Mutex<Vec<tokio::sync::mpsc::UnboundedSender<minimal_agent::provider::ModelDelta>>>,
+    senders: Mutex<Vec<tokio::sync::mpsc::UnboundedSender<pentesting::provider::ModelDelta>>>,
 }
 
 #[async_trait]
@@ -54,10 +54,10 @@ impl ModelProvider for RetainingDeltaProvider {
     async fn complete(
         &self,
         _request: ModelRequest,
-        deltas: Option<tokio::sync::mpsc::UnboundedSender<minimal_agent::provider::ModelDelta>>,
+        deltas: Option<tokio::sync::mpsc::UnboundedSender<pentesting::provider::ModelDelta>>,
     ) -> Result<ModelTurn, ProviderFault> {
         if let Some(sender) = deltas {
-            let _ = sender.send(minimal_agent::provider::ModelDelta::Text(
+            let _ = sender.send(pentesting::provider::ModelDelta::Text(
                 "complete despite retained sender".to_owned(),
             ));
             self.senders.lock().unwrap().push(sender);
@@ -75,7 +75,7 @@ impl ModelProvider for HangingCompactionProvider {
     async fn complete(
         &self,
         request: ModelRequest,
-        _deltas: Option<tokio::sync::mpsc::UnboundedSender<minimal_agent::provider::ModelDelta>>,
+        _deltas: Option<tokio::sync::mpsc::UnboundedSender<pentesting::provider::ModelDelta>>,
     ) -> Result<ModelTurn, ProviderFault> {
         if request.tools_enabled {
             Ok(text_turn("normal turn"))
@@ -94,7 +94,7 @@ impl ModelProvider for SuccessfulMainCompactionProvider {
     async fn complete(
         &self,
         request: ModelRequest,
-        _deltas: Option<tokio::sync::mpsc::UnboundedSender<minimal_agent::provider::ModelDelta>>,
+        _deltas: Option<tokio::sync::mpsc::UnboundedSender<pentesting::provider::ModelDelta>>,
     ) -> Result<ModelTurn, ProviderFault> {
         if request.tools_enabled {
             return Ok(text_turn("normal turn"));
@@ -166,7 +166,7 @@ impl ModelProvider for ScriptedProvider {
     async fn complete(
         &self,
         request: ModelRequest,
-        deltas: Option<tokio::sync::mpsc::UnboundedSender<minimal_agent::provider::ModelDelta>>,
+        deltas: Option<tokio::sync::mpsc::UnboundedSender<pentesting::provider::ModelDelta>>,
     ) -> Result<ModelTurn, ProviderFault> {
         let system = &request.messages[0].content;
         let agent = system
@@ -206,7 +206,7 @@ impl ModelProvider for ScriptedProvider {
         if let (Ok(turn), Some(sender)) = (&result, deltas)
             && !turn.text.is_empty()
         {
-            let _ = sender.send(minimal_agent::provider::ModelDelta::Text(turn.text.clone()));
+            let _ = sender.send(pentesting::provider::ModelDelta::Text(turn.text.clone()));
         }
         result
     }
@@ -599,9 +599,9 @@ async fn restart_restores_graph_unread_inbox_brief_and_live_context_without_repl
             markdown,
             markdown_sha256,
             source_sha256: "a".repeat(64),
-            source_ranges: vec![minimal_agent::domain::SequenceRange::new(1, 1).unwrap()],
-            coverage: minimal_agent::domain::CompactionCoverage {
-                covered_ranges: vec![minimal_agent::domain::SequenceRange::new(1, 1).unwrap()],
+            source_ranges: vec![pentesting::domain::SequenceRange::new(1, 1).unwrap()],
+            coverage: pentesting::domain::CompactionCoverage {
+                covered_ranges: vec![pentesting::domain::SequenceRange::new(1, 1).unwrap()],
                 covered_insight_ids: vec![],
                 superseded_insight_ids: vec![],
             },
@@ -1764,14 +1764,14 @@ async fn goal_update_is_durable_but_does_not_enable_or_call_the_model() {
     drop(runtime);
 
     let journal = Arc::new(
-        minimal_agent::journal::RunJournal::open(
+        pentesting::journal::RunJournal::open(
             &run_root,
-            minimal_agent::journal::JournalConfig::default(),
+            pentesting::journal::JournalConfig::default(),
         )
         .unwrap(),
     );
     assert_eq!(
-        minimal_agent::coordinator::AgentCoordinator::recover(journal)
+        pentesting::coordinator::AgentCoordinator::recover(journal)
             .unwrap()
             .inspect(&AgentId::main())
             .unwrap()
@@ -1969,7 +1969,7 @@ async fn explicit_compaction_has_one_total_deadline_and_leaves_main_recoverable(
         journal
             .append_sync(JournalEvent::Transcript {
                 agent_id: AgentId::main(),
-                role: minimal_agent::journal::TranscriptRole::User,
+                role: pentesting::journal::TranscriptRole::User,
                 content: format!("{marker}-{}", "x".repeat(30_000)),
                 complete: true,
                 atomic_group: None,
@@ -2046,7 +2046,7 @@ async fn main_semantic_compaction_commits_a_valid_single_runtime_brief() {
     let older = journal
         .append_sync(JournalEvent::Transcript {
             agent_id: AgentId::main(),
-            role: minimal_agent::journal::TranscriptRole::User,
+            role: pentesting::journal::TranscriptRole::User,
             content: format!("OLDER-{}", "x".repeat(80_000)),
             complete: true,
             atomic_group: None,
@@ -2055,7 +2055,7 @@ async fn main_semantic_compaction_commits_a_valid_single_runtime_brief() {
     let latest = journal
         .append_sync(JournalEvent::Transcript {
             agent_id: AgentId::main(),
-            role: minimal_agent::journal::TranscriptRole::User,
+            role: pentesting::journal::TranscriptRole::User,
             content: format!("LATEST-{}", "x".repeat(1_000)),
             complete: true,
             atomic_group: None,
@@ -2117,7 +2117,7 @@ async fn restart_skips_only_exactly_compacted_ranges_and_preserves_live_holes() 
     let partial = journal
         .append_sync(JournalEvent::Transcript {
             agent_id: AgentId::main(),
-            role: minimal_agent::journal::TranscriptRole::Assistant,
+            role: pentesting::journal::TranscriptRole::Assistant,
             content: "LIVE-PARTIAL-HOLE".into(),
             complete: false,
             atomic_group: None,
@@ -2126,7 +2126,7 @@ async fn restart_skips_only_exactly_compacted_ranges_and_preserves_live_holes() 
     let covered = journal
         .append_sync(JournalEvent::Transcript {
             agent_id: AgentId::main(),
-            role: minimal_agent::journal::TranscriptRole::User,
+            role: pentesting::journal::TranscriptRole::User,
             content: "EXACTLY-COVERED-LATER".into(),
             complete: true,
             atomic_group: None,
@@ -2141,12 +2141,11 @@ async fn restart_skips_only_exactly_compacted_ranges_and_preserves_live_holes() 
             markdown,
             source_sha256: "c".repeat(64),
             source_ranges: vec![
-                minimal_agent::domain::SequenceRange::new(covered.sequence, covered.sequence)
-                    .unwrap(),
+                pentesting::domain::SequenceRange::new(covered.sequence, covered.sequence).unwrap(),
             ],
-            coverage: minimal_agent::domain::CompactionCoverage {
+            coverage: pentesting::domain::CompactionCoverage {
                 covered_ranges: vec![
-                    minimal_agent::domain::SequenceRange::new(covered.sequence, covered.sequence)
+                    pentesting::domain::SequenceRange::new(covered.sequence, covered.sequence)
                         .unwrap(),
                 ],
                 covered_insight_ids: vec![],
@@ -2198,7 +2197,7 @@ async fn shutdown_cancels_inflight_tools_without_detaching_driver_tasks() {
     loop {
         if matches!(
             events.recv().await.unwrap(),
-            minimal_agent::runtime::RuntimeEvent::ToolStarted { ref name, .. } if name == "bash"
+            pentesting::runtime::RuntimeEvent::ToolStarted { ref name, .. } if name == "bash"
         ) {
             break;
         }

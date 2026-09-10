@@ -6,11 +6,11 @@ use anyhow::{Context, bail};
 use chrono::Utc;
 use uuid::Uuid;
 
-use minimal_agent::domain::AgentId;
-use minimal_agent::provider::{OpenAiChatProvider, ProviderSlot};
-use minimal_agent::runtime::{RuntimeConfig, TeamRuntime};
-use minimal_agent::settings::{ProviderSettings, ProviderSettingsStore};
-use minimal_agent::tui::run_tui;
+use pentesting::domain::AgentId;
+use pentesting::provider::{OpenAiChatProvider, ProviderSlot};
+use pentesting::runtime::{RuntimeConfig, TeamRuntime};
+use pentesting::settings::{ProviderSettings, ProviderSettingsStore};
+use pentesting::tui::run_tui;
 
 use super::args::RunArgs;
 use super::plain::run_plain;
@@ -59,10 +59,10 @@ pub async fn run(args: RunArgs) -> anyhow::Result<()> {
     };
     let cli_max_tokens = max_tokens
         .as_deref()
-        .and_then(minimal_agent::settings::parse_token_input);
+        .and_then(pentesting::settings::parse_token_input);
     let cli_context_tokens = context_tokens
         .as_deref()
-        .and_then(minimal_agent::settings::parse_token_input);
+        .and_then(pentesting::settings::parse_token_input);
     let reserved_response_tokens = cli_max_tokens
         .or_else(|| settings.as_ref().and_then(|s| s.max_output_tokens))
         .unwrap_or_else(|| RuntimeConfig::default().reserved_response_tokens);

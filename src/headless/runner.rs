@@ -1,9 +1,9 @@
 use serde_json::json;
 use std::time::Duration;
 
-use minimal_agent::domain::{AgentId, AgentState};
-use minimal_agent::engagement::Engagement;
-use minimal_agent::runtime::{RuntimeEvent, TeamRuntime};
+use pentesting::domain::{AgentId, AgentState};
+use pentesting::engagement::Engagement;
+use pentesting::runtime::{RuntimeEvent, TeamRuntime};
 
 use super::constants::{
     HEADLESS_IDLE_AUTO, HEADLESS_IDLE_MANUAL, HEADLESS_MAX_WALL, HEADLESS_RETRY_BACKOFF,
@@ -108,7 +108,7 @@ pub async fn observe_headless(
                 idle_deadline = tokio::time::Instant::now() + idle_window;
                 match event {
                     Ok(event) => {
-                        if minimal_agent::settings::debug_enabled() {
+                        if pentesting::settings::debug_enabled() {
                             log_debug_event(&event);
                         }
                         if matches!(event, RuntimeEvent::TurnFinished { success: true, .. }) {
@@ -117,7 +117,7 @@ pub async fn observe_headless(
                         observation.apply(event);
                     }
                     Err(tokio::sync::broadcast::error::RecvError::Lagged(n)) => {
-                        if minimal_agent::settings::debug_enabled() {
+                        if pentesting::settings::debug_enabled() {
                             eprintln!("[debug] broadcast lagged: {n} messages dropped");
                         }
                     }

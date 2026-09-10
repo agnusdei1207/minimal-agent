@@ -5,7 +5,7 @@ use std::sync::Arc;
 use std::sync::atomic::{AtomicUsize, Ordering};
 use std::time::{Duration, Instant};
 
-use minimal_agent::provider::{
+use pentesting::provider::{
     ModelDelta, ModelMessage, ModelProvider, ModelRequest, ModelRole, OpenAiChatProvider,
     OpenAiConfig, ProviderFault, TokenUsage, ToolCallDelta, assemble_model_deltas,
 };

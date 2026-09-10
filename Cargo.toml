@@ -9,7 +9,7 @@ repository = "https://github.com/agnusdei1207/pentesting"
 homepage = "https://github.com/agnusdei1207/pentesting"
 
 [lib]
-name = "minimal_agent"
+name = "pentesting"
 path = "src/lib.rs"
 
 [[bin]]

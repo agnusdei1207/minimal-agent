@@ -1,4 +1,4 @@
-use minimal_agent::settings::{ProviderSettings, ProviderSettingsStore};
+use pentesting::settings::{ProviderSettings, ProviderSettingsStore};
 
 #[test]
 fn provider_settings_round_trip_outside_the_run_journal() {

@@ -1,6 +1,6 @@
-use minimal_agent::engagement::Engagement;
-use minimal_agent::journal::{JournalEvent, JournalEventKind, RunJournal};
-use minimal_agent::runtime::RuntimeEvent;
+use pentesting::engagement::Engagement;
+use pentesting::journal::{JournalEvent, JournalEventKind, RunJournal};
+use pentesting::runtime::RuntimeEvent;
 
 use super::constants::{LOG_MESSAGE_SNIPPET_BYTES, LOG_SNIPPET_BYTES, MAX_TOOL_EVENT_BYTES};
 

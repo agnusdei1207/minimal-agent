@@ -1,9 +1,9 @@
-use minimal_agent::coordinator::AgentCoordinator;
-use minimal_agent::domain::{AgentId, MessageKind};
-use minimal_agent::journal::{JournalConfig, RunJournal};
-use minimal_agent::provider::ModelDelta;
-use minimal_agent::runtime::RuntimeEvent;
-use minimal_agent::tui::{TuiState, UiCommand, command_help, parse_command, render};
+use pentesting::coordinator::AgentCoordinator;
+use pentesting::domain::{AgentId, MessageKind};
+use pentesting::journal::{JournalConfig, RunJournal};
+use pentesting::provider::ModelDelta;
+use pentesting::runtime::RuntimeEvent;
+use pentesting::tui::{TuiState, UiCommand, command_help, parse_command, render};
 use ratatui::Terminal;
 use ratatui::backend::TestBackend;
 use tempfile::tempdir;

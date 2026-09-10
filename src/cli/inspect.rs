@@ -3,10 +3,10 @@ use serde_json::json;
 use std::path::Path;
 use std::sync::Arc;
 
-use minimal_agent::brief::AgentBriefStore;
-use minimal_agent::coordinator::{AgentCoordinator, AgentSnapshot};
-use minimal_agent::domain::{AgentId, ContextBudget};
-use minimal_agent::journal::{JournalConfig, RunJournal};
+use pentesting::brief::AgentBriefStore;
+use pentesting::coordinator::{AgentCoordinator, AgentSnapshot};
+use pentesting::domain::{AgentId, ContextBudget};
+use pentesting::journal::{JournalConfig, RunJournal};
 
 pub fn inspect(run_root: &Path, selected_agent: Option<&str>) -> anyhow::Result<()> {
     let journal = Arc::new(

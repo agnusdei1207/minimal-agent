@@ -2,8 +2,8 @@ use std::fs::{self, OpenOptions};
 use std::io::Write;
 use std::sync::Arc;
 
-use minimal_agent::domain::{AgentId, AgentState};
-use minimal_agent::journal::{
+use pentesting::domain::{AgentId, AgentState};
+use pentesting::journal::{
     EventStorage, JournalConfig, JournalError, JournalEvent, JournalEventKind, RunJournal,
     TranscriptRole,
 };

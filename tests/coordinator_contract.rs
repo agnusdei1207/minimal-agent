@@ -1,12 +1,12 @@
 use std::sync::Arc;
 use std::time::Duration;
 
-use minimal_agent::coordinator::{AgentCoordinator, CoordinatorError};
-use minimal_agent::domain::{
+use pentesting::coordinator::{AgentCoordinator, CoordinatorError};
+use pentesting::domain::{
     AgentId, AgentState, DomainError, Insight, InsightId, InsightLabel, MAX_GOAL_BYTES,
     MAX_ROLE_BYTES, MAX_TASK_BYTES, MessageKind,
 };
-use minimal_agent::journal::{JournalConfig, JournalError, JournalEvent, RunJournal};
+use pentesting::journal::{JournalConfig, JournalError, JournalEvent, RunJournal};
 use tempfile::tempdir;
 
 fn coordinator() -> (tempfile::TempDir, Arc<RunJournal>, AgentCoordinator) {
@@ -346,7 +346,7 @@ fn recovery_rejects_duplicate_message_identity() {
         .create_worker(&main, "worker", "recover")
         .unwrap();
     drop(coordinator);
-    let message = minimal_agent::domain::AgentMessage::new(
+    let message = pentesting::domain::AgentMessage::new(
         main,
         vec![worker],
         MessageKind::Progress,
@@ -498,7 +498,7 @@ fn recovery_fails_closed_when_historical_unread_messages_exceed_the_bound() {
     for index in 0..65 {
         journal
             .append_sync(JournalEvent::AgentMessage {
-                message: minimal_agent::domain::AgentMessage::new(
+                message: pentesting::domain::AgentMessage::new(
                     main.clone(),
                     vec![worker.clone()],
                     MessageKind::Progress,
@@ -625,7 +625,7 @@ fn creating_a_new_coordinator_never_appends_a_second_main_to_an_existing_run() {
 
     assert!(matches!(
         AgentCoordinator::new(journal.clone(), "another goal"),
-        Err(minimal_agent::coordinator::CoordinatorError::RunNotEmpty)
+        Err(pentesting::coordinator::CoordinatorError::RunNotEmpty)
     ));
     assert_eq!(journal.replay().unwrap().len(), before);
     assert_eq!(
@@ -641,7 +641,7 @@ fn main_is_the_stable_team_root_and_cannot_be_marked_terminal() {
     let before = journal.replay().unwrap().len();
     assert!(matches!(
         coordinator.mark_terminal(&main, &main, AgentState::Finished, "do not remove root"),
-        Err(minimal_agent::coordinator::CoordinatorError::CannotTerminateMain)
+        Err(pentesting::coordinator::CoordinatorError::CannotTerminateMain)
     ));
     assert_eq!(journal.replay().unwrap().len(), before);
     assert_eq!(
