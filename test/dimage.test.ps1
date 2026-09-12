@@ -9,9 +9,6 @@ if ($browserInstaller -contains 13) {
 
 function global:docker {
     $global:dimageCalls.Add(@($args))
-    if ($args[0] -eq 'buildx' -and $args[1] -eq 'create') {
-        'minimal-agent-test-builder'
-    }
     $global:LASTEXITCODE = 0
 }
 
@@ -31,14 +28,14 @@ try {
     }
 
     $global:dimageCalls.Clear()
-    & (Join-Path $PSScriptRoot '..\scripts\dimage.ps1') -Target all -Tag 'minimal-agent:test'
+    & (Join-Path $PSScriptRoot '..\scripts\dimage.ps1') -Target all -Tag 'pentesting:test'
 
     if ($global:dimageCalls.Count -ne 1) {
         throw "expected 1 buildx bake call; got $($global:dimageCalls.Count)"
     }
 
     $allBuild = $global:dimageCalls[0]
-    if (($allBuild -join ' ') -notmatch '--set app.tags=minimal-agent:test app$') {
+    if (($allBuild -join ' ') -notmatch '--set app.tags=pentesting:test app$') {
         throw "all target must build app with custom tag: $($allBuild -join ' ')"
     }
 
