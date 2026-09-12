@@ -16,7 +16,7 @@
   압축이 컨텍스트에서 무엇을 걷어내도 원장은 무손실(INTENT-0001 §9).
 - **Brief / Battlefield note(전장 노트, `AgentBriefStore`)** — 에이전트별 압축·범주화된 메모리. 컨텍스트 압축을
   견디고 매 턴 최상단에서 재읽힌다. `brief` 도구로 스스로 유지한다.
-- **Compaction(압축, `compaction.rs`)** — 컨텍스트가 임계(80%)를 넘으면 의미를 보존하며 brief로 요약한다.
+- **Compaction(압축, `compaction/`)** — 컨텍스트가 임계(80%)를 넘으면 의미를 보존하며 brief로 요약한다.
   공급된 소스 구간을 버리지 않음을 커버리지(`covered_ranges`)로 증명한다. 실패 시 기계적 폴백으로 멈추지 않는다.
 - **Coverage(커버리지, `CompactionCoverage`)** — 압축이 어느 시퀀스 구간·insight를 요약으로 대체했는지의 증명.
 - **Engagement(교전, `Engagement`)** — 인가된 보안 작업·CTF의 목표·범위·flag 규율. 저널에 `EngagementSet`로 영속되고
