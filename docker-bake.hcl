@@ -5,10 +5,7 @@ variable "APP_TAG" {
 target "base" {
   context    = "."
   dockerfile = "docker/runtime-base.Dockerfile"
-  tags       = [
-    "agnusdei1207/pentesting-runtime-base:latest",
-    "agnusdei1207/minimal-agent-runtime-base:latest"
-  ]
+  tags       = ["agnusdei1207/pentesting-runtime-base:latest"]
 }
 
 target "app" {
@@ -24,8 +21,7 @@ target "runner" {
   context    = "."
   dockerfile = "benchmarks/harness/Dockerfile.runner"
   contexts = {
-    "pentesting:check"    = "target:app"
-    "minimal-agent:check" = "target:app"
+    "pentesting:check" = "target:app"
   }
   tags = ["xbow-agent-runner:latest"]
 }
