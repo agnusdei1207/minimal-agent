@@ -1,12 +1,10 @@
 use crate::coordinator::AgentSnapshot;
-use crate::engagement::{
-    Engagement, EngagementKind, authorized_engagement_doctrine, ctf_solve_loop_doctrine,
-    execution_style_directive,
-};
+use crate::engagement::{Engagement, EngagementKind};
 
 use super::constants::{
     COMMUNICATION, EXECUTION_MANDATE, FAN_OUT, MAIN_ROLE, NODE_INTERNAL, NODE_LEAF,
     SELF_MANAGEMENT, TEAM_CONDUCT, TEAM_TREE, TRADECRAFT, WORKER_ROLE,
+    authorized_engagement_doctrine, ctf_solve_loop_doctrine, execution_style_directive,
 };
 use super::position::render_position;
 

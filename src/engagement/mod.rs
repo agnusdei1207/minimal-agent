@@ -3,10 +3,7 @@ pub mod error;
 pub mod types;
 pub mod validation;
 
-pub use constants::{
-    MAX_ENGAGEMENT_TEXT_BYTES, MAX_OFF_LIMITS, authorized_engagement_doctrine,
-    ctf_solve_loop_doctrine, execution_style_directive,
-};
+pub use constants::{MAX_ENGAGEMENT_TEXT_BYTES, MAX_OFF_LIMITS};
 pub use error::EngagementError;
 pub use types::{Engagement, EngagementKind};
 
@@ -92,17 +89,5 @@ mod tests {
         };
 
         assert!(engagement.validate().is_err());
-    }
-
-    #[test]
-    fn ctf_solve_loop_and_doctrines_are_embedded_and_consistent() {
-        assert!(!authorized_engagement_doctrine().is_empty());
-        assert!(!execution_style_directive().is_empty());
-        let ctf = ctf_solve_loop_doctrine();
-        assert!(!ctf.is_empty());
-        assert!(ctf.contains("Diagnostic Tracer Bullets"));
-        assert!(ctf.contains("Silent Wall vs. Live Seam"));
-        assert!(ctf.contains("Self-Reflection & Meta-Cognitive Audit"));
-        assert!(ctf.contains("Universal Client Compatibility"));
     }
 }
