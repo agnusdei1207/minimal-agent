@@ -1,7 +1,8 @@
 # INTENT-0003 · Shell Execution Model and Interactive Terminal Primitives
 
 - 상태: 진행 중
-- 작성/갱신: 2026-09-08
+- 작성: 2026-09-08
+- 갱신: 2026-09-12 12:56 KST
 
 ## 왜
 
@@ -35,7 +36,7 @@
 - **팀 버스는 신호용**: tmux 캡처 출력(최대 128 KiB)을 4 KiB 팀 메시지(INTENT-0001 §6.3)로 중계하면 경계에서 잘리므로, 화면은 세션에서 직접 읽거나 파일로 넘기고 팀 버스는 신호용으로만 쓴다. 세션 IPC를 팀 버스로 오해하지 않는다.
 - **사전 탑재 + 런타임 자율 설치**: `docker/runtime-base.Dockerfile`에 네트워크/정찰(`nmap`, `masscan`, `nikto`, `gobuster`, `ffuf`, `hydra`, `sqlmap`, `socat`, `tcpdump` 등), 바이너리/리버싱/크립토(`gdb`, `gdbserver`, `patchelf`, `strace`, `hashcat`, `john`, `binwalk`, `pwntools`, `ropgadget`, `z3-solver`, `scapy` 등), 웹/트래픽(mitmproxy, requests, httpx, wordlist `rockyou.txt`)을 사전 탑재하고, 컨테이너에 `NET_RAW`/`NET_ADMIN` cap을 부여한다(`docker/compose.yaml`). 사전 탑재되지 않은 도구가 필요하면 에이전트는 멈추거나 사용자에게 요청하지 않고 `sudo apt install -y`, `pip install`, `cargo install`, `git clone`으로 직접 설치해 과업을 완수한다(Script-First 원칙: 특수 프로토콜/익스플로잇은 즉시 전용 Python/Shell 스크립트 작성).
 - **장기 작업 격리**: 장시간 스캔·브루트포스·상시 리스너는 INTENT-0001의 2-Depth Worker 에이전트에게 위임한다. `main`은 `team create`로 전담 worker를 만들고 즉시 복귀하며, worker는 완료 시 `team send kind=insight`로 핵심 결과만 보고한다.
-- **관련 문서**: INTENT-0001(최소 코어 철학)과 INTENT-0002(승인된 교전 환경)를 잇고, 통합 릴리스는 INTENT-0006, `agent-browser`는 INTENT-0005를 참조한다. Repository: `agnusdei1207/minimal-agent`.
+- **관련 문서**: INTENT-0001(최소 코어 철학)과 INTENT-0002(승인된 교전 환경)를 잇고, 통합 릴리스는 INTENT-0006, `agent-browser`는 INTENT-0005를 참조한다. Repository: `agnusdei1207/pentesting`.
 
 ## 비범위
 

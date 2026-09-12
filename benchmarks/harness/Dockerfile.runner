@@ -1,6 +1,6 @@
 # Agent execution environment for the XBOW-104 benchmark.
 # Reuses the product image directly: it already carries the minimal-agent
-# binary, complete offensive toolset, and headless browser environment (ADR-0005).
+# binary, complete offensive toolset, and headless browser environment (INTENT-0005).
 FROM pentesting:check
 
 WORKDIR /workspace

@@ -21,7 +21,7 @@ LABEL org.opencontainers.image.title="pentesting" \
       org.opencontainers.image.licenses="MIT"
 COPY --from=builder /source/target/release/pentesting /usr/local/bin/pentesting
 RUN ln -s /usr/local/bin/pentesting /usr/local/bin/minimal-agent
-# Attack-methodology library the agent consults autonomously at runtime (ADR-0003).
+# Attack-methodology library the agent consults autonomously at runtime (INTENT-0003 비범위: doctrine·이미지 자산 계약).
 # Shipped as on-disk files (not baked into the prompt) so agents browse only the
 # relevant card, keeping the per-turn prompt small. World-readable for USER 10001.
 COPY prompts/skills /opt/pentesting/skills

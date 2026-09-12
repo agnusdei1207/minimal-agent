@@ -33,8 +33,8 @@ minimal-agent-browser --version
 
 cat << 'EOF' > /usr/local/bin/google-chrome
 #!/usr/bin/env bash
-echo "[ERROR] Direct invocation of raw google-chrome/chromium is disabled to prevent alert() modal lockups (ADR-0005)." >&2
-echo "[ADR-0005] For web challenges, send direct HTTP payloads via curl or Python requests." >&2
+echo "[ERROR] Direct invocation of raw google-chrome/chromium is disabled to prevent alert() modal lockups (INTENT-0005)." >&2
+echo "[INTENT-0005] For web challenges, send direct HTTP payloads via curl or Python requests." >&2
 echo "           For automated browser rendering, use agent-browser or minimal-agent-browser with alert neutralization." >&2
 exit 1
 EOF

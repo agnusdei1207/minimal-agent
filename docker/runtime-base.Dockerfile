@@ -84,7 +84,7 @@ RUN if [ -f /etc/apt/sources.list.d/ubuntu.sources ]; then \
     && rm -rf /var/lib/apt/lists/*
 
 # Offensive-security tooling, famous wordlists, and Python libraries preinstalled so
-# the agent has the common basics out of the box (ADR-0003 §3.7). Beyond these, agents
+# the agent has the common basics out of the box (INTENT-0003: 사전 탑재 + 런타임 자율 설치). Beyond these, agents
 # install what they still need at runtime (they have passwordless sudo). A rockyou
 # fetch that flakes must not brick the base image, so it is best-effort — the agent can
 # always pull wordlists (e.g. SecLists) itself when needed.
@@ -151,7 +151,7 @@ RUN apt update -qq \
          https://github.com/brannondorsey/naive-hashcat/releases/download/data/rockyou.txt \
          || echo "[warn] rockyou fetch failed at build; agent fetches wordlists at runtime")
 
-# Node.js LTS and agent-browser CLI for modal-immune accessibility-tree web automation (ADR-0005).
+# Node.js LTS and agent-browser CLI for modal-immune accessibility-tree web automation (INTENT-0005).
 ARG NODE_VERSION=22.14.0
 RUN curl -fsSL "https://nodejs.org/dist/v${NODE_VERSION}/node-v${NODE_VERSION}-linux-x64.tar.xz" \
       | tar -xJ -C /usr/local --strip-components=1 \

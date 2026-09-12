@@ -3,7 +3,7 @@ services:
     image: agnusdei1207/pentesting:0.200.1
     stdin_open: true
     tty: true
-    # Raw sockets for SYN scans, masscan, and packet capture (ADR-0003 §3.7).
+    # Raw sockets for SYN scans, masscan, and packet capture (INTENT-0003: 사전 탑재 + cap 계약).
     cap_add:
       - NET_RAW
       - NET_ADMIN
