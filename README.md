@@ -21,7 +21,7 @@ zero human intervention and zero hints
 
 <div align="center">
 
-<img src="https://raw.githubusercontent.com/agnusdei1207/pentesting/main/assets/benchmark_matrix.svg" alt="XBOW-104 Benchmark" width="100%">
+<img src="https://raw.githubusercontent.com/agnusdei1207/pentesting/main/docs/benchmark_matrix.svg" alt="XBOW-104 Benchmark" width="100%">
 
 </div>
 
