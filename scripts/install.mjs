@@ -5,7 +5,7 @@ import { dirname, join, resolve } from "node:path";
 
 import { readResponseBounded } from "./bounded-download.mjs";
 
-if (process.env.PENTESTING_SKIP_DOWNLOAD === "1" || process.env.MINIMAL_AGENT_SKIP_DOWNLOAD === "1") {
+if (process.env.PENTESTING_SKIP_DOWNLOAD === "1") {
   process.exit(0);
 }
 

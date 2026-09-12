@@ -11,8 +11,7 @@
   "bugs": "https://github.com/agnusdei1207/pentesting/issues",
   "type": "module",
   "bin": {
-    "pentesting": "bin/pentesting.js",
-    "minimal-agent": "bin/pentesting.js"
+    "pentesting": "bin/pentesting.js"
   },
   "files": [
     "bin/",

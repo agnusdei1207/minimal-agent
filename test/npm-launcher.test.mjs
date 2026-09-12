@@ -16,31 +16,27 @@ test("launcher forwards arguments and exit status to the selected binary", async
     { mode: 0o755 },
   );
   await chmod(helper, 0o755);
-  for (const script of ["bin/pentesting.js", "bin/minimal-agent.js"]) {
-    const result = spawnSync(
-      process.execPath,
-      [resolve(script), "alpha", "two words"],
-      {
-        cwd: resolve("."),
-        env: { ...process.env, PENTESTING_BINARY: helper, MINIMAL_AGENT_BINARY: helper },
-        encoding: "utf8",
-      },
-    );
-    assert.equal(result.status, 7);
-    assert.equal(result.stdout.trim(), '["alpha","two words"]');
-  }
+  const result = spawnSync(
+    process.execPath,
+    [resolve("bin/pentesting.js"), "alpha", "two words"],
+    {
+      cwd: resolve("."),
+      env: { ...process.env, PENTESTING_BINARY: helper },
+      encoding: "utf8",
+    },
+  );
+  assert.equal(result.status, 7);
+  assert.equal(result.stdout.trim(), '["alpha","two words"]');
 });
 
 test("launcher fails clearly when the native binary is absent", () => {
-  for (const script of ["bin/pentesting.js", "bin/minimal-agent.js"]) {
-    const result = spawnSync(process.execPath, [resolve(script)], {
-      cwd: resolve("."),
-      env: { ...process.env, PENTESTING_BINARY: resolve("missing-binary"), MINIMAL_AGENT_BINARY: resolve("missing-binary") },
-      encoding: "utf8",
-    });
-    assert.equal(result.status, 1);
-    assert.match(result.stderr, /native binary is missing/);
-  }
+  const result = spawnSync(process.execPath, [resolve("bin/pentesting.js")], {
+    cwd: resolve("."),
+    env: { ...process.env, PENTESTING_BINARY: resolve("missing-binary") },
+    encoding: "utf8",
+  });
+  assert.equal(result.status, 1);
+  assert.match(result.stderr, /native binary is missing/);
 });
 
 test("release downloads reject declared and streamed bodies above their envelope", async () => {
