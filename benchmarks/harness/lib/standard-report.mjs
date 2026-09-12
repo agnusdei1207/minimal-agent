@@ -3,7 +3,6 @@
 //
 // One renderer, one format — used by every model family so their SUMMARY.md /
 // kpi.json line up column-for-column:
-//   - Claude family      (benchmarks/claude/summarize.mjs)      — host headless
 //   - minimal-agent (glm) (benchmarks/zai/summarize.mjs)         — in-container
 //
 // It is READ-ONLY w.r.t. runs/: it only re-reads evidence.json / telemetry

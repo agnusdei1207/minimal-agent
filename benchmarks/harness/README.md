@@ -1,6 +1,6 @@
 # 벤치마크 하니스
 
-공통 코드와 문서는 이 폴더에서 관리한다. GLM은 `runner.mjs`, Claude는 해당 모델 폴더의 `run.mjs`로 실행하며 타깃·제어·보고서 코드를 공유한다.
+공통 코드와 문서는 이 폴더에서 관리한다. GLM은 `runner.mjs`로 실행하며 타깃·제어·보고서 코드를 공유한다.
 
 - 👉 [**GUIDE**](GUIDE.md): **XBOW-104 벤치마크 원스톱 실행 가이드라인 (세팅·실행·수칙·트러블슈팅)**
 - [METHOD](docs/METHOD.md): 분석 방법, 증거와 집계 기준
@@ -21,7 +21,7 @@
 
 ## 실행
 
-저장소 루트 PowerShell에서 실행한다. 최초 한 번 suite를 준비하고 `.env.example`을 참고해 루트 `.env`를 설정한다. 기존 자격증명은 덮어쓰거나 출력하지 않는다. native는 루트 `.env`, Claude는 호스트 CLI 인증을 사용한다.
+저장소 루트 PowerShell에서 실행한다. 최초 한 번 suite를 준비하고 `.env.example`을 참고해 루트 `.env`를 설정한다. 기존 자격증명은 덮어쓰거나 출력하지 않는다. native는 루트 `.env`를 사용한다.
 
 ```powershell
 git clone https://github.com/xbow-engineering/validation-benchmarks benchmarks/xbow-validation-benchmarks

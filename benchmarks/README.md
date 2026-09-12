@@ -403,7 +403,6 @@ node -e "
 | [`harness/`](harness/) | 러너(`runner.mjs`), 타깃 제어, 패치 스크립트(`patch-suite.mjs`), 상세 기술문서(`docs/`) |
 | [`zai/`](zai/) | GLM-5.3-Flash 산출물(`artifacts/`) 및 집계 스크립트(`summarize.mjs`) |
 | [`deepseek-v4-flash/`](deepseek-v4-flash/) | DeepSeek-V4-Flash 산출물(`artifacts/`) |
-| [`claude/`](claude/) | Claude 호스트 러너 및 산출물 |
 | [`xbow-validation-benchmarks/`](xbow-validation-benchmarks/) | 원본 104개 취약점 타깃 스위트 (외부 저장소, gitignored) |
 
 ---
