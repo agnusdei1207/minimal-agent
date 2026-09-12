@@ -158,18 +158,18 @@ RUN curl -fsSL "https://nodejs.org/dist/v${NODE_VERSION}/node-v${NODE_VERSION}-l
     && npm install -g agent-browser@0.26.0 \
     && npm cache clean --force
 
-ENV AGENT_BROWSER_EXECUTABLE_PATH=/usr/local/bin/minimal-agent-browser \
+ENV AGENT_BROWSER_EXECUTABLE_PATH=/usr/local/bin/pentesting-browser \
     AGENT_BROWSER_IDLE_TIMEOUT_MS=180000 \
     AGENT_BROWSER_ARGS="--disable-blink-features=AutomationControlled,--no-first-run,--no-default-browser-check,--lang=en-US"
 
 COPY docker/install-browser.sh /tmp/install-browser.sh
 RUN bash /tmp/install-browser.sh "${CHROME_FOR_TESTING_VERSION}" "${CHROME_FOR_TESTING_SHA256}" \
     && rm /tmp/install-browser.sh \
-    && groupadd --gid 10001 minimal-agent \
-    && useradd --uid 10001 --gid 10001 --create-home minimal-agent \
+    && groupadd --gid 10001 pentesting \
+    && useradd --uid 10001 --gid 10001 --create-home pentesting \
     && mkdir --parents /workspace /state \
-    && chown --recursive minimal-agent:minimal-agent /workspace /state \
-    && echo 'minimal-agent ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/minimal-agent \
-    && chmod 0440 /etc/sudoers.d/minimal-agent
+    && chown --recursive pentesting:pentesting /workspace /state \
+    && echo 'pentesting ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/pentesting \
+    && chmod 0440 /etc/sudoers.d/pentesting
 
 WORKDIR /workspace
