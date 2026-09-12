@@ -30,7 +30,6 @@ pub struct RuntimeConfig {
 impl Default for RuntimeConfig {
     fn default() -> Self {
         let max_model_turns = std::env::var("PENTESTING_MAX_MODEL_TURNS")
-            .or_else(|_| std::env::var("MINIMAL_AGENT_MAX_MODEL_TURNS"))
             .ok()
             .and_then(|val| {
                 let trimmed = val.trim();

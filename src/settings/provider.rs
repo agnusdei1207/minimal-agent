@@ -54,7 +54,6 @@ impl ProviderSettings {
             context_tokens: self.context_tokens,
             max_output_tokens: self.max_output_tokens,
             timeout: std::env::var("PENTESTING_PROVIDER_TIMEOUT")
-                .or_else(|_| std::env::var("MINIMAL_AGENT_PROVIDER_TIMEOUT"))
                 .or_else(|_| std::env::var("OPENAI_TIMEOUT"))
                 .ok()
                 .and_then(|v| v.parse::<u64>().ok())

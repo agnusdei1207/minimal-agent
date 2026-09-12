@@ -69,7 +69,7 @@ pub fn record_model_delta(
 }
 
 /// Benchmark-only, env-gated token telemetry (INTENT-0002 §3.13). When
-/// `MINIMAL_AGENT_TELEMETRY_FILE` names a file, append one JSONL record per model
+/// `PENTESTING_TELEMETRY_FILE` names a file, append one JSONL record per model
 /// response so an external benchmark harness can total tokens; a no-op otherwise.
 /// This is removable benchmark support — delete this fn and its one call site.
 pub fn record_usage_telemetry(delta: &ModelDelta) {
@@ -82,9 +82,7 @@ pub fn record_usage_telemetry(delta: &ModelDelta) {
             usage.input_tokens, usage.output_tokens
         );
     }
-    let Ok(path) = std::env::var("PENTESTING_TELEMETRY_FILE")
-        .or_else(|_| std::env::var("MINIMAL_AGENT_TELEMETRY_FILE"))
-    else {
+    let Ok(path) = std::env::var("PENTESTING_TELEMETRY_FILE") else {
         return;
     };
     let line = format!(

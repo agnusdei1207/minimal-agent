@@ -25,7 +25,6 @@ $arguments = @(
     '--volume', "${repoRoot}:/workspace",
     '--workdir', '/workspace',
     '--env', 'PENTESTING_SKIP_DOWNLOAD=1',
-    '--env', 'MINIMAL_AGENT_SKIP_DOWNLOAD=1',
     'node:24-bookworm-slim'
 )
 if ($NodeArguments.Count -gt 0) {
