@@ -1,10 +1,11 @@
 .git
 .github
-.minimal-agent
 node_modules
 runs
 target
 test
 tests
+.minimal-agent
+.pentesting
 *.log
 .env
