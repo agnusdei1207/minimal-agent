@@ -3,7 +3,7 @@
 //
 // One renderer, one format — used by every model family so their SUMMARY.md /
 // kpi.json line up column-for-column:
-//   - minimal-agent (glm) (benchmarks/zai/summarize.mjs)         — in-container
+//   - pentesting (glm) (benchmarks/zai/summarize.mjs)         — in-container
 //
 // It is READ-ONLY w.r.t. runs/: it only re-reads evidence.json / telemetry
 // already flushed to disk and rewrites the two report files. It never launches a
@@ -346,7 +346,7 @@ export function renderStandardReport(opts) {
 }
 
 // --------------------------------------------------------------------------
-// Adapter: minimal-agent evidence layout (native runtime) -> NormRow[]
+// Adapter: pentesting evidence layout (native runtime) -> NormRow[]
 //
 // Per task artifacts/runs/<TASK>-<ts>/:
 //   evidence.json          -> outcome/solved/duration_s/flags_seen/valid_for_score

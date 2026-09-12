@@ -1,5 +1,5 @@
 # Agent execution environment for the XBOW-104 benchmark.
-# Reuses the product image directly: it already carries the minimal-agent
+# Reuses the product image directly: it already carries the pentesting
 # binary, complete offensive toolset, and headless browser environment (INTENT-0005).
 FROM pentesting:check
 

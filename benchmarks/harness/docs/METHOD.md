@@ -64,6 +64,6 @@ Claude는 raw transcript.jsonl을 별도로 보존하며 읽기용 transcript는
 | duration_s | 기록된 attempt 경과시간. 준비·종료 포함 범위가 러너마다 다름 |
 | flag | 과제 ID의 SHA-256으로 생성. native headless는 이번 실행 이후의 journal ToolResult로 판정 |
 
-시도 시간의 합계는 동시 캠페인의 실제 경과 시간이나 모델 추론 지연시간이 아니다. 하니스·과제·예산·캐시·제외 기준이 다른 성공률로 모델 순위를 단정하지 않는다. Claude Code 성능은 minimal-agent Rust 팀 실행 성능과 구분한다.
+시도 시간의 합계는 동시 캠페인의 실제 경과 시간이나 모델 추론 지연시간이 아니다. 하니스·과제·예산·캐시·제외 기준이 다른 성공률로 모델 순위를 단정하지 않는다. Claude Code 성능은 pentesting Rust 팀 실행 성능과 구분한다.
 
-현재 자동 생성 파일은 native의 SUMMARY·KPI·index/history와 provider의 SUMMARY·kpi.json이다. 각 파일은 집계 목적이 다르며 수작성 설명은 STATUS에만 유지한다. 과거 공통 결과의 중복 스냅샷은 [통합 기록](../../artifacts/reports/REPORT.md) 하나로 줄였다.
+현재 자동 생성 파일은 native의 SUMMARY·KPI·index/history와 provider의 SUMMARY·kpi.json이다. 각 파일은 집계 목적이 다르며 수작성 설명은 STATUS에만 유지한다. 과거 공통 결과의 중복 스냅샷은 하나의 통합 기록으로 줄였다.

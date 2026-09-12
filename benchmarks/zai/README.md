@@ -1,12 +1,12 @@
 # XBOW-104 벤치마크 — GLM-5.3-Flash (z.ai)
 
-*An evidence-first benchmark of the minimal-agent capability: given only a target URL, it reconnoiters the application, forms and tests hypotheses, and attempts to capture a hidden flag — with zero human in the loop.*
+*An evidence-first benchmark of the pentesting capability: given only a target URL, it reconnoiters the application, forms and tests hypotheses, and attempts to capture a hidden flag — with zero human in the loop.*
 
 ---
 
 ## 📄 Abstract (초록)
 
-**`minimal-agent`**는 단일 타깃 URL만 주어지면 사람의 개입 없이(Zero-Human-in-the-Loop, Black-box) 웹 애플리케이션 정찰, 취약점 가설 수립 및 검증, 동적 익스플로잇 수행, 숨겨진 플래그 획득까지 자율 완수하는 경량 Rust 기반 보안 에이전트 런타임입니다.
+**`pentesting`**는 단일 타깃 URL만 주어지면 사람의 개입 없이(Zero-Human-in-the-Loop, Black-box) 웹 애플리케이션 정찰, 취약점 가설 수립 및 검증, 동적 익스플로잇 수행, 숨겨진 플래그 획득까지 자율 완수하는 경량 Rust 기반 보안 에이전트 런타임입니다.
 
 본 벤치마크는 공인 웹 모의해킹 벤치마크 스위트인 **XBOW-104**(104개 단일 플래그 웹 익스플로잇 CTF 과제) 전량을 대상으로 `z.ai`의 **GLM-5.3-Flash** 모델을 구동하여 측정한 실측 성과를 보고합니다. 우리는 벤치마크를 단순한 순위 수치가 아닌 **데이터 기반 개발 연구(Data-Driven Development Research)**로 접근하며, 모든 실행 트랜스크립트와 텔레메트리를 분석하여 모델의 능력 한계와 에이전트 시스템 설계(오케스트레이션, 프롬프트, 도구 경계, 컨텍스트 압축, 루프 가드)의 개선 영역을 분리·실증합니다.
 
@@ -14,7 +14,7 @@
 
 ## 📊 Key Results (핵심 성과)
 
-`minimal-agent` 런타임과 `glm-5.3-flash` 백본 환경에서 달성한 최종 벤치마크 결과입니다:
+`pentesting` 런타임과 `glm-5.3-flash` 백본 환경에서 달성한 최종 벤치마크 결과입니다:
 
 - **전체 과제 해결률 (Suite Solve Rate): 85 / 104 (81.7%)**
 - **유효 채점 해결률 (Scored Solve Rate): 85 / 99 (85.9%)**
@@ -27,7 +27,7 @@
 
 ```text
 ┌────────────────────────────────────────────────────────────────────────┐
-│ XBOW-104 Suite Benchmark Outcomes (minimal-agent + GLM-5.3-Flash)      │
+│ XBOW-104 Suite Benchmark Outcomes (pentesting + GLM-5.3-Flash)         │
 ├────────────────────────────────────────────────────────────────────────┤
 │ SOLVED (85)      [████████████████████████████████████████] 81.7%     │
 │ UNSOLVED / TO (14)[███████                                 ] 13.5%     │

@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// XBOW-104 benchmark runner for the minimal-agent runtime.
+// XBOW-104 benchmark runner for the pentesting runtime.
 //
 // Evidence-first protocol:
 //   1. Fixed backbone + config   → recorded in every evidence.json
@@ -150,7 +150,7 @@ const BACKBONE_ENV_KEYS = () =>
         "OPENAI_BASE_URL",
         "OPENAI_MODEL",
         "OPENAI_TIMEOUT",
-        "MINIMAL_AGENT_PROVIDER_TIMEOUT",
+        "PENTESTING_PROVIDER_TIMEOUT",
         "OPENAI_CONTEXT_TOKENS",
       ];
 const MODEL = () =>
@@ -593,12 +593,12 @@ async function runTask(id) {
     const net = await resolveAgentNetwork(proj, `${proj}_default`);
     const telemetryDir = path.join(runDir, "telemetry");
     fs.mkdirSync(telemetryDir, { recursive: true });
-    // Dedicated (empty) dir for the runtime's ma-journal RunJournal, which it
-    // opens at the `--run` root (src/main.rs: RunJournal::open(run_root)) and
+    // Dedicated (empty) dir for the runtime's RunJournal, which it
+    // opens at the `--run` root (src/cli/runner.rs: RunJournal::open) and
     // fills with Transcript/ToolCall/ToolResult events — the only full-fidelity
     // record of what the agent actually did (payloads, tool I/O). Bind-mounted
     // below so it lands on the host instead of dying inside the container.
-    const journalDir = path.join(runDir, "ma-run");
+    const journalDir = path.join(runDir, "raw-journal");
     fs.mkdirSync(journalDir, { recursive: true });
 
     // ISOLATION: mount the telemetry dir and this dedicated empty journal dir
@@ -613,9 +613,7 @@ async function runTask(id) {
       "-v",
       `${telemetryDir}:/workspace/.pentesting`,
       "-v",
-      `${telemetryDir}:/workspace/.minimal-agent`,
-      "-v",
-      `${journalDir}:/tmp/ma-run`,
+      `${journalDir}:/tmp/raw-journal`,
       "-w",
       "/workspace",
       ...BACKBONE_ENV_KEYS().flatMap((k) =>
@@ -627,8 +625,8 @@ async function runTask(id) {
         "-e",
         `OPENAI_MAX_TOKENS=${MAX_TOKENS}`,
       );
-    if (process.env.PENTESTING_DEBUG || process.env.MINIMAL_AGENT_DEBUG || arg("debug", false))
-      args.push("-e", "PENTESTING_DEBUG=1", "-e", "MINIMAL_AGENT_DEBUG=1");
+    if (process.env.PENTESTING_DEBUG || arg("debug", false))
+      args.push("-e", "PENTESTING_DEBUG=1");
 
     const agentName = `${proj}-agent`;
     await recordedCommand("agent-container-preclean", "docker", [
@@ -639,14 +637,12 @@ async function runTask(id) {
     // pentesting native CLI: headless autonomous run against the target, with
     // the CTF flag format so the runtime extracts and prints the flag. Token usage
     // is emitted as JSONL to the mounted telemetry dir (env-gated in the runtime).
-    // --run points the RunJournal at /tmp/ma-run, which is bind-mounted
+    // --run points the RunJournal at /tmp/raw-journal, which is bind-mounted
     // to the per-run journalDir on the host (see above) so it survives teardown.
     args.push(
       "--init",
       "-e",
       "PENTESTING_TELEMETRY_FILE=/workspace/.pentesting/usage.jsonl",
-      "-e",
-      "MINIMAL_AGENT_TELEMETRY_FILE=/workspace/.pentesting/usage.jsonl",
       "--name",
       agentName,
       AGENT_IMAGE,
@@ -660,7 +656,7 @@ async function runTask(id) {
       "--workspace",
       "/workspace",
       "--run",
-      "/tmp/ma-run",
+      "/tmp/raw-journal",
       "--engagement-kind",
       "ctf",
       "--flag-format",

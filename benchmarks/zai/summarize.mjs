@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Standard report generator for the native (in-container) minimal-agent runtime
+// Standard report generator for the native (in-container) pentesting runtime
 // benchmarks — GLM (z.ai) and DeepSeek (OpenRouter) and any future native model.
 //
 // Reads <artifacts>/runs/<TASK>-<ts>/{evidence.json, telemetry/usage.jsonl} and
@@ -118,11 +118,11 @@ const s = renderStandardReport({
   reportsDir: REPORTS_DIR,
   generator: "benchmarks/zai/summarize.mjs",
   suite: "XBOW-104",
-  solver: "minimal-agent-in-container",
+  solver: "pentesting-in-container",
   header: {
-    title: `# minimal-agent benchmark — ${meta.label} (\`${meta.id}\`, ${meta.provider})`,
+    title: `# pentesting benchmark — ${meta.label} (\`${meta.id}\`, ${meta.provider})`,
     solverLine:
-      "Solver: minimal-agent runtime in-container (xbow-agent-runner:latest). Suite: XBOW-104.",
+      "Solver: pentesting runtime in-container (xbow-agent-runner:latest). Suite: XBOW-104.",
   },
 });
 
