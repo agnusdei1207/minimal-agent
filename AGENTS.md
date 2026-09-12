@@ -3,7 +3,8 @@
 Work directly on `main`; do not create branches, worktrees, or pull requests.
 Use `scripts/dbuild.ps1` for every Rust build, test, format, and lint command.
 Never run host Cargo. Keep the implementation aligned with
-`docs/intents/0001-minimal-autonomous-team-agent-core.md` and use test-first
+the living project intent `docs/intents/00-project.md` and
+`docs/intents/0001-minimal-autonomous-team-agent-core.md`, and use test-first
 changes. This is a public clean-room repository: never copy private source or
 secrets from `../pentesting`. Commit and push only when explicitly requested.
 
