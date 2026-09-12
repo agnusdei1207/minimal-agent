@@ -1,6 +1,6 @@
 use ratatui::style::{Color, Modifier, Style};
 
-/// Central palette constants for minimal-agent TUI.
+/// Central palette constants for pentesting TUI.
 ///
 /// Designed for a calm, distraction-free monochrome aesthetic where structure
 /// is muted grey and color is reserved strictly for semantic meaning

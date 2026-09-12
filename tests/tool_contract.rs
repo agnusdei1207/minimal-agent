@@ -94,13 +94,13 @@ async fn shell_runs_in_the_workspace_with_timeout_and_cancellation() {
     let output = tools
         .execute(
             "bash",
-            serde_json::json!({"command":"printf minimal-agent"}),
+            serde_json::json!({"command":"printf pentesting"}),
             &context,
         )
         .await
         .unwrap();
     assert!(output.success);
-    assert_eq!(output.content, "minimal-agent");
+    assert_eq!(output.content, "pentesting");
 
     context.cancellation.cancel();
     assert!(matches!(

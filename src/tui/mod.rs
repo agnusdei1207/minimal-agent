@@ -65,7 +65,7 @@ pub(crate) enum LineTone {
     Fault,
     /// The user's own input echo (speaker ❯ + text), rendered in the rare accent.
     User,
-    /// The start banner line (`minimal-agent — ready · /help`), with the
+    /// The start banner line (`pentesting — ready · /help`), with the
     /// program name in the rare accent and the rest muted.
     Banner,
 }
