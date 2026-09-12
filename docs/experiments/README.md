@@ -1,6 +1,6 @@
-# minimal-agent 실증 실험 스위트 (Experiments Suite)
+# pentesting 실증 실험 스위트 (Experiments Suite)
 
-본 디렉터리는 `minimal-agent` 프레임워크의 아키텍처 및 프롬프트 통신 설계를 검증하기 위한 3대 독립 실증 벤치마크 실험 스위트를 포함합니다.
+본 디렉터리는 `pentesting` 프레임워크의 아키텍처 및 프롬프트 통신 설계를 검증하기 위한 3대 독립 실증 벤치마크 실험 스위트를 포함합니다.
 
 ---
 

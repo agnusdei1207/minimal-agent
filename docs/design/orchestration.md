@@ -1,6 +1,6 @@
 # Minimal Team-Agent Orchestration for Autonomous Penetration Testing
 
-This document presents the orchestration architecture of `minimal-agent` in a format suitable for academic citation and technical presentations. Normative specifications reside in [INTENT-0001](../intents/0001-minimal-autonomous-team-agent-core.md) (Core Runtime) and [INTENT-0002](../intents/0002-authorized-engagement-and-transcript-orchestration.md) (Engagement Injection & Transcript Orchestration); this document connects those architectural decisions into a cohesive narrative.
+This document presents the orchestration architecture of `pentesting` in a format suitable for academic citation and technical presentations. Normative specifications reside in [INTENT-0001](../intents/0001-minimal-autonomous-team-agent-core.md) (Core Runtime) and [INTENT-0002](../intents/0002-authorized-engagement-and-transcript-orchestration.md) (Engagement Injection & Transcript Orchestration); this document connects those architectural decisions into a cohesive narrative.
 
 ---
 
@@ -12,7 +12,7 @@ Autonomous offensive security agents must withstand three simultaneous systemic 
 2. **Context Retention (Memory Pressure):** In long-horizon engagements, conversation context windows explode. The agent must maintain current operational meaning without losing the immutable ground truth of prior actions.
 3. **Fault Recovery:** The runtime must remain recoverable from its original append-only journal across provider outages, rate limits, and partial worker crashes.
 
-Conventional multi-agent frameworks attempt to absorb these pressures by layering external databases, RAG systems, blackboard architectures, complex permission engines, and shared memory stores. In contrast, `minimal-agent` **minimizes conceptual primitives**, evaluating its success solely on whether each operational boundary holds reliably under saturation, interruption, and restart.
+Conventional multi-agent frameworks attempt to absorb these pressures by layering external databases, RAG systems, blackboard architectures, complex permission engines, and shared memory stores. In contrast, `pentesting` **minimizes conceptual primitives**, evaluating its success solely on whether each operational boundary holds reliably under saturation, interruption, and restart.
 
 ---
 
@@ -29,7 +29,7 @@ main (depth 0)  ── Goal interpretation, team formulation, strategic synthesi
 
 - Only `main` creates, assigns, steers, and recalls workers. Workers cannot spawn arbitrary child subagents.
 - Maximum active team size is strictly capped at 10 (including `main`). Roles and assignments are determined dynamically at runtime.
-- Deep recursive sprawl is prevented by fixing team topology bounds. Rather than adding arbitrary hierarchical depth, `minimal-agent` prioritizes controllable, low-latency coordination. Bounded 3-depth extensions in complex operations are detailed in Section 2.5 and [INTENT-0004](../intents/0004-bounded-three-depth-hierarchical-orchestration.md).
+- Deep recursive sprawl is prevented by fixing team topology bounds. Rather than adding arbitrary hierarchical depth, `pentesting` prioritizes controllable, low-latency coordination. Bounded 3-depth extensions in complex operations are detailed in Section 2.5 and [INTENT-0004](../intents/0004-bounded-three-depth-hierarchical-orchestration.md).
 
 ### 2.2 Direct Messaging over a Single Append-Only Journal
 
@@ -114,7 +114,7 @@ These doctrines are implemented purely as compact system prompt text rather than
 ### 3.3 Autonomous Headless Execution (Benchmark Mode)
 
 ```bash
-minimal-agent run \
+pentesting run \
   --engagement ./engagement.json \
   --auto --plain --headless
 ```
@@ -153,7 +153,7 @@ Consistent color palettes and CommonMark terminal rendering allow operators to i
 
 ## 6. Intentionally Omitted Primitives
 
-`minimal-agent` deliberately omits several common framework abstractions:
+`pentesting` deliberately omits several common framework abstractions:
 - Vector databases and external RAG pipelines
 - Global shared team scratchpads
 - Separate observation and telemetry microservices

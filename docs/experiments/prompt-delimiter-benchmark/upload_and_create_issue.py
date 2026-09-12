@@ -3,7 +3,7 @@ import requests
 import re
 
 TOKEN = os.environ.get("GHCR_TOKEN")
-REPO = "agnusdei1207/minimal-agent-pentesting"
+REPO = "agnusdei1207/pentesting"
 RELEASE_ID = 380917952
 TAG_NAME = "benchmark-assets-v1"
 

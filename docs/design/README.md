@@ -1,6 +1,6 @@
 # Minimal Agent Architecture & Design Documents
 
-This directory contains the core architecture, design philosophies, and technical specifications for minimal-agent.
+This directory contains the core architecture, design philosophies, and technical specifications for pentesting.
 
 ---
 

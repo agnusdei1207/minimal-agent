@@ -3,7 +3,7 @@ import re
 import requests
 
 TOKEN = os.environ.get("GITHUB_TOKEN")
-REPO = "agnusdei1207/minimal-agent-pentesting"
+REPO = "agnusdei1207/pentesting"
 TAG_NAME = "unified-prompt-assets-v1"
 
 HEADERS_API = {
@@ -33,7 +33,7 @@ def get_or_create_release():
         'tag_name': TAG_NAME,
         'target_commitish': 'main',
         'name': 'Unified Prompt Engineering Study Assets v1',
-        'body': 'High-resolution publication figures for Unified Prompt Engineering Study (minimal-agent)',
+        'body': 'High-resolution publication figures for Unified Prompt Engineering Study (pentesting)',
         'draft': False,
         'prerelease': False
     }

@@ -12,7 +12,7 @@ API_URL = "https://openrouter.ai/api/v1/chat/completions"
 HEADERS = {
     "Authorization": f"Bearer {API_KEY}",
     "Content-Type": "application/json",
-    "HTTP-Referer": "https://github.com/agnusdei1207/minimal-agent",
+    "HTTP-Referer": "https://github.com/agnusdei1207/pentesting",
     "X-Title": "Prompt-Delimiter-Brittleness-Benchmark"
 }
 

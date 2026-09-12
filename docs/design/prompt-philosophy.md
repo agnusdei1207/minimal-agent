@@ -1,6 +1,6 @@
 # Prompt Philosophy & Offensive Engineering Disciplines for Autonomous Agents
 
-This document defines `minimal-agent`'s **system prompt philosophy, offensive engineering disciplines, creative bypass principles, and autonomous anti-rabbit-hole self-reflection mechanisms**.
+This document defines `pentesting`'s **system prompt philosophy, offensive engineering disciplines, creative bypass principles, and autonomous anti-rabbit-hole self-reflection mechanisms**.
 
 ---
 
@@ -45,7 +45,7 @@ Empirical benchmark analysis across hundreds of target runs (e.g., GLM-5.3-Flash
 
 ## 3. Five Operational Principles Derived from `../skills`
 
-To eliminate these pathologies, `minimal-agent` adapts engineering principles from professional agent skillsets (notably Matt Pocock's `diagnosing-bugs` and `writing-for-agents` in `../skills`) and tailors them specifically to offensive operations.
+To eliminate these pathologies, `pentesting` adapts engineering principles from professional agent skillsets (notably Matt Pocock's `diagnosing-bugs` and `writing-for-agents` in `../skills`) and tailors them specifically to offensive operations.
 
 ### ① "The Feedback Loop is the Skill"
 * *"A probe without a differential signal yields no knowledge."*
@@ -72,7 +72,7 @@ To eliminate these pathologies, `minimal-agent` adapts engineering principles fr
 
 ## 4. Seams & Tracer Bullet Architecture
 
-`minimal-agent` views target applications not as opaque black boxes, but as composite systems separated by architectural **Seams**:
+`pentesting` views target applications not as opaque black boxes, but as composite systems separated by architectural **Seams**:
 
 ```
 [Target Architecture]
@@ -160,4 +160,4 @@ To maximize success within standard 15–30 minute engagement timeouts, the agen
 
 A disciplined system prompt does not constrain the agent with rigid rules; rather, it equips the model with **the cognitive lens of a seasoned penetration tester: systematically seeking differential signal, bypassing filters orthogonally, and auditing its own trajectory to escape rabbit holes**.
 
-Through this philosophy, `minimal-agent` achieves **efficient exploratory divergence, rapid signal-driven convergence, and resilient autonomous execution**.
+Through this philosophy, `pentesting` achieves **efficient exploratory divergence, rapid signal-driven convergence, and resilient autonomous execution**.

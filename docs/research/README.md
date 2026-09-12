@@ -1,6 +1,6 @@
-# minimal-agent 실증 연구 보고서 목록 (Empirical Research Papers)
+# pentesting 실증 연구 보고서 목록 (Empirical Research Papers)
 
-`minimal-agent` 저장소에서 수행된 자율 다중 LLM 에이전트 시스템 관련 실증 벤치마크 및 학술 연구 논문 인덱스입니다.
+`pentesting` 저장소에서 수행된 자율 다중 LLM 에이전트 시스템 관련 실증 벤치마크 및 학술 연구 논문 인덱스입니다.
 
 ---
 
